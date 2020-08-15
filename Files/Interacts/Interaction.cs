@@ -694,8 +694,11 @@ namespace Files.Interacts
 
         public async void DeleteItem(StorageDeleteOption deleteOption)
         {
+            var matchingDrive = App.AppSettings.DrivesManager.Drives.FirstOrDefault(x =>
+                PathNormalization.NormalizePath(x.Path) == PathNormalization.NormalizePath(Path.GetPathRoot(App.CurrentInstance.FilesystemViewModel.WorkingDirectory)));
+            var deleteFromRemovableDrive = matchingDrive?.Type == Filesystem.DriveType.Removable;
             var deleteFromRecycleBin = App.CurrentInstance.FilesystemViewModel.WorkingDirectory.StartsWith(AppSettings.RecycleBinPath);
-            if (deleteFromRecycleBin)
+            if (deleteFromRecycleBin || deleteFromRemovableDrive)
             {
                 // Permanently delete if deleting from recycle bin
                 deleteOption = StorageDeleteOption.PermanentDelete;
@@ -711,7 +714,7 @@ namespace Files.Interacts
 
             if (AppSettings.ShowConfirmDeleteDialog == true) //check if the setting to show a confirmation dialog is on
             {
-                var dialog = new ConfirmDeleteDialog(deleteFromRecycleBin, deleteOption);
+                var dialog = new ConfirmDeleteDialog(deleteFromRecycleBin || deleteFromRemovableDrive, deleteOption);
                 await dialog.ShowAsync();
 
                 if (dialog.Result != MyResult.Delete) //delete selected  item(s) if the result is yes
