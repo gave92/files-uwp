@@ -435,7 +435,14 @@ namespace Files.UserControls
                 pathBoxItem.Path == "Home" || pathBoxItem.Path == ResourceController.GetTranslation("NewTab")) return;
 
             var deferral = e.GetDeferral();
-            await App.CurrentInstance.InteractionOperations.PasteItems(e.DataView, pathBoxItem.Path, e.AcceptedOperation);
+            if (pathBoxItem.Path.StartsWith(App.AppSettings.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
+            {
+                await App.CurrentInstance.InteractionOperations.MoveItemToBin(e.DataView);
+            }
+            else
+            {
+                await App.CurrentInstance.InteractionOperations.PasteItems(e.DataView, pathBoxItem.Path, e.AcceptedOperation);
+            }
             deferral.Complete();
         }
 

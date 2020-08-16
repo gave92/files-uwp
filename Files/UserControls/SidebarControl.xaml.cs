@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -254,23 +255,27 @@ namespace Files.Controls
             var storageItems = await e.DataView.GetStorageItemsAsync();
 
             if (storageItems.Count == 0 ||
-                locationItem.IsDefaultLocation ||
-                locationItem.Path.Equals(App.AppSettings.RecycleBinPath, StringComparison.OrdinalIgnoreCase) ||
+                locationItem.Path == "Home" ||
                 storageItems.AreItemsAlreadyInFolder(locationItem.Path))
             {
-                e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.None;
+                e.AcceptedOperation = DataPackageOperation.None;
             }
             else
             {
                 e.DragUIOverride.IsCaptionVisible = true;
-                if (storageItems.AreItemsInSameDrive(locationItem.Path))
+                if (locationItem.Path.Equals(App.AppSettings.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
                 {
-                    e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
+                    e.AcceptedOperation = DataPackageOperation.Move;
+                    e.DragUIOverride.Caption = string.Format(ResourceController.GetTranslation("MoveToFolderCaptionText"), locationItem.Text);
+                }
+                else if (storageItems.AreItemsInSameDrive(locationItem.Path))
+                {
+                    e.AcceptedOperation = DataPackageOperation.Move;
                     e.DragUIOverride.Caption = string.Format(ResourceController.GetTranslation("MoveToFolderCaptionText"), locationItem.Text);
                 }
                 else
                 {
-                    e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Copy;
+                    e.AcceptedOperation = DataPackageOperation.Copy;
                     e.DragUIOverride.Caption = string.Format(ResourceController.GetTranslation("CopyToFolderCaptionText"), locationItem.Text);
                 }
             }
@@ -284,7 +289,14 @@ namespace Files.Controls
             VisualStateManager.GoToState(sender as Microsoft.UI.Xaml.Controls.NavigationViewItem, "Drop", false);
 
             var deferral = e.GetDeferral();
-            await App.CurrentInstance.InteractionOperations.PasteItems(e.DataView, locationItem.Path, e.AcceptedOperation);
+            if (locationItem.Path.StartsWith(App.AppSettings.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
+            {
+                await App.CurrentInstance.InteractionOperations.MoveItemToBin(e.DataView);
+            }
+            else
+            {
+                await App.CurrentInstance.InteractionOperations.PasteItems(e.DataView, locationItem.Path, e.AcceptedOperation);
+            }
             deferral.Complete();
         }
 
@@ -301,19 +313,19 @@ namespace Files.Controls
                 "Unknown".Equals(driveItem.SpaceText, StringComparison.OrdinalIgnoreCase) ||
                 storageItems.AreItemsAlreadyInFolder(driveItem.Path))
             {
-                e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.None;
+                e.AcceptedOperation = DataPackageOperation.None;
             }
             else
             {
                 e.DragUIOverride.IsCaptionVisible = true;
                 if (storageItems.AreItemsInSameDrive(driveItem.Path))
                 {
-                    e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
+                    e.AcceptedOperation = DataPackageOperation.Move;
                     e.DragUIOverride.Caption = string.Format(ResourceController.GetTranslation("MoveToFolderCaptionText"), driveItem.Text);
                 }
                 else
                 {
-                    e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Copy;
+                    e.AcceptedOperation = DataPackageOperation.Copy;
                     e.DragUIOverride.Caption = string.Format(ResourceController.GetTranslation("CopyToFolderCaptionText"), driveItem.Text);
                 }
             }

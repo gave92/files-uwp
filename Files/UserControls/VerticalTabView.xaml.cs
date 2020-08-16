@@ -19,6 +19,7 @@ using static Files.Helpers.PathNormalization;
 using Files.UserControls.MultiTaskingControl;
 using Files.Views;
 using Files.Interacts;
+using Windows.Foundation.Collections;
 
 namespace Files.UserControls
 {
@@ -220,25 +221,19 @@ namespace Files.UserControls
             if (e.DataView.AvailableFormats.Contains(StandardDataFormats.StorageItems))
             {
                 // TODO: Add Simpler way to find TabItem working directory
-                string tabViewItemWorkingDir = ((((
+                var tabViewItem = (((
                     (sender as TabViewItem)
                     .DataContext as TabItem)
                     .Content as Grid).Children[0] as Frame)
-                    .Content as IShellPage)
-                    .FilesystemViewModel
-                    .WorkingDirectory;
+                    .Content as IShellPage;
 
-                foreach (IStorageItem item in await e.DataView.GetStorageItemsAsync())
+                if (tabViewItem.FilesystemViewModel.WorkingDirectory.StartsWith(App.AppSettings.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (item.IsOfType(StorageItemTypes.Folder))
-                    {
-                        await App.CurrentInstance.InteractionOperations.CloneDirectoryAsync(((StorageFolder)item), await StorageFolder.GetFolderFromPathAsync(tabViewItemWorkingDir), item.Name, true);
-                        await (await StorageFolder.GetFolderFromPathAsync(item.Path)).DeleteAsync();
-                    }
-                    else
-                    {
-                        await ((StorageFile)item).MoveAsync(await StorageFolder.GetFolderFromPathAsync(tabViewItemWorkingDir), item.Name, NameCollisionOption.GenerateUniqueName);
-                    }
+                    await tabViewItem.InteractionOperations.MoveItemToBin(e.DataView);
+                }
+                else
+                {
+                    await tabViewItem.InteractionOperations.PasteItems(e.DataView, tabViewItem.FilesystemViewModel.WorkingDirectory, e.AcceptedOperation);
                 }
             }
             else

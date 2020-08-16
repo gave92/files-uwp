@@ -482,6 +482,11 @@ namespace Files
                 {
                     e.AcceptedOperation = DataPackageOperation.None;
                 }
+                else if (App.CurrentInstance.FilesystemViewModel.WorkingDirectory.StartsWith(App.AppSettings.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    e.DragUIOverride.Caption = string.Format(ResourceController.GetTranslation("MoveToFolderCaptionText"), folderName);
+                    e.AcceptedOperation = DataPackageOperation.Move;
+                }
                 else if (draggedItems.AreItemsInSameDrive(App.CurrentInstance.FilesystemViewModel.WorkingDirectory))
                 {
                     e.DragUIOverride.Caption = string.Format(ResourceController.GetTranslation("MoveToFolderCaptionText"), folderName);
@@ -503,7 +508,14 @@ namespace Files
 
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
-                await AssociatedInteractions.PasteItems(e.DataView, App.CurrentInstance.FilesystemViewModel.WorkingDirectory, e.AcceptedOperation);
+                if (App.CurrentInstance.FilesystemViewModel.WorkingDirectory.StartsWith(App.AppSettings.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    await AssociatedInteractions.MoveItemToBin(e.DataView);
+                }
+                else
+                {
+                    await AssociatedInteractions.PasteItems(e.DataView, App.CurrentInstance.FilesystemViewModel.WorkingDirectory, e.AcceptedOperation);
+                }
                 e.Handled = true;
             }
 

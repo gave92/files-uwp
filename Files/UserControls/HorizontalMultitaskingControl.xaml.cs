@@ -215,15 +215,15 @@ namespace Files.UserControls
             await MainPage.AddNewTab(typeof(ModernShellPage), ResourceController.GetTranslation("NewTab"));
         }
 
-        private void horizontalTabView_TabItemsChanged(TabView sender, Windows.Foundation.Collections.IVectorChangedEventArgs args)
+        private void horizontalTabView_TabItemsChanged(TabView sender, IVectorChangedEventArgs args)
         {
             switch (args.CollectionChange)
             {
-                case Windows.Foundation.Collections.CollectionChange.ItemRemoved:
+                case CollectionChange.ItemRemoved:
                     App.InteractionViewModel.TabStripSelectedIndex = Items.IndexOf(horizontalTabView.SelectedItem as TabItem);
                     break;
 
-                case Windows.Foundation.Collections.CollectionChange.ItemInserted:
+                case CollectionChange.ItemInserted:
                     App.InteractionViewModel.TabStripSelectedIndex = Items.IndexOf(horizontalTabView.SelectedItem as TabItem);
                     break;
             }
@@ -234,25 +234,19 @@ namespace Files.UserControls
             if (e.DataView.AvailableFormats.Contains(StandardDataFormats.StorageItems))
             {
                 // TODO: Add Simpler way to find TabItem working directory
-                string tabViewItemWorkingDir = ((((
+                var tabViewItem = (((
                     (sender as TabViewItem)
                     .DataContext as TabItem)
                     .Content as Grid).Children[0] as Frame)
-                    .Content as IShellPage)
-                    .FilesystemViewModel
-                    .WorkingDirectory;
+                    .Content as IShellPage;
 
-                foreach (IStorageItem item in await e.DataView.GetStorageItemsAsync())
+                if (tabViewItem.FilesystemViewModel.WorkingDirectory.StartsWith(App.AppSettings.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (item.IsOfType(StorageItemTypes.Folder))
-                    {
-                        await App.CurrentInstance.InteractionOperations.CloneDirectoryAsync(((StorageFolder)item), await StorageFolder.GetFolderFromPathAsync(tabViewItemWorkingDir), item.Name, true);
-                        await (await StorageFolder.GetFolderFromPathAsync(item.Path)).DeleteAsync();
-                    }
-                    else
-                    {
-                        await ((StorageFile)item).MoveAsync(await StorageFolder.GetFolderFromPathAsync(tabViewItemWorkingDir), item.Name, NameCollisionOption.GenerateUniqueName);
-                    }
+                    await tabViewItem.InteractionOperations.MoveItemToBin(e.DataView);
+                }
+                else
+                {
+                    await tabViewItem.InteractionOperations.PasteItems(e.DataView, tabViewItem.FilesystemViewModel.WorkingDirectory, e.AcceptedOperation);
                 }
             }
             else

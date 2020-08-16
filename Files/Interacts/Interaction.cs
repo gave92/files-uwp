@@ -330,7 +330,7 @@ namespace Files.Interacts
             }
             catch (Exception ex)
             {
-                await DialogDisplayHelper.ShowDialog(ResourceController.GetTranslation("InvalidItemDialogTitle"), 
+                await DialogDisplayHelper.ShowDialog(ResourceController.GetTranslation("InvalidItemDialogTitle"),
                     string.Format(ResourceController.GetTranslation("InvalidItemDialogContent"), Environment.NewLine, ex.Message));
             }
         }
@@ -692,7 +692,7 @@ namespace Files.Interacts
             DeleteItem(StorageDeleteOption.Default);
         }
 
-        public async void DeleteItem(StorageDeleteOption deleteOption)
+        public async void DeleteItem(StorageDeleteOption deleteOption, bool suppressConfirmDialog = false)
         {
             var deleteFromRecycleBin = App.CurrentInstance.FilesystemViewModel.WorkingDirectory.StartsWith(AppSettings.RecycleBinPath);
             if (deleteFromRecycleBin)
@@ -709,7 +709,7 @@ namespace Files.Interacts
                 selectedItems.Add(selectedItem);
             }
 
-            if (AppSettings.ShowConfirmDeleteDialog == true) //check if the setting to show a confirmation dialog is on
+            if (!suppressConfirmDialog && AppSettings.ShowConfirmDeleteDialog) //check if the setting to show a confirmation dialog is on
             {
                 var dialog = new ConfirmDeleteDialog(deleteFromRecycleBin, deleteOption);
                 await dialog.ShowAsync();
@@ -824,7 +824,124 @@ namespace Files.Interacts
                     ResourceController.GetTranslation("FileInUseDeleteDialog/PrimaryButtonText"),
                     ResourceController.GetTranslation("FileInUseDeleteDialog/SecondaryButtonText")))
                 {
-                    DeleteItem(deleteOption);
+                    DeleteItem(deleteOption, true);
+                }
+            }
+            App.CurrentInstance.StatusBarControl.OngoingTasksControl.RemoveBanner(banner);
+        }
+
+        public async Task MoveItemToBin(DataPackageView packageView, bool suppressConfirmDialog = false)
+        {
+            if (!packageView.Contains(StandardDataFormats.StorageItems))
+            {
+                // Happens if you copy some text and then you Ctrl+V in FilesUWP
+                return;
+            }
+
+            var itemsToDelete = await packageView.GetStorageItemsAsync();
+            if (!suppressConfirmDialog && AppSettings.ShowConfirmDeleteDialog) //check if the setting to show a confirmation dialog is on
+            {
+                var dialog = new ConfirmDeleteDialog(true, StorageDeleteOption.Default);
+                await dialog.ShowAsync();
+
+                if (dialog.Result != MyResult.Delete) //delete selected  item(s) if the result is yes
+                {
+                    return; //return if the result isn't delete
+                }
+            }
+            StatusBanner banner = null;
+            try
+            {
+                int itemsDeleted = 0;
+                if (itemsToDelete.Count > 3)
+                {
+                    banner = App.CurrentInstance.StatusBarControl.OngoingTasksControl.PostBanner(null,
+                        CurrentInstance.FilesystemViewModel.WorkingDirectory,
+                        0,
+                        UserControls.StatusBanner.StatusBannerSeverity.Ongoing,
+                        UserControls.StatusBanner.StatusBannerOperation.Delete);
+                }
+                await Task.Run(async () =>
+                {
+                    foreach (var storItem in itemsToDelete)
+                    {
+                        uint progressValue = (uint)(itemsDeleted * 100.0 / itemsToDelete.Count);
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                            new DispatchedHandler(() =>
+                            {
+                                if (itemsToDelete.Count > 3) { banner.Report((uint)progressValue); }
+                            }));
+
+                        IStorageItem item;
+                        try
+                        {
+                            if (string.IsNullOrEmpty(storItem.Path))
+                            {
+                                // Can't move (only copy) files from MTP devices because:
+                                // StorageItems returned in DataPackageView are read-only
+                                // The item.Path property will be empty and there's no way of retrieving a new StorageItem with R/W access
+                                continue;
+                            }
+                            if (storItem.IsOfType(StorageItemTypes.File))
+                            {
+                                item = await ItemViewModel.GetFileFromPathAsync(storItem.Path);
+                            }
+                            else
+                            {
+                                item = await ItemViewModel.GetFolderFromPathAsync(storItem.Path);
+                            }
+
+                            await item.DeleteAsync(StorageDeleteOption.Default);
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                            // Try again with fulltrust process
+                            if (App.Connection != null)
+                            {
+                                var result = await App.Connection.SendMessageAsync(new ValueSet() {
+                                { "Arguments", "FileOperation" },
+                                { "fileop", "MoveToBin" },
+                                { "filepath", storItem.Path } });
+                            }
+                        }
+                        catch (FileLoadException)
+                        {
+                            // try again
+                            if (storItem.IsOfType(StorageItemTypes.File))
+                            {
+                                item = await ItemViewModel.GetFileFromPathAsync(storItem.Path);
+                            }
+                            else
+                            {
+                                item = await ItemViewModel.GetFolderFromPathAsync(storItem.Path);
+                            }
+
+                            await item.DeleteAsync(StorageDeleteOption.Default);
+                        }
+
+                        itemsDeleted++;
+                    }
+                });
+
+                App.CurrentInstance.NavigationToolbar.CanGoForward = false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                await DialogDisplayHelper.ShowDialog(ResourceController.GetTranslation("AccessDeniedDeleteDialog/Title"), ResourceController.GetTranslation("AccessDeniedDeleteDialog/Text"));
+            }
+            catch (FileNotFoundException)
+            {
+                await DialogDisplayHelper.ShowDialog(ResourceController.GetTranslation("FileNotFoundDialog/Title"), ResourceController.GetTranslation("FileNotFoundDialog/Text"));
+            }
+            catch (IOException)
+            {
+                if (await DialogDisplayHelper.ShowDialog(
+                    ResourceController.GetTranslation("FileInUseDeleteDialog/Title"),
+                    ResourceController.GetTranslation("FileInUseDeleteDialog/Text"),
+                    ResourceController.GetTranslation("FileInUseDeleteDialog/PrimaryButtonText"),
+                    ResourceController.GetTranslation("FileInUseDeleteDialog/SecondaryButtonText")))
+                {
+                    await MoveItemToBin(packageView, true);
                 }
             }
             App.CurrentInstance.StatusBarControl.OngoingTasksControl.RemoveBanner(banner);
