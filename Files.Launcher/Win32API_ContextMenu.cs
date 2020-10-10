@@ -26,7 +26,9 @@ namespace FilesFullTrust
 
             public void Dispose()
             {
-                messageQueue.CompleteAdding();
+                var dTimer = new System.Timers.Timer(1000); // up to 1s to complete
+                dTimer.Elapsed += (s, e) => messageQueue.CompleteAdding();
+                dTimer.Enabled = true;
                 thread.Join();
                 state.Dispose();
             }
