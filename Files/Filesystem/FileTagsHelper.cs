@@ -1,5 +1,4 @@
-﻿using Common;
-using Files.Helpers;
+﻿using Files.Helpers;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
@@ -15,21 +14,6 @@ namespace Files.Filesystem
 {
     public class FileTagsHelper
     {
-        public static string FileTagsDbPath => System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, "filetags.db");
-
-        private static FileTagsDb _DbInstance;
-        public static FileTagsDb DbInstance
-        {
-            get
-            {
-                if (_DbInstance == null)
-                {
-                    _DbInstance = new FileTagsDb(FileTagsDbPath, true);
-                }
-                return _DbInstance;
-            }
-        }
-
         public static string ReadFileTag(string filePath)
         {
             IntPtr hStream = NativeDirectoryChangesHelper.CreateFileFromApp($"{filePath}:files",

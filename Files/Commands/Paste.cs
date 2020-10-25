@@ -278,7 +278,6 @@ namespace Files.Commands
                                 item.Name);
                             pastedSourceItems.Add(item);
                             pastedItems.Add(pastedFolder);
-                            FileTagsHelper.DbInstance.UpdateTag(item.Path, null, pastedFolder.Path);
                         }
                         catch (FileNotFoundException)
                         {
@@ -305,7 +304,6 @@ namespace Files.Commands
                             NameCollisionOption.GenerateUniqueName);
                         pastedSourceItems.Add(item);
                         pastedItems.Add(sourceFile);
-                        FileTagsHelper.DbInstance.UpdateTag(item.Path, null, sourceFile.Path);
                     }
                     catch (UnauthorizedAccessException)
                     {
@@ -313,7 +311,6 @@ namespace Files.Commands
                         if (NativeDirectoryChangesHelper.MoveFileFromApp(item.Path, Path.Combine(destinationPath, item.Name)))
                         {
                             pastedSourceItems.Add(item);
-                            FileTagsHelper.DbInstance.UpdateTag(item.Path, null, Path.Combine(destinationPath, item.Name));
                         }
                         else
                         {
@@ -377,13 +374,11 @@ namespace Files.Commands
             {
                 var oldFilePath = fileInSourceDir.Path;
                 await fileInSourceDir.MoveAsync(DestinationFolder, fileInSourceDir.Name, NameCollisionOption.GenerateUniqueName);
-                FileTagsHelper.DbInstance.UpdateTag(oldFilePath, null, fileInSourceDir.Path);
             }
 
             foreach (StorageFolder folderinSourceDir in await SourceFolder.GetFoldersAsync())
             {
                 var newFolder = await MoveDirectoryAsync(folderinSourceDir, DestinationFolder, folderinSourceDir.Name);
-                FileTagsHelper.DbInstance.UpdateTag(folderinSourceDir.Path, null, newFolder.Path);
             }
 
             await SourceFolder.DeleteAsync(StorageDeleteOption.PermanentDelete);

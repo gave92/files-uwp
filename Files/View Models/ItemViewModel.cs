@@ -487,7 +487,6 @@ namespace Files.Filesystem
                             {
                                 // Reset cloud sync status icon
                                 matchingItem.SyncStatusUI = new CloudDriveSyncStatusUI() { LoadSyncStatus = false };
-                                matchingItem.FileFRN = null;
                                 matchingItem.FileTag = null;
                             }
                             else
@@ -496,11 +495,7 @@ namespace Files.Filesystem
                                 matchingItem.ItemType = matchingStorageItem.DisplayType;
                                 var syncStatus = await CheckCloudDriveSyncStatus(matchingStorageItem);
                                 matchingItem.SyncStatusUI = CloudDriveSyncStatusUI.FromCloudDriveSyncStatus(syncStatus);
-                                // Fetch tag and FRN
-                                IDictionary<string, object> extraProperties = await matchingStorageItem.Properties.RetrievePropertiesAsync(new string[] { "System.FileFRN" });
-                                matchingItem.FileFRN = (ulong?)extraProperties["System.FileFRN"];
                                 matchingItem.FileTag = FileTagsHelper.ReadFileTag(matchingItem.ItemPath);
-                                FileTagsHelper.DbInstance.SetTag(matchingItem.ItemPath, matchingItem.FileFRN, matchingItem.FileTag);
                             }
                         }
                     }
@@ -510,7 +505,6 @@ namespace Files.Filesystem
                         {
                             // Reset cloud sync status icon
                             matchingItem.SyncStatusUI = new CloudDriveSyncStatusUI() { LoadSyncStatus = false };
-                            matchingItem.FileFRN = null;
                             matchingItem.FileTag = null;
                         }
                         item.ItemPropertiesInitialized = true;
@@ -553,11 +547,7 @@ namespace Files.Filesystem
                             matchingItem.ItemType = matchingStorageItem.DisplayType;
                             var syncStatus = await CheckCloudDriveSyncStatus(matchingStorageItem);
                             matchingItem.SyncStatusUI = CloudDriveSyncStatusUI.FromCloudDriveSyncStatus(syncStatus);
-                            // Fetch tag and FRN
-                            IDictionary<string, object> extraProperties = await matchingStorageItem.Properties.RetrievePropertiesAsync(new string[] { "System.FileFRN" });
-                            matchingItem.FileFRN = (ulong?)extraProperties["System.FileFRN"];
                             matchingItem.FileTag = FileTagsHelper.ReadFileTag(matchingItem.ItemPath);
-                            FileTagsHelper.DbInstance.SetTag(matchingItem.ItemPath, matchingItem.FileFRN, matchingItem.FileTag);
                         }
                     }
                     catch (Exception)
@@ -566,7 +556,6 @@ namespace Files.Filesystem
                         {
                             // Reset cloud sync status icon
                             matchingItem.SyncStatusUI = new CloudDriveSyncStatusUI() { LoadSyncStatus = false };
-                            matchingItem.FileFRN = null;
                             matchingItem.FileTag = null;
                         }
                         item.ItemPropertiesInitialized = true;

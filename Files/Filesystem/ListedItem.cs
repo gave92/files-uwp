@@ -1,5 +1,4 @@
-﻿using Common;
-using Files.Enums;
+﻿using Files.Enums;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Linq;
@@ -54,8 +53,6 @@ namespace Files.Filesystem
             set => SetProperty(ref _LoadUnknownTypeGlyph, value);
         }
 
-        public ulong? FileFRN { get; set; }
-
         private string _FileTag;
 
         public string FileTag
@@ -65,7 +62,6 @@ namespace Files.Filesystem
             {
                 if (value != _FileTag)
                 {
-                    FileTagsHelper.DbInstance.SetTag(ItemPath, FileFRN, value);
                     FileTagsHelper.WriteFileTag(ItemPath, value);
                 }
                 SetProperty(ref _FileTag, value);
