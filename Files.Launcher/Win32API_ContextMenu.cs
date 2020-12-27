@@ -5,7 +5,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -31,7 +30,7 @@ namespace FilesFullTrust
                 state.Dispose();
             }
 
-            public async Task<V> PostMessage<V>(T payload)
+            public async Task<V> PostMessageAsync<V>(T payload)
             {
                 var message = new Internal(payload);
                 messageQueue.TryAdd(message);
@@ -87,7 +86,10 @@ namespace FilesFullTrust
             {
                 string key = Guid.NewGuid().ToString();
                 if (!_dict.TryAdd(key, obj))
+                {
                     throw new ArgumentException("Could not create handle: key exists");
+                }
+
                 return key;
             }
 
@@ -95,7 +97,9 @@ namespace FilesFullTrust
             {
                 RemoveValue(key);
                 if (!_dict.TryAdd(key, obj))
+                {
                     throw new ArgumentException("Could not create handle: key exists");
+                }
             }
 
             public object GetValue(string key)
@@ -130,17 +134,23 @@ namespace FilesFullTrust
         {
             private Shell32.IContextMenu cMenu;
             private User32.SafeHMENU hMenu;
+            public List<string> ItemsPath { get; }
 
-            public ContextMenu(Shell32.IContextMenu cMenu, User32.SafeHMENU hMenu)
+            public ContextMenu(Shell32.IContextMenu cMenu, User32.SafeHMENU hMenu, IEnumerable<string> itemsPath)
             {
                 this.cMenu = cMenu;
                 this.hMenu = hMenu;
+                this.ItemsPath = itemsPath.ToList();
                 this.Items = new List<Win32ContextMenuItem>();
             }
 
             public void InvokeVerb(string verb)
             {
-                if (string.IsNullOrEmpty(verb)) return;
+                if (string.IsNullOrEmpty(verb))
+                {
+                    return;
+                }
+
                 try
                 {
                     var pici = new Shell32.CMINVOKECOMMANDINFOEX();
@@ -159,7 +169,11 @@ namespace FilesFullTrust
 
             public void InvokeItem(int itemID)
             {
-                if (itemID < 0) return;
+                if (itemID < 0)
+                {
+                    return;
+                }
+
                 try
                 {
                     var pici = new Shell32.CMINVOKECOMMANDINFOEX();
@@ -184,7 +198,10 @@ namespace FilesFullTrust
                 try
                 {
                     foreach (var fp in filePathList.Where(x => !string.IsNullOrEmpty(x)))
+                    {
                         shellItems.Add(new ShellItem(fp));
+                    }
+
                     return GetContextMenuForFiles(shellItems.ToArray(), flags, itemFilter);
                 }
                 catch (ArgumentException)
@@ -195,19 +212,24 @@ namespace FilesFullTrust
                 finally
                 {
                     foreach (var si in shellItems)
+                    {
                         si.Dispose();
+                    }
                 }
             }
 
-            public static ContextMenu GetContextMenuForFiles(ShellItem[] shellItems, Shell32.CMF flags, Func<string, bool> itemFilter = null)
+            private static ContextMenu GetContextMenuForFiles(ShellItem[] shellItems, Shell32.CMF flags, Func<string, bool> itemFilter = null)
             {
                 if (shellItems == null || !shellItems.Any())
+                {
                     return null;
+                }
+
                 using var sf = shellItems.First().Parent; // HP: the items are all in the same folder
                 Shell32.IContextMenu menu = sf.GetChildrenUIObjects<Shell32.IContextMenu>(null, shellItems);
                 var hMenu = User32.CreatePopupMenu();
                 menu.QueryContextMenu(hMenu, 0, 1, 0x7FFF, flags);
-                var contextMenu = new ContextMenu(menu, hMenu);
+                var contextMenu = new ContextMenu(menu, hMenu, shellItems.Select(x => x.ParsingName));
                 ContextMenu.EnumMenuItems(menu, hMenu, contextMenu.Items, itemFilter);
                 return contextMenu;
             }
@@ -253,10 +275,13 @@ namespace FilesFullTrust
                             container.Dispose();
                             continue;
                         }
-                        if (mii.hbmpItem != HBITMAP.NULL)
+                        if (mii.hbmpItem != HBITMAP.NULL && !Enum.IsDefined(typeof(HBITMAP_HMENU), ((IntPtr)mii.hbmpItem).ToInt64()))
                         {
                             var bitmap = GetBitmapFromHBitmap(mii.hbmpItem);
-                            menuItem.Icon = bitmap;
+                            if (bitmap != null)
+                            {
+                                menuItem.Icon = bitmap;
+                            }
                         }
                         if (mii.hSubMenu != HMENU.NULL)
                         {
@@ -317,59 +342,6 @@ namespace FilesFullTrust
                 }
             }
 
-            private static Bitmap GetBitmapFromHBitmap(HBITMAP hBitmap)
-            {
-                Bitmap bmp = hBitmap.ToBitmap();
-
-                if (Bitmap.GetPixelFormatSize(bmp.PixelFormat) < 32)
-                    return bmp;
-
-                if (IsAlphaBitmap(bmp, out var bmpData))
-                    return GetAlphaBitmapFromBitmapData(bmpData);
-
-                return bmp;
-            }
-
-            private static Bitmap GetAlphaBitmapFromBitmapData(BitmapData bmpData)
-            {
-                return new Bitmap(
-                        bmpData.Width,
-                        bmpData.Height,
-                        bmpData.Stride,
-                        PixelFormat.Format32bppArgb,
-                        bmpData.Scan0);
-            }
-
-            private static bool IsAlphaBitmap(Bitmap bmp, out BitmapData bmpData)
-            {
-                Rectangle bmBounds = new Rectangle(0, 0, bmp.Width, bmp.Height);
-
-                bmpData = bmp.LockBits(bmBounds, ImageLockMode.ReadOnly, bmp.PixelFormat);
-
-                try
-                {
-                    for (int y = 0; y <= bmpData.Height - 1; y++)
-                    {
-                        for (int x = 0; x <= bmpData.Width - 1; x++)
-                        {
-                            Color pixelColor = Color.FromArgb(
-                                Marshal.ReadInt32(bmpData.Scan0, (bmpData.Stride * y) + (4 * x)));
-
-                            if (pixelColor.A > 0 & pixelColor.A < 255)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    bmp.UnlockBits(bmpData);
-                }
-
-                return false;
-            }
-
             #region IDisposable Support
 
             private bool disposedValue = false; // To detect redundant calls
@@ -384,7 +356,10 @@ namespace FilesFullTrust
                         if (Items != null)
                         {
                             foreach (var si in Items)
+                            {
                                 (si as IDisposable)?.Dispose();
+                            }
+
                             Items = null;
                         }
                     }
@@ -449,14 +424,32 @@ namespace FilesFullTrust
                 if (SubItems != null)
                 {
                     foreach (var si in SubItems)
+                    {
                         (si as IDisposable)?.Dispose();
+                    }
+
                     SubItems = null;
                 }
             }
         }
-    }
 
-    // There is usually no need to define Win32 COM interfaces/P-Invoke methods here.
-    // The Vanara library contains the definitions for all members of Shell32.dll, User32.dll and more
-    // The ones below are due to bugs in the current version of the library and can be removed once fixed
+        // There is usually no need to define Win32 COM interfaces/P-Invoke methods here.
+        // The Vanara library contains the definitions for all members of Shell32.dll, User32.dll and more
+        // The ones below are due to bugs in the current version of the library and can be removed once fixed
+        // https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-menuiteminfoa
+        private enum HBITMAP_HMENU : long
+        {
+            HBMMENU_CALLBACK = -1,
+            HBMMENU_MBAR_CLOSE = 5,
+            HBMMENU_MBAR_CLOSE_D = 6,
+            HBMMENU_MBAR_MINIMIZE = 3,
+            HBMMENU_MBAR_MINIMIZE_D = 7,
+            HBMMENU_MBAR_RESTORE = 2,
+            HBMMENU_POPUP_CLOSE = 8,
+            HBMMENU_POPUP_MAXIMIZE = 10,
+            HBMMENU_POPUP_MINIMIZE = 11,
+            HBMMENU_POPUP_RESTORE = 9,
+            HBMMENU_SYSTEM = 1
+        }
+    }
 }

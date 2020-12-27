@@ -1,9 +1,37 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 
-namespace Files.View_Models
+namespace Files.ViewModels
 {
     public class CurrentInstanceViewModel : ObservableObject
     {
+        /*
+         * TODO:
+         * In the future, we should consolidate these public variables into
+         * a single enum property providing simplified customization of the
+         * values being manipulated inside the setter blocks.
+         */
+
+        public FolderSettingsViewModel FolderSettings { get; }
+
+        public CurrentInstanceViewModel(IShellPage associatedInstance)
+        {
+            FolderSettings = new FolderSettingsViewModel(associatedInstance);
+        }
+
+        private bool _IsPageTypeSearchResults = false;
+
+        public bool IsPageTypeSearchResults
+        {
+            get => _IsPageTypeSearchResults;
+            set
+            {
+                SetProperty(ref _IsPageTypeSearchResults, value);
+                OnPropertyChanged(nameof(IsCreateButtonEnabledInPage));
+                OnPropertyChanged(nameof(CanCreateFileInPage));
+                OnPropertyChanged(nameof(CanOpenTerminalInPage));
+            }
+        }
+
         private bool _IsPageTypeNotHome = false;
 
         public bool IsPageTypeNotHome
@@ -29,6 +57,7 @@ namespace Files.View_Models
                 OnPropertyChanged(nameof(IsCreateButtonEnabledInPage));
                 OnPropertyChanged(nameof(CanCreateFileInPage));
                 OnPropertyChanged(nameof(CanOpenTerminalInPage));
+                OnPropertyChanged(nameof(CanCopyPathInPage));
             }
         }
 
@@ -48,17 +77,22 @@ namespace Files.View_Models
 
         public bool IsCreateButtonEnabledInPage
         {
-            get => !_IsPageTypeRecycleBin && IsPageTypeNotHome;
+            get => !_IsPageTypeRecycleBin && IsPageTypeNotHome && !_IsPageTypeSearchResults;
+        }
+
+        public bool CanCopyPathInPage
+        {
+            get => !_IsPageTypeMtpDevice && !_IsPageTypeRecycleBin && IsPageTypeNotHome && !_IsPageTypeSearchResults;
         }
 
         public bool CanCreateFileInPage
         {
-            get => !_IsPageTypeMtpDevice && !_IsPageTypeRecycleBin && IsPageTypeNotHome;
+            get => !_IsPageTypeMtpDevice && !_IsPageTypeRecycleBin && IsPageTypeNotHome && !_IsPageTypeSearchResults;
         }
 
         public bool CanOpenTerminalInPage
         {
-            get => !_IsPageTypeMtpDevice && !_IsPageTypeRecycleBin && IsPageTypeNotHome;
+            get => !_IsPageTypeMtpDevice && !_IsPageTypeRecycleBin && IsPageTypeNotHome && !_IsPageTypeSearchResults;
         }
 
         private bool _IsPageTypeCloudDrive = false;

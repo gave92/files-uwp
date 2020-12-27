@@ -1,8 +1,8 @@
-﻿using Files.Filesystem;
-using Files.UserControls;
+﻿using Files.Enums;
+using Files.Filesystem;
+using Files.UserControls.Selection;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
@@ -11,9 +11,10 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 using Interaction = Files.Interacts.Interaction;
 
-namespace Files
+namespace Files.Views.LayoutModes
 {
     public sealed partial class GridViewBrowser : BaseLayout
     {
@@ -21,14 +22,21 @@ namespace Files
 
         public GridViewBrowser()
         {
-            this.InitializeComponent();
-            base.BaseLayoutContextFlyout = this.BaseLayoutContextFlyout;
-            base.BaseLayoutItemContextFlyout = this.BaseLayoutItemContextFlyout;
+            InitializeComponent();
+            this.DataContext = this;
+            base.BaseLayoutContextFlyout = BaseLayoutContextFlyout;
+            base.BaseLayoutItemContextFlyout = BaseLayoutItemContextFlyout;
 
             var selectionRectangle = RectangleSelection.Create(FileList, SelectionRectangle, FileList_SelectionChanged);
             selectionRectangle.SelectionEnded += SelectionRectangle_SelectionEnded;
-            App.AppSettings.LayoutModeChangeRequested += AppSettings_LayoutModeChangeRequested;
+        }
 
+        protected override void OnNavigatedTo(NavigationEventArgs eventArgs)
+        {
+            base.OnNavigatedTo(eventArgs);
+            currentIconSize = GetIconSize();
+            FolderSettings.LayoutModeChangeRequested -= FolderSettings_LayoutModeChangeRequested;
+            FolderSettings.LayoutModeChangeRequested += FolderSettings_LayoutModeChangeRequested;
             SetItemTemplate(); // Set ItemTemplate
         }
 
@@ -38,55 +46,46 @@ namespace Files
             FileList.Focus(FocusState.Programmatic);
         }
 
-        private void AppSettings_LayoutModeChangeRequested(object sender, EventArgs e)
+        public override void FocusFileList()
+        {
+            FileList.Focus(FocusState.Programmatic);
+        }
+
+        private void FolderSettings_LayoutModeChangeRequested(object sender, EventArgs e)
         {
             SetItemTemplate(); // Set ItemTemplate
         }
 
         private void SetItemTemplate()
         {
-            FileList.ItemTemplate = (App.AppSettings.LayoutMode == 1) ? TilesBrowserTemplate : GridViewBrowserTemplate; // Choose Template
+            FileList.ItemTemplate = (FolderSettings.LayoutMode == FolderLayoutModes.TilesView) ? TilesBrowserTemplate : GridViewBrowserTemplate; // Choose Template
 
             // Set GridViewSize event handlers
-            if (App.AppSettings.LayoutMode == 1)
+            if (FolderSettings.LayoutMode == FolderLayoutModes.TilesView)
             {
-                App.AppSettings.GridViewSizeChangeRequested -= AppSettings_GridViewSizeChangeRequested;
+                FolderSettings.GridViewSizeChangeRequested -= AppSettings_GridViewSizeChangeRequested;
             }
-            else if (App.AppSettings.LayoutMode == 2)
+            else if (FolderSettings.LayoutMode == FolderLayoutModes.GridView)
             {
-                _iconSize = UpdateThumbnailSize(); // Get icon size for jumps from other layouts directly to a grid size
-                App.AppSettings.GridViewSizeChangeRequested += AppSettings_GridViewSizeChangeRequested;
+                currentIconSize = GetIconSize(); // Get icon size for jumps from other layouts directly to a grid size
+                FolderSettings.GridViewSizeChangeRequested -= AppSettings_GridViewSizeChangeRequested;
+                FolderSettings.GridViewSizeChangeRequested += AppSettings_GridViewSizeChangeRequested;
             }
         }
 
-        public override void SetSelectedItemOnUi(ListedItem item)
+        protected override void AddSelectedItem(ListedItem item)
         {
-            ClearSelection();
             FileList.SelectedItems.Add(item);
         }
 
-        public override void SetSelectedItemsOnUi(List<ListedItem> items)
+        protected override IEnumerable GetAllItems()
         {
-            ClearSelection();
-
-            foreach (ListedItem item in items)
-            {
-                FileList.SelectedItems.Add(item);
-            }
+            return FileList.Items;
         }
 
         public override void SelectAllItems()
         {
-            ClearSelection();
             FileList.SelectAll();
-        }
-
-        public override void InvertSelection()
-        {
-            List<ListedItem> allItems = FileList.Items.Cast<ListedItem>().ToList();
-            List<ListedItem> newSelectedItems = allItems.Except(SelectedItems).ToList();
-
-            SetSelectedItemsOnUi(newSelectedItems);
         }
 
         public override void ClearSelection()
@@ -96,16 +95,14 @@ namespace Files
 
         public override void SetDragModeForItems()
         {
-            foreach (ListedItem listedItem in FileList.Items)
+            if (!InstanceViewModel.IsPageTypeSearchResults)
             {
-                GridViewItem gridViewItem = FileList.ContainerFromItem(listedItem) as GridViewItem;
-
-                if (gridViewItem != null)
+                foreach (ListedItem listedItem in FileList.Items)
                 {
-                    List<Grid> grids = new List<Grid>();
-                    Interaction.FindChildren(grids, gridViewItem);
-                    var rootItem = grids.Find(x => x.Tag?.ToString() == "ItemRoot");
-                    rootItem.CanDrag = SelectedItems.Contains(listedItem);
+                    if (FileList.ContainerFromItem(listedItem) is GridViewItem gridViewItem)
+                    {
+                        gridViewItem.CanDrag = gridViewItem.IsSelected;
+                    }
                 }
             }
         }
@@ -113,11 +110,6 @@ namespace Files
         public override void ScrollIntoView(ListedItem item)
         {
             FileList.ScrollIntoView(item);
-        }
-
-        public override int GetSelectedIndex()
-        {
-            return FileList.SelectedIndex;
         }
 
         public override void FocusSelectedItems()
@@ -128,7 +120,7 @@ namespace Files
         private void StackPanel_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             var parentContainer = Interaction.FindParent<GridViewItem>(e.OriginalSource as DependencyObject);
-            if (FileList.SelectedItems.Contains(FileList.ItemFromContainer(parentContainer)))
+            if (parentContainer.IsSelected)
             {
                 return;
             }
@@ -140,7 +132,14 @@ namespace Files
         {
             if (e.GetCurrentPoint(sender as Page).Properties.IsLeftButtonPressed)
             {
-                ClearSelection();
+                if (e.KeyModifiers != VirtualKeyModifiers.Control)
+                {
+                    ClearSelection();
+                }
+            }
+            else if (e.GetCurrentPoint(null).Properties.IsMiddleButtonPressed)
+            {
+                ParentShellPageInstance.InteractionOperations.ItemPointerPressed(sender, e);
             }
         }
 
@@ -159,7 +158,7 @@ namespace Files
             TextBox textBox = null;
 
             // Handle layout differences between tiles browser and photo album
-            if (App.AppSettings.LayoutMode == 2)
+            if (FolderSettings.LayoutMode == FolderLayoutModes.GridView)
             {
                 Popup popup = (gridViewItem.ContentTemplateRoot as Grid).FindName("EditPopup") as Popup;
                 TextBlock textBlock = (gridViewItem.ContentTemplateRoot as Grid).FindName("ItemName") as TextBlock;
@@ -183,19 +182,19 @@ namespace Files
             textBox.KeyDown += RenameTextBox_KeyDown;
 
             int selectedTextLength = SelectedItem.ItemName.Length;
-            if (App.AppSettings.ShowFileExtensions)
+            if (!SelectedItem.IsShortcutItem && App.AppSettings.ShowFileExtensions)
             {
                 selectedTextLength -= extensionLength;
             }
             textBox.Select(0, selectedTextLength);
-            isRenamingItem = true;
+            IsRenamingItem = true;
         }
 
         private void GridViewTextBoxItemName_TextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = sender as TextBox;
 
-            if (App.CurrentInstance.InteractionOperations.ContainsRestrictedCharacters(textBox.Text))
+            if (FilesystemHelpers.ContainsRestrictedCharacters(textBox.Text))
             {
                 FileNameTeachingTip.IsOpen = true;
             }
@@ -203,25 +202,6 @@ namespace Files
             {
                 FileNameTeachingTip.IsOpen = false;
             }
-        }
-
-        public override void ResetItemOpacity()
-        {
-            IEnumerable items = (IEnumerable)FileList.ItemsSource;
-            if (items == null)
-            {
-                return;
-            }
-
-            foreach (ListedItem listedItem in items)
-            {
-                listedItem.IsDimmed = false;
-            }
-        }
-
-        public override void SetItemOpacity(ListedItem item)
-        {
-            item.IsDimmed = true;
         }
 
         private void RenameTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -237,6 +217,7 @@ namespace Files
             else if (e.Key == VirtualKey.Enter)
             {
                 TextBox textBox = sender as TextBox;
+                textBox.LostFocus -= RenameTextBox_LostFocus;
                 CommitRename(textBox);
                 e.Handled = true;
             }
@@ -253,7 +234,7 @@ namespace Files
             EndRename(textBox);
             string newItemName = textBox.Text.Trim().TrimEnd('.');
 
-            bool successful = await App.CurrentInstance.InteractionOperations.RenameFileItem(renamingItem, oldItemName, newItemName);
+            bool successful = await ParentShellPageInstance.InteractionOperations.RenameFileItemAsync(renamingItem, oldItemName, newItemName);
             if (!successful)
             {
                 renamingItem.ItemName = oldItemName;
@@ -262,7 +243,7 @@ namespace Files
 
         private void EndRename(TextBox textBox)
         {
-            if (App.AppSettings.LayoutMode == 2)
+            if (FolderSettings.LayoutMode == FolderLayoutModes.GridView)
             {
                 Popup popup = textBox.Parent as Popup;
                 TextBlock textBlock = (popup.Parent as Grid).Children[1] as TextBlock;
@@ -279,30 +260,30 @@ namespace Files
             textBox.LostFocus -= RenameTextBox_LostFocus;
             textBox.KeyDown -= RenameTextBox_KeyDown;
             FileNameTeachingTip.IsOpen = false;
-            isRenamingItem = false;
+            IsRenamingItem = false;
         }
 
         private void FileList_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter && !e.KeyStatus.IsMenuKeyDown)
             {
-                if (!isRenamingItem)
+                if (!IsRenamingItem)
                 {
-                    App.CurrentInstance.InteractionOperations.OpenItem_Click(null, null);
+                    ParentShellPageInstance.InteractionOperations.OpenItem_Click(null, null);
                     e.Handled = true;
                 }
             }
             else if (e.Key == VirtualKey.Enter && e.KeyStatus.IsMenuKeyDown)
             {
-                AssociatedInteractions.ShowPropertiesButton_Click(null, null);
+                ParentShellPageInstance.InteractionOperations.ShowPropertiesButton_Click(null, null);
             }
             else if (e.Key == VirtualKey.Space)
             {
-                if (!isRenamingItem && !App.CurrentInstance.NavigationToolbar.IsEditModeEnabled)
+                if (!IsRenamingItem && !ParentShellPageInstance.NavigationToolbar.IsEditModeEnabled)
                 {
-                    if ((App.CurrentInstance.ContentPage).IsQuickLookEnabled)
+                    if (IsQuickLookEnabled)
                     {
-                        App.CurrentInstance.InteractionOperations.ToggleQuickLook();
+                        ParentShellPageInstance.InteractionOperations.ToggleQuickLook();
                     }
                     e.Handled = true;
                 }
@@ -310,20 +291,23 @@ namespace Files
             else if (e.KeyStatus.IsMenuKeyDown && (e.Key == VirtualKey.Left || e.Key == VirtualKey.Right || e.Key == VirtualKey.Up))
             {
                 // Unfocus the GridView so keyboard shortcut can be handled
-                this.Focus(FocusState.Programmatic);
+                Focus(FocusState.Programmatic);
             }
         }
 
         protected override void Page_CharacterReceived(CoreWindow sender, CharacterReceivedEventArgs args)
         {
-            if (App.CurrentInstance != null)
+            if (ParentShellPageInstance != null)
             {
-                if (App.CurrentInstance.CurrentPageType == typeof(GridViewBrowser) && !isRenamingItem)
+                if (ParentShellPageInstance.CurrentPageType == typeof(GridViewBrowser) && !IsRenamingItem)
                 {
                     // Don't block the various uses of enter key (key 13)
                     var focusedElement = FocusManager.GetFocusedElement() as FrameworkElement;
-                    if (args.KeyCode == 13 || focusedElement is Button || focusedElement is TextBox || focusedElement is PasswordBox ||
-                        Interacts.Interaction.FindParent<ContentDialog>(focusedElement) != null)
+                    if (args.KeyCode == 13
+                        || focusedElement is Button
+                        || focusedElement is TextBox
+                        || focusedElement is PasswordBox
+                        || Interaction.FindParent<ContentDialog>(focusedElement) != null)
                     {
                         return;
                     }
@@ -334,80 +318,63 @@ namespace Files
             }
         }
 
-        private async void Grid_EffectiveViewportChanged(FrameworkElement sender, EffectiveViewportChangedEventArgs args)
-        {
-            if (sender.DataContext != null && (!(sender.DataContext as ListedItem).ItemPropertiesInitialized) && (args.BringIntoViewDistanceX < sender.ActualHeight))
-            {
-                await Window.Current.CoreWindow.Dispatcher.RunIdleAsync((e) =>
-                {
-                    App.CurrentInstance.FilesystemViewModel.LoadExtendedItemProperties(sender.DataContext as ListedItem, _iconSize);
-                    (sender.DataContext as ListedItem).ItemPropertiesInitialized = true;
-                });
-
-                (sender as UIElement).CanDrag = FileList.SelectedItems.Contains(sender.DataContext as ListedItem); // Update CanDrag
-            }
-        }
-
         protected override ListedItem GetItemFromElement(object element)
         {
-            FrameworkElement gridItem = element as FrameworkElement;
-            return gridItem.DataContext as ListedItem;
-        }
-
-        private void FileListGridItem_DataContextChanged(object sender, DataContextChangedEventArgs e)
-        {
-            InitializeDrag(sender as UIElement);
+            return (element as GridViewItem).DataContext as ListedItem;
         }
 
         private void FileListGridItem_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
             if (e.KeyModifiers == VirtualKeyModifiers.Control)
             {
-                var listedItem = (sender as Grid).DataContext as ListedItem;
-                if (FileList.SelectedItems.Contains(listedItem))
+                if ((sender as SelectorItem).IsSelected)
                 {
-                    FileList.SelectedItems.Remove(listedItem);
+                    (sender as SelectorItem).IsSelected = false;
                     // Prevent issues arising caused by the default handlers attempting to select the item that has just been deselected by ctrl + click
                     e.Handled = true;
                 }
             }
             else if (e.GetCurrentPoint(sender as UIElement).Properties.IsLeftButtonPressed)
             {
-                var listedItem = (sender as Grid).DataContext as ListedItem;
-
-                if (!FileList.SelectedItems.Contains(listedItem))
+                if (!(sender as SelectorItem).IsSelected)
                 {
-                    SetSelectedItemOnUi(listedItem);
+                    (sender as SelectorItem).IsSelected = true;
                 }
             }
         }
 
-        private uint _iconSize = UpdateThumbnailSize();
+        private uint currentIconSize;
 
-        private static uint UpdateThumbnailSize()
+        private uint GetIconSize()
         {
-            if (App.AppSettings.LayoutMode == 1 || App.AppSettings.GridViewSize < 200)
+            if (FolderSettings.LayoutMode == FolderLayoutModes.TilesView || FolderSettings.GridViewSize < Constants.Browser.GridViewBrowser.GridViewSizeSmall + 75)
+            {
                 return 80; // Small thumbnail
-            else if (App.AppSettings.GridViewSize < 275)
+            }
+            else if (FolderSettings.GridViewSize < Constants.Browser.GridViewBrowser.GridViewSizeMedium + 25)
+            {
                 return 120; // Medium thumbnail
-            else if (App.AppSettings.GridViewSize < 325)
+            }
+            else if (FolderSettings.GridViewSize < Constants.Browser.GridViewBrowser.GridViewSizeMedium - 50)
+            {
                 return 160; // Large thumbnail
+            }
             else
+            {
                 return 240; // Extra large thumbnail
+            }
         }
 
         private void AppSettings_GridViewSizeChangeRequested(object sender, EventArgs e)
         {
-            var iconSize = UpdateThumbnailSize(); // Get new icon size
+            var requestedIconSize = GetIconSize(); // Get new icon size
 
             // Prevents reloading icons when the icon size hasn't changed
-            if (iconSize != _iconSize)
+            if (requestedIconSize != currentIconSize)
             {
-                _iconSize = iconSize; // Update icon size before refreshing
-                NavigationActions.Refresh_Click(null, null); // Refresh icons
+                currentIconSize = requestedIconSize; // Update icon size before refreshing
+                ParentShellPageInstance.Refresh_Click(); // Refresh icons
             }
-            else
-                _iconSize = iconSize; // Update icon size
         }
 
         private async void FileList_ItemClick(object sender, ItemClickEventArgs e)
@@ -425,7 +392,30 @@ namespace Files
             if (AppSettings.OpenItemsWithOneclick)
             {
                 await Task.Delay(200); // The delay gives time for the item to be selected
-                App.CurrentInstance.InteractionOperations.OpenItem_Click(null, null);
+                ParentShellPageInstance.InteractionOperations.OpenItem_Click(null, null);
+            }
+        }
+
+        private async void FileList_ChoosingItemContainer(ListViewBase sender, ChoosingItemContainerEventArgs args)
+        {
+            if (args.ItemContainer == null)
+            {
+                GridViewItem gvi = new GridViewItem();
+                args.ItemContainer = gvi;
+            }
+            args.ItemContainer.DataContext = args.Item;
+
+            if (args.Item is ListedItem item && (!item.ItemPropertiesInitialized))
+            {
+                args.ItemContainer.PointerPressed += FileListGridItem_PointerPressed;
+                InitializeDrag(args.ItemContainer);
+                args.ItemContainer.CanDrag = args.ItemContainer.IsSelected; // Update CanDrag
+
+                await Window.Current.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                {
+                    ParentShellPageInstance.FilesystemViewModel.LoadExtendedItemProperties(item, currentIconSize);
+                    item.ItemPropertiesInitialized = true;
+                });
             }
         }
     }

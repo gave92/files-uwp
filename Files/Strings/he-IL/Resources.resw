@@ -102,7 +102,7 @@
   <data name="StatusBarControlClearSelection.Text" xml:space="preserve">
     <value>נקה בחירה</value>
   </data>
-  <data name="StatusBarControlListView.Text" xml:space="preserve">
+  <data name="StatusBarControlDetailsView.Text" xml:space="preserve">
     <value>תצוגת רשימה</value>
   </data>
   <data name="PropertiesModified.Text" xml:space="preserve">
@@ -129,17 +129,11 @@
   <data name="SettingsAboutAppName.Text" xml:space="preserve">
     <value>קבצים</value>
   </data>
-  <data name="SettingsAboutLicense.Text" xml:space="preserve">
-    <value>רשיון</value>
-  </data>
   <data name="SettingsAboutSubmitFeedback.Text" xml:space="preserve">
     <value>שלח משוב</value>
   </data>
   <data name="SettingsAboutTitle.Text" xml:space="preserve">
     <value>אודות</value>
-  </data>
-  <data name="SettingsAboutWebsite.Text" xml:space="preserve">
-    <value>אתר אינטרנט</value>
   </data>
   <data name="SettingsAppearanceTitle.Text" xml:space="preserve">
     <value>מראה</value>
@@ -161,9 +155,6 @@
   </data>
   <data name="SettingsNavPreferences.Content" xml:space="preserve">
     <value>העדפות</value>
-  </data>
-  <data name="SettingsNavSearch.PlaceholderText" xml:space="preserve">
-    <value>חיפוש</value>
   </data>
   <data name="SettingsOnStartupOpenANewTab.Content" xml:space="preserve">
     <value>פתח כרטיסיה חדשה</value>
@@ -191,9 +182,6 @@
   </data>
   <data name="SidebarVideos" xml:space="preserve">
     <value>סרטוני וידאו</value>
-  </data>
-  <data name="SidebarSettings.Text" xml:space="preserve">
-    <value>הגדרות</value>
   </data>
   <data name="BaseLayoutContextFlyoutSortBy.Text" xml:space="preserve">
     <value>מיין לפי</value>
@@ -227,12 +215,6 @@
   </data>
   <data name="BaseLayoutContextFlyoutNewFolder.Text" xml:space="preserve">
     <value>תיקיה</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutNewBitmapImage.Text" xml:space="preserve">
-    <value>תמונת מפת סיביות</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutNewTextDocument.Text" xml:space="preserve">
-    <value>מסמך טקסט</value>
   </data>
   <data name="BaseLayoutContextFlyoutPropertiesFolder.Text" xml:space="preserve">
     <value>מאפיינים</value>
@@ -306,12 +288,6 @@
   <data name="NewFolder" xml:space="preserve">
     <value>תיקיה חדשה</value>
   </data>
-  <data name="NewTextDocument" xml:space="preserve">
-    <value>‏‏‫מסמך טקסט ‫חדש</value>
-  </data>
-  <data name="NewBitmapImage" xml:space="preserve">
-    <value>‏‏‫תמונת מפת ‫סיביות ‫חדשה</value>
-  </data>
   <data name="EmptyFolder.Text" xml:space="preserve">
     <value>‏‏תיקיה זו ריקה.</value>
   </data>
@@ -362,12 +338,6 @@
   </data>
   <data name="StatusBarControlSelectionOptions.ToolTipService.ToolTip" xml:space="preserve">
     <value>אפשרויות בחירה</value>
-  </data>
-  <data name="PropertiesDialogReadOnly.Content" xml:space="preserve">
-    <value>לקריאה בלבד</value>
-  </data>
-  <data name="PropertiesDialogHidden.Content" xml:space="preserve">
-    <value>מוסתר</value>
   </data>
   <data name="BaseLayoutContextFlyoutEmptyRecycleBin.Text" xml:space="preserve">
     <value>רוקן את סל המיחזור</value>
@@ -618,35 +588,17 @@
   <data name="AddDialog.PrimaryButtonText" xml:space="preserve">
     <value>ביטול</value>
   </data>
-  <data name="AddDialogListBitmapHeader" xml:space="preserve">
-    <value>תמונת מפת סיביות</value>
-  </data>
   <data name="AddDialogListFolderHeader" xml:space="preserve">
     <value>תיקיה</value>
-  </data>
-  <data name="AddDialogListTextFileHeader" xml:space="preserve">
-    <value>מסמך טקסט</value>
   </data>
   <data name="BaseLayoutContextFlyoutLayoutMode.Text" xml:space="preserve">
     <value>מצב פריסה</value>
   </data>
-  <data name="NewItemButton.AutomationProperties.Name" xml:space="preserve">
-    <value>צור פריט חדש</value>
-  </data>
   <data name="NavForwardButton.AutomationProperties.Name" xml:space="preserve">
     <value>נווט קדימה</value>
   </data>
-  <data name="SidebarSettingsButton.AutomationProperties.Name" xml:space="preserve">
-    <value>הגדרות</value>
-  </data>
   <data name="AccessDeniedCreateDialog.Title" xml:space="preserve">
     <value>הגישה נדחתה</value>
-  </data>
-  <data name="SettingsFilesAndFoldersShowDriveLetters.Header" xml:space="preserve">
-    <value>‏‏הצג אותיות כונן</value>
-  </data>
-  <data name="SettingsFilesAndFoldersShowHiddenFiles.Header" xml:space="preserve">
-    <value>‏‏הצג קבצים, תיקיות וכוננים מוסתרים</value>
   </data>
   <data name="SettingsAppearanceDateFormat.Header" xml:space="preserve">
     <value>תבנית תאריך.</value>

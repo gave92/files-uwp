@@ -27,10 +27,16 @@
                     Text="Files and Folders" />
 
                 <ToggleSwitch
-                    x:Uid="SettingsFilesAndFoldersShowHiddenFiles"
-                    Header="Show hidden files, folders, and drives"
+                    x:Uid="SettingsFilesAndFoldersShowHiddenItems"
+                    Header="Show hidden files and folders"
                     HeaderTemplate="{StaticResource CustomHeaderStyle}"
-                    IsEnabled="False" />
+                    IsOn="{x:Bind AppSettings.AreHiddenItemsVisible, Mode=TwoWay}" />
+
+                <ToggleSwitch
+                    x:Uid="SettingsFilesAndFoldersHideSystemItems"
+                    Header="Hide protected operating system files (Recommended)"
+                    HeaderTemplate="{StaticResource CustomHeaderStyle}"
+                    IsOn="{x:Bind AppSettings.AreSystemItemsHidden, Mode=TwoWay}" />
 
                 <ToggleSwitch
                     x:Name="FileExtensionsToggle"
@@ -40,16 +46,28 @@
                     IsOn="{x:Bind AppSettings.ShowFileExtensions, Mode=TwoWay}" />
 
                 <ToggleSwitch
-                    x:Uid="SettingsFilesAndFoldersShowDriveLetters"
-                    Header="Show drive letters"
-                    HeaderTemplate="{StaticResource CustomHeaderStyle}"
-                    IsEnabled="False" />
-
-                <ToggleSwitch
                     x:Uid="SettingsOpenItemsWithOneclick"
                     Header="Open items with a single click"
                     HeaderTemplate="{StaticResource CustomHeaderStyle}"
                     IsOn="{x:Bind AppSettings.OpenItemsWithOneclick, Mode=TwoWay}" />
+
+                <ToggleSwitch
+                    x:Uid="SettingsListAndSortDirectoriesAlongsideFiles"
+                    Header="List and sort directories alongside files"
+                    HeaderTemplate="{StaticResource CustomHeaderStyle}"
+                    IsOn="{x:Bind AppSettings.ListAndSortDirectoriesAlongsideFiles, Mode=TwoWay}" />
+
+                <ToggleSwitch
+                    x:Uid="SettingsSearchUnindexedItems"
+                    Header="Show unindexed items when searching for files and folders (searches may take longer)"
+                    HeaderTemplate="{StaticResource CustomHeaderStyle}"
+                    IsOn="{x:Bind AppSettings.SearchUnindexedItems, Mode=TwoWay}" />
+
+                <ToggleSwitch
+                    x:Uid="SettingsEnableLayoutPreferencesPerFolder"
+                    Header="Enable individual preferences for individual directories"
+                    HeaderTemplate="{StaticResource CustomHeaderStyle}"
+                    IsOn="{x:Bind AppSettings.AreLayoutPreferencesPerFolder, Mode=TwoWay}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -108,7 +108,7 @@
   <data name="StatusBarControlClearSelection.Text" xml:space="preserve">
     <value>ଚୟନ ସଫା କରନ୍ତୁ</value>
   </data>
-  <data name="StatusBarControlListView.Text" xml:space="preserve">
+  <data name="StatusBarControlDetailsView.Text" xml:space="preserve">
     <value>ତାଲିକା ଭ୍ୟୁ</value>
   </data>
   <data name="PropertiesModified.Text" xml:space="preserve">
@@ -144,9 +144,6 @@
   <data name="SettingsAboutAppName.Text" xml:space="preserve">
     <value>Files UWP</value>
   </data>
-  <data name="SettingsAboutLicense.Text" xml:space="preserve">
-    <value>ଲାଇସେନ୍ସ:</value>
-  </data>
   <data name="SettingsAboutSpecialThanks.Text" xml:space="preserve">
     <value>ବିଶେଷ ଧନ୍ୟବାଦ:</value>
   </data>
@@ -161,9 +158,6 @@
   </data>
   <data name="SettingsAboutTitle.Text" xml:space="preserve">
     <value>ବିଷୟରେ</value>
-  </data>
-  <data name="SettingsAboutWebsite.Text" xml:space="preserve">
-    <value>ୱେବସାଇଟ୍:</value>
   </data>
   <data name="SettingsAppearanceTitle.Text" xml:space="preserve">
     <value>ରୂପ</value>
@@ -194,9 +188,6 @@
   </data>
   <data name="SettingsNavPreferences.Content" xml:space="preserve">
     <value>ପସନ୍ଦ</value>
-  </data>
-  <data name="SettingsNavSearch.PlaceholderText" xml:space="preserve">
-    <value>ସନ୍ଧାନ କର</value>
   </data>
   <data name="SettingsExperimentalDescription.Text" xml:space="preserve">
     <value>ଚେତାବନୀ: ପରୀକ୍ଷାମୂଳକ ବୈଶିଷ୍ଟ୍ୟଗୁଡିକ!</value>
@@ -243,9 +234,6 @@
   <data name="SidebarVideos" xml:space="preserve">
     <value>ଚଳଚ୍ଚିତ୍ରଗୁଡିକ</value>
   </data>
-  <data name="SidebarSettings.Text" xml:space="preserve">
-    <value>ସେଟିଂସମୂହ</value>
-  </data>
   <data name="BaseLayoutContextFlyoutSortBy.Text" xml:space="preserve">
     <value>ଦ୍ୱାରା କ୍ରମ</value>
   </data>
@@ -284,12 +272,6 @@
   </data>
   <data name="BaseLayoutContextFlyoutNewFolder.Text" xml:space="preserve">
     <value>ଫୋଲ୍ଡର</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutNewBitmapImage.Text" xml:space="preserve">
-    <value>ବିଟମ୍ୟାପ୍ ପ୍ରତିଛବି</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutNewTextDocument.Text" xml:space="preserve">
-    <value>ପାଠ୍ୟ ଦସ୍ତାବେଜ</value>
   </data>
   <data name="BaseLayoutContextFlyoutPropertiesFolder.Text" xml:space="preserve">
     <value>ଗୁଣଧର୍ମ</value>
@@ -381,12 +363,6 @@
   <data name="NewFolder" xml:space="preserve">
     <value>ନୂତନ ଫୋଲ୍ଡର</value>
   </data>
-  <data name="NewTextDocument" xml:space="preserve">
-    <value>ନୂତନ ପାଠ୍ୟ ଦସ୍ତାବେଜ</value>
-  </data>
-  <data name="NewBitmapImage" xml:space="preserve">
-    <value>ନୂତନ ବିଟମ୍ୟାପ୍ ପ୍ରତିଛବି</value>
-  </data>
   <data name="EmptyFolder.Text" xml:space="preserve">
     <value>ଏହି ଫୋଲ୍ଡରଟି ଖାଲି ଅଛି |</value>
   </data>
@@ -401,9 +377,6 @@
   </data>
   <data name="NavRefreshButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>ସତେଜ କର (F5)</value>
-  </data>
-  <data name="NavNewItemButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>ଏକ ନୂତନ ଆଇଟମ୍ ସୃଷ୍ଟି କରନ୍ତୁ (Ctrl + Shift + N)</value>
   </data>
   <data name="NavSearchButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>ସନ୍ଧାନ କର</value>
@@ -497,12 +470,6 @@
   </data>
   <data name="StatusBarControlSelectionOptions.ToolTipService.ToolTip" xml:space="preserve">
     <value>ଚୟନ ବିକଳ୍ପଗୁଡ଼ିକ</value>
-  </data>
-  <data name="PropertiesDialogReadOnly.Content" xml:space="preserve">
-    <value>କେବଳ ପାଠ</value>
-  </data>
-  <data name="PropertiesDialogHidden.Content" xml:space="preserve">
-    <value>ଲୁକ୍କାୟିତ</value>
   </data>
   <data name="BaseLayoutContextFlyoutEmptyRecycleBin.Text" xml:space="preserve">
     <value>ରିସାଇକ୍ଲବିନ୍ ଖାଲି କର</value>
@@ -816,19 +783,10 @@
   <data name="AddDialog.PrimaryButtonText" xml:space="preserve">
     <value>ବାତିଲ୍</value>
   </data>
-  <data name="AddDialogListBitmapHeader" xml:space="preserve">
-    <value>ବିଟ୍‌ମ୍ୟାପ୍ ପ୍ରତିଛବି</value>
-  </data>
   <data name="AddDialogListFolderHeader" xml:space="preserve">
     <value>ଫୋଲ୍ଡର:</value>
   </data>
-  <data name="AddDialogListTextFileHeader" xml:space="preserve">
-    <value>ପାଠ ଡକ୍ୟୁମେଣ୍ଟ୍</value>
-  </data>
   <data name="NavForwardButton.AutomationProperties.Name" xml:space="preserve">
     <value>ଅଗ୍ରଗାମୀ ନେଭିଗେଟ୍ କରନ୍ତୁ</value>
-  </data>
-  <data name="SidebarSettingsButton.AutomationProperties.Name" xml:space="preserve">
-    <value>ସେଟିଂସମୂହ</value>
   </data>
 </root>

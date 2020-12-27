@@ -1,7 +1,8 @@
 ﻿using ByteSizeLib;
 using Files.Enums;
+using Files.Extensions;
 using Files.Filesystem;
-using Files.Helpers;
+using Microsoft.Toolkit.Uwp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,10 +14,11 @@ using Windows.UI.Core;
 using static Files.Helpers.NativeFindStorageItemHelper;
 using FileAttributes = System.IO.FileAttributes;
 
-namespace Files.View_Models.Properties
+namespace Files.ViewModels.Properties
 {
     public abstract class BaseProperties
     {
+        public IShellPage AppInstance { get; set; } = null;
         public SelectedItemsPropertiesViewModel ViewModel { get; set; }
 
         public CancellationTokenSource TokenSource { get; set; }
@@ -37,7 +39,7 @@ namespace Files.View_Models.Properties
             IDictionary<string, object> extraProperties = await properties.RetrievePropertiesAsync(propertiesName);
 
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            string returnformat = Enum.Parse<TimeStyle>(localSettings.Values[LocalSettings.DateTimeFormat].ToString()) == TimeStyle.Application ? "D" : "g";
+            string returnformat = Enum.Parse<TimeStyle>(localSettings.Values[Constants.LocalSettings.DateTimeFormat].ToString()) == TimeStyle.Application ? "D" : "g";
 
             // Cannot get date and owner in MTP devices
             ViewModel.ItemAccessedTimestamp = ListedItem.GetFriendlyDateFromFormat((DateTimeOffset)(extraProperties[dateAccessedProperty] ?? DateTimeOffset.Now), returnformat);
@@ -115,7 +117,7 @@ namespace Files.View_Models.Properties
         public void SetItemsCountString()
         {
             ViewModel.FilesAndFoldersCountString = string.Format(
-                ResourceController.GetTranslation("PropertiesFilesAndFoldersCountString"), ViewModel.FilesCount, ViewModel.FoldersCount);
+                "PropertiesFilesAndFoldersCountString".GetLocalized(), ViewModel.FilesCount, ViewModel.FoldersCount);
         }
     }
 }

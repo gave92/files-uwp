@@ -1,5 +1,5 @@
 ﻿using Files.DataModels;
-using Files.View_Models;
+using Files.ViewModels;
 using System;
 using Windows.Storage;
 using Windows.System;
@@ -16,21 +16,6 @@ namespace Files.SettingsPages
         public Preferences()
         {
             InitializeComponent();
-
-            TryGetOneDriveFolder();
-        }
-
-        private async void TryGetOneDriveFolder()
-        {
-            try
-            {
-                await StorageFolder.GetFolderFromPathAsync(AppSettings.OneDrivePath);
-            }
-            catch
-            {
-                AppSettings.PinOneDriveToSideBar = false;
-                OneDrivePin.IsEnabled = false;
-            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

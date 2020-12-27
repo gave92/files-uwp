@@ -1,7 +1,7 @@
 ﻿using Files.Filesystem;
 using Files.Helpers;
 using Files.Interacts;
-using Files.View_Models;
+using Files.ViewModels;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Threading;
@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace Files
+namespace Files.Views
 {
     public sealed partial class Properties : Page
     {
@@ -26,7 +26,8 @@ namespace Files
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
         private ContentDialog propertiesDialog;
 
-        private object navParameter;
+        private object navParameterItem;
+        private IShellPage AppInstance;
 
         private ListedItem listedItem;
 
@@ -35,16 +36,17 @@ namespace Files
         public Properties()
         {
             InitializeComponent();
-            propertiesDialog = Interaction.FindParent<ContentDialog>(this);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.navParameter = e.Parameter;
-            this.TabShorcut.Visibility = e.Parameter is ShortcutItem ? Visibility.Visible : Visibility.Collapsed;
-            this.listedItem = e.Parameter as ListedItem;
-            this.TabDetails.Visibility = listedItem != null && listedItem.FileExtension != null && !listedItem.IsShortcutItem ? Visibility.Visible : Visibility.Collapsed;
-            this.SetBackground();
+            var args = e.Parameter as PropertiesPageNavigationArguments;
+            AppInstance = args.AppInstanceArgument;
+            navParameterItem = args.Item;
+            TabShorcut.Visibility = args.Item is ShortcutItem ? Visibility.Visible : Visibility.Collapsed;
+            listedItem = args.Item as ListedItem;
+            TabDetails.Visibility = listedItem != null && listedItem.FileExtension != null && !listedItem.IsShortcutItem ? Visibility.Visible : Visibility.Collapsed;
+            SetBackground();
             base.OnNavigatedTo(e);
         }
 
@@ -64,6 +66,7 @@ namespace Files
             }
             else
             {
+                propertiesDialog = Interaction.FindParent<ContentDialog>(this);
                 propertiesDialog.Closed += PropertiesDialog_Closed;
             }
         }
@@ -72,7 +75,7 @@ namespace Files
         {
             switch (e.PropertyName)
             {
-                case "AcrylicEnabled":
+                case "IsAcrylicDisabled":
                 case "FallbackColor":
                 case "TintColor":
                 case "TintOpacity":
@@ -87,7 +90,7 @@ namespace Files
             {
                 var backgroundBrush = new AcrylicBrush()
                 {
-                    AlwaysUseFallback = AppSettings.AcrylicEnabled,
+                    AlwaysUseFallback = AppSettings.IsAcrylicDisabled,
                     BackgroundSource = AcrylicBackgroundSource.HostBackdrop,
                     FallbackColor = AppSettings.AcrylicTheme.FallbackColor,
                     TintColor = AppSettings.AcrylicTheme.TintColor,
@@ -173,13 +176,16 @@ namespace Files
 
         private async void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            if (contentFrame.Content is PropertiesGeneral)
+            if (contentFrame.Content is PropertiesGeneral propertiesGeneral)
             {
-                await (contentFrame.Content as PropertiesGeneral).SaveChanges(listedItem);
+                await propertiesGeneral.SaveChangesAsync(listedItem);
             }
-            else if (contentFrame.Content is PropertiesDetails)
+            else if (contentFrame.Content is PropertiesDetails propertiesDetails)
             {
-                await (contentFrame.Content as PropertiesDetails).SaveChanges(listedItem);
+                if (!await propertiesDetails.SaveChangesAsync())
+                {
+                    return;
+                }
             }
 
             if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
@@ -188,7 +194,7 @@ namespace Files
             }
             else
             {
-                propertiesDialog.Hide();
+                propertiesDialog?.Hide();
             }
         }
 
@@ -200,7 +206,7 @@ namespace Files
             }
             else
             {
-                propertiesDialog.Hide();
+                propertiesDialog?.Hide();
             }
         }
 
@@ -214,14 +220,19 @@ namespace Files
                 }
                 else
                 {
-                    propertiesDialog.Hide();
+                    propertiesDialog?.Hide();
                 }
             }
         }
 
-        private void NavigationView_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
+        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            var navParam = new PropertyNavParam() { tokenSource = tokenSource, navParameter = navParameter };
+            var navParam = new PropertyNavParam()
+            {
+                tokenSource = tokenSource,
+                navParameter = navParameterItem,
+                AppInstanceArgument = AppInstance
+            };
 
             switch (args.SelectedItemContainer.Tag)
             {
@@ -239,10 +250,17 @@ namespace Files
             }
         }
 
+        public class PropertiesPageNavigationArguments
+        {
+            public object Item { get; set; }
+            public IShellPage AppInstanceArgument { get; set; }
+        }
+
         public class PropertyNavParam
         {
             public CancellationTokenSource tokenSource;
             public object navParameter;
+            public IShellPage AppInstanceArgument { get; set; }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp.Extensions;
+using System;
 using Windows.ApplicationModel;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -12,16 +13,16 @@ namespace Files.SettingsPages
         {
             InitializeComponent();
             var version = Package.Current.Id.Version;
-            VersionNumber.Text = string.Format($"{ResourceController.GetTranslation("SettingsAboutVersionTitle")} {version.Major}.{version.Minor}.{version.Build}.{version.Revision}");
+            VersionNumber.Text = string.Format($"{"SettingsAboutVersionTitle".GetLocalized()} {version.Major}.{version.Minor}.{version.Build}.{version.Revision}");
         }
 
-        private void OpenLogLocationButton_Click(object sender, RoutedEventArgs e) => View_Models.SettingsViewModel.OpenLogLocation();
+        private void OpenLogLocationButton_Click(object sender, RoutedEventArgs e) => ViewModels.SettingsViewModel.OpenLogLocation();
 
         private async void FeedbackListView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             if (FeedbackListView.SelectedIndex == 0)
             {
-                View_Models.SettingsViewModel.ReportIssueOnGitHub();
+                ViewModels.SettingsViewModel.ReportIssueOnGitHub();
             }
             else if (FeedbackListView.SelectedIndex == 1)
             {
@@ -35,8 +36,10 @@ namespace Files.SettingsPages
             {
                 await Launcher.LaunchUriAsync(new Uri(@"https://paypal.me/yaichenbaum"));
             }
-
-            (FeedbackListView.Items[FeedbackListView.SelectedIndex] as ListViewItem).IsSelected = false;
+            if (FeedbackListView.SelectedIndex != -1)
+            {
+                (FeedbackListView.Items[FeedbackListView.SelectedIndex] as ListViewItem).IsSelected = false;
+            }
         }
     }
 }

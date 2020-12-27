@@ -55,17 +55,20 @@
                     <HyperlinkButton
                         x:Uid="SettingsAppearanceDateFormatsTip"
                         VerticalAlignment="Bottom"
+                        AutomationProperties.Name="Learn more about date formats"
                         Content="&#xE946;"
                         FontFamily="Segoe MDL2 Assets"
                         NavigateUri="https://github.com/files-community/files-uwp/wiki/Date-formats"
-                        Style="{ThemeResource TextBlockButtonStyle}" />
+                        Style="{ThemeResource TextBlockButtonStyle}"
+                        ToolTipService.ToolTip="Learn more about date formats" />
                 </StackPanel>
 
                 <ToggleSwitch
                     x:Name="AcrylicSidebarSwitch"
+                    x:Uid="SettingsAppearanceAcrylicSidebar"
                     Header="Acrylic sidebar"
                     HeaderTemplate="{StaticResource CustomHeaderStyle}"
-                    IsOn="{x:Bind AppSettings.AcrylicEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolNegationConverter}}" />
+                    IsOn="{x:Bind AppSettings.IsAcrylicDisabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolNegationConverter}}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -48,9 +48,6 @@
   <data name="SettingsAboutAppName.Text" xml:space="preserve">
     <value>Files UWP</value>
   </data>
-  <data name="SettingsAboutLicense.Text" xml:space="preserve">
-    <value>Lisans:</value>
-  </data>
   <data name="SettingsAboutSpecialThanks.Text" xml:space="preserve">
     <value>Özel teşekkürler:</value>
   </data>
@@ -65,9 +62,6 @@
   </data>
   <data name="SettingsAboutTitle.Text" xml:space="preserve">
     <value>Hakkında</value>
-  </data>
-  <data name="SettingsAboutWebsite.Text" xml:space="preserve">
-    <value>Web Sitesi:</value>
   </data>
   <data name="SettingsAppearanceTitle.Text" xml:space="preserve">
     <value>Görünüm</value>
@@ -89,9 +83,6 @@
   </data>
   <data name="SettingsNavPreferences.Content" xml:space="preserve">
     <value>Tercihler</value>
-  </data>
-  <data name="SettingsNavSearch.PlaceholderText" xml:space="preserve">
-    <value>Ara</value>
   </data>
   <data name="SettingsOnStartupContinueWhereYouLeftOff.Content" xml:space="preserve">
     <value>Kaldığınız yerden devam edin</value>
@@ -186,12 +177,6 @@
   <data name="BaseLayoutContextFlyoutNewFolder.Text" xml:space="preserve">
     <value>Dosya</value>
   </data>
-  <data name="BaseLayoutContextFlyoutNewBitmapImage.Text" xml:space="preserve">
-    <value>Bit Eşlem Resmi</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutNewTextDocument.Text" xml:space="preserve">
-    <value>Metin Belgesi</value>
-  </data>
   <data name="BaseLayoutContextFlyoutPropertiesFolder.Text" xml:space="preserve">
     <value>Özellikler</value>
   </data>
@@ -264,11 +249,8 @@
   <data name="ModernNavigationToolbaNewTextDocument.Text" xml:space="preserve">
     <value>Metin Belgesi</value>
   </data>
-  <data name="StatusBarControlListView.Text" xml:space="preserve">
+  <data name="StatusBarControlDetailsView.Text" xml:space="preserve">
     <value>Liste Görünümü</value>
-  </data>
-  <data name="SidebarSettings.Text" xml:space="preserve">
-    <value>Özellikler</value>
   </data>
   <data name="nameColumn.Header" xml:space="preserve">
     <value>Adı</value>
@@ -314,12 +296,6 @@
   </data>
   <data name="NewFolder" xml:space="preserve">
     <value>Yeni Klasör</value>
-  </data>
-  <data name="NewTextDocument" xml:space="preserve">
-    <value>Yeni Metin Belgesi</value>
-  </data>
-  <data name="NewBitmapImage" xml:space="preserve">
-    <value>Yeni Bit Eşlem Resmi</value>
   </data>
   <data name="EmptyFolder.Text" xml:space="preserve">
     <value>Bu klasör boş.</value>
@@ -404,12 +380,6 @@
   </data>
   <data name="FileInUseDeleteDialog.SecondaryButtonText" xml:space="preserve">
     <value>Tamam</value>
-  </data>
-  <data name="PropertiesDialogReadOnly.Content" xml:space="preserve">
-    <value>Salt okunur</value>
-  </data>
-  <data name="PropertiesDialogHidden.Content" xml:space="preserve">
-    <value>Gizli</value>
   </data>
   <data name="BaseLayoutContextFlyoutEmptyRecycleBin.Text" xml:space="preserve">
     <value>Geri dönüşüm kutusunu boşalt</value>
@@ -684,28 +654,13 @@
   <data name="AddDialog.PrimaryButtonText" xml:space="preserve">
     <value>İptal</value>
   </data>
-  <data name="AddDialogListBitmapHeader" xml:space="preserve">
-    <value>Bit Eşlem Resmi</value>
-  </data>
   <data name="AddDialogListFolderHeader" xml:space="preserve">
     <value>Klasör</value>
-  </data>
-  <data name="AddDialogListTextFileHeader" xml:space="preserve">
-    <value>Metin Belgesi</value>
-  </data>
-  <data name="AddDialogListTextFileSubHeader" xml:space="preserve">
-    <value>Boş bir metin dosyası oluşturur.</value>
   </data>
   <data name="BaseLayoutContextFlyoutLayoutMode.Text" xml:space="preserve">
     <value>Düzen modu</value>
   </data>
-  <data name="NewItemButton.AutomationProperties.Name" xml:space="preserve">
-    <value>Yeni öğe oluştur</value>
-  </data>
   <data name="NavForwardButton.AutomationProperties.Name" xml:space="preserve">
     <value>İleri Git</value>
-  </data>
-  <data name="SidebarSettingsButton.AutomationProperties.Name" xml:space="preserve">
-    <value>Ayarlar</value>
   </data>
 </root>

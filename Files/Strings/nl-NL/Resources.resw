@@ -48,9 +48,6 @@
   <data name="SettingsAboutAppName.Text" xml:space="preserve">
     <value>Files UWP</value>
   </data>
-  <data name="SettingsAboutLicense.Text" xml:space="preserve">
-    <value>Licentie:</value>
-  </data>
   <data name="SettingsAboutSpecialThanks.Text" xml:space="preserve">
     <value>Speciale dank aan:</value>
   </data>
@@ -65,9 +62,6 @@
   </data>
   <data name="SettingsAboutTitle.Text" xml:space="preserve">
     <value>Over</value>
-  </data>
-  <data name="SettingsAboutWebsite.Text" xml:space="preserve">
-    <value>Website:</value>
   </data>
   <data name="SettingsAppearanceTitle.Text" xml:space="preserve">
     <value>Uiterlijk</value>
@@ -89,9 +83,6 @@
   </data>
   <data name="SettingsNavPreferences.Content" xml:space="preserve">
     <value>Voorkeuren</value>
-  </data>
-  <data name="SettingsNavSearch.PlaceholderText" xml:space="preserve">
-    <value>Zoeken</value>
   </data>
   <data name="SettingsOnStartupContinueWhereYouLeftOff.Content" xml:space="preserve">
     <value>Verder gaan waar je bent gebleven</value>
@@ -186,12 +177,6 @@
   <data name="BaseLayoutContextFlyoutNewFolder.Text" xml:space="preserve">
     <value>Map</value>
   </data>
-  <data name="BaseLayoutContextFlyoutNewBitmapImage.Text" xml:space="preserve">
-    <value>Bitmapafbeelding</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutNewTextDocument.Text" xml:space="preserve">
-    <value>Tekstdocument</value>
-  </data>
   <data name="BaseLayoutContextFlyoutPropertiesFolder.Text" xml:space="preserve">
     <value>Eigenschappen</value>
   </data>
@@ -264,11 +249,8 @@
   <data name="ModernNavigationToolbaNewTextDocument.Text" xml:space="preserve">
     <value>Tekstdocument</value>
   </data>
-  <data name="StatusBarControlListView.Text" xml:space="preserve">
+  <data name="StatusBarControlDetailsView.Text" xml:space="preserve">
     <value>Lijstweergave</value>
-  </data>
-  <data name="SidebarSettings.Text" xml:space="preserve">
-    <value>Instellingen</value>
   </data>
   <data name="nameColumn.Header" xml:space="preserve">
     <value>Naam</value>
@@ -327,12 +309,6 @@
   <data name="NewFolder" xml:space="preserve">
     <value>Nieuwe map</value>
   </data>
-  <data name="NewTextDocument" xml:space="preserve">
-    <value>Nieuw tekstdocument</value>
-  </data>
-  <data name="NewBitmapImage" xml:space="preserve">
-    <value>Nieuwe bitmapafbeelding</value>
-  </data>
   <data name="EmptyFolder.Text" xml:space="preserve">
     <value>Deze map is leeg.</value>
   </data>
@@ -347,9 +323,6 @@
   </data>
   <data name="NavRefreshButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Vernieuwen (F5)</value>
-  </data>
-  <data name="NavNewItemButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Maak een nieuw item (Ctrl + Shift + N)</value>
   </data>
   <data name="NavSearchButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Zoeken</value>
@@ -491,12 +464,6 @@
   </data>
   <data name="FileInUseDeleteDialog.SecondaryButtonText" xml:space="preserve">
     <value>OK</value>
-  </data>
-  <data name="PropertiesDialogReadOnly.Content" xml:space="preserve">
-    <value>Alleen-lezen</value>
-  </data>
-  <data name="PropertiesDialogHidden.Content" xml:space="preserve">
-    <value>Verborgen</value>
   </data>
   <data name="BaseLayoutContextFlyoutEmptyRecycleBin.Text" xml:space="preserve">
     <value>Prullenbak leegmaken</value>
@@ -861,25 +828,13 @@
   <data name="AddDialog.PrimaryButtonText" xml:space="preserve">
     <value>Annuleren</value>
   </data>
-  <data name="AddDialogListBitmapHeader" xml:space="preserve">
-    <value>Bitmapafbeelding</value>
-  </data>
   <data name="AddDialogListFolderHeader" xml:space="preserve">
     <value>Map</value>
-  </data>
-  <data name="AddDialogListTextFileHeader" xml:space="preserve">
-    <value>Tekstdocument</value>
   </data>
   <data name="BaseLayoutContextFlyoutLayoutMode.Text" xml:space="preserve">
     <value>Lay-outmodus</value>
   </data>
-  <data name="NewItemButton.AutomationProperties.Name" xml:space="preserve">
-    <value>Nieuw item maken</value>
-  </data>
   <data name="NavForwardButton.AutomationProperties.Name" xml:space="preserve">
     <value>Vooruit gaan</value>
-  </data>
-  <data name="SidebarSettingsButton.AutomationProperties.Name" xml:space="preserve">
-    <value>Instellingen</value>
   </data>
 </root>
