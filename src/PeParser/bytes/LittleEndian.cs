@@ -81,11 +81,6 @@ namespace dorkbox.bytes
                 return (char)((b1 & 0xFF) << 8 | (b0 & 0xFF) << 0);
             }
 
-            public static char from(in ByteBuffer buff)
-            {
-                return from(buff.get(), buff.get());
-            }
-
             //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
             //ORIGINAL LINE: public static char from(final java.io.InputStream inputStream) throws java.io.IOException
             public static char from(in Stream inputStream)
@@ -165,11 +160,6 @@ namespace dorkbox.bytes
             public static UShort from(in sbyte b0, in sbyte b1)
             {
                 return UShort.valueOf((short)((b1 & 0xFF) << 8) | (b0 & 0xFF) << 0);
-            }
-
-            public static UShort from(in ByteBuffer buff)
-            {
-                return from(buff.get(), buff.get());
             }
 
             //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
@@ -257,11 +247,6 @@ namespace dorkbox.bytes
                 return (short)((b1 & 0xFF) << 8 | (b0 & 0xFF) << 0);
             }
 
-            public static short from(in ByteBuffer buff)
-            {
-                return from(buff.get(), buff.get());
-            }
-
             //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
             //ORIGINAL LINE: public static short from(final java.io.InputStream inputStream) throws java.io.IOException
             public static short from(in Stream inputStream)
@@ -340,11 +325,6 @@ namespace dorkbox.bytes
             public static UShort from(in sbyte b0, in sbyte b1)
             {
                 return UShort.valueOf((short)((b1 & 0xFF) << 8 | (b0 & 0xFF) << 0));
-            }
-
-            public static UShort from(in ByteBuffer buff)
-            {
-                return from(buff.get(), buff.get());
             }
 
             //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
@@ -443,11 +423,6 @@ namespace dorkbox.bytes
                 return (b3 & 0xFF) << 24 | (b2 & 0xFF) << 16 | (b1 & 0xFF) << 8 | (b0 & 0xFF) << 0;
             }
 
-            public static int from(in ByteBuffer buff)
-            {
-                return from(buff.get(), buff.get(), buff.get(), buff.get());
-            }
-
             //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
             //ORIGINAL LINE: public static int from(final java.io.InputStream inputStream) throws java.io.IOException
             public static int from(in Stream inputStream)
@@ -543,11 +518,6 @@ namespace dorkbox.bytes
                 int number = (b3 & 0xFF) << 24 | (b2 & 0xFF) << 16 | (b1 & 0xFF) << 8 | (b0 & 0xFF) << 0;
 
                 return UInteger.valueOf(number);
-            }
-
-            public static UInteger from(in ByteBuffer buff)
-            {
-                return from(buff.get(), buff.get(), buff.get(), buff.get());
             }
 
             //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
@@ -673,11 +643,6 @@ namespace dorkbox.bytes
                 return (long)(b7 & 0xFF) << 56 | (long)(b6 & 0xFF) << 48 | (long)(b5 & 0xFF) << 40 | (long)(b4 & 0xFF) << 32 | (long)(b3 & 0xFF) << 24 | (long)(b2 & 0xFF) << 16 | (long)(b1 & 0xFF) << 8 | (long)(b0 & 0xFF) << 0;
             }
 
-            public static long from(in ByteBuffer buff)
-            {
-                return from(buff.get(), buff.get(), buff.get(), buff.get(), buff.get(), buff.get(), buff.get(), buff.get());
-            }
-
             //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
             //ORIGINAL LINE: public static long from(final java.io.InputStream inputStream) throws java.io.IOException
             public static long from(in Stream inputStream)
@@ -723,128 +688,123 @@ namespace dorkbox.bytes
         /// UNSIGNED LONG to and from bytes
         /// </summary>
         public sealed class ULong_
-		{
-//JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
-//ORIGINAL LINE: @SuppressWarnings("fallthrough") public static ULong from(final byte[] bytes, final int offset, final int bytenum)
-			public static ULong from(in sbyte[] bytes, in int offset, in int bytenum)
-			{
-				long number = 0;
+        {
+            //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
+            //ORIGINAL LINE: @SuppressWarnings("fallthrough") public static ULong from(final byte[] bytes, final int offset, final int bytenum)
+            public static ULong from(in sbyte[] bytes, in int offset, in int bytenum)
+            {
+                long number = 0;
 
-				switch (bytenum)
-				{
-					case 8:
-						number |= (long)(bytes[offset + 7] & 0xFF) << 56;
-						goto case 7;
-					case 7:
-						number |= (long)(bytes[offset + 6] & 0xFF) << 48;
-						goto case 6;
-					case 6:
-						number |= (long)(bytes[offset + 5] & 0xFF) << 40;
-						goto case 5;
-					case 5:
-						number |= (long)(bytes[offset + 4] & 0xFF) << 32;
-						goto case 4;
-					case 4:
-						number |= (long)(bytes[offset + 3] & 0xFF) << 24;
-						goto case 3;
-					case 3:
-						number |= (long)(bytes[offset + 2] & 0xFF) << 16;
-						goto case 2;
-					case 2:
-						number |= (long)(bytes[offset + 1] & 0xFF) << 8;
-						goto case 1;
-					case 1:
-						number |= (long)(bytes[offset + 0] & 0xFF) << 0;
-					break;
-				}
+                switch (bytenum)
+                {
+                    case 8:
+                        number |= (long)(bytes[offset + 7] & 0xFF) << 56;
+                        goto case 7;
+                    case 7:
+                        number |= (long)(bytes[offset + 6] & 0xFF) << 48;
+                        goto case 6;
+                    case 6:
+                        number |= (long)(bytes[offset + 5] & 0xFF) << 40;
+                        goto case 5;
+                    case 5:
+                        number |= (long)(bytes[offset + 4] & 0xFF) << 32;
+                        goto case 4;
+                    case 4:
+                        number |= (long)(bytes[offset + 3] & 0xFF) << 24;
+                        goto case 3;
+                    case 3:
+                        number |= (long)(bytes[offset + 2] & 0xFF) << 16;
+                        goto case 2;
+                    case 2:
+                        number |= (long)(bytes[offset + 1] & 0xFF) << 8;
+                        goto case 1;
+                    case 1:
+                        number |= (long)(bytes[offset + 0] & 0xFF) << 0;
+                        break;
+                }
 
-				return ULong.valueOf(number);
-			}
+                return ULong.valueOf(number);
+            }
 
-			public static ULong from(in sbyte[] bytes)
-			{
-                BigInteger @ulong = new BigInteger(Array.ConvertAll(bytes, x => unchecked((byte)(x))));
-				return ULong.valueOf(@ulong);
-			}
-
-			public static ULong from(in sbyte b0, in sbyte b1, in sbyte b2, in sbyte b3, in sbyte b4, in sbyte b5, in sbyte b6, in sbyte b7)
-			{
-				sbyte[] bytes = new sbyte[] {b7, b6, b5, b4, b3, b2, b1, b0};
+            public static ULong from(in sbyte[] bytes)
+            {
                 BigInteger @ulong = new BigInteger(Array.ConvertAll(bytes, x => unchecked((byte)(x))));
                 return ULong.valueOf(@ulong);
-			}
+            }
 
-			public static ULong from(in ByteBuffer buff)
-			{
-				return from(buff.get(), buff.get(), buff.get(), buff.get(), buff.get(), buff.get(), buff.get(), buff.get());
-			}
+            public static ULong from(in sbyte b0, in sbyte b1, in sbyte b2, in sbyte b3, in sbyte b4, in sbyte b5, in sbyte b6, in sbyte b7)
+            {
+                sbyte[] bytes = new sbyte[] { b7, b6, b5, b4, b3, b2, b1, b0 };
+                BigInteger @ulong = new BigInteger(Array.ConvertAll(bytes, x => unchecked((byte)(x))));
+                return ULong.valueOf(@ulong);
+            }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public static ULong from(final java.io.InputStream inputStream) throws java.io.IOException
-			public static ULong from(in Stream inputStream)
-			{
-				return from((sbyte) inputStream.ReadByte(), (sbyte) inputStream.ReadByte(), (sbyte) inputStream.ReadByte(), (sbyte) inputStream.ReadByte(), (sbyte) inputStream.ReadByte(), (sbyte) inputStream.ReadByte(), (sbyte) inputStream.ReadByte(), (sbyte) inputStream.ReadByte());
-			}
+            //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
+            //ORIGINAL LINE: public static ULong from(final java.io.InputStream inputStream) throws java.io.IOException
+            public static ULong from(in Stream inputStream)
+            {
+                return from((sbyte)inputStream.ReadByte(), (sbyte)inputStream.ReadByte(), (sbyte)inputStream.ReadByte(), (sbyte)inputStream.ReadByte(), (sbyte)inputStream.ReadByte(), (sbyte)inputStream.ReadByte(), (sbyte)inputStream.ReadByte(), (sbyte)inputStream.ReadByte());
+            }
 
-			public static sbyte[] toBytes(in ULong x)
-			{
-				sbyte[] bytes = new sbyte[8];
-				int offset = 0;
+            public static sbyte[] toBytes(in ULong x)
+            {
+                sbyte[] bytes = new sbyte[8];
+                int offset = 0;
 
-				sbyte[] temp_byte = Array.ConvertAll(x.toBigInteger().ToByteArray(), x => unchecked((sbyte)(x)));
-				int array_count = temp_byte.Length - 1;
+                sbyte[] temp_byte = Array.ConvertAll(x.toBigInteger().ToByteArray(), x => unchecked((sbyte)(x)));
+                int array_count = temp_byte.Length - 1;
 
-				for (int i = 7; i >= 0; i--)
-				{
-					if (array_count >= 0)
-					{
-						bytes[offset] = temp_byte[array_count];
-					}
-					else
-					{
-						bytes[offset] = (sbyte) 0x0;
-					}
+                for (int i = 7; i >= 0; i--)
+                {
+                    if (array_count >= 0)
+                    {
+                        bytes[offset] = temp_byte[array_count];
+                    }
+                    else
+                    {
+                        bytes[offset] = (sbyte)0x0;
+                    }
 
-					offset++;
-					array_count--;
-				}
+                    offset++;
+                    array_count--;
+                }
 
-				return bytes;
-			}
+                return bytes;
+            }
 
-			public static void toBytes(in ULong x, in sbyte[] bytes, in int offset)
-			{
-//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final byte[] bytes1 = toBytes(x);
-				sbyte[] bytes1 = toBytes(x);
-				int length = bytes.Length;
-				int pos = 8;
+            public static void toBytes(in ULong x, in sbyte[] bytes, in int offset)
+            {
+                //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+                //ORIGINAL LINE: final byte[] bytes1 = toBytes(x);
+                sbyte[] bytes1 = toBytes(x);
+                int length = bytes.Length;
+                int pos = 8;
 
-				while (length > 0)
-				{
-					bytes[pos--] = bytes1[offset + length--];
-				}
-			}
+                while (length > 0)
+                {
+                    bytes[pos--] = bytes1[offset + length--];
+                }
+            }
 
-			public static void toBytes(in ULong x, in sbyte[] bytes)
-			{
-//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final byte[] bytes1 = toBytes(x);
-				sbyte[] bytes1 = toBytes(x);
-				int length = bytes.Length;
-				int pos = 8;
+            public static void toBytes(in ULong x, in sbyte[] bytes)
+            {
+                //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+                //ORIGINAL LINE: final byte[] bytes1 = toBytes(x);
+                sbyte[] bytes1 = toBytes(x);
+                int length = bytes.Length;
+                int pos = 8;
 
-				while (length > 0)
-				{
-					bytes[pos--] = bytes1[length--];
-				}
-			}
+                while (length > 0)
+                {
+                    bytes[pos--] = bytes1[length--];
+                }
+            }
 
-			internal ULong_()
-			{
-			}
-		}
-	}
+            internal ULong_()
+            {
+            }
+        }
+    }
 
 
 }
