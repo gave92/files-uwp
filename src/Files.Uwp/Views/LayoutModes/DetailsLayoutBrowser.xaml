@@ -218,10 +218,8 @@
                         tui:ScrollViewerExtensions.EnableMiddleClickScrolling="{x:Bind IsMiddleClickToScrollEnabled, Mode=OneWay}"
                         x:FieldModifier="public"
                         AllowDrop="{x:Bind InstanceViewModel.IsPageTypeSearchResults, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
-                        CanDragItems="True"
                         ContainerContentChanging="FileList_ContainerContentChanging"
                         DoubleTapped="FileList_DoubleTapped"
-                        DragItemsStarting="FileList_DragItemsStarting"
                         DragOver="ItemsLayout_DragOver"
                         Drop="ItemsLayout_Drop"
                         IsDoubleTapEnabled="True"
@@ -622,6 +620,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock
                                             x:Name="ItemName"
+                                            HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
                                             Text="{x:Bind ItemName, Mode=OneWay}"
                                             TextTrimming="CharacterEllipsis" />
@@ -656,6 +655,7 @@
                                         VerticalAlignment="Center"
                                         Visibility="{Binding ColumnsViewModel.TagColumn.Visibility, ElementName=PageRoot, Mode=OneWay}">
                                         <TextBlock
+                                            HorizontalAlignment="Left"
                                             Style="{StaticResource ColumnContentTextBlock}"
                                             Text="{x:Bind FileTagUI.TagName, Mode=OneWay}"
                                             TextTrimming="CharacterEllipsis"
@@ -665,9 +665,9 @@
                                     <TextBlock
                                         x:Name="ItemOriginalPathGrid"
                                         Grid.Column="3"
-                                        Width="{Binding ColumnsViewModel.OriginalPathColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
+                                        MaxWidth="{Binding ColumnsViewModel.OriginalPathColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
                                         Padding="12,0,0,0"
-                                        HorizontalAlignment="Stretch"
+                                        HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         x:Load="{x:Bind IsRecycleBinItem}"
                                         Style="{StaticResource ColumnContentTextBlock}"
@@ -676,9 +676,9 @@
                                     <TextBlock
                                         x:Name="ItemDateDeletedGrid"
                                         Grid.Column="4"
-                                        Width="{Binding ColumnsViewModel.DateDeletedColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
+                                        MaxWidth="{Binding ColumnsViewModel.DateDeletedColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
                                         Padding="12,0,0,0"
-                                        HorizontalAlignment="Stretch"
+                                        HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         x:Load="{x:Bind IsRecycleBinItem}"
                                         Style="{StaticResource ColumnContentTextBlock}"
@@ -687,9 +687,9 @@
                                     <TextBlock
                                         x:Name="ItemDateModifiedGrid"
                                         Grid.Column="5"
-                                        Width="{Binding ColumnsViewModel.DateModifiedColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
+                                        MaxWidth="{Binding ColumnsViewModel.DateModifiedColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
                                         Padding="12,0,0,0"
-                                        HorizontalAlignment="Stretch"
+                                        HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ColumnContentTextBlock}"
                                         Text="{x:Bind ItemDateModified, Mode=OneWay}"
@@ -698,9 +698,9 @@
                                     <TextBlock
                                         x:Name="ItemDateCreatedGrid"
                                         Grid.Column="6"
-                                        Width="{Binding ColumnsViewModel.DateCreatedColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
+                                        MaxWidth="{Binding ColumnsViewModel.DateCreatedColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
                                         Padding="12,0,0,0"
-                                        HorizontalAlignment="Stretch"
+                                        HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ColumnContentTextBlock}"
                                         Text="{x:Bind ItemDateCreated, Mode=OneWay}"
@@ -709,9 +709,9 @@
                                     <TextBlock
                                         x:Name="ItemTypeGrid"
                                         Grid.Column="7"
-                                        Width="{Binding ColumnsViewModel.ItemTypeColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
+                                        MaxWidth="{Binding ColumnsViewModel.ItemTypeColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
                                         Padding="12,0,0,0"
-                                        HorizontalAlignment="Stretch"
+                                        HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ColumnContentTextBlock}"
                                         Text="{x:Bind ItemType, Mode=OneWay}"
@@ -720,9 +720,9 @@
                                     <TextBlock
                                         x:Name="ItemSizeGrid"
                                         Grid.Column="8"
-                                        Width="{Binding ColumnsViewModel.SizeColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
+                                        MaxWidth="{Binding ColumnsViewModel.SizeColumn.LengthIncludingGridSplitter.Value, ElementName=PageRoot, Mode=OneWay}"
                                         Padding="12,0,0,0"
-                                        HorizontalAlignment="Stretch"
+                                        HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ColumnContentTextBlock}"
                                         Text="{x:Bind FileSize, Mode=OneWay}"

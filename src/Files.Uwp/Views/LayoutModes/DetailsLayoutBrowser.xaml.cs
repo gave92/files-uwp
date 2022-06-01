@@ -69,13 +69,21 @@ namespace Files.Uwp.Views.LayoutModes
 
         public ScrollViewer ContentScroller { get; private set; }
 
+        public object PointerPressedHandler { get; }
+
+        public RectangleSelection RectangleSelection { get; }
+
         public DetailsLayoutBrowser() : base()
         {
             InitializeComponent();
             this.DataContext = this;
 
-            var selectionRectangle = RectangleSelection.Create(FileList, SelectionRectangle, FileList_SelectionChanged);
-            selectionRectangle.SelectionEnded += SelectionRectangle_SelectionEnded;
+            RectangleSelection = RectangleSelection.Create(FileList, SelectionRectangle, FileList_SelectionChanged);
+            RectangleSelection.SelectionEnded += SelectionRectangle_SelectionEnded;
+
+            PointerPressedHandler = new PointerEventHandler(FileList_PointerPressed);
+
+            HookLayoutEvents();
         }
 
         protected override void HookEvents()
@@ -90,6 +98,17 @@ namespace Files.Uwp.Views.LayoutModes
             ItemManipulationModel.FocusSelectedItemsInvoked += ItemManipulationModel_FocusSelectedItemsInvoked;
             ItemManipulationModel.StartRenameItemInvoked += ItemManipulationModel_StartRenameItemInvoked;
             ItemManipulationModel.ScrollIntoViewInvoked += ItemManipulationModel_ScrollIntoViewInvoked;
+        }
+
+        private void HookLayoutEvents()
+        {
+            UnhookLayoutEvents();
+            FileList.AddHandler(UIElement.PointerPressedEvent, PointerPressedHandler, true);
+        }
+
+        private void UnhookLayoutEvents()
+        {
+            FileList.RemoveHandler(UIElement.PointerPressedEvent, PointerPressedHandler);
         }
 
         private void ItemManipulationModel_ScrollIntoViewInvoked(object sender, ListedItem e)
@@ -619,6 +638,7 @@ namespace Files.Uwp.Views.LayoutModes
         {
             base.Dispose();
             UnhookEvents();
+            UnhookLayoutEvents();
             CommandsViewModel?.Dispose();
         }
 
@@ -810,6 +830,39 @@ namespace Files.Uwp.Views.LayoutModes
         private void RefreshContainer_RefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)
         {
             ParentShellPageInstance.FilesystemViewModel.RefreshItems(ParentShellPageInstance.FilesystemViewModel.WorkingDirectory, SetSelectedItemsOnNavigation);
+        }
+
+        private void FileList_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            var uiElement = sender as UIElement;
+            var parentContainer = DependencyObjectHelpers.FindParent<ListViewItem>(e.OriginalSource as DependencyObject);
+            if (parentContainer is not null)
+            {
+                if (parentContainer.IsSelected || e.OriginalSource is not ListViewItemPresenter)
+                {
+                    var pointerPoint = e.GetCurrentPoint(sender as UIElement);
+                    async void OnPointerMoved(object sender, PointerRoutedEventArgs pme)
+                    {
+                        var currentPoint = e.GetCurrentPoint(sender as UIElement);
+                        var deltaX = Math.Abs(pointerPoint.Position.X - currentPoint.Position.X);
+                        var deltaY = Math.Abs(pointerPoint.Position.Y - currentPoint.Position.Y);
+                        if (!currentPoint.Properties.IsLeftButtonPressed)
+                        {
+                            uiElement.PointerMoved -= OnPointerMoved;
+                        }
+                        else if (Math.Max(deltaX, deltaY) > 5)
+                        {
+                            uiElement.PointerMoved -= OnPointerMoved;
+                            await parentContainer.StartDragAsync(currentPoint);
+                        }
+                    }
+                    uiElement.PointerMoved += OnPointerMoved;
+                }
+                else
+                {
+                    e.Handled = false;
+                }
+            }
         }
     }
 }

@@ -1034,6 +1034,30 @@ namespace Files.Uwp
                 containter.DragLeave += Item_DragLeave;
                 containter.Drop += Item_Drop;
             }
+            containter.DragStarting += Item_DragStarting;
+        }
+
+        private void Item_DragStarting(UIElement sender, DragStartingEventArgs e)
+        {
+            var item = GetItemFromElement(sender);
+            if (item is null)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            SelectedItems.Add(item);
+
+            try
+            {
+                // Only support IStorageItem capable paths
+                var itemList = SelectedItems.Where(x => !(x.IsHiddenItem && x.IsLinkItem && x.IsRecycleBinItem && x.IsShortcutItem)).Select(x => VirtualStorageItem.FromListedItem(x));
+                e.Data.SetStorageItems(itemList, false);
+            }
+            catch (Exception)
+            {
+                e.Cancel = true;
+            }
         }
 
         protected void UninitializeDrag(UIElement element)
@@ -1042,6 +1066,7 @@ namespace Files.Uwp
             element.DragOver -= Item_DragOver;
             element.DragLeave -= Item_DragLeave;
             element.Drop -= Item_Drop;
+            element.DragStarting -= Item_DragStarting;
         }
 
         // VirtualKey doesn't support / accept plus and minus by default.
