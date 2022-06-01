@@ -44,6 +44,13 @@ namespace Files.Uwp.UserControls.Selection
             var verticalOffset = scrollViewer.VerticalOffset;
             if (selectionState == SelectionState.Starting)
             {
+                if (!currentPoint.Properties.IsLeftButtonPressed)
+                {
+                    uiElement.PointerMoved -= RectangleSelection_PointerMoved;
+                    scrollViewer.ViewChanged -= ScrollViewer_ViewChanged;
+                    selectionState = SelectionState.Inactive;
+                    return;
+                }
                 if (!HasMovedMinimalDelta(originDragPoint.X, originDragPoint.Y - verticalOffset, currentPoint.Position.X, currentPoint.Position.Y))
                 {
                     return;
@@ -52,6 +59,12 @@ namespace Files.Uwp.UserControls.Selection
                 // Clear selected items once if the pointer is pressed and moved
                 selectionStrategy.StartSelection();
                 OnSelectionStarted();
+                if (selectionChanged != null)
+                {
+                    // Unsunscribe from SelectionChanged event for performance
+                    uiElement.SelectionChanged -= selectionChanged;
+                }
+                uiElement.CapturePointer(e.Pointer);
                 selectionState = SelectionState.Active;
             }
             if (currentPoint.Properties.IsLeftButtonPressed)
@@ -130,12 +143,7 @@ namespace Files.Uwp.UserControls.Selection
 
             uiElement.PointerMoved -= RectangleSelection_PointerMoved;
             uiElement.PointerMoved += RectangleSelection_PointerMoved;
-            if (selectionChanged != null)
-            {
-                // Unsunscribe from SelectionChanged event for performance
-                uiElement.SelectionChanged -= selectionChanged;
-            }
-            uiElement.CapturePointer(e.Pointer);
+
             selectionState = SelectionState.Starting;
         }
 
