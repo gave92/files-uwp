@@ -1,13 +1,10 @@
-﻿using dorkbox.peParser;
-using dorkbox.peParser.headers.resources;
-using dorkbox.peParser.misc;
-using Files.Shared.Extensions;
+﻿using Files.Shared.Extensions;
 using Microsoft.Win32.SafeHandles;
+using PEParserSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -597,87 +594,8 @@ namespace Files.Uwp.Helpers
             using var instream = new FileStream(hFile, FileAccess.Read);
             var pe = new PeFile(instream);
 
-            var mainEntry = pe.optionalHeader.tables.FirstOrDefault(x => x.Type == DirEntry.RESOURCE);
-            if (mainEntry is null)
-                return icons;
-            var root = (ResourceDirectoryHeader)mainEntry.data;
-            var iconDir = root.entries.FirstOrDefault(x => x.NAME.get() == "Icon")?.directory;
-            var iconsGroupDir = root.entries.FirstOrDefault(x => x.NAME.get() == "Group Icon")?.directory;
-            if (iconDir is null || iconsGroupDir is null)
-                return icons;
-
-            var sizeof_gi = Marshal.SizeOf(typeof(GroupIcon));
-            var sizeof_idre = Marshal.SizeOf(typeof(IconDirResEntry));
-
-            foreach (var idx in iconIndexes)
-            {
-                var group = iconsGroupDir.entries.FirstOrDefault(x => x.NAME.get() == Convert.ToString(idx, 16))?.directory;
-                if (group is null)
-                    continue;
-                var group_data = Array.ConvertAll(group.entries[0].resourceDataEntry.getData(pe.fileBytes), x => unchecked((byte)(x)));
-
-                var icos = new List<IconDirResEntry>();
-                GCHandle iconHandle = GCHandle.Alloc(group_data, GCHandleType.Pinned);
-                try
-                {
-                    var baseAddr = iconHandle.AddrOfPinnedObject();
-                    var header = Marshal.PtrToStructure<GroupIcon>(baseAddr);
-                    while (icos.Count < header.ImageCount)
-                    {
-                        var ico = Marshal.PtrToStructure<IconDirResEntry>(new IntPtr(baseAddr.ToInt64() + sizeof_gi + icos.Count * sizeof_idre));
-                        icos.Add(ico);
-                    }
-                }
-                finally
-                {
-                    iconHandle.Free();
-                }
-
-                if (icos.Count is 0)
-                    continue;
-                var sortedIcos = icos.OrderBy(x => x.Height == 0 ? 256 : x.Height);
-                var biggest = sortedIcos.Last().Height == 0 ? 256 : sortedIcos.Last().Height;
-                var closest_icon_id = biggest >= requestedSize ? sortedIcos.First(x => x.Height >= requestedSize) : sortedIcos.Last();
-                var icon = iconDir.entries.FirstOrDefault(x => Convert.ToInt32(x.NAME.get(), 16) == closest_icon_id.ResourceID)?.directory;
-                if (icon is null)
-                    continue;
-
-                byte[] data = Array.ConvertAll(icon.entries[0].resourceDataEntry.getData(pe.fileBytes), x => unchecked((byte)(x)));
-                if (data.Take(4).Select(x => (int)x).SequenceEqual(new[] { 137, 80, 78, 71 })) // PNG, ok
-                {
-                    icons.Add(new Shared.IconFileInfo(null, idx) { IconDataBytes = data });
-                }
-                else // BMP, header is missing
-                {
-                    var header = new IcoHeader()
-                    {
-                        Reserved1 = 0,
-                        ResourceType = 1,
-                        ImageCount = 1,
-                        Width = closest_icon_id.Width,
-                        Height = closest_icon_id.Height,
-                        Colors = closest_icon_id.Colors,
-                        Reserved2 = 0,
-                        Planes = closest_icon_id.Planes,
-                        BitsPerPixel = closest_icon_id.BitsPerPixel,
-                        ImageSize = closest_icon_id.ImageSize,
-                        Offset = Marshal.SizeOf(typeof(IcoHeader))
-                    };
-
-                    byte[] icoHeader = new byte[header.Offset];
-                    GCHandle headerHandle = GCHandle.Alloc(icoHeader, GCHandleType.Pinned);
-                    try
-                    {
-                        Marshal.StructureToPtr(header, headerHandle.AddrOfPinnedObject(), true);
-                    }
-                    finally
-                    {
-                        headerHandle.Free();
-                    }
-
-                    icons.Add(new Shared.IconFileInfo(null, idx) { IconDataBytes = icoHeader.Concat(data).ToArray() });
-                }
-            }
+            var iconsRes = pe.ExtractIcons(requestedSize, iconIndexes);
+            icons.AddRange(iconsRes.Select(x => new Shared.IconFileInfo(null, Convert.ToInt32(x.Name, 16)) { IconDataBytes = x.IconData }));
 
             return icons;
         }

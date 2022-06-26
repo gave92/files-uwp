@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31911.196
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Files.FullTrust", "src\Files.FullTrust\Files.FullTrust.csproj", "{533F9E86-EE0A-4FCB-B70C-F29532C1B787}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -31,8 +31,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Files.Backend", "src\Files.Backend\Files.Backend.csproj", "{4CFE0BBC-8D07-49A0-8B10-4EDD61ABCF57}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FilesLauncher", "src\Files.OpenDialog\FilesLauncher\FilesLauncher.vcxproj", "{25FD5045-6D4C-4DD0-B3AC-613AB59CBB07}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeParser", "src\PeParser\PeParser.csproj", "{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -218,24 +216,6 @@ Global
 		{25FD5045-6D4C-4DD0-B3AC-613AB59CBB07}.Sideload|x64.Build.0 = Debug|x64
 		{25FD5045-6D4C-4DD0-B3AC-613AB59CBB07}.Sideload|x86.ActiveCfg = Release|Win32
 		{25FD5045-6D4C-4DD0-B3AC-613AB59CBB07}.Sideload|x86.Build.0 = Release|Win32
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Debug|arm64.ActiveCfg = Debug|arm64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Debug|arm64.Build.0 = Debug|arm64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Debug|x64.ActiveCfg = Debug|x64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Debug|x64.Build.0 = Debug|x64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Debug|x86.ActiveCfg = Debug|x86
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Debug|x86.Build.0 = Debug|x86
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Release|arm64.ActiveCfg = Release|arm64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Release|arm64.Build.0 = Release|arm64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Release|x64.ActiveCfg = Release|x64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Release|x64.Build.0 = Release|x64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Release|x86.ActiveCfg = Release|x86
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Release|x86.Build.0 = Release|x86
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Sideload|arm64.ActiveCfg = Sideload|arm64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Sideload|arm64.Build.0 = Sideload|arm64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Sideload|x64.ActiveCfg = Sideload|x64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Sideload|x64.Build.0 = Sideload|x64
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Sideload|x86.ActiveCfg = Sideload|x86
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8}.Sideload|x86.Build.0 = Sideload|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -252,7 +232,6 @@ Global
 		{A188C26B-E731-4E0B-9D17-D21CEBD9B43F} = {A74DCE98-A744-4D71-A2B1-7EE4FED0936B}
 		{4CFE0BBC-8D07-49A0-8B10-4EDD61ABCF57} = {A188C26B-E731-4E0B-9D17-D21CEBD9B43F}
 		{25FD5045-6D4C-4DD0-B3AC-613AB59CBB07} = {0175B70C-1E29-4A3F-AA4F-C2017B040EF0}
-		{FA48CB8A-2925-46B4-AF56-D4D92BC179E8} = {A74DCE98-A744-4D71-A2B1-7EE4FED0936B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E62043C-A7A1-4982-9EC9-4CDB2939B776}
