@@ -545,43 +545,6 @@ namespace Files.Uwp.Helpers
             }
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
-        struct IconDirResEntry
-        {
-            public byte Width;
-            public byte Height;
-            public byte Colors;
-            public byte Reserved;
-            public short Planes;
-            public short BitsPerPixel;
-            public int ImageSize;
-            public short ResourceID;
-        }
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
-        struct IcoHeader
-        {
-            public short Reserved1;
-            public short ResourceType;
-            public short ImageCount;
-            public byte Width;
-            public byte Height;
-            public byte Colors;
-            public byte Reserved2;
-            public short Planes;
-            public short BitsPerPixel;
-            public int ImageSize;
-            public int Offset;
-        }
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
-        struct GroupIcon
-        {
-            public short Reserved;
-            public short ResourceType;
-            public short ImageCount;
-        }
-
         public static IList<Shared.IconFileInfo> GetSelectedIconsFromDLL(string iconFile, int requestedSize, int[] iconIndexes)
         {
             var icons = new List<Shared.IconFileInfo>();
