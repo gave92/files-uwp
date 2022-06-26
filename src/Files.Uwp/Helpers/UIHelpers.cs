@@ -80,26 +80,7 @@ namespace Files.Uwp.Helpers
                     Constants.ImageRes.Folder
                 }, 32);
 
-            const string shell32 = @"C:\Windows\SystemResources\shell32.dll.mun";
-            var shell32List = await UIHelpers.LoadSelectedIconsAsync(shell32, new int[] {
-                }, 32);
-
-            if (shell32List != null && imageResList != null)
-            {
-                return imageResList.Concat(shell32List);
-            }
-            else if (shell32List != null && imageResList == null)
-            {
-                return shell32List;
-            }
-            else if (shell32List == null && imageResList != null)
-            {
-                return imageResList;
-            }
-            else
-            {
-                return null;
-            }
+            return imageResList;
         }
     }
 }

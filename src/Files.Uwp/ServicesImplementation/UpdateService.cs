@@ -42,6 +42,9 @@ namespace Files.Uwp.ServicesImplementation
             }
         }
 
+        // TODO: This needs to be implemented in this service.
+        public int DownloadPercentage { get; }
+
         public UpdateService()
         {
             _updatePackages = new List<StorePackageUpdate>();
