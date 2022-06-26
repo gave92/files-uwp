@@ -36,6 +36,11 @@ namespace Files.Backend.Services.Settings
         bool AreSystemItemsHidden { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not alternate data streams should be visible.
+        /// </summary>
+        bool AreAlternateStreamsVisible { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not to display dot files.
         /// </summary>
         bool ShowDotFiles{ get; set; }
@@ -59,11 +64,6 @@ namespace Files.Backend.Services.Settings
         /// Enables saving a unique layout mode, gridview size and sort direction per folder
         /// </summary>
         bool AreLayoutPreferencesPerFolder { get; set; }
-
-        /// <summary>
-        /// Enables adaptive layout that adjusts layout mode based on the context of the directory
-        /// </summary>
-        bool AdaptiveLayoutEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not to enable file tags feature.

@@ -1,10 +1,12 @@
-﻿using Files.Shared;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Files.Backend.Extensions;
+using Files.Backend.Services.Settings;
+using Files.Backend.Services.SizeProvider;
+using Files.Shared;
 using Files.Uwp.Extensions;
 using Files.Uwp.Filesystem.StorageItems;
 using Files.Uwp.Helpers;
 using Files.Uwp.Helpers.FileListCache;
-using Files.Backend.Services.Settings;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Uwp;
 using Newtonsoft.Json;
 using System;
@@ -17,14 +19,14 @@ using Windows.ApplicationModel.AppService;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
-using static Files.Uwp.Helpers.NativeFindStorageItemHelper;
+using static Files.Backend.Helpers.NativeFindStorageItemHelper;
 using FileAttributes = System.IO.FileAttributes;
 
 namespace Files.Uwp.Filesystem.StorageEnumerators
 {
     public static class Win32StorageEnumerator
     {
-        private static readonly IFolderSizeProvider folderSizeProvider = Ioc.Default.GetService<IFolderSizeProvider>();
+        private static readonly ISizeProvider folderSizeProvider = Ioc.Default.GetService<ISizeProvider>();
 
         private static readonly string folderTypeTextLocalized = "FileFolderListItem".GetLocalized();
         private static readonly IFileListCache fileListCache = FileListCacheController.GetInstance();
@@ -76,6 +78,11 @@ namespace Files.Uwp.Filesystem.StorageEnumerators
                             }
                             tempList.Add(file);
                             ++count;
+
+                            if (userSettingsService.PreferencesSettingsService.AreAlternateStreamsVisible)
+                            {
+                                tempList.AddRange(EnumAdsForPath(file.ItemPath, file));
+                            }
                         }
                     }
                     else if (((FileAttributes)findData.dwFileAttributes & FileAttributes.Directory) == FileAttributes.Directory)
@@ -93,14 +100,19 @@ namespace Files.Uwp.Filesystem.StorageEnumerators
                                 tempList.Add(folder);
                                 ++count;
 
+                                if (userSettingsService.PreferencesSettingsService.AreAlternateStreamsVisible)
+                                {
+                                    tempList.AddRange(EnumAdsForPath(folder.ItemPath, folder));
+                                }
+
                                 if (showFolderSize)
                                 {
-                                    if (folderSizeProvider.GetCachedSize(folder.ItemPath, out var size))
+                                    if (folderSizeProvider.TryGetSize(folder.ItemPath, out var size))
                                     {
-                                        folder.FileSizeBytes = size;
+                                        folder.FileSizeBytes = (long)size;
                                         folder.FileSize = size.ToSizeString();
                                     }
-                                    _ = folderSizeProvider.UpdateFolderAsync(folder.ItemPath, cancellationToken);
+                                    _ = folderSizeProvider.UpdateAsync(folder.ItemPath, cancellationToken);
                                 }
                             }
                         }
@@ -122,6 +134,44 @@ namespace Files.Uwp.Filesystem.StorageEnumerators
 
             FindClose(hFile);
             return tempList;
+        }
+
+        private static IEnumerable<ListedItem> EnumAdsForPath(string itemPath, ListedItem main)
+        {
+            foreach (var ads in NativeFileOperationsHelper.GetAlternateStreams(itemPath))
+            {
+                yield return GetAlternateStream(ads, main);
+            }
+        }
+
+        public static ListedItem GetAlternateStream((string Name, long Size) ads, ListedItem main)
+        {
+            string itemType = "ItemTypeFile".GetLocalized();
+            string itemFileExtension = null;
+            if (ads.Name.Contains('.'))
+            {
+                itemFileExtension = Path.GetExtension(ads.Name);
+                itemType = itemFileExtension.Trim('.') + " " + itemType;
+            }
+            string adsName = ads.Name.Substring(1, ads.Name.Length - 7); // Remove ":" and ":$DATA"
+
+            return new AlternateStreamItem()
+            {
+                PrimaryItemAttribute = StorageItemTypes.File,
+                FileExtension = itemFileExtension,
+                FileImage = null,
+                LoadFileIcon = false,
+                ItemNameRaw = adsName,
+                IsHiddenItem = false,
+                Opacity = Constants.UI.DimItemOpacity,
+                ItemDateModifiedReal = main.ItemDateModifiedReal,
+                ItemDateAccessedReal = main.ItemDateAccessedReal,
+                ItemDateCreatedReal = main.ItemDateCreatedReal,
+                ItemType = itemType,
+                ItemPath = $"{main.ItemPath}:{adsName}",
+                FileSize = ads.Size.ToSizeString(),
+                FileSizeBytes = ads.Size
+            };
         }
 
         public static async Task<ListedItem> GetFolder(

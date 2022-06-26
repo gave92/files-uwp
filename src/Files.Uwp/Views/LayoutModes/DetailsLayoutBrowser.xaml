@@ -56,9 +56,10 @@
                 BasedOn="{StaticResource DefaultGridSplitterStyle}"
                 TargetType="controls:GridSplitter">
                 <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Width" Value="1" />
+                <Setter Property="Width" Value="12" />
                 <Setter Property="Margin" Value="0,4,0,4" />
                 <Setter Property="Opacity" Value="0.8" />
+                <Setter Property="Canvas.ZIndex" Value="1" />
             </Style>
 
             <Style TargetType="ListViewHeaderItem">
@@ -151,6 +152,7 @@
 
             <Style TargetType="uc:DataGridHeader">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="Margin" Value="-4,0" />
             </Style>
 
             <Style
@@ -642,8 +644,8 @@
                                             Margin="4,0,0,0"
                                             VerticalAlignment="Center"
                                             x:Phase="2"
-                                            Fill="{x:Bind FileTagUI.ColorModel, Mode=OneWay, Converter={StaticResource ColorModelToColorConverter}}"
-                                            Visibility="{x:Bind FileTagUI, Converter={StaticResource EmptyObjectToObjectConverter}, Mode=OneWay}" />
+                                            Fill="{x:Bind FileTagsUI[0].ColorModel, Mode=OneWay, Converter={StaticResource ColorModelToColorConverter}}"
+                                            Visibility="{x:Bind FileTagsUI, Converter={StaticResource EmptyObjectToObjectConverter}, Mode=OneWay}" />
                                     </Grid>
 
                                     <Grid
@@ -657,9 +659,9 @@
                                         <TextBlock
                                             HorizontalAlignment="Left"
                                             Style="{StaticResource ColumnContentTextBlock}"
-                                            Text="{x:Bind FileTagUI.TagName, Mode=OneWay}"
+                                            Text="{x:Bind FileTagsUI[0].TagName, Mode=OneWay}"
                                             TextTrimming="CharacterEllipsis"
-                                            Visibility="{x:Bind FileTagUI, Converter={StaticResource EmptyObjectToObjectConverter}, Mode=OneWay}" />
+                                            Visibility="{x:Bind FileTagsUI, Converter={StaticResource EmptyObjectToObjectConverter}, Mode=OneWay}" />
                                     </Grid>
 
                                     <TextBlock
