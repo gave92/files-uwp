@@ -807,6 +807,8 @@ namespace Files.App.Utils.Storage
 						var isDirectory = NativeFileOperationsHelper.HasFileAttribute(path, FileAttributes.Directory);
 						itemsList.Add(StorageHelpers.FromPathAndType(path, isDirectory ? FilesystemItemType.Directory : FilesystemItemType.File));
 					}
+
+					Marshal.FreeHGlobal(dropStructHandle.DangerousGetHandle());
 				}
 			}
 
@@ -845,12 +847,15 @@ namespace Files.App.Utils.Storage
 				try
 				{
 					Marshal.Copy(dropBytes, 0, dropStructPointer, dropBytes.Length);
+					if (typeof(T) == typeof(HDROP))
+						return new HDROP(dropStructPointer).TryCast<T>();
 					return Marshal.PtrToStructure<T>(dropStructPointer);
 				}
 				catch { }
 				finally
 				{
-					Marshal.FreeHGlobal(dropStructPointer);
+					if (!typeof(T).IsAssignableTo(typeof(IHandle)))
+						Marshal.FreeHGlobal(dropStructPointer);
 				}
 			}
 
