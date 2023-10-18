@@ -673,8 +673,8 @@ namespace Files.App.Utils.Storage
 				if (string.IsNullOrEmpty(item.src.Path) || item.src.Path != item.dest)
 				{
 					// Same item names in both directories
-					if (StorageHelpers.Exists(item.dest) || 
-						(FtpHelpers.IsFtpPath(item.dest) && 
+					if (StorageHelpers.Exists(item.dest) ||
+						(FtpHelpers.IsFtpPath(item.dest) &&
 						await Ioc.Default.GetRequiredService<IFtpStorageService>().TryGetFileAsync(item.dest) is not null))
 					{
 						(incomingItems[item.index] as FileSystemDialogConflictItemViewModel)!.ConflictResolveOption = FileNameConflictResolveOptionType.GenerateNewName;
@@ -744,8 +744,9 @@ namespace Files.App.Utils.Storage
 			{
 				try
 				{
-					var source = await packageView.GetStorageItemsAsync();
-					itemsList.AddRange(source.Select(x => x.FromStorageItem()));
+					var source = await GetObjectFromPackageViewAsync<IReadOnlyList<IStorageItem>>(packageView, "Shell IDList Array");
+					if (source is not null)
+						itemsList.AddRange(source.Select(x => x.FromStorageItem()));
 				}
 				catch (Exception ex) when ((uint)ex.HResult == 0x80040064 || (uint)ex.HResult == 0x8004006A)
 				{
@@ -761,7 +762,8 @@ namespace Files.App.Utils.Storage
 			// workaround for pasting folders from remote desktop (#12318)
 			if (hasVirtualItems && packageView.Contains("FileContents"))
 			{
-				var descriptor = NativeClipboard.CurrentDataObject.GetData<Shell32.FILEGROUPDESCRIPTOR>("FileGroupDescriptorW");
+				var descriptor = await GetObjectFromPackageViewAsync<Shell32.FILEGROUPDESCRIPTOR>(packageView, "FileGroupDescriptorW");
+				var fileContents = await GetObjectFromPackageViewAsync<IRandomAccessStream>(packageView, "FileContents");
 				for (var ii = 0; ii < descriptor.cItems; ii++)
 				{
 					if (descriptor.fgd[ii].dwFileAttributes.HasFlag(FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY))
@@ -780,64 +782,79 @@ namespace Files.App.Utils.Storage
 			// https://learn.microsoft.com/windows/win32/shell/clipboard#cf_hdrop
 			if (packageView.Contains("FileDrop"))
 			{
-				var fileDropData = await SafetyExtensions.IgnoreExceptions(
-					() => packageView.GetDataAsync("FileDrop").AsTask());
-				if (fileDropData is IRandomAccessStream stream)
+				var dropStructHandle = await GetObjectFromPackageViewAsync<HDROP>(packageView, "FileDrop");
+
+				if (!dropStructHandle.IsNull)
 				{
-					stream.Seek(0);
+					var itemPaths = new List<string>();
+					uint filesCount = Shell32.DragQueryFile(dropStructHandle, 0xffffffff, null, 0);
+					for (uint i = 0; i < filesCount; i++)
+					{
+						uint charsNeeded = Shell32.DragQueryFile(dropStructHandle, i, null, 0);
+						uint bufferSpaceRequired = charsNeeded + 1; // include space for terminating null character
+						string buffer = new('\0', (int)bufferSpaceRequired);
+						uint charsCopied = Shell32.DragQueryFile(dropStructHandle, i, buffer, bufferSpaceRequired);
 
-					byte[]? dropBytes = null;
-					int bytesRead = 0;
-					try
-					{
-						dropBytes = new byte[stream.Size];
-						bytesRead = await stream.AsStreamForRead().ReadAsync(dropBytes);
-					}
-					catch (COMException)
-					{
-					}
-					
-					if (bytesRead > 0)
-					{
-						IntPtr dropStructPointer = Marshal.AllocHGlobal(dropBytes!.Length);
-
-						try
+						if (charsCopied > 0)
 						{
-							Marshal.Copy(dropBytes, 0, dropStructPointer, dropBytes.Length);
-							HDROP dropStructHandle = new(dropStructPointer);
-
-							var itemPaths = new List<string>();
-							uint filesCount = Shell32.DragQueryFile(dropStructHandle, 0xffffffff, null, 0);
-							for (uint i = 0; i < filesCount; i++)
-							{
-								uint charsNeeded = Shell32.DragQueryFile(dropStructHandle, i, null, 0);
-								uint bufferSpaceRequired = charsNeeded + 1; // include space for terminating null character
-								string buffer = new('\0', (int)bufferSpaceRequired);
-								uint charsCopied = Shell32.DragQueryFile(dropStructHandle, i, buffer, bufferSpaceRequired);
-
-								if (charsCopied > 0)
-								{
-									string path = buffer[..(int)charsCopied];
-									itemPaths.Add(Path.GetFullPath(path));
-								}
-							}
-
-							foreach (var path in itemPaths)
-							{
-								var isDirectory = NativeFileOperationsHelper.HasFileAttribute(path, FileAttributes.Directory);
-								itemsList.Add(StorageHelpers.FromPathAndType(path, isDirectory ? FilesystemItemType.Directory : FilesystemItemType.File));
-							}
+							string path = buffer[..(int)charsCopied];
+							itemPaths.Add(Path.GetFullPath(path));
 						}
-						finally
-						{
-							Marshal.FreeHGlobal(dropStructPointer);
-						}
+					}
+
+					foreach (var path in itemPaths)
+					{
+						var isDirectory = NativeFileOperationsHelper.HasFileAttribute(path, FileAttributes.Directory);
+						itemsList.Add(StorageHelpers.FromPathAndType(path, isDirectory ? FilesystemItemType.Directory : FilesystemItemType.File));
 					}
 				}
 			}
 
 			itemsList = itemsList.DistinctBy(x => string.IsNullOrEmpty(x.Path) ? x.Item.Name : x.Path).ToList();
 			return itemsList;
+		}
+
+		private async static Task<T?> GetObjectFromPackageViewAsync<T>(DataPackageView packageView, string format)
+		{
+			if (!packageView.Contains(format))
+				return default;
+			var obj = await SafetyExtensions.IgnoreExceptions(
+				() => packageView.GetDataAsync(format).AsTask());
+			if (obj is T)
+				return (T)obj;
+			if (obj is null || obj is not IRandomAccessStream stream)
+				return default;
+
+			stream.Seek(0);
+
+			byte[]? dropBytes = null;
+			int bytesRead = 0;
+			try
+			{
+				dropBytes = new byte[stream.Size];
+				bytesRead = await stream.AsStreamForRead().ReadAsync(dropBytes);
+			}
+			catch (COMException)
+			{
+			}
+
+			if (bytesRead > 0)
+			{
+				IntPtr dropStructPointer = Marshal.AllocHGlobal(dropBytes!.Length);
+
+				try
+				{
+					Marshal.Copy(dropBytes, 0, dropStructPointer, dropBytes.Length);
+					return Marshal.PtrToStructure<T>(dropStructPointer);
+				}
+				catch { }
+				finally
+				{
+					Marshal.FreeHGlobal(dropStructPointer);
+				}
+			}
+
+			return default;
 		}
 
 		public static string FilterRestrictedCharacters(string input)
