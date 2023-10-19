@@ -760,13 +760,13 @@ namespace Files.App.Utils.Storage
 			}
 
 			// workaround for pasting folders from remote desktop (#12318)
-			if (hasVirtualItems && packageView.Contains("FileContents"))
+			if (/*hasVirtualItems &&*/ packageView.Contains("FileContents"))
 			{
 				var descriptor = await GetObjectFromPackageViewAsync<Shell32.FILEGROUPDESCRIPTOR>(packageView, "FileGroupDescriptorW");
 				var fileContents = await GetObjectFromPackageViewAsync<IRandomAccessStream>(packageView, "FileContents");
 				for (var ii = 0; ii < descriptor.cItems; ii++)
 				{
-					if (descriptor.fgd[ii].dwFileAttributes.HasFlag(FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY))
+					/*if (descriptor.fgd[ii].dwFileAttributes.HasFlag(FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY))
 					{
 						itemsList.Add(new VirtualStorageFolder(descriptor.fgd[ii].cFileName).FromStorageItem());
 					}
@@ -774,7 +774,7 @@ namespace Files.App.Utils.Storage
 					{
 						var streamContent = new ComStreamWrapper(stream);
 						itemsList.Add(new VirtualStorageFile(streamContent, descriptor.fgd[ii].cFileName).FromStorageItem());
-					}
+					}*/
 				}
 			}
 
@@ -849,6 +849,14 @@ namespace Files.App.Utils.Storage
 					Marshal.Copy(dropBytes, 0, dropStructPointer, dropBytes.Length);
 					if (typeof(T) == typeof(HDROP))
 						return new HDROP(dropStructPointer).TryCast<T>();
+					if (typeof(T) == typeof(Shell32.FILEGROUPDESCRIPTOR))
+					{
+						var data = Marshal.PtrToStructure<Shell32.FILEGROUPDESCRIPTOR>(dropStructPointer);
+						data.fgd = new Shell32.FILEDESCRIPTOR[data.cItems];
+						for (int id = 0; id < data.cItems; id++)
+							data.fgd[id] = Marshal.PtrToStructure<Shell32.FILEDESCRIPTOR>(dropStructPointer + Marshal.SizeOf(data) + (id-1) * Marshal.SizeOf<Shell32.FILEDESCRIPTOR>());
+						return data.TryCast<T>();
+					}
 					return Marshal.PtrToStructure<T>(dropStructPointer);
 				}
 				catch { }
