@@ -221,6 +221,7 @@
 						MinHeight="100" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition x:Name="PaneRow" Height="Auto" />
+					<RowDefinition x:Name="Terminal" Height="70" />
 					<RowDefinition Height="32" />
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
@@ -271,10 +272,16 @@
 					Loaded="PreviewPane_Loaded"
 					Unloaded="PreviewPane_Unloaded" />
 
+				<!--  Terminal  -->
+				<uc:TerminalView
+					x:Name="TerminalControl"
+					Grid.Row="4"
+					x:Load="True" />
+
 				<!--  Status Bar  -->
 				<uc:StatusBarControl
 					x:Name="StatusBarControl"
-					Grid.Row="4"
+					Grid.Row="5"
 					Grid.ColumnSpan="3"
 					x:Load="False"
 					ShowInfoText="{x:Bind SidebarAdaptiveViewModel.PaneHolder.ActivePaneOrColumn.InstanceViewModel.IsPageTypeNotHome, Mode=OneWay}" />
