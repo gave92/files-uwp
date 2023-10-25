@@ -221,7 +221,7 @@
 						MinHeight="100" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition x:Name="PaneRow" Height="Auto" />
-					<RowDefinition x:Name="Terminal" Height="70" />
+					<RowDefinition x:Name="Terminal" Height="150" />
 					<RowDefinition Height="32" />
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
