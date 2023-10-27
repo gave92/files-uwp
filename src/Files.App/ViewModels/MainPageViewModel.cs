@@ -49,6 +49,7 @@ namespace Files.App.ViewModels
 			// Create commands
 			NavigateToNumberedTabKeyboardAcceleratorCommand = new RelayCommand<KeyboardAcceleratorInvokedEventArgs>(NavigateToNumberedTabKeyboardAccelerator);
 			OpenNewWindowAcceleratorCommand = new AsyncRelayCommand<KeyboardAcceleratorInvokedEventArgs>(OpenNewWindowAcceleratorAsync);
+			ToggleTerminalViewCommand = new RelayCommand(() => IsTerminalViewOpen = !IsTerminalViewOpen);
 		}
 
 		private void NavigateToNumberedTabKeyboardAccelerator(KeyboardAcceleratorInvokedEventArgs? e)
@@ -440,6 +441,15 @@ namespace Files.App.ViewModels
 				return;
 
 			await UpdateTabInfoAsync(matchingTabItem, e.NavigationParameter);
+		}
+
+		public ICommand ToggleTerminalViewCommand { get; init; }
+
+		private bool _isTerminalViewOpen;
+		public bool IsTerminalViewOpen
+		{
+			get => _isTerminalViewOpen;
+			set => SetProperty(ref _isTerminalViewOpen, value);
 		}
 	}
 }

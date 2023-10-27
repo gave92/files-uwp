@@ -106,6 +106,7 @@
 			<ColumnDefinition />
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
 
 		<StackPanel
@@ -354,6 +355,77 @@
 				</Flyout>
 			</Button.Flyout>
 		</Button>
+
+		<StackPanel
+			x:Name="TerminalPanel"
+			Grid.Column="3"
+			VerticalAlignment="Center"
+			x:Load="True"
+			Orientation="Horizontal"
+			Spacing="4">
+
+			<Button
+				x:Name="SyncFolderToggle"
+				Height="24"
+				Padding="8,0,8,0"
+				VerticalAlignment="Center"
+				x:Load="True"
+				Background="Transparent"
+				BorderBrush="Transparent">
+				<Button.Content>
+					<FontIcon FontSize="12" Glyph="&#xE895;" />
+				</Button.Content>
+			</Button>
+
+			<Button
+				x:Name="SyncFolderUp"
+				Height="24"
+				Padding="8,0,8,0"
+				VerticalAlignment="Center"
+				x:Load="True"
+				Background="Transparent"
+				BorderBrush="Transparent">
+				<Button.Content>
+					<FontIcon FontSize="12" Glyph="&#xE110;" />
+				</Button.Content>
+			</Button>
+
+			<Button
+				x:Name="SyncFolderDown"
+				Height="24"
+				Padding="8,0,8,0"
+				VerticalAlignment="Center"
+				x:Load="True"
+				Background="Transparent"
+				BorderBrush="Transparent">
+				<Button.Content>
+					<FontIcon FontSize="12" Glyph="&#xE74B;" />
+				</Button.Content>
+			</Button>
+
+			<SplitButton
+				x:Name="ToggleTerminal"
+				Height="24"
+				Padding="8,0,8,0"
+				VerticalAlignment="Center"
+				x:Load="True"
+				Background="Transparent"
+				BorderBrush="Transparent"
+				Command="{x:Bind MainPageViewModel.ToggleTerminalViewCommand}">
+				<SplitButton.Content>
+					<StackPanel Orientation="Horizontal" Spacing="8">
+						<FontIcon FontSize="12" Glyph="&#xE756;" />
+						<TextBlock Text="Powershell" />
+					</StackPanel>
+				</SplitButton.Content>
+				<SplitButton.Flyout>
+					<MenuFlyout Placement="Top">
+						<MenuFlyoutItem Text="Cmd" />
+						<MenuFlyoutItem Text="Powershell" />
+					</MenuFlyout>
+				</SplitButton.Flyout>
+			</SplitButton>
+		</StackPanel>
 
 	</Grid>
 </UserControl>
