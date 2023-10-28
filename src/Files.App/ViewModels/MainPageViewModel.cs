@@ -49,7 +49,19 @@ namespace Files.App.ViewModels
 			// Create commands
 			NavigateToNumberedTabKeyboardAcceleratorCommand = new RelayCommand<KeyboardAcceleratorInvokedEventArgs>(NavigateToNumberedTabKeyboardAccelerator);
 			OpenNewWindowAcceleratorCommand = new AsyncRelayCommand<KeyboardAcceleratorInvokedEventArgs>(OpenNewWindowAcceleratorAsync);
-			ToggleTerminalViewCommand = new RelayCommand(() => IsTerminalViewOpen = !IsTerminalViewOpen);
+			TerminalToggleCommand = new RelayCommand(() => IsTerminalViewOpen = !IsTerminalViewOpen);
+			TerminalSyncUpCommand = new RelayCommand(() =>
+			{
+				var context = Ioc.Default.GetRequiredService<IContentPageContext>();
+				if (GetTerminalFolder?.Invoke() is string terminalFolder)
+					_ = NavigationHelpers.OpenPath(terminalFolder, context.ShellPage, FilesystemItemType.Directory);
+			});
+			TerminalSyncDownCommand = new RelayCommand(() =>
+			{
+				var context = Ioc.Default.GetRequiredService<IContentPageContext>();
+				if (context.Folder?.ItemPath is string currentFolder)
+					SetTerminalFolder?.Invoke(currentFolder);
+			});
 		}
 
 		private void NavigateToNumberedTabKeyboardAccelerator(KeyboardAcceleratorInvokedEventArgs? e)
@@ -443,7 +455,14 @@ namespace Files.App.ViewModels
 			await UpdateTabInfoAsync(matchingTabItem, e.NavigationParameter);
 		}
 
-		public ICommand ToggleTerminalViewCommand { get; init; }
+		public ICommand TerminalToggleCommand { get; init; }
+		public ICommand TerminalSyncUpCommand { get; init; }
+		public ICommand TerminalSyncDownCommand { get; init; }
+
+		public Func<string?>? GetTerminalFolder { get; set; }
+		public Action<string>? SetTerminalFolder { get; set; }
+
+		//public ShellProfile TerminalProfile { get; set; }
 
 		private bool _isTerminalViewOpen;
 		public bool IsTerminalViewOpen

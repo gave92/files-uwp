@@ -365,26 +365,15 @@
 			Spacing="4">
 
 			<Button
-				x:Name="SyncFolderToggle"
-				Height="24"
-				Padding="8,0,8,0"
-				VerticalAlignment="Center"
-				x:Load="True"
-				Background="Transparent"
-				BorderBrush="Transparent">
-				<Button.Content>
-					<FontIcon FontSize="12" Glyph="&#xE895;" />
-				</Button.Content>
-			</Button>
-
-			<Button
 				x:Name="SyncFolderUp"
 				Height="24"
 				Padding="8,0,8,0"
 				VerticalAlignment="Center"
 				x:Load="True"
 				Background="Transparent"
-				BorderBrush="Transparent">
+				BorderBrush="Transparent"
+				Command="{x:Bind MainPageViewModel.TerminalSyncUpCommand}"
+				IsEnabled="False">
 				<Button.Content>
 					<FontIcon FontSize="12" Glyph="&#xE110;" />
 				</Button.Content>
@@ -397,7 +386,8 @@
 				VerticalAlignment="Center"
 				x:Load="True"
 				Background="Transparent"
-				BorderBrush="Transparent">
+				BorderBrush="Transparent"
+				Command="{x:Bind MainPageViewModel.TerminalSyncDownCommand}">
 				<Button.Content>
 					<FontIcon FontSize="12" Glyph="&#xE74B;" />
 				</Button.Content>
@@ -411,17 +401,17 @@
 				x:Load="True"
 				Background="Transparent"
 				BorderBrush="Transparent"
-				Command="{x:Bind MainPageViewModel.ToggleTerminalViewCommand}">
+				Command="{x:Bind MainPageViewModel.TerminalToggleCommand}">
 				<SplitButton.Content>
 					<StackPanel Orientation="Horizontal" Spacing="8">
 						<FontIcon FontSize="12" Glyph="&#xE756;" />
-						<TextBlock Text="Powershell" />
+						<TextBlock Text="PowerShell" />
 					</StackPanel>
 				</SplitButton.Content>
 				<SplitButton.Flyout>
 					<MenuFlyout Placement="Top">
-						<MenuFlyoutItem Text="Cmd" />
-						<MenuFlyoutItem Text="Powershell" />
+						<MenuFlyoutItem Text="Command Prompt" />
+						<MenuFlyoutItem Text="PowerShell" />
 					</MenuFlyout>
 				</SplitButton.Flyout>
 			</SplitButton>
