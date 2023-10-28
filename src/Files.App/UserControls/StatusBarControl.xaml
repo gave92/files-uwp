@@ -372,8 +372,7 @@
 				x:Load="True"
 				Background="Transparent"
 				BorderBrush="Transparent"
-				Command="{x:Bind MainPageViewModel.TerminalSyncUpCommand}"
-				IsEnabled="False">
+				Command="{x:Bind MainPageViewModel.TerminalSyncUpCommand}">
 				<Button.Content>
 					<FontIcon FontSize="12" Glyph="&#xE110;" />
 				</Button.Content>
