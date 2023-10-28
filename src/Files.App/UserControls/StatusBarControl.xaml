@@ -369,7 +369,7 @@
 				Height="24"
 				Padding="8,0,8,0"
 				VerticalAlignment="Center"
-				x:Load="True"
+				x:Load="{x:Bind MainPageViewModel.IsTerminalViewOpen, Mode=OneWay}"
 				Background="Transparent"
 				BorderBrush="Transparent"
 				Command="{x:Bind MainPageViewModel.TerminalSyncUpCommand}">
@@ -383,7 +383,7 @@
 				Height="24"
 				Padding="8,0,8,0"
 				VerticalAlignment="Center"
-				x:Load="True"
+				x:Load="{x:Bind MainPageViewModel.IsTerminalViewOpen, Mode=OneWay}"
 				Background="Transparent"
 				BorderBrush="Transparent"
 				Command="{x:Bind MainPageViewModel.TerminalSyncDownCommand}">
