@@ -398,6 +398,7 @@
 				Padding="8,0,8,0"
 				VerticalAlignment="Center"
 				x:Load="True"
+				AutomationProperties.Name="Toggle terminal"
 				Background="Transparent"
 				BorderBrush="Transparent"
 				Command="{x:Bind MainPageViewModel.TerminalToggleCommand}">
