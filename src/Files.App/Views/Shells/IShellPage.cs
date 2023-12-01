@@ -13,7 +13,7 @@ namespace Files.App.Views.Shells
 
 		StorageHistoryHelpers StorageHistoryHelpers { get; }
 
-		IBaseLayout SlimContentPage { get; }
+		IBaseLayoutPage SlimContentPage { get; }
 
 		Type CurrentPageType { get; }
 
@@ -38,7 +38,7 @@ namespace Files.App.Views.Shells
 
 		Task RefreshIfNoWatcherExistsAsync();
 
-		Task Refresh_ClickAsync();
+		Task Refresh_Click();
 
 		void Back_Click();
 

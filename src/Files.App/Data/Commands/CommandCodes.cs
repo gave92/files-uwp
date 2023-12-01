@@ -23,10 +23,13 @@ namespace Files.App.Data.Commands
 		ToggleShowHiddenItems,
 		ToggleShowFileExtensions,
 		TogglePreviewPane,
+		ToggleDetailsPane,
+		ToggleInfoPane,
 
 		// File System
 		CopyItem,
 		CopyPath,
+		CopyPathWithQuotes,
 		CutItem,
 		PasteItem,
 		PasteItemToSelection,

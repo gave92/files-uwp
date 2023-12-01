@@ -51,6 +51,8 @@ namespace Files.App.Data.Commands
 		public IRichCommand ToggleShowHiddenItems => commands[CommandCodes.ToggleShowHiddenItems];
 		public IRichCommand ToggleShowFileExtensions => commands[CommandCodes.ToggleShowFileExtensions];
 		public IRichCommand TogglePreviewPane => commands[CommandCodes.TogglePreviewPane];
+		public IRichCommand ToggleDetailsPane => commands[CommandCodes.ToggleDetailsPane];
+		public IRichCommand ToggleInfoPane => commands[CommandCodes.ToggleInfoPane];
 		public IRichCommand SelectAll => commands[CommandCodes.SelectAll];
 		public IRichCommand InvertSelection => commands[CommandCodes.InvertSelection];
 		public IRichCommand ClearSelection => commands[CommandCodes.ClearSelection];
@@ -75,6 +77,7 @@ namespace Files.App.Data.Commands
 		public IRichCommand SetAsLockscreenBackground => commands[CommandCodes.SetAsLockscreenBackground];
 		public IRichCommand CopyItem => commands[CommandCodes.CopyItem];
 		public IRichCommand CopyPath => commands[CommandCodes.CopyPath];
+		public IRichCommand CopyPathWithQuotes => commands[CommandCodes.CopyPathWithQuotes];
 		public IRichCommand CutItem => commands[CommandCodes.CutItem];
 		public IRichCommand PasteItem => commands[CommandCodes.PasteItem];
 		public IRichCommand PasteItemToSelection => commands[CommandCodes.PasteItemToSelection];
@@ -212,6 +215,8 @@ namespace Files.App.Data.Commands
 			[CommandCodes.ToggleShowHiddenItems] = new ToggleShowHiddenItemsAction(),
 			[CommandCodes.ToggleShowFileExtensions] = new ToggleShowFileExtensionsAction(),
 			[CommandCodes.TogglePreviewPane] = new TogglePreviewPaneAction(),
+			[CommandCodes.ToggleDetailsPane] = new ToggleDetailsPaneAction(),
+			[CommandCodes.ToggleInfoPane] = new ToggleInfoPaneAction(),
 			[CommandCodes.SelectAll] = new SelectAllAction(),
 			[CommandCodes.InvertSelection] = new InvertSelectionAction(),
 			[CommandCodes.ClearSelection] = new ClearSelectionAction(),
@@ -236,6 +241,7 @@ namespace Files.App.Data.Commands
 			[CommandCodes.SetAsLockscreenBackground] = new SetAsLockscreenBackgroundAction(),
 			[CommandCodes.CopyItem] = new CopyItemAction(),
 			[CommandCodes.CopyPath] = new CopyPathAction(),
+			[CommandCodes.CopyPathWithQuotes] = new CopyPathWithQuotesAction(),
 			[CommandCodes.CutItem] = new CutItemAction(),
 			[CommandCodes.PasteItem] = new PasteItemAction(),
 			[CommandCodes.PasteItemToSelection] = new PasteItemToSelectionAction(),

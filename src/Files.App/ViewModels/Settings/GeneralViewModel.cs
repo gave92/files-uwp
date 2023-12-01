@@ -116,7 +116,7 @@ namespace Files.App.ViewModels.Settings
 		private async void DoRestartAsync()
 		{
 			UserSettingsService.AppSettingsService.RestoreTabsOnStartup = true; // Tells the app to restore tabs when it's next launched
-			App.SaveSessionTabs(); // Saves the open tabs
+			AppLifecycleHelper.SaveSessionTabs(); // Saves the open tabs
 			await Launcher.LaunchUriAsync(new Uri("files-uwp:")); // Launches a new instance of Files
 			Process.GetCurrentProcess().Kill(); // Closes the current instance
 		}
@@ -222,17 +222,17 @@ namespace Files.App.ViewModels.Settings
 			set => SetProperty(ref addFlyoutItemsSource, value);
 		}
 
-		public bool AlwaysOpenANewInstance
+		public bool OpenTabInExistingInstance
 		{
-			get => UserSettingsService.GeneralSettingsService.AlwaysOpenNewInstance;
+			get => UserSettingsService.GeneralSettingsService.OpenTabInExistingInstance;
 			set
 			{
-				if (value != UserSettingsService.GeneralSettingsService.AlwaysOpenNewInstance)
+				if (value != UserSettingsService.GeneralSettingsService.OpenTabInExistingInstance)
 				{
-					UserSettingsService.GeneralSettingsService.AlwaysOpenNewInstance = value;
+					UserSettingsService.GeneralSettingsService.OpenTabInExistingInstance = value;
 
 					// Needed in Program.cs
-					ApplicationData.Current.LocalSettings.Values["AlwaysOpenANewInstance"] = value;
+					ApplicationData.Current.LocalSettings.Values["OpenTabInExistingInstance"] = value;
 
 					OnPropertyChanged();
 				}

@@ -831,10 +831,10 @@ namespace Files.App.Utils.Storage
 		{
 			if (string.IsNullOrEmpty(options) || options == "~")
 			{
-				return Win32API.RunPowershellCommand(@$"Remove-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name '{filePath}' | Out-Null", false);
+				return Win32API.RunPowershellCommand(@$"Remove-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name '{filePath}' | Out-Null", true);
 			}
 
-			return Win32API.RunPowershellCommand(@$"New-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name '{filePath}' -Value '{options}' -PropertyType String -Force | Out-Null", false);
+			return Win32API.RunPowershellCommand(@$"New-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name '{filePath}' -Value '{options}' -PropertyType String -Force | Out-Null", true);
 		}
 
 		private static ShellItem? GetFirstFile(ShellItem shi)
@@ -947,14 +947,14 @@ namespace Files.App.Utils.Storage
 				public bool Canceled { get; set; }
 			}
 
-			private readonly Shell32.ITaskbarList4 taskbar;
+			private readonly Shell32.ITaskbarList4? taskbar;
 			private readonly ConcurrentDictionary<string, OperationWithProgress> operations;
 
 			public HWND OwnerWindow { get; set; }
 
 			public ProgressHandler()
 			{
-				taskbar = Win32API.CreateTaskbarObject()!;
+				taskbar = Win32API.CreateTaskbarObject();
 				operations = new ConcurrentDictionary<string, OperationWithProgress>();
 				operationsCompletedEvent = new ManualResetEvent(true);
 			}
@@ -1034,7 +1034,8 @@ namespace Files.App.Utils.Storage
 				if (disposing)
 				{
 					operationsCompletedEvent?.Dispose();
-					Marshal.ReleaseComObject(taskbar);
+					if (taskbar is not null)
+						Marshal.ReleaseComObject(taskbar);
 				}
 			}
 		}
