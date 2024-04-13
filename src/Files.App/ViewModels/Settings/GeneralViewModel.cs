@@ -1,7 +1,6 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using Microsoft.Extensions.Logging;
 using System.Collections.Specialized;
 using System.Globalization;
 using Windows.Globalization;
@@ -13,7 +12,7 @@ using DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue;
 
 namespace Files.App.ViewModels.Settings
 {
-	public class GeneralViewModel : ObservableObject, IDisposable
+	public sealed class GeneralViewModel : ObservableObject, IDisposable
 	{
 		private IUserSettingsService UserSettingsService { get; } = Ioc.Default.GetRequiredService<IUserSettingsService>();
 
@@ -106,7 +105,7 @@ namespace Files.App.ViewModels.Settings
 			if (UserSettingsService.GeneralSettingsService.TabsOnStartupList is not null)
 				PagesOnStartupList = new ObservableCollection<PageOnStartupViewModel>(UserSettingsService.GeneralSettingsService.TabsOnStartupList.Select((p) => new PageOnStartupViewModel(p)));
 			else
-				PagesOnStartupList = new ObservableCollection<PageOnStartupViewModel>();
+				PagesOnStartupList = [];
 
 			PagesOnStartupList.CollectionChanged += PagesOnStartupList_CollectionChanged;
 
@@ -115,10 +114,17 @@ namespace Files.App.ViewModels.Settings
 
 		private async void DoRestartAsync()
 		{
-			UserSettingsService.AppSettingsService.RestoreTabsOnStartup = true; // Tells the app to restore tabs when it's next launched
-			AppLifecycleHelper.SaveSessionTabs(); // Saves the open tabs
-			await Launcher.LaunchUriAsync(new Uri("files-uwp:")); // Launches a new instance of Files
-			Process.GetCurrentProcess().Kill(); // Closes the current instance
+			// Tells the app to restore tabs when it's next launched
+			UserSettingsService.AppSettingsService.RestoreTabsOnStartup = true;
+
+			// Save the updated tab list before restarting
+			AppLifecycleHelper.SaveSessionTabs();
+
+			// Launches a new instance of Files
+			await Launcher.LaunchUriAsync(new Uri("files-uwp:"));
+
+			// Closes the current instance
+			Process.GetCurrentProcess().Kill();
 		}
 
 		private void DoCancelRestart()
@@ -159,7 +165,7 @@ namespace Files.App.ViewModels.Settings
 				CommandParameter = "Home",
 				Tooltip = "Home".GetLocalizedResource()
 			});
-			recentsItem.Items.Add(new MenuFlyoutItemViewModel("Browse".GetLocalizedResource()) { Command = AddPageCommand });		
+			recentsItem.Items.Add(new MenuFlyoutItemViewModel("Browse".GetLocalizedResource()) { Command = AddPageCommand });
 		}
 
 		private void PagesOnStartupList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -253,6 +259,48 @@ namespace Files.App.ViewModels.Settings
 			}
 		}
 
+		public bool ShowCreateFolderWithSelection
+		{
+			get => UserSettingsService.GeneralSettingsService.ShowCreateFolderWithSelection;
+			set
+			{
+				if (value != UserSettingsService.GeneralSettingsService.ShowCreateFolderWithSelection)
+				{
+					UserSettingsService.GeneralSettingsService.ShowCreateFolderWithSelection = value;
+
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool ShowCopyPath
+		{
+			get => UserSettingsService.GeneralSettingsService.ShowCopyPath;
+			set
+			{
+				if (value != UserSettingsService.GeneralSettingsService.ShowCopyPath)
+				{
+					UserSettingsService.GeneralSettingsService.ShowCopyPath = value;
+
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool ShowCreateShortcut
+		{
+			get => UserSettingsService.GeneralSettingsService.ShowCreateShortcut;
+			set
+			{
+				if (value != UserSettingsService.GeneralSettingsService.ShowCreateShortcut)
+				{
+					UserSettingsService.GeneralSettingsService.ShowCreateShortcut = value;
+
+					OnPropertyChanged();
+				}
+			}
+		}
+
 		public bool AlwaysOpenDualPaneInNewTab
 		{
 			get => UserSettingsService.GeneralSettingsService.AlwaysOpenDualPaneInNewTab;
@@ -290,7 +338,7 @@ namespace Files.App.ViewModels.Settings
 
 		private void RemovePage(PageOnStartupViewModel page)
 		{
-				PagesOnStartupList.Remove(page);
+			PagesOnStartupList.Remove(page);
 		}
 
 		private async Task AddPageAsync(string path = null)
@@ -322,20 +370,6 @@ namespace Files.App.ViewModels.Settings
 				if (value != UserSettingsService.GeneralSettingsService.DateTimeFormat)
 				{
 					UserSettingsService.GeneralSettingsService.DateTimeFormat = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-		public bool SearchUnindexedItems
-		{
-			get => UserSettingsService.GeneralSettingsService.SearchUnindexedItems;
-			set
-			{
-				if (value != UserSettingsService.GeneralSettingsService.SearchUnindexedItems)
-				{
-					UserSettingsService.GeneralSettingsService.SearchUnindexedItems = value;
-
 					OnPropertyChanged();
 				}
 			}
@@ -423,6 +457,19 @@ namespace Files.App.ViewModels.Settings
 			}
 		}
 
+		public bool ShowCompressionOptions
+		{
+			get => UserSettingsService.GeneralSettingsService.ShowCompressionOptions;
+			set
+			{
+				if (value == UserSettingsService.GeneralSettingsService.ShowCompressionOptions)
+					return;
+
+				UserSettingsService.GeneralSettingsService.ShowCompressionOptions = value;
+				OnPropertyChanged();
+			}
+		}
+
 		public bool ShowSendToMenu
 		{
 			get => UserSettingsService.GeneralSettingsService.ShowSendToMenu;
@@ -465,7 +512,7 @@ namespace Files.App.ViewModels.Settings
 		}
 	}
 
-	public class PageOnStartupViewModel
+	public sealed class PageOnStartupViewModel
 	{
 		public string Text
 		{
@@ -478,7 +525,7 @@ namespace Files.App.ViewModels.Settings
 			=> Path = path;
 	}
 
-	public class AppLanguageItem
+	public sealed class AppLanguageItem
 	{
 		public string LanguagID { get; set; }
 
@@ -507,7 +554,7 @@ namespace Files.App.ViewModels.Settings
 		}
 	}
 
-	public class DateTimeFormatItem
+	public sealed class DateTimeFormatItem
 	{
 		public string Label { get; }
 

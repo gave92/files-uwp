@@ -1,25 +1,27 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
+
+using Files.App.Server.Data.Enums;
 
 namespace Files.App.Data.Models
 {
-	public class CurrentInstanceViewModel : ObservableObject
+	public sealed class CurrentInstanceViewModel : ObservableObject
 	{
 		// TODO:
 		//  In the future, we should consolidate these public variables into
 		//  a single enum property providing simplified customization of the
 		//  values being manipulated inside the setter blocks
 
-		public FolderSettingsViewModel FolderSettings { get; }
+		public LayoutPreferencesManager FolderSettings { get; }
 
 		public CurrentInstanceViewModel()
 		{
-			FolderSettings = new FolderSettingsViewModel();
+			FolderSettings = new LayoutPreferencesManager();
 		}
 
 		public CurrentInstanceViewModel(FolderLayoutModes rootLayoutMode)
 		{
-			FolderSettings = new FolderSettingsViewModel(rootLayoutMode);
+			FolderSettings = new LayoutPreferencesManager(rootLayoutMode);
 		}
 
 		private bool isPageTypeSearchResults = false;
@@ -31,7 +33,6 @@ namespace Files.App.Data.Models
 				SetProperty(ref isPageTypeSearchResults, value);
 				OnPropertyChanged(nameof(CanCreateFileInPage));
 				OnPropertyChanged(nameof(CanCopyPathInPage));
-				OnPropertyChanged(nameof(ShowSearchUnindexedItemsMessage));
 			}
 		}
 
@@ -40,24 +41,6 @@ namespace Files.App.Data.Models
 		{
 			get => currentSearchQuery;
 			set => SetProperty(ref currentSearchQuery, value);
-		}
-
-		private bool searchedUnindexedItems;
-		public bool SearchedUnindexedItems
-		{
-			get => searchedUnindexedItems;
-			set
-			{
-				if (SetProperty(ref searchedUnindexedItems, value))
-				{
-					OnPropertyChanged(nameof(ShowSearchUnindexedItemsMessage));
-				}
-			}
-		}
-
-		public bool ShowSearchUnindexedItemsMessage
-		{
-			get => !SearchedUnindexedItems && IsPageTypeSearchResults;
 		}
 
 		private bool isPageTypeNotHome = false;

@@ -1,7 +1,8 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using CommunityToolkit.WinUI.UI;
+using Files.App.Server.Data.Enums;
 using Files.App.UserControls.Selection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Input;
@@ -14,7 +15,6 @@ using System.IO;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
-using static Files.App.Constants;
 using DispatcherQueueTimer = Microsoft.UI.Dispatching.DispatcherQueueTimer;
 
 namespace Files.App.Views.Layouts
@@ -39,9 +39,17 @@ namespace Files.App.Views.Layouts
 
 		// Properties
 
-		protected override uint IconSize => Browser.ColumnViewBrowser.ColumnViewSizeSmall;
 		protected override ListViewBase ListViewBase => FileList;
 		protected override SemanticZoom RootZoom => RootGridZoom;
+		public ScrollViewer? ContentScroller { get; private set; }
+
+		/// <summary>
+		/// Row height in the Columns View
+		/// </summary>
+		public int RowHeight
+		{
+			get => LayoutSizeKindHelper.GetColumnsViewRowHeight(UserSettingsService.LayoutSettingsService.ColumnsViewSize);
+		}
 
 		// Constructor
 
@@ -58,6 +66,11 @@ namespace Files.App.Views.Layouts
 		}
 
 		// Methods
+
+		private void FileList_Loaded(object sender, RoutedEventArgs e)
+		{
+			ContentScroller = FileList.FindDescendant<ScrollViewer>(x => x.Name == "ScrollViewer");
+		}
 
 		private void ColumnViewBase_GotFocus(object sender, RoutedEventArgs e)
 		{
@@ -80,8 +93,7 @@ namespace Files.App.Views.Layouts
 				return;
 
 			openedFolderPresenter.Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
-			var presenter = openedFolderPresenter.FindDescendant<Grid>()!;
-			presenter!.Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+			SetFolderBackground(openedFolderPresenter, new SolidColorBrush(Microsoft.UI.Colors.Transparent));
 			openedFolderPresenter = null;
 		}
 
@@ -135,6 +147,9 @@ namespace Files.App.Views.Layouts
 
 			FolderSettings.GroupOptionPreferenceUpdated -= ZoomIn;
 			FolderSettings.GroupOptionPreferenceUpdated += ZoomIn;
+			UserSettingsService.LayoutSettingsService.PropertyChanged += LayoutSettingsService_PropertyChanged;
+
+			SetItemContainerStyle();
 		}
 
 		private void HighlightPathDirectory(ListViewBase sender, ContainerContentChangingEventArgs args)
@@ -142,8 +157,8 @@ namespace Files.App.Views.Layouts
 			if (args.Item is ListedItem item && columnsOwner?.OwnerPath is string ownerPath
 				&& (ownerPath == item.ItemPath || ownerPath.StartsWith(item.ItemPath) && ownerPath[item.ItemPath.Length] is '/' or '\\'))
 			{
-				var presenter = args.ItemContainer.FindDescendant<Grid>()!;
-				presenter!.Background = this.Resources["ListViewItemBackgroundSelected"] as SolidColorBrush;
+				SetFolderBackground(args.ItemContainer as ListViewItem, this.Resources["ListViewItemBackgroundSelected"] as SolidColorBrush);
+
 				openedFolderPresenter = FileList.ContainerFromItem(item) as ListViewItem;
 				FileList.ContainerContentChanging -= HighlightPathDirectory;
 			}
@@ -152,6 +167,24 @@ namespace Files.App.Views.Layouts
 		protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
 		{
 			base.OnNavigatingFrom(e);
+			UserSettingsService.LayoutSettingsService.PropertyChanged -= LayoutSettingsService_PropertyChanged;
+		}
+
+		private void LayoutSettingsService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(ILayoutSettingsService.ColumnsViewSize))
+			{
+				// Get current scroll position
+				var previousOffset = ContentScroller?.VerticalOffset;
+
+				NotifyPropertyChanged(nameof(RowHeight));
+
+				// Update the container style to match the item size
+				SetItemContainerStyle();
+
+				// Restore correct scroll position
+				ContentScroller?.ChangeView(null, previousOffset, null);
+			}
 		}
 
 		override public void StartRenameItem()
@@ -206,6 +239,29 @@ namespace Files.App.Views.Layouts
 		protected override bool CanGetItemFromElement(object element)
 			=> element is ListViewItem;
 
+		/// <summary>
+		/// Sets the item size and spacing
+		/// </summary>
+		private void SetItemContainerStyle()
+		{
+			if (UserSettingsService.LayoutSettingsService.ColumnsViewSize == ColumnsViewSizeKind.Compact)
+			{
+				// Toggle style to force item size to update
+				FileList.ItemContainerStyle = RegularItemContainerStyle;
+
+				// Set correct style
+				FileList.ItemContainerStyle = CompactItemContainerStyle;
+			}
+			else
+			{
+				// Toggle style to force item size to update
+				FileList.ItemContainerStyle = CompactItemContainerStyle;
+
+				// Set correct style
+				FileList.ItemContainerStyle = RegularItemContainerStyle;
+			}
+		}
+
 		public override void Dispose()
 		{
 			base.Dispose();
@@ -223,8 +279,7 @@ namespace Files.App.Views.Layouts
 
 			if (e.RemovedItems.Count > 0 && openedFolderPresenter != null)
 			{
-				var presenter = openedFolderPresenter.FindDescendant<Grid>()!;
-				presenter!.Background = this.Resources["ListViewItemBackgroundSelected"] as SolidColorBrush;
+				SetFolderBackground(openedFolderPresenter, this.Resources["ListViewItemBackgroundSelected"] as SolidColorBrush);
 			}
 
 			if (SelectedItems?.Count == 1 && SelectedItem?.PrimaryItemAttribute is StorageItemTypes.Folder)
@@ -248,7 +303,7 @@ namespace Files.App.Views.Layouts
 			else if (SelectedItems?.Count > 1
 				|| SelectedItem?.PrimaryItemAttribute is StorageItemTypes.File
 				|| openedFolderPresenter != null && ParentShellPageInstance != null
-				&& !ParentShellPageInstance.FilesystemViewModel.FilesAndFolders.Contains(FileList.ItemFromContainer(openedFolderPresenter))
+				&& !ParentShellPageInstance.FilesystemViewModel.FilesAndFolders.ToList().Contains(FileList.ItemFromContainer(openedFolderPresenter))
 				&& !isDraggingSelectionRectangle) // Skip closing if dragging since nothing should be open 
 			{
 				CloseFolder();
@@ -498,11 +553,14 @@ namespace Files.App.Views.Layouts
 				case FolderLayoutModes.DetailsView:
 					parent.FolderSettings.ToggleLayoutModeDetailsView(true);
 					break;
+				case FolderLayoutModes.ListView:
+					parent.FolderSettings.ToggleLayoutModeList(true);
+					break;
 				case FolderLayoutModes.TilesView:
 					parent.FolderSettings.ToggleLayoutModeTiles(true);
 					break;
 				case FolderLayoutModes.GridView:
-					parent.FolderSettings.ToggleLayoutModeGridView(e.GridViewSize);
+					parent.FolderSettings.ToggleLayoutModeGridView(true);
 					break;
 				case FolderLayoutModes.Adaptive:
 					parent.FolderSettings.ToggleLayoutModeAdaptive();
@@ -532,6 +590,17 @@ namespace Files.App.Views.Layouts
 			LockPreviewPaneContent = true;
 			FileList.SelectedItem = null;
 			LockPreviewPaneContent = false;
+		}
+
+		private static void SetFolderBackground(ListViewItem? lvi, SolidColorBrush? backgroundColor)
+		{
+			if (lvi == null || backgroundColor == null) return;
+
+
+			if (lvi.FindDescendant<Grid>() is Grid presenter)
+			{
+				presenter.Background = backgroundColor;
+			}
 		}
 	}
 }

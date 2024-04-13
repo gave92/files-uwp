@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Extensions;
@@ -23,8 +23,8 @@ namespace Files.App.Data.Factories
 
 			if (isAdvanced)
 			{
-				accessControls = new()
-				{
+				accessControls =
+				[
 					new(current)
 					{
 						AccessMask = AccessMaskFlags.FullControl,
@@ -133,7 +133,7 @@ namespace Files.App.Data.Factories
 						AccessMaskName = "SecurityTakeOwnershipLabel/Text".GetLocalizedResource(),
 						IsEditable = !isInherited
 					}
-				};
+				];
 
 				if (isFolder)
 				{
@@ -155,8 +155,8 @@ namespace Files.App.Data.Factories
 			}
 			else
 			{
-				accessControls = new()
-				{
+				accessControls =
+				[
 					new(current)
 					{
 						AccessMask = AccessMaskFlags.FullControl,
@@ -166,7 +166,7 @@ namespace Files.App.Data.Factories
 					new(current)
 					{
 						AccessMask = AccessMaskFlags.Modify,
-						AccessMaskName = "SecurityModifyLabel/Text".GetLocalizedResource(),
+						AccessMaskName = "Modify".GetLocalizedResource(),
 						IsEditable = !isInherited
 					},
 					new(current)
@@ -197,7 +197,7 @@ namespace Files.App.Data.Factories
 					{
 						AccessMaskName = "SecuritySpecialLabel/Text".GetLocalizedResource()
 					}
-				};
+				];
 
 				if (!isFolder)
 				{

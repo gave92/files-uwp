@@ -1,20 +1,20 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Utils.Storage
 {
-	public class StorageHistoryWrapper : IDisposable
+	public sealed class StorageHistoryWrapper : IDisposable
 	{
 		private int index = -1;
 
-		private List<IStorageHistory> histories = new();
+		private List<IStorageHistory> histories = [];
 
 		public bool CanRedo() => index + 1 < histories.Count;
 		public bool CanUndo() => index >= 0 && histories.Count > 0;
 
 		public IStorageHistory GetCurrentHistory() => histories[index];
 
-		public void AddHistory(IStorageHistory history)
+		public void AddHistory(IStorageHistory? history)
 		{
 			if (history is not null)
 			{

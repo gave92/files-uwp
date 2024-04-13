@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Extensions.Logging;
@@ -15,7 +15,7 @@ namespace Files.App.Utils.Cloud
 
 		public static EventHandler<NotifyCollectionChangedEventArgs> DataChanged;
 
-		private static readonly List<DriveItem> _Drives = new();
+		private static readonly List<DriveItem> _Drives = [];
 		public static IReadOnlyList<DriveItem> Drives
 		{
 			get
@@ -63,7 +63,19 @@ namespace Files.App.Utils.Cloud
 					ShowProperties = true,
 				};
 
-				var iconData = provider.IconData ?? await FileThumbnailHelper.LoadIconWithoutOverlayAsync(provider.SyncFolder, 24);
+				var iconData = provider.IconData;
+
+				if (iconData is null)
+				{
+					var result = await FileThumbnailHelper.GetIconAsync(
+						provider.SyncFolder,
+						Constants.ShellIconSizes.Small,
+						false,
+						IconOptions.ReturnIconOnly | IconOptions.UseCurrentScale);
+
+					iconData = result;
+				}
+
 				if (iconData is not null)
 				{
 					cloudProviderItem.IconData = iconData;

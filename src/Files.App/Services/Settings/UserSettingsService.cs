@@ -1,10 +1,10 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Files.App.Utils.Serialization;
 using Files.App.Utils.Serialization.Implementation;
-using Files.Core.Services.Settings;
+using Files.App.Services.Settings;
 using Files.Shared.Extensions;
 using System.Collections.Generic;
 using System.IO;
@@ -72,6 +72,7 @@ namespace Files.App.Services.Settings
 			// Remove session settings
 			export.Remove(nameof(GeneralSettingsService.LastSessionTabList));
 			export.Remove(nameof(GeneralSettingsService.LastCrashedTabList));
+			export.Remove(nameof(GeneralSettingsService.PathHistoryList));
 
 			return JsonSettingsSerializer.SerializeToJson(export);
 		}
@@ -80,9 +81,9 @@ namespace Files.App.Services.Settings
 		{
 			Dictionary<string, object> settingsImport = import switch
 			{
-				string s => JsonSettingsSerializer?.DeserializeFromJson<Dictionary<string, object>>(s) ?? new(),
+				string s => JsonSettingsSerializer?.DeserializeFromJson<Dictionary<string, object>>(s) ?? [],
 				Dictionary<string, object> d => d,
-				_ => new(),
+				_ => [],
 			};
 
 			if (!settingsImport.IsEmpty() && base.ImportSettings(settingsImport))

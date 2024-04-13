@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Actions
@@ -40,7 +40,7 @@ namespace Files.App.Actions
 		private string ComputeLabel()
 		{
 			if (context.SelectedItems == null || context.SelectedItems.Count == 0)
-				return string.Empty;
+				return string.Format("BaseLayoutItemContextFlyoutExtractToChildFolder".GetLocalizedResource(), string.Empty);
 
 			return context.SelectedItems.Count > 1
 				? string.Format("BaseLayoutItemContextFlyoutExtractToChildFolder".GetLocalizedResource(), "*")

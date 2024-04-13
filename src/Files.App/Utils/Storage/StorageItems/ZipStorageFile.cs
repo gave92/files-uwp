@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.Shared.Helpers;
@@ -9,6 +9,7 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
+using Windows.Win32;
 using IO = System.IO;
 
 namespace Files.App.Utils.Storage
@@ -310,7 +311,7 @@ namespace Files.App.Utils.Storage
 					else
 					{
 						var fileName = IO.Path.Combine(IO.Path.GetDirectoryName(Path), desiredName);
-						NativeFileOperationsHelper.MoveFileFromApp(Path, fileName);
+						PInvoke.MoveFileFromApp(Path, fileName);
 					}
 				}
 				else
@@ -354,7 +355,7 @@ namespace Files.App.Utils.Storage
 					}
 					else if (option == StorageDeleteOption.PermanentDelete)
 					{
-						NativeFileOperationsHelper.DeleteFileFromApp(Path);
+						PInvoke.DeleteFileFromApp(Path);
 					}
 					else
 					{
@@ -518,7 +519,7 @@ namespace Files.App.Utils.Storage
 			};
 		}
 
-		private class ZipFileBasicProperties : BaseBasicProperties
+		private sealed class ZipFileBasicProperties : BaseBasicProperties
 		{
 			private ArchiveFileInfo entry;
 

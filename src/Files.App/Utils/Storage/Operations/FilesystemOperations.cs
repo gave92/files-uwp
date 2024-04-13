@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.Shared.Helpers;
@@ -7,13 +7,14 @@ using System.IO;
 using System.Text;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
+using Windows.Win32;
 
 namespace Files.App.Utils.Storage
 {
 	/// <summary>
 	/// Provides group of file system operation for given page instance.
 	/// </summary>
-	public class FilesystemOperations : IFilesystemOperations
+	public sealed class FilesystemOperations : IFilesystemOperations
 	{
 		private IShellPage _associatedInstance;
 
@@ -210,7 +211,7 @@ namespace Files.App.Utils.Storage
 			}
 			else if (source.ItemType == FilesystemItemType.File)
 			{
-				var fsResult = (FilesystemResult)await Task.Run(() => NativeFileOperationsHelper.CopyFileFromApp(source.Path, destination, true));
+				var fsResult = (FilesystemResult)await Task.Run(() => PInvoke.CopyFileFromApp(source.Path, destination, true));
 
 				if (!fsResult)
 				{
@@ -363,7 +364,7 @@ namespace Files.App.Utils.Storage
 				}
 				else
 				{
-					var fsResult = (FilesystemResult)await Task.Run(() => NativeFileOperationsHelper.MoveFileFromApp(source.Path, destination));
+					var fsResult = (FilesystemResult)await Task.Run(() => PInvoke.MoveFileFromApp(source.Path, destination));
 
 					if (!fsResult)
 					{
@@ -423,7 +424,7 @@ namespace Files.App.Utils.Storage
 			}
 			else if (source.ItemType == FilesystemItemType.File)
 			{
-				var fsResult = (FilesystemResult)await Task.Run(() => NativeFileOperationsHelper.MoveFileFromApp(source.Path, destination));
+				var fsResult = (FilesystemResult)await Task.Run(() => PInvoke.MoveFileFromApp(source.Path, destination));
 
 				if (!fsResult)
 				{
@@ -503,7 +504,7 @@ namespace Files.App.Utils.Storage
 
 			if (permanently)
 			{
-				fsResult = (FilesystemResult)NativeFileOperationsHelper.DeleteFileFromApp(source.Path);
+				fsResult = (FilesystemResult)PInvoke.DeleteFileFromApp(source.Path);
 			}
 			if (!fsResult)
 			{
@@ -620,7 +621,7 @@ namespace Files.App.Utils.Storage
 				{
 					// Try again with MoveFileFromApp
 					var destination = Path.Combine(Path.GetDirectoryName(source.Path), newName);
-					if (NativeFileOperationsHelper.MoveFileFromApp(source.Path, destination))
+					if (PInvoke.MoveFileFromApp(source.Path, destination))
 					{
 						fsProgress.ReportStatus(FileSystemStatusCode.Success);
 
@@ -729,7 +730,7 @@ namespace Files.App.Utils.Storage
 
 			FilesystemResult fsResult = FileSystemStatusCode.InProgress;
 
-			fsResult = (FilesystemResult)await Task.Run(() => NativeFileOperationsHelper.MoveFileFromApp(source.Path, destination));
+			fsResult = (FilesystemResult)await Task.Run(() => PInvoke.MoveFileFromApp(source.Path, destination));
 
 			if (!fsResult)
 			{
@@ -806,17 +807,23 @@ namespace Files.App.Utils.Storage
 
 		private async static Task<BaseStorageFolder> CloneDirectoryAsync(BaseStorageFolder sourceFolder, BaseStorageFolder destinationFolder, string sourceRootName, CreationCollisionOption collision = CreationCollisionOption.FailIfExists)
 		{
-			BaseStorageFolder createdRoot = await destinationFolder.CreateFolderAsync(sourceRootName, collision);
+			BaseStorageFolder createdRoot;
+			if (collision is CreationCollisionOption.ReplaceExisting)
+				// Dont't delete the contents of the folder
+				createdRoot = await destinationFolder.CreateFolderAsync(sourceRootName, CreationCollisionOption.OpenIfExists);
+			else
+				createdRoot = await destinationFolder.CreateFolderAsync(sourceRootName, collision);
+
 			destinationFolder = createdRoot;
 
 			foreach (BaseStorageFile fileInSourceDir in await sourceFolder.GetFilesAsync())
 			{
-				await fileInSourceDir.CopyAsync(destinationFolder, fileInSourceDir.Name, NameCollisionOption.GenerateUniqueName);
+				await fileInSourceDir.CopyAsync(destinationFolder, fileInSourceDir.Name, collision.ConvertBack());
 			}
 
 			foreach (BaseStorageFolder folderinSourceDir in await sourceFolder.GetFoldersAsync())
 			{
-				await CloneDirectoryAsync(folderinSourceDir, destinationFolder, folderinSourceDir.Name);
+				await CloneDirectoryAsync(folderinSourceDir, destinationFolder, folderinSourceDir.Name, collision);
 			}
 
 			return createdRoot;

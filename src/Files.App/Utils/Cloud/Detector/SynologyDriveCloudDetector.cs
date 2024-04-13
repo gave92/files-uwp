@@ -1,7 +1,7 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using Files.Core.Utils.Cloud;
+using Files.App.Utils.Cloud;
 using Microsoft.Data.Sqlite;
 using System.IO;
 using Windows.Storage;
@@ -11,7 +11,7 @@ namespace Files.App.Utils.Cloud
 	/// <summary>
 	/// Provides an utility for Synology Drive Cloud detection.
 	/// </summary>
-	public class SynologyDriveCloudDetector : AbstractCloudDetector
+	public sealed class SynologyDriveCloudDetector : AbstractCloudDetector
 	{
 		protected override async IAsyncEnumerable<ICloudProvider> GetProviders()
 		{

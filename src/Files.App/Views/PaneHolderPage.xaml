@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <Page
 	x:Class="Files.App.Views.PaneHolderPage"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -122,7 +122,7 @@
 				<icore:ChangePropertyAction
 					PropertyName="CurrentInstanceBorderBrush"
 					TargetObject="{Binding ElementName=PaneLeft}"
-					Value="{ThemeResource DividerStrokeColorDefault}" />
+					Value="{ThemeResource DividerStrokeColorDefaultBrush}" />
 				<icore:ChangePropertyAction
 					PropertyName="CurrentInstanceBorderThickness"
 					TargetObject="{Binding ElementName=PaneLeft}"
@@ -142,7 +142,7 @@
 				<icore:ChangePropertyAction
 					PropertyName="CurrentInstanceBorderBrush"
 					TargetObject="{Binding ElementName=PaneRight}"
-					Value="{ThemeResource DividerStrokeColorDefault}" />
+					Value="{ThemeResource DividerStrokeColorDefaultBrush}" />
 				<icore:ChangePropertyAction
 					PropertyName="CurrentInstanceBorderThickness"
 					TargetObject="{Binding ElementName=PaneRight}"

@@ -1,7 +1,7 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using Files.Core.Services;
+using Files.App.Services;
 using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 
@@ -14,7 +14,7 @@ namespace Files.App.Services.PreviewPopupProviders
 		public IntPtr lpData;
 	}
 
-	public class SeerProProvider : IPreviewPopupProvider
+	public sealed class SeerProProvider : IPreviewPopupProvider
 	{
 		public static SeerProProvider Instance { get; } = new();
 

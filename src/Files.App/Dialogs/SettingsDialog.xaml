@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <ContentDialog
 	x:Class="Files.App.Dialogs.SettingsDialog"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -8,6 +8,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	Closing="ContentDialog_Closing"
 	DataContext="{x:Bind ViewModel, Mode=OneWay}"
+	HighContrastAdjustment="None"
 	RequestedTheme="{x:Bind RootAppElement.RequestedTheme, Mode=OneWay}"
 	Style="{StaticResource DefaultContentDialogStyle}"
 	mc:Ignorable="d">
@@ -29,7 +30,7 @@
 	<Grid
 		x:Name="ContainerGrid"
 		MaxHeight="790"
-		Background="{ThemeResource SolidBackgroundFillColorBase}">
+		Background="{ThemeResource SolidBackgroundFillColorBaseBrush}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="44" />
 			<RowDefinition Height="*" />
@@ -84,65 +85,74 @@
 			<!--  Menu Items  -->
 			<NavigationView.MenuItems>
 				<NavigationViewItem
-					AccessKey="P"
 					AutomationProperties.AutomationId="SettingsItemGeneral"
 					Content="{helpers:ResourceString Name=General}"
 					IsSelected="True"
-					Tag="0">
+					Tag="GeneralPage">
 					<NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xE9E9;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem
-					AccessKey="A"
 					AutomationProperties.AutomationId="SettingsItemAppearance"
 					Content="{helpers:ResourceString Name=Appearance}"
-					Tag="1">
+					Tag="AppearancePage">
 					<NavigationViewItem.Icon>
 						<FontIcon HorizontalAlignment="Left" Glyph="&#xE790;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem
-					AccessKey="F"
+					AutomationProperties.AutomationId="SettingsItemLayout"
+					Content="{helpers:ResourceString Name=Layout}"
+					Tag="LayoutPage">
+					<NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xE8A9;" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+				<NavigationViewItem
 					AutomationProperties.AutomationId="SettingsItemFolders"
-					Content="{helpers:ResourceString Name=Folders}"
-					Tag="2">
+					Content="{helpers:ResourceString Name=FilesAndFolders}"
+					Tag="FoldersPage">
 					<NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xE8B7;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem
-					AccessKey="T"
+					AutomationProperties.AutomationId="SettingsItemActions"
+					Content="Actions"
+					Tag="ActionsPage">
+					<NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xF73D;" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+				<NavigationViewItem
 					AutomationProperties.AutomationId="SettingsItemTags"
 					Content="{helpers:ResourceString Name=FileTags}"
-					Tag="3">
+					Tag="TagsPage">
 					<NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xE8EC;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem
-					AccessKey="G"
 					AutomationProperties.AutomationId="SettingsItemGit"
 					Content="{helpers:ResourceString Name=Git}"
-					Tag="4">
+					Tag="GitPage">
 					<NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xE794;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem
-					AccessKey="E"
 					AutomationProperties.AutomationId="SettingsItemAdvanced"
 					Content="{helpers:ResourceString Name=Advanced}"
-					Tag="5">
+					Tag="AdvancedPage">
 					<NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xF1AD;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem
-					AccessKey="B"
 					AutomationProperties.AutomationId="SettingsItemAbout"
 					Content="{helpers:ResourceString Name=About}"
-					Tag="6">
+					Tag="AboutPage">
 					<NavigationViewItem.Icon>
 						<FontIcon FontSize="16" Glyph="&#xE946;" />
 					</NavigationViewItem.Icon>

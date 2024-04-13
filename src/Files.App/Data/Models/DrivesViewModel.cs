@@ -1,14 +1,14 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using Files.Core.Services.SizeProvider;
+using Files.App.Services.SizeProvider;
 using Files.Core.Storage.LocatableStorage;
 using Microsoft.Extensions.Logging;
 using System.IO;
 
 namespace Files.App.Data.Models
 {
-	public class DrivesViewModel : ObservableObject, IDisposable
+	public sealed class DrivesViewModel : ObservableObject, IDisposable
 	{
 		public ObservableCollection<ILocatableFolder> Drives
 		{
@@ -35,7 +35,7 @@ namespace Files.App.Data.Models
 			this.folderSizeProvider = folderSizeProvider;
 			this.logger = logger;
 
-			drives = new ObservableCollection<ILocatableFolder>();
+			drives = [];
 
 			watcher = removableDrivesService.CreateWatcher();
 			watcher.DeviceAdded += Watcher_DeviceAdded;

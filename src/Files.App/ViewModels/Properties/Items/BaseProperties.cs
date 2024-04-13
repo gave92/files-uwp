@@ -1,10 +1,10 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Dispatching;
 using System.IO;
 using Windows.Storage.FileProperties;
-using static Files.Core.Helpers.NativeFindStorageItemHelper;
+using static Files.App.Helpers.NativeFindStorageItemHelper;
 using FileAttributes = System.IO.FileAttributes;
 
 namespace Files.App.ViewModels.Properties
@@ -26,16 +26,19 @@ namespace Files.App.ViewModels.Properties
 		public async Task GetOtherPropertiesAsync(IStorageItemExtraProperties properties)
 		{
 			string dateAccessedProperty = "System.DateAccessed";
+			string dateModifiedProperty = "System.DateModified";
 
-			List<string> propertiesName = new()
-			{
-				dateAccessedProperty
-			};
+			List<string> propertiesName =
+			[
+				dateAccessedProperty,
+				dateModifiedProperty
+			];
 
 			IDictionary<string, object> extraProperties = await properties.RetrievePropertiesAsync(propertiesName);
 
 			// Cannot get date and owner in MTP devices
 			ViewModel.ItemAccessedTimestampReal = (DateTimeOffset)(extraProperties[dateAccessedProperty] ?? DateTimeOffset.Now);
+			ViewModel.ItemModifiedTimestampReal = (DateTimeOffset)(extraProperties[dateModifiedProperty] ?? DateTimeOffset.Now);
 		}
 
 		public async Task<(long size, long sizeOnDisk)> CalculateFolderSizeAsync(string path, CancellationToken token)

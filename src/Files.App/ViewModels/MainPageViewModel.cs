@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Utils.Terminal;
@@ -13,7 +13,7 @@ namespace Files.App.ViewModels
 	/// <summary>
 	/// Represents ViewModel of <see cref="MainPage"/>.
 	/// </summary>
-	public class MainPageViewModel : ObservableObject
+	public sealed class MainPageViewModel : ObservableObject
 	{
 		// Dependency injections
 
@@ -25,9 +25,9 @@ namespace Files.App.ViewModels
 
 		// Properties
 
-		public static ObservableCollection<TabBarItem> AppInstances { get; private set; } = new();
+		public static ObservableCollection<TabBarItem> AppInstances { get; private set; } = [];
 
-		public List<ITabBar> MultitaskingControls { get; } = new();
+		public List<ITabBar> MultitaskingControls { get; } = [];
 
 		public ITabBar? MultitaskingControl { get; set; }
 
@@ -38,18 +38,36 @@ namespace Files.App.ViewModels
 			set => SetProperty(ref selectedTabItem, value);
 		}
 
+		private bool shouldViewControlBeDisplayed;
+		public bool ShouldViewControlBeDisplayed
+		{
+			get => shouldViewControlBeDisplayed;
+			set => SetProperty(ref shouldViewControlBeDisplayed, value);
+		}
+
+		private bool shouldPreviewPaneBeActive;
+		public bool ShouldPreviewPaneBeActive
+		{
+			get => shouldPreviewPaneBeActive;
+			set => SetProperty(ref shouldPreviewPaneBeActive, value);
+		}
+
+		private bool shouldPreviewPaneBeDisplayed;
+		public bool ShouldPreviewPaneBeDisplayed
+		{
+			get => shouldPreviewPaneBeDisplayed;
+			set => SetProperty(ref shouldPreviewPaneBeDisplayed, value);
+		}
+
 		// Commands
 
 		public ICommand NavigateToNumberedTabKeyboardAcceleratorCommand { get; }
-		public ICommand OpenNewWindowAcceleratorCommand { get; }
 
 		// Constructor
 
 		public MainPageViewModel()
 		{
 			NavigateToNumberedTabKeyboardAcceleratorCommand = new RelayCommand<KeyboardAcceleratorInvokedEventArgs>(ExecuteNavigateToNumberedTabKeyboardAcceleratorCommand);
-			OpenNewWindowAcceleratorCommand = new AsyncRelayCommand<KeyboardAcceleratorInvokedEventArgs>(ExecuteOpenNewWindowAcceleratorCommand);
-			OpenNewWindowAcceleratorCommand = new AsyncRelayCommand<KeyboardAcceleratorInvokedEventArgs>(OpenNewWindowAcceleratorAsync);
 			TerminalToggleCommand = new RelayCommand(() => IsTerminalViewOpen = !IsTerminalViewOpen);
 			TerminalSyncUpCommand = new AsyncRelayCommand(async () =>
 			{
@@ -118,20 +136,19 @@ namespace Files.App.ViewModels
 						UserSettingsService.GeneralSettingsService.TabsOnStartupList is not null)
 					{
 						foreach (string path in UserSettingsService.GeneralSettingsService.TabsOnStartupList)
-							await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), path);
+							await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), path, true);
 					}
 					else if (UserSettingsService.GeneralSettingsService.ContinueLastSessionOnStartUp &&
 						UserSettingsService.GeneralSettingsService.LastSessionTabList is not null)
 					{
-						foreach (string tabArgsString in UserSettingsService.GeneralSettingsService.LastSessionTabList)
+						if (AppInstances.Count == 0)
 						{
-							var tabArgs = CustomTabViewItemParameter.Deserialize(tabArgsString);
-							await NavigationHelpers.AddNewTabByParamAsync(tabArgs.InitialPageType, tabArgs.NavigationParameter);
+							foreach (string tabArgsString in UserSettingsService.GeneralSettingsService.LastSessionTabList)
+							{
+								var tabArgs = CustomTabViewItemParameter.Deserialize(tabArgsString);
+								await NavigationHelpers.AddNewTabByParamAsync(tabArgs.InitialPageType, tabArgs.NavigationParameter);
+							}
 						}
-
-						var defaultArg = new CustomTabViewItemParameter() { InitialPageType = typeof(PaneHolderPage), NavigationParameter = "Home" };
-
-						UserSettingsService.GeneralSettingsService.LastSessionTabList = new List<string> { defaultArg.Serialize() };
 					}
 					else
 					{
@@ -153,27 +170,24 @@ namespace Files.App.ViewModels
 								UserSettingsService.GeneralSettingsService.TabsOnStartupList is not null)
 						{
 							foreach (string path in UserSettingsService.GeneralSettingsService.TabsOnStartupList)
-								await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), path);
+								await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), path, true);
 						}
 						else if (UserSettingsService.GeneralSettingsService.ContinueLastSessionOnStartUp &&
-							UserSettingsService.GeneralSettingsService.LastSessionTabList is not null)
+							UserSettingsService.GeneralSettingsService.LastSessionTabList is not null &&
+							AppInstances.Count == 0)
 						{
 							foreach (string tabArgsString in UserSettingsService.GeneralSettingsService.LastSessionTabList)
 							{
 								var tabArgs = CustomTabViewItemParameter.Deserialize(tabArgsString);
 								await NavigationHelpers.AddNewTabByParamAsync(tabArgs.InitialPageType, tabArgs.NavigationParameter);
 							}
-
-							var defaultArg = new CustomTabViewItemParameter() { InitialPageType = typeof(PaneHolderPage), NavigationParameter = "Home" };
-
-							UserSettingsService.GeneralSettingsService.LastSessionTabList = new List<string> { defaultArg.Serialize() };
 						}
 					}
 					catch { }
 				}
 
 				if (parameter is string navArgs)
-					await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), navArgs);
+					await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), navArgs, true);
 				else if (parameter is PaneNavigationArguments paneArgs)
 					await NavigationHelpers.AddNewTabByParamAsync(typeof(PaneHolderPage), paneArgs);
 				else if (parameter is CustomTabViewItemParameter tabArgs)
@@ -214,13 +228,6 @@ namespace Files.App.ViewModels
 				App.AppModel.TabStripSelectedIndex = indexToSelect;
 
 			e.Handled = true;
-		}
-
-		private async Task ExecuteOpenNewWindowAcceleratorCommand(KeyboardAcceleratorInvokedEventArgs? e)
-		{
-			await Launcher.LaunchUriAsync(new Uri("files-uwp:"));
-
-			e!.Handled = true;
 		}
 
 		// Terminal integration

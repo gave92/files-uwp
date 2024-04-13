@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <vm:BasePropertiesPage
 	x:Class="Files.App.Views.Properties.SecurityPage"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -116,7 +116,7 @@
 				<Border
 					Grid.Row="1"
 					Height="1"
-					Background="{ThemeResource DividerStrokeColorDefault}" />
+					Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
 
 				<!--  Access Control Entries List  -->
 				<ScrollViewer
@@ -230,7 +230,7 @@
 					Grid.Row="1"
 					Height="1"
 					Margin="-12,0"
-					Background="{ThemeResource DividerStrokeColorDefault}" />
+					Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
 
 				<!--  Permission Allow/Deny CheckBoxes  -->
 				<Grid

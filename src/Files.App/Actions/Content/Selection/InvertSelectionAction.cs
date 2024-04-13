@@ -1,9 +1,9 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Actions
 {
-	internal class InvertSelectionAction : ObservableObject, IAction
+	internal sealed class InvertSelectionAction : IAction
 	{
 		private readonly IContentPageContext context;
 
@@ -41,8 +41,6 @@ namespace Files.App.Actions
 		public InvertSelectionAction()
 		{
 			context = Ioc.Default.GetRequiredService<IContentPageContext>();
-
-			context.PropertyChanged += Context_PropertyChanged;
 		}
 
 		public Task ExecuteAsync()
@@ -50,18 +48,6 @@ namespace Files.App.Actions
 			context?.ShellPage?.SlimContentPage?.ItemManipulationModel?.InvertSelection();
 
 			return Task.CompletedTask;
-		}
-
-		private void Context_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-		{
-			switch (e.PropertyName)
-			{
-				case nameof(IContentPageContext.PageType):
-				case nameof(IContentPageContext.HasItem):
-				case nameof(IContentPageContext.ShellPage):
-					OnPropertyChanged(nameof(IsExecutable));
-					break;
-			}
 		}
 	}
 }

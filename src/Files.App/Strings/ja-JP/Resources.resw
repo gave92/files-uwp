@@ -117,11 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NavigationToolbarNewWindow.Label" xml:space="preserve">
+  <data name="NewWindow" xml:space="preserve">
     <value>新しいウィンドウ</value>
   </data>
   <data name="CopyPath" xml:space="preserve">
     <value>パスのコピー</value>
+  </data>
+  <data name="CopyPathWithQuotes" xml:space="preserve">
+    <value>引用符付きでパスのコピー</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>参照</value>
@@ -270,8 +273,8 @@
   <data name="Delete" xml:space="preserve">
     <value>削除</value>
   </data>
-  <data name="PinToFavorites" xml:space="preserve">
-    <value>お気に入りに固定</value>
+  <data name="PinFolderToSidebar" xml:space="preserve">
+    <value>サイドバーにピン留めする</value>
   </data>
   <data name="WelcomeDialog.Title" xml:space="preserve">
     <value>Files へようこそ!</value>
@@ -346,6 +349,12 @@
     <value>ドライブが取り外されました</value>
   </data>
   <data name="FileNotFoundDialog.Text" xml:space="preserve">
+    <value>アクセスしようとしているファイルは移動または削除された可能性があります。</value>
+  </data>
+  <data name="CannotAccessPropertiesTitle" xml:space="preserve">
+    <value>このファイルのプロパティを開けません</value>
+  </data>
+  <data name="CannotAccessPropertiesContent" xml:space="preserve">
     <value>アクセスしようとしているファイルは移動または削除された可能性があります。</value>
   </data>
   <data name="FileNotFoundDialog.Title" xml:space="preserve">
@@ -629,9 +638,6 @@
   </data>
   <data name="AddDialogListFolderSubHeader" xml:space="preserve">
     <value>空のフォルダーを作成</value>
-  </data>
-  <data name="LayoutMode" xml:space="preserve">
-    <value>レイアウト モード</value>
   </data>
   <data name="NavResfreshButton.AutomationProperties.Name" xml:space="preserve">
     <value>フォルダーを更新</value>
@@ -975,9 +981,6 @@
   <data name="SearchPagePathBoxOverrideText" xml:space="preserve">
     <value>{0} の {1} での検索結果を表示:</value>
   </data>
-  <data name="SettingsListAndSortDirectoriesAlongsideFiles" xml:space="preserve">
-    <value>ファイルとフォルダーを分けずに並べ替える</value>
-  </data>
   <data name="Details" xml:space="preserve">
     <value>詳細</value>
   </data>
@@ -986,9 +989,6 @@
   </data>
   <data name="ShowProtectedSystemFiles" xml:space="preserve">
     <value>保護されたシステム ファイルを表示する</value>
-  </data>
-  <data name="SettingsSearchUnindexedItems" xml:space="preserve">
-    <value>インデックスされていない項目を検索結果に含める</value>
   </data>
   <data name="SyncFolderPreferencesAcrossDirectories" xml:space="preserve">
     <value>フォルダー間でレイアウトと並べ替えの設定を同期する</value>
@@ -1014,26 +1014,26 @@
   <data name="ShowOpenInNewPane" xml:space="preserve">
     <value>[新しいペインでフォルダーを開く] オプションを表示する</value>
   </data>
+  <data name="ShowCopyPath" xml:space="preserve">
+    <value>[パスのコピー] オプションを表示する</value>
+  </data>
+  <data name="ShowCreateFolderWithSelection" xml:space="preserve">
+    <value>[選択した項目でフォルダーを作成] オプションを表示する</value>
+  </data>
+  <data name="ShowCreateShortcut" xml:space="preserve">
+    <value>[ショートカットの作成] オプションを表示する</value>
+  </data>
   <data name="NavigationToolbarNewPane.Label" xml:space="preserve">
     <value>新しいペイン</value>
   </data>
   <data name="OpenInNewPane" xml:space="preserve">
     <value>新しいペインで開く</value>
   </data>
-  <data name="Folders" xml:space="preserve">
-    <value>フォルダー</value>
+  <data name="FilesAndFolders" xml:space="preserve">
+    <value>ファイルとフォルダー</value>
   </data>
   <data name="NavToolbarDetails.ToolTipService.ToolTip" xml:space="preserve">
     <value>詳細 (Ctrl+Shift+1)</value>
-  </data>
-  <data name="NavToolbarLargeIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>大アイコン (Ctrl+Shift+5)</value>
-  </data>
-  <data name="NavToolbarMediumIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>中アイコン (Ctrl+Shift+4)</value>
-  </data>
-  <data name="NavToolbarSmallIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>小アイコン (Ctrl+Shift+3)</value>
   </data>
   <data name="NavToolbarTiles.ToolTipService.ToolTip" xml:space="preserve">
     <value>タイル (Ctrl+Shift+2)</value>
@@ -1071,8 +1071,8 @@
   <data name="PropertyItemName" xml:space="preserve">
     <value>ファイル名</value>
   </data>
-  <data name="UnpinFromFavorites" xml:space="preserve">
-    <value>お気に入りから固定解除</value>
+  <data name="UnpinFolderFromSidebar" xml:space="preserve">
+    <value>サイドバーからピン留めを外す</value>
   </data>
   <data name="SidebarNetworkDrives" xml:space="preserve">
     <value>ネットワーク ドライブ</value>
@@ -1158,8 +1158,8 @@
   <data name="DrivesWidgetOptionsFlyoutMapNetDriveMenuItem.Text" xml:space="preserve">
     <value>ネットワーク ドライブを割り当てる</value>
   </data>
-  <data name="SidebarFavorites" xml:space="preserve">
-    <value>お気に入り</value>
+  <data name="Pinned" xml:space="preserve">
+    <value>ピン留め</value>
   </data>
   <data name="SidebarLibraries" xml:space="preserve">
     <value>ライブラリ</value>
@@ -1272,12 +1272,6 @@
   <data name="PropertyISO" xml:space="preserve">
     <value>ISO 感度</value>
   </data>
-  <data name="SearchUnindexedItemsLabel.Text" xml:space="preserve">
-    <value>お探しの項目が見つかりませんでしたか?</value>
-  </data>
-  <data name="SearchUnindexedItemsButton.Content" xml:space="preserve">
-    <value>インデックスされていない項目を検索する</value>
-  </data>
   <data name="ReplaceExisting" xml:space="preserve">
     <value>既存のファイルを置換</value>
   </data>
@@ -1320,17 +1314,11 @@
   <data name="Sort" xml:space="preserve">
     <value>並べ替え</value>
   </data>
-  <data name="NavToolbarGroupByRadioButtons.Text" xml:space="preserve">
-    <value>グループで表示</value>
-  </data>
   <data name="DateModifiedLowerCase" xml:space="preserve">
     <value>更新日時</value>
   </data>
   <data name="OriginalFolder" xml:space="preserve">
     <value>元のフォルダー</value>
-  </data>
-  <data name="NavToolbarSortByRadioButtons.Text" xml:space="preserve">
-    <value>並べ替え</value>
   </data>
   <data name="Descending" xml:space="preserve">
     <value>降順</value>
@@ -1342,7 +1330,7 @@
     <value>かなり大きい</value>
   </data>
   <data name="ItemSizeText_Large" xml:space="preserve">
-    <value>大</value>
+    <value>大きい</value>
   </data>
   <data name="ItemSizeText_Medium" xml:space="preserve">
     <value>中程度</value>
@@ -1384,7 +1372,7 @@
     <value>{0}年</value>
   </data>
   <data name="GroupItemsCount_Singular" xml:space="preserve">
-    <value>{0} ファイル</value>
+    <value>{0} 項目</value>
   </data>
   <data name="GroupItemsCount_Plural" xml:space="preserve">
     <value>{0} 項目</value>
@@ -1656,23 +1644,11 @@
   <data name="Home" xml:space="preserve">
     <value>ホーム</value>
   </data>
-  <data name="NavigationToolbarNewWindow.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+N</value>
-  </data>
   <data name="BaseLayoutContextFlyoutDetails.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+1</value>
   </data>
   <data name="BaseLayoutContextFlyoutTiles.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+2</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutSmallIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+3</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutMediumIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+4</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutLargeIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+5</value>
   </data>
   <data name="BaseLayoutContextFlyoutColumn.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+6</value>
@@ -1739,15 +1715,6 @@
   </data>
   <data name="Columns" xml:space="preserve">
     <value>カラム</value>
-  </data>
-  <data name="LargeIcons" xml:space="preserve">
-    <value>大アイコン</value>
-  </data>
-  <data name="MediumIcons" xml:space="preserve">
-    <value>中アイコン</value>
-  </data>
-  <data name="SmallIcons" xml:space="preserve">
-    <value>小アイコン</value>
   </data>
   <data name="Tiles" xml:space="preserve">
     <value>タイル</value>
@@ -1830,65 +1797,59 @@
   <data name="None" xml:space="preserve">
     <value>なし</value>
   </data>
-  <data name="HighDpiOption_UseDPIOnLogin" xml:space="preserve">
-    <value>Windows ログイン時</value>
+  <data name="CompatibilityOnWindowsLogin" xml:space="preserve">
+    <value>Windows にサインインしたとき</value>
   </data>
-  <data name="HighDpiOption_UseDPIOnProgramStart" xml:space="preserve">
-    <value>プログラム開始時</value>
+  <data name="CompatibilityOnProgramStart" xml:space="preserve">
+    <value>このプログラムを開いたとき</value>
   </data>
-  <data name="HighDpiOverride_System" xml:space="preserve">
+  <data name="System" xml:space="preserve">
     <value>システム</value>
   </data>
-  <data name="HighDpiOverride_SystemAdvanced" xml:space="preserve">
+  <data name="CompatibilitySystemEnhanced" xml:space="preserve">
     <value>システム (拡張)</value>
   </data>
-  <data name="OSCompatibility_Windows7" xml:space="preserve">
-    <value>Windows 7</value>
-  </data>
-  <data name="OSCompatibility_Windows8" xml:space="preserve">
-    <value>Windows 8</value>
-  </data>
-  <data name="OSCompatibility_WindowsVista" xml:space="preserve">
-    <value>Windows Vista</value>
-  </data>
-  <data name="OSCompatibility_WindowsVistaSP1" xml:space="preserve">
-    <value>Windows Vista SP1</value>
-  </data>
-  <data name="OSCompatibility_WindowsVistaSP2" xml:space="preserve">
-    <value>Windows Vista SP2</value>
-  </data>
-  <data name="ReducedColorMode_Color16Bit" xml:space="preserve">
+  <data name="CompatibilityReducedColorModeColor16bit" xml:space="preserve">
     <value>16 ビット (65536) カラー</value>
   </data>
-  <data name="ReducedColorMode_Color8Bit" xml:space="preserve">
+  <data name="CompatibilityReducedColorModeColor8bit" xml:space="preserve">
     <value>8 ビット (256) カラー</value>
   </data>
-  <data name="CompatibilityMode" xml:space="preserve">
-    <value>互換モード</value>
-  </data>
-  <data name="DisableFullscreenOptimizations" xml:space="preserve">
+  <data name="CompatibilityDisableFullscreenOptimizations" xml:space="preserve">
     <value>全画面表示の最適化を無効にする</value>
   </data>
-  <data name="ExecuteAt640X480" xml:space="preserve">
+  <data name="CompatibilityRunIn640x480Resolution" xml:space="preserve">
     <value>640 x 480 の解像度で実行する</value>
   </data>
-  <data name="OverrideDPIScalingBehaviour" xml:space="preserve">
+  <data name="CompatibilityOverrideHighDPIBehavior" xml:space="preserve">
     <value>高 DPI スケール設定の上書き</value>
   </data>
-  <data name="ReducedColorMode" xml:space="preserve">
+  <data name="CompatibilityReducedColorMode" xml:space="preserve">
     <value>カラー モードを制限する</value>
   </data>
-  <data name="RegisterForRestart" xml:space="preserve">
+  <data name="CompatibilityRegisterThisProgramForRestart" xml:space="preserve">
     <value>このプログラムを再起動するために登録する</value>
   </data>
   <data name="RunAsAdministrator" xml:space="preserve">
     <value>管理者として実行</value>
   </data>
-  <data name="RunCompatibilityTroubleShooter" xml:space="preserve">
+  <data name="CompatibilityRunTroubleshooter" xml:space="preserve">
     <value>互換性のトラブルシューティング ツールの実行</value>
   </data>
-  <data name="UseMainMonitorDPISettings" xml:space="preserve">
+  <data name="CompatibilityUseDPISettings" xml:space="preserve">
     <value>メイン ディスプレイに設定されている DPI を使用する</value>
+  </data>
+  <data name="CompatibilityDoNotAdjustDPI" xml:space="preserve">
+    <value>DPI を調整しない</value>
+  </data>
+  <data name="CompatibilityDoNotOverrideDPI" xml:space="preserve">
+    <value>DPI を上書きしない</value>
+  </data>
+  <data name="CompatibilityMode" xml:space="preserve">
+    <value>互換モード</value>
+  </data>
+  <data name="CompatibilityNoReducedColor" xml:space="preserve">
+    <value>カラーを制限しない</value>
   </data>
   <data name="ThirdPartyLicenses" xml:space="preserve">
     <value>サード パーティ ライセンス</value>
@@ -1928,9 +1889,6 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>種類</value>
-  </data>
-  <data name="IconGrid" xml:space="preserve">
-    <value>アイコン グリッド</value>
   </data>
   <data name="Bytes" xml:space="preserve">
     <value>バイト</value>
@@ -1988,9 +1946,6 @@
   </data>
   <data name="FileTags" xml:space="preserve">
     <value>タグ</value>
-  </data>
-  <data name="UseCompactSpacing" xml:space="preserve">
-    <value>詳細レイアウトで項目の間隔を狭くする</value>
   </data>
   <data name="Universal" xml:space="preserve">
     <value>ユニバーサル</value>
@@ -2063,9 +2018,6 @@
   </data>
   <data name="TypeColumn" xml:space="preserve">
     <value>種類</value>
-  </data>
-  <data name="DetailsLayoutColumns" xml:space="preserve">
-    <value>詳細レイアウトに表示する列</value>
   </data>
   <data name="Lockscreen" xml:space="preserve">
     <value>ロック画面</value>
@@ -2234,6 +2186,9 @@
   </data>
   <data name="ShowEditTagsMenu" xml:space="preserve">
     <value>[タグを編集] オプションを表示する</value>
+  </data>
+  <data name="ShowCompressionOptions" xml:space="preserve">
+    <value>[圧縮] および [展開] メニューを表示する</value>
   </data>
   <data name="ShowSendToMenu" xml:space="preserve">
     <value>[送る] メニューを表示する</value>
@@ -2419,7 +2374,10 @@
     <value>項目をクリップボードにコピーする</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
-    <value>項目のパスをクリップボードにコピーする</value>
+    <value>選択した項目のパスをクリップボードにコピーする</value>
+  </data>
+  <data name="CopyPathWithQuotesDescription" xml:space="preserve">
+    <value>選択した項目のパスを引用符付きでクリップボードにコピーする</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
     <value>項目をクリップボードに切り取る</value>
@@ -2485,16 +2443,16 @@
     <value>選択したファイルを他の人と共有する</value>
   </data>
   <data name="PinToStartDescription" xml:space="preserve">
-    <value>スタートメニューに項目をピン留めする</value>
+    <value>スタート メニューに項目をピン留めする</value>
   </data>
   <data name="UnpinFromStartDescription" xml:space="preserve">
-    <value>スタートメニューから項目のピン留めを外す</value>
+    <value>スタート メニューから項目のピン留めを外す</value>
   </data>
-  <data name="PinItemToFavoritesDescription" xml:space="preserve">
-    <value>お気に入りにフォルダーをピン留めする</value>
+  <data name="PinFolderToSidebarDescription" xml:space="preserve">
+    <value>サイドバーにフォルダーをピン留めする</value>
   </data>
-  <data name="UnpinItemFromFavoritesDescription" xml:space="preserve">
-    <value>お気に入りからフォルダーのピン留めを外す</value>
+  <data name="UnpinFolderFromSidebarDescription" xml:space="preserve">
+    <value>サイドバーからフォルダーのピン留めを外す</value>
   </data>
   <data name="SetAsWallpaperBackgroundDescription" xml:space="preserve">
     <value>選択した画像をデスクトップの背景に設定する</value>
@@ -2560,10 +2518,10 @@
     <value>ターミナルでフォルダーを管理者として開く</value>
   </data>
   <data name="LayoutDecreaseSizeDescription" xml:space="preserve">
-    <value>グリッド ビューのアイコンのサイズを小さくする</value>
+    <value>現在のビューの項目のサイズを小さくする</value>
   </data>
   <data name="LayoutIncreaseSizeDescription" xml:space="preserve">
-    <value>グリッド ビューのアイコンのサイズを大きくする</value>
+    <value>現在のビューの項目のサイズを大きくする</value>
   </data>
   <data name="LayoutDetailsDescription" xml:space="preserve">
     <value>詳細ビューに切り替える</value>
@@ -2571,14 +2529,17 @@
   <data name="LayoutTilesDescription" xml:space="preserve">
     <value>タイル ビューに切り替える</value>
   </data>
-  <data name="LayoutGridSmallDescription" xml:space="preserve">
-    <value>小アイコンのグリッド ビューに切り替える</value>
+  <data name="LayoutListDescription" xml:space="preserve">
+    <value>一覧ビューに切り替える</value>
   </data>
-  <data name="LayoutGridMediumDescription" xml:space="preserve">
-    <value>中アイコンのグリッド ビューに切り替える</value>
+  <data name="List" xml:space="preserve">
+    <value>一覧</value>
   </data>
-  <data name="LayoutGridLargeDescription" xml:space="preserve">
-    <value>大アイコンのグリッド ビューに切り替える</value>
+  <data name="Grid" xml:space="preserve">
+    <value>アイコン</value>
+  </data>
+  <data name="LayoutGridDescription" xml:space="preserve">
+    <value>アイコン ビューに切り替える</value>
   </data>
   <data name="LayoutColumnsDescription" xml:space="preserve">
     <value>カラム ビューに切り替える</value>
@@ -2621,9 +2582,6 @@
   </data>
   <data name="ToggleSortDirectionDescription" xml:space="preserve">
     <value>項目の並べ替え順を切り替える</value>
-  </data>
-  <data name="ToggleSortDirectoriesAlongsideFilesDescription" xml:space="preserve">
-    <value>ファイルとフォルダーを分けずに並べ替える</value>
   </data>
   <data name="GroupByNoneDescription" xml:space="preserve">
     <value>項目をグループ化せずに表示する</value>
@@ -2962,9 +2920,6 @@
   <data name="ShowCheckboxesWhenSelectingItems" xml:space="preserve">
     <value>項目選択時にチェック ボックスを表示する</value>
   </data>
-  <data name="SearchUnindexedItemsDescription" xml:space="preserve">
-    <value>インデックスされていない項目を検索する</value>
-  </data>
   <data name="EditPathDescription" xml:space="preserve">
     <value>パス バーに移動する</value>
   </data>
@@ -3004,6 +2959,9 @@
   <data name="Month" xml:space="preserve">
     <value>月</value>
   </data>
+  <data name="Day" xml:space="preserve">
+    <value>日</value>
+  </data>
   <data name="ToggleGroupByDateUnitDescription" xml:space="preserve">
     <value>日付でグループ化する場合の単位を切り替える</value>
   </data>
@@ -3013,8 +2971,11 @@
   <data name="Year" xml:space="preserve">
     <value>年</value>
   </data>
-  <data name="GroupByMonthInsteadOfYear" xml:space="preserve">
-    <value>年のかわりに月でグループ化する</value>
+  <data name="GroupByDateUnit" xml:space="preserve">
+    <value>日時のグループ化の単位</value>
+  </data>
+  <data name="GroupByDateCreatedDayDescription" xml:space="preserve">
+    <value>項目を作成日時の日でグループ化する</value>
   </data>
   <data name="GroupByDateCreatedMonthDescription" xml:space="preserve">
     <value>項目を作成日時の月でグループ化する</value>
@@ -3022,11 +2983,17 @@
   <data name="GroupByDateCreatedYearDescription" xml:space="preserve">
     <value>項目を作成日時の年でグループ化する</value>
   </data>
+  <data name="GroupByDateDeletedDayDescription" xml:space="preserve">
+    <value>項目を削除した日時の日でグループ化する</value>
+  </data>
   <data name="GroupByDateDeletedMonthDescription" xml:space="preserve">
     <value>項目を削除した日時の月でグループ化する</value>
   </data>
   <data name="GroupByDateDeletedYearDescription" xml:space="preserve">
     <value>項目を削除した日時の年でグループ化する</value>
+  </data>
+  <data name="GroupByDateModifiedDayDescription" xml:space="preserve">
+    <value>項目を更新日時の日でグループ化する</value>
   </data>
   <data name="GroupByDateModifiedMonthDescription" xml:space="preserve">
     <value>項目を更新日時の月でグループ化する</value>
@@ -3504,38 +3471,22 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteCanceled_Header" xml:space="preserve">
-    <value>{0} 項目の "{1}" からの完全な削除をキャンセルしました</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
-    <value>{0} 項目を "{1}" から完全に削除しました</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
-    <value>{0} 項目を "{1}" から完全に削除中にエラーが発生しました</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
-    <value>"{0}" を "{1}" から完全に削除できませんでした</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
-    <value>{0} 項目を "{1}" から完全に削除しています</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_RecycleCanceled_Header" xml:space="preserve">
     <value>{0} 項目の "{1}" からの削除をキャンセルしました</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleComplete_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
     <value>{0} 項目を "{1}" から削除しました</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleFailed_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
     <value>{0} 項目を "{1}" から削除中にエラーが発生しました</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleInProgress_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
+    <value>{0} 項目を "{1}" から削除できませんでした</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
     <value>{0} 項目を "{1}" から削除しています</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
@@ -3612,6 +3563,157 @@
     <value>ごみ箱から項目を復元できませんでした</value>
   </data>
   <data name="FailedToSetBackground" xml:space="preserve">
-    <value>背景の設定ができませんでした</value>
+    <value>背景を設定できませんでした</value>
+  </data>
+  <data name="GitDeleteBranch" xml:space="preserve">
+    <value>Git ブランチの削除</value>
+  </data>
+  <data name="GitDeleteBranchSubtitle" xml:space="preserve">
+    <value>"{0}" ブランチを完全に削除しますか?</value>
+  </data>
+  <data name="ConnectedToGitHub" xml:space="preserve">
+    <value>GitHub に接続しました</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>ログアウト</value>
+  </data>
+  <data name="ConnectToGitHub" xml:space="preserve">
+    <value>GitHub に接続</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>ログイン</value>
+  </data>
+  <data name="ErrorApplyingTagContent" xml:space="preserve">
+    <value>タグは NTFS でフォーマットされたドライブでのみ互換性があります。</value>
+  </data>
+  <data name="ErrorApplyingTagTitle" xml:space="preserve">
+    <value>このタグを適用中にエラーが発生しました</value>
+  </data>
+  <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
+    <value>選択したアーカイブから単一項目の場合は現在のフォルダー、複数項目の場合は新しいフォルダーに項目を抽出する</value>
+  </data>
+  <data name="ExtractHereSmart" xml:space="preserve">
+    <value>ここに展開 (スマート)</value>
+  </data>
+  <data name="SortFilesAndFoldersTogether" xml:space="preserve">
+    <value>ファイルとフォルダーを一緒に並べ替える</value>
+  </data>
+  <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
+    <value>ファイルとフォルダーを一緒に並べ替える</value>
+  </data>
+  <data name="SortFilesFirst" xml:space="preserve">
+    <value>ファイルを先に並べ替える</value>
+  </data>
+  <data name="SortFilesFirstDescription" xml:space="preserve">
+    <value>ファイルを先に、フォルダーを後に並べ替える</value>
+  </data>
+  <data name="SortFoldersFirst" xml:space="preserve">
+    <value>フォルダーを先に並べ替える</value>
+  </data>
+  <data name="SortFoldersFirstDescription" xml:space="preserve">
+    <value>フォルダーを先に、ファイルを後に並べ替える</value>
+  </data>
+  <data name="SortPriority" xml:space="preserve">
+    <value>並べ替えの優先順位</value>
+  </data>
+  <data name="FailedToRotateImage" xml:space="preserve">
+    <value>画像を回転できませんでした</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>再起動</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="FaildToShareItems" xml:space="preserve">
+    <value>項目を共有できませんでした</value>
+  </data>
+  <data name="ScrollToPreviousFolderWhenNavigatingUp" xml:space="preserve">
+    <value>親フォルダーに移動するときに元のフォルダーまでスクロールする</value>
+  </data>
+  <data name="NewWindowDescription" xml:space="preserve">
+    <value>新しいウィンドウを開く</value>
+  </data>
+  <data name="ChangeAlbumCover" xml:space="preserve">
+    <value>アルバムのカバーを変更</value>
+  </data>
+  <data name="ItemRenameFailed" xml:space="preserve">
+    <value>項目の名前を変更できませんでした</value>
+  </data>
+  <data name="HigherPermissionsRequired" xml:space="preserve">
+    <value>"{0}" の編集には追加のアクセス許可が必要です</value>
+  </data>
+  <data name="EditPermissions" xml:space="preserve">
+    <value>アクセス許可を編集</value>
+  </data>
+  <data name="BackgroundRunningNotificationBody" xml:space="preserve">
+    <value>起動パフォーマンスを向上させるため、Files はバックグラウンドで実行されています。</value>
+  </data>
+  <data name="BackgroundRunningNotificationHeader" xml:space="preserve">
+    <value>Files はどこに行きましたか?</value>
+  </data>
+  <data name="QuestionsAndDiscussions" xml:space="preserve">
+    <value>質問と議論</value>
+  </data>
+  <data name="TilesViewSizeInfo" xml:space="preserve">
+    <value>タイル ビューではサイズの変更はまだ利用できません。</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>コンパクト</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Small" xml:space="preserve">
+    <value>小さい</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>中</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+" xml:space="preserve">
+    <value>中 +</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium++" xml:space="preserve">
+    <value>中 ++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+++" xml:space="preserve">
+    <value>中 +++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium++++" xml:space="preserve">
+    <value>中 ++++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+++++" xml:space="preserve">
+    <value>中 +++++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large" xml:space="preserve">
+    <value>大</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large+" xml:space="preserve">
+    <value>大 +</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large++" xml:space="preserve">
+    <value>大 ++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large+++" xml:space="preserve">
+    <value>大 +++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="ExtraLarge" xml:space="preserve">
+    <value>特大</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="DetailsView" xml:space="preserve">
+    <value>詳細ビュー</value>
+  </data>
+  <data name="LayoutType" xml:space="preserve">
+    <value>レイアウトの種類</value>
   </data>
 </root>

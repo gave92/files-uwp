@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Xaml;
@@ -9,7 +9,7 @@ using Windows.System;
 
 namespace Files.App.ViewModels.UserControls
 {
-	public class SearchBoxViewModel : ObservableObject, ISearchBox
+	public sealed class SearchBoxViewModel : ObservableObject, ISearchBoxViewModel
 	{
 		private string query;
 		public string Query
@@ -20,17 +20,17 @@ namespace Files.App.ViewModels.UserControls
 
 		public bool WasQuerySubmitted { get; set; } = false;
 
-		public event TypedEventHandler<ISearchBox, SearchBoxTextChangedEventArgs>? TextChanged;
+		public event TypedEventHandler<ISearchBoxViewModel, SearchBoxTextChangedEventArgs>? TextChanged;
 
-		public event TypedEventHandler<ISearchBox, SearchBoxQuerySubmittedEventArgs>? QuerySubmitted;
+		public event TypedEventHandler<ISearchBoxViewModel, SearchBoxQuerySubmittedEventArgs>? QuerySubmitted;
 
-		public event EventHandler<ISearchBox>? Escaped;
+		public event EventHandler<ISearchBoxViewModel>? Escaped;
 
 		private readonly SuggestionComparer suggestionComparer = new SuggestionComparer();
 
-		public ObservableCollection<SuggestionModel> Suggestions { get; } = new ObservableCollection<SuggestionModel>();
+		public ObservableCollection<SuggestionModel> Suggestions { get; } = [];
 
-		private readonly List<SuggestionModel> oldQueries = new List<SuggestionModel>();
+		private readonly List<SuggestionModel> oldQueries = [];
 
 		public void ClearSuggestions()
 		{
@@ -93,9 +93,9 @@ namespace Files.App.ViewModels.UserControls
 
 				oldQueries.Insert(0, new SuggestionModel(e.QueryText, true));
 
-				// Limit to last 5 queries to improve performance
-				if (oldQueries.Count > 5)
-					oldQueries.RemoveAt(5);
+				// Limit to last 10 queries to improve performance
+				if (oldQueries.Count > 10)
+					oldQueries.RemoveAt(10);
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace Files.App.ViewModels.UserControls
 			oldQueries.ForEach(Suggestions.Add);
 		}
 
-		private class SuggestionComparer : IEqualityComparer<SuggestionModel>, IComparer<SuggestionModel>
+		private sealed class SuggestionComparer : IEqualityComparer<SuggestionModel>, IComparer<SuggestionModel>
 		{
 			public int Compare(SuggestionModel x, SuggestionModel y)
 				=> y.ItemPath.CompareTo(x.ItemPath);

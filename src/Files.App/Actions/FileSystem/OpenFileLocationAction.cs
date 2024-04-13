@@ -1,11 +1,11 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using System.IO;
 
 namespace Files.App.Actions
 {
-	internal class OpenFileLocationAction : ObservableObject, IAction
+	internal sealed class OpenFileLocationAction : ObservableObject, IAction
 	{
 		private readonly IContentPageContext context;
 
@@ -49,7 +49,7 @@ namespace Files.App.Actions
 				context.ShellPage?.NavigateWithArguments(context.ShellPage.InstanceViewModel.FolderSettings.GetLayoutType(folderPath), new NavigationArguments()
 				{
 					NavPathParam = folderPath,
-					SelectItems = new[] { Path.GetFileName(item.TargetPath.TrimPath()) },
+					SelectItems = [Path.GetFileName(item.TargetPath.TrimPath())],
 					AssociatedTabInstance = context.ShellPage
 				});
 			}

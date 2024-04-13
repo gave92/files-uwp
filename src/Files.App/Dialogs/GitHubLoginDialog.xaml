@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <ContentDialog
 	x:Class="Files.App.Dialogs.GitHubLoginDialog"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -12,6 +12,7 @@
 	CloseButtonStyle="{StaticResource AccentButtonStyle}"
 	CloseButtonText="{helpers:ResourceString Name=Close}"
 	CornerRadius="{StaticResource OverlayCornerRadius}"
+	HighContrastAdjustment="None"
 	PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
 	PrimaryButtonText="{helpers:ResourceString Name=OK}"
 	RequestedTheme="{x:Bind helpers:ThemeHelper.RootTheme}"

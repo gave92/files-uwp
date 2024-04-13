@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using System.Collections.Immutable;
@@ -96,7 +96,7 @@ namespace Files.App.Utils.Storage
 
 		public static List<PathBoxItem> GetDirectoryPathComponents(string value)
 		{
-			List<PathBoxItem> pathBoxItems = new();
+			List<PathBoxItem> pathBoxItems = [];
 
 			if (value.Contains('/', StringComparison.Ordinal))
 			{
@@ -126,6 +126,26 @@ namespace Files.App.Utils.Storage
 						pathBoxItems.Add(GetPathItem(component, path));
 
 					lastIndex = i + 1;
+				}
+			}
+
+			return pathBoxItems;
+		}
+
+		public static async Task<List<PathBoxItem>> GetDirectoryPathComponentsWithDisplayNameAsync(string value)
+		{
+			var pathBoxItems = GetDirectoryPathComponents(value);
+
+			foreach (var item in pathBoxItems)
+			{
+				if (item.Path == "Home")
+					item.Title = "Home".GetLocalizedResource();
+				else
+				{
+					BaseStorageFolder folder = await FilesystemTasks.Wrap(() => DangerousGetFolderFromPathAsync(item.Path));
+
+					if (!string.IsNullOrEmpty(folder?.DisplayName))
+						item.Title = folder.DisplayName;
 				}
 			}
 
@@ -277,7 +297,7 @@ namespace Files.App.Utils.Storage
 			{
 				title = "SidebarNetworkDrives".GetLocalizedResource();
 			}
-			else if (component.Contains(':', StringComparison.Ordinal))
+			else if (component.EndsWith(':'))
 			{
 				var drivesViewModel = Ioc.Default.GetRequiredService<DrivesViewModel>();
 
@@ -302,7 +322,7 @@ namespace Files.App.Utils.Storage
 
 		private static string GetPathWithoutEnvironmentVariable(string path)
 		{
-			if (path.StartsWith("~\\", StringComparison.Ordinal))
+			if (path.StartsWith("~\\", StringComparison.Ordinal) || path.StartsWith("~/", StringComparison.Ordinal) || path.Equals("~", StringComparison.Ordinal))
 				path = $"{Constants.UserEnvironmentPaths.HomePath}{path.Remove(0, 1)}";
 
 			path = path.Replace("%temp%", Constants.UserEnvironmentPaths.TempPath, StringComparison.OrdinalIgnoreCase);

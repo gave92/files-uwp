@@ -1,24 +1,15 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using CommunityToolkit.Mvvm.DependencyInjection;
-using Files.App.Utils;
-using Files.App.Helpers;
-using Files.Core.Services.Settings;
-using Files.Core.ViewModels.FileTags;
-using Files.Shared.Extensions;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using static Files.App.Helpers.MenuFlyoutHelper;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Markup;
+using Microsoft.UI.Xaml.Media;
+using static Files.App.Helpers.MenuFlyoutHelper;
 
 namespace Files.App.UserControls.Menus
 {
-	public class FileTagsContextMenu : MenuFlyout
+	public sealed class FileTagsContextMenu : MenuFlyout
 	{
 		private IFileTagsSettingsService FileTagsSettingsService { get; } =
 			Ioc.Default.GetService<IFileTagsSettingsService>();
@@ -62,13 +53,16 @@ namespace Files.App.UserControls.Menus
 			}
 		}
 
-		private void Item_Opening(object sender, object e)
+		private void Item_Opening(object? sender, object e)
 		{
 			Opening -= Item_Opening;
 
+			if (SelectedItems is null)
+				return;
+
 			// go through each tag and find the common one for all files
 			var commonFileTags = SelectedItems
-				.Select(x => x.FileTags ?? Enumerable.Empty<string>())
+				.Select(x => x?.FileTags ?? Enumerable.Empty<string>())
 				.Aggregate((x, y) => x.Intersect(y))
 				.Select(x => Items.FirstOrDefault(y => x == ((TagViewModel)y.Tag)?.Uid));
 
@@ -79,11 +73,11 @@ namespace Files.App.UserControls.Menus
 		{
 			foreach (var selectedItem in selectedListedItems)
 			{
-				var existingTags = selectedItem.FileTags ?? Array.Empty<string>();
+				var existingTags = selectedItem.FileTags ?? [];
 				if (existingTags.Contains(removed.Uid))
 				{
 					var tagList = existingTags.Except(new[] { removed.Uid }).ToArray();
-					selectedItem.FileTags = tagList.Any() ? tagList : null;
+					selectedItem.FileTags = tagList;
 				}
 			}
 		}
@@ -92,10 +86,10 @@ namespace Files.App.UserControls.Menus
 		{
 			foreach (var selectedItem in selectedListedItems)
 			{
-				var existingTags = selectedItem.FileTags ?? Array.Empty<string>();
+				var existingTags = selectedItem.FileTags ?? [];
 				if (!existingTags.Contains(added.Uid))
 				{
-					selectedItem.FileTags = existingTags.Append(added.Uid).ToArray();
+					selectedItem.FileTags = [.. existingTags, added.Uid];
 				}
 			}
 		}

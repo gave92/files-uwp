@@ -1,8 +1,11 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Data.Commands
 {
+	/// <summary>
+	/// Represents a collection of <see cref="IRichCommand"/> and provides manager classes.
+	/// </summary>
 	public interface ICommandManager : IEnumerable<IRichCommand>
 	{
 		IRichCommand this[CommandCodes code] { get; }
@@ -17,7 +20,6 @@ namespace Files.App.Data.Commands
 		IRichCommand ExitCompactOverlay { get; }
 		IRichCommand ToggleCompactOverlay { get; }
 		IRichCommand Search { get; }
-		IRichCommand SearchUnindexedItems { get; }
 		IRichCommand EditPath { get; }
 		IRichCommand Redo { get; }
 		IRichCommand Undo { get; }
@@ -59,8 +61,8 @@ namespace Files.App.Data.Commands
 
 		IRichCommand PinToStart { get; }
 		IRichCommand UnpinFromStart { get; }
-		IRichCommand PinItemToFavorites { get; }
-		IRichCommand UnpinItemFromFavorites { get; }
+		IRichCommand PinFolderToSidebar { get; }
+		IRichCommand UnpinFolderFromSidebar { get; }
 
 		IRichCommand SetAsWallpaperBackground { get; }
 		IRichCommand SetAsSlideshowBackground { get; }
@@ -81,6 +83,7 @@ namespace Files.App.Data.Commands
 		IRichCommand CompressIntoZip { get; }
 		IRichCommand DecompressArchive { get; }
 		IRichCommand DecompressArchiveHere { get; }
+		IRichCommand DecompressArchiveHereSmart { get; }
 		IRichCommand DecompressArchiveToChildFolder { get; }
 
 		IRichCommand RotateLeft { get; }
@@ -97,10 +100,9 @@ namespace Files.App.Data.Commands
 		IRichCommand LayoutDecreaseSize { get; }
 		IRichCommand LayoutIncreaseSize { get; }
 		IRichCommand LayoutDetails { get; }
+		IRichCommand LayoutList { get; }
 		IRichCommand LayoutTiles { get; }
-		IRichCommand LayoutGridSmall { get; }
-		IRichCommand LayoutGridMedium { get; }
-		IRichCommand LayoutGridLarge { get; }
+		IRichCommand LayoutGrid { get; }
 		IRichCommand LayoutColumns { get; }
 		IRichCommand LayoutAdaptive { get; }
 
@@ -117,7 +119,9 @@ namespace Files.App.Data.Commands
 		IRichCommand SortAscending { get; }
 		IRichCommand SortDescending { get; }
 		IRichCommand ToggleSortDirection { get; }
-		IRichCommand ToggleSortDirectoriesAlongsideFiles { get; }
+		IRichCommand SortFoldersFirst { get; }
+		IRichCommand SortFilesFirst { get; }
+		IRichCommand SortFilesAndFoldersTogether { get; }
 
 		IRichCommand GroupByNone { get; }
 		IRichCommand GroupByName { get; }
@@ -132,10 +136,13 @@ namespace Files.App.Data.Commands
 		IRichCommand GroupByFolderPath { get; }
 		IRichCommand GroupByDateModifiedYear { get; }
 		IRichCommand GroupByDateModifiedMonth { get; }
+		IRichCommand GroupByDateModifiedDay { get; }
 		IRichCommand GroupByDateCreatedYear { get; }
 		IRichCommand GroupByDateCreatedMonth { get; }
+		IRichCommand GroupByDateCreatedDay { get; }
 		IRichCommand GroupByDateDeletedYear { get; }
 		IRichCommand GroupByDateDeletedMonth { get; }
+		IRichCommand GroupByDateDeletedDay { get; }
 		IRichCommand GroupAscending { get; }
 		IRichCommand GroupDescending { get; }
 		IRichCommand ToggleGroupDirection { get; }
@@ -143,6 +150,7 @@ namespace Files.App.Data.Commands
 		IRichCommand GroupByMonth { get; }
 		IRichCommand ToggleGroupByDateUnit { get; }
 
+		IRichCommand NewWindow { get; }
 		IRichCommand NewTab { get; }
 		IRichCommand NavigateBack { get; }
 		IRichCommand NavigateForward { get; }

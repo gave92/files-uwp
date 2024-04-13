@@ -1,21 +1,26 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Files.App.Actions;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System.Collections.Immutable;
 
 namespace Files.App.Data.Commands
 {
-	internal class CommandManager : ICommandManager
+	internal sealed class CommandManager : ICommandManager
 	{
-		private readonly IGeneralSettingsService settings = Ioc.Default.GetRequiredService<IGeneralSettingsService>();
+		// Dependency injections
 
-		private readonly IImmutableDictionary<CommandCodes, IRichCommand> commands;
-		private IImmutableDictionary<HotKey, IRichCommand> hotKeys = new Dictionary<HotKey, IRichCommand>().ToImmutableDictionary();
+		private IGeneralSettingsService GeneralSettingsService { get; } = Ioc.Default.GetRequiredService<IGeneralSettingsService>();
+
+		// Fields
+
+		private readonly FrozenDictionary<CommandCodes, IRichCommand> commands;
+		private ImmutableDictionary<HotKey, IRichCommand> hotKeys = new Dictionary<HotKey, IRichCommand>().ToImmutableDictionary();
 
 		public IRichCommand this[CommandCodes code] => commands.TryGetValue(code, out var command) ? command : None;
 		public IRichCommand this[string code]
@@ -44,7 +49,6 @@ namespace Files.App.Data.Commands
 		public IRichCommand ExitCompactOverlay => commands[CommandCodes.ExitCompactOverlay];
 		public IRichCommand ToggleCompactOverlay => commands[CommandCodes.ToggleCompactOverlay];
 		public IRichCommand Search => commands[CommandCodes.Search];
-		public IRichCommand SearchUnindexedItems => commands[CommandCodes.SearchUnindexedItems];
 		public IRichCommand EditPath => commands[CommandCodes.EditPath];
 		public IRichCommand Redo => commands[CommandCodes.Redo];
 		public IRichCommand Undo => commands[CommandCodes.Undo];
@@ -70,8 +74,8 @@ namespace Files.App.Data.Commands
 		public IRichCommand AddItem => commands[CommandCodes.AddItem];
 		public IRichCommand PinToStart => commands[CommandCodes.PinToStart];
 		public IRichCommand UnpinFromStart => commands[CommandCodes.UnpinFromStart];
-		public IRichCommand PinItemToFavorites => commands[CommandCodes.PinItemToFavorites];
-		public IRichCommand UnpinItemFromFavorites => commands[CommandCodes.UnpinItemFromFavorites];
+		public IRichCommand PinFolderToSidebar => commands[CommandCodes.PinFolderToSidebar];
+		public IRichCommand UnpinFolderFromSidebar => commands[CommandCodes.UnpinFolderFromSidebar];
 		public IRichCommand SetAsWallpaperBackground => commands[CommandCodes.SetAsWallpaperBackground];
 		public IRichCommand SetAsSlideshowBackground => commands[CommandCodes.SetAsSlideshowBackground];
 		public IRichCommand SetAsLockscreenBackground => commands[CommandCodes.SetAsLockscreenBackground];
@@ -95,6 +99,7 @@ namespace Files.App.Data.Commands
 		public IRichCommand CompressIntoZip => commands[CommandCodes.CompressIntoZip];
 		public IRichCommand DecompressArchive => commands[CommandCodes.DecompressArchive];
 		public IRichCommand DecompressArchiveHere => commands[CommandCodes.DecompressArchiveHere];
+		public IRichCommand DecompressArchiveHereSmart => commands[CommandCodes.DecompressArchiveHereSmart];
 		public IRichCommand DecompressArchiveToChildFolder => commands[CommandCodes.DecompressArchiveToChildFolder];
 		public IRichCommand RotateLeft => commands[CommandCodes.RotateLeft];
 		public IRichCommand RotateRight => commands[CommandCodes.RotateRight];
@@ -111,10 +116,9 @@ namespace Files.App.Data.Commands
 		public IRichCommand LayoutDecreaseSize => commands[CommandCodes.LayoutDecreaseSize];
 		public IRichCommand LayoutIncreaseSize => commands[CommandCodes.LayoutIncreaseSize];
 		public IRichCommand LayoutDetails => commands[CommandCodes.LayoutDetails];
+		public IRichCommand LayoutList => commands[CommandCodes.LayoutList];
 		public IRichCommand LayoutTiles => commands[CommandCodes.LayoutTiles];
-		public IRichCommand LayoutGridSmall => commands[CommandCodes.LayoutGridSmall];
-		public IRichCommand LayoutGridMedium => commands[CommandCodes.LayoutGridMedium];
-		public IRichCommand LayoutGridLarge => commands[CommandCodes.LayoutGridLarge];
+		public IRichCommand LayoutGrid => commands[CommandCodes.LayoutGrid];
 		public IRichCommand LayoutColumns => commands[CommandCodes.LayoutColumns];
 		public IRichCommand LayoutAdaptive => commands[CommandCodes.LayoutAdaptive];
 		public IRichCommand SortByName => commands[CommandCodes.SortByName];
@@ -130,7 +134,9 @@ namespace Files.App.Data.Commands
 		public IRichCommand SortAscending => commands[CommandCodes.SortAscending];
 		public IRichCommand SortDescending => commands[CommandCodes.SortDescending];
 		public IRichCommand ToggleSortDirection => commands[CommandCodes.ToggleSortDirection];
-		public IRichCommand ToggleSortDirectoriesAlongsideFiles => commands[CommandCodes.ToggleSortDirectoriesAlongsideFiles];
+		public IRichCommand SortFoldersFirst => commands[CommandCodes.SortFoldersFirst];
+		public IRichCommand SortFilesFirst => commands[CommandCodes.SortFilesFirst];
+		public IRichCommand SortFilesAndFoldersTogether => commands[CommandCodes.SortFilesAndFoldersTogether];
 		public IRichCommand GroupByNone => commands[CommandCodes.GroupByNone];
 		public IRichCommand GroupByName => commands[CommandCodes.GroupByName];
 		public IRichCommand GroupByDateModified => commands[CommandCodes.GroupByDateModified];
@@ -144,16 +150,20 @@ namespace Files.App.Data.Commands
 		public IRichCommand GroupByFolderPath => commands[CommandCodes.GroupByFolderPath];
 		public IRichCommand GroupByDateModifiedYear => commands[CommandCodes.GroupByDateModifiedYear];
 		public IRichCommand GroupByDateModifiedMonth => commands[CommandCodes.GroupByDateModifiedMonth];
+		public IRichCommand GroupByDateModifiedDay => commands[CommandCodes.GroupByDateModifiedDay];
 		public IRichCommand GroupByDateCreatedYear => commands[CommandCodes.GroupByDateCreatedYear];
 		public IRichCommand GroupByDateCreatedMonth => commands[CommandCodes.GroupByDateCreatedMonth];
+		public IRichCommand GroupByDateCreatedDay => commands[CommandCodes.GroupByDateCreatedDay];
 		public IRichCommand GroupByDateDeletedYear => commands[CommandCodes.GroupByDateDeletedYear];
 		public IRichCommand GroupByDateDeletedMonth => commands[CommandCodes.GroupByDateDeletedMonth];
+		public IRichCommand GroupByDateDeletedDay => commands[CommandCodes.GroupByDateDeletedDay];
 		public IRichCommand GroupAscending => commands[CommandCodes.GroupAscending];
 		public IRichCommand GroupDescending => commands[CommandCodes.GroupDescending];
 		public IRichCommand ToggleGroupDirection => commands[CommandCodes.ToggleGroupDirection];
 		public IRichCommand GroupByYear => commands[CommandCodes.GroupByYear];
 		public IRichCommand GroupByMonth => commands[CommandCodes.GroupByMonth];
 		public IRichCommand ToggleGroupByDateUnit => commands[CommandCodes.ToggleGroupByDateUnit];
+		public IRichCommand NewWindow => commands[CommandCodes.NewWindow];
 		public IRichCommand NewTab => commands[CommandCodes.NewTab];
 		public IRichCommand FormatDrive => commands[CommandCodes.FormatDrive];
 		public IRichCommand NavigateBack => commands[CommandCodes.NavigateBack];
@@ -191,16 +201,18 @@ namespace Files.App.Data.Commands
 				.Select(action => new ActionCommand(this, action.Key, action.Value))
 				.Cast<IRichCommand>()
 				.Append(new NoneCommand())
-				.ToImmutableDictionary(command => command.Code);
+				.ToFrozenDictionary(command => command.Code);
 
-			settings.PropertyChanged += Settings_PropertyChanged;
+			GeneralSettingsService.PropertyChanged += Settings_PropertyChanged;
 			UpdateHotKeys();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-		public IEnumerator<IRichCommand> GetEnumerator() => commands.Values.GetEnumerator();
 
-		private static IDictionary<CommandCodes, IAction> CreateActions() => new Dictionary<CommandCodes, IAction>
+		public IEnumerator<IRichCommand> GetEnumerator() =>
+			(commands.Values as IEnumerable<IRichCommand>).GetEnumerator();
+
+		private static Dictionary<CommandCodes, IAction> CreateActions() => new Dictionary<CommandCodes, IAction>
 		{
 			[CommandCodes.OpenHelp] = new OpenHelpAction(),
 			[CommandCodes.ToggleFullScreen] = new ToggleFullScreenAction(),
@@ -208,7 +220,6 @@ namespace Files.App.Data.Commands
 			[CommandCodes.ExitCompactOverlay] = new ExitCompactOverlayAction(),
 			[CommandCodes.ToggleCompactOverlay] = new ToggleCompactOverlayAction(),
 			[CommandCodes.Search] = new SearchAction(),
-			[CommandCodes.SearchUnindexedItems] = new SearchUnindexedItemsAction(),
 			[CommandCodes.EditPath] = new EditPathAction(),
 			[CommandCodes.Redo] = new RedoAction(),
 			[CommandCodes.Undo] = new UndoAction(),
@@ -234,8 +245,8 @@ namespace Files.App.Data.Commands
 			[CommandCodes.AddItem] = new AddItemAction(),
 			[CommandCodes.PinToStart] = new PinToStartAction(),
 			[CommandCodes.UnpinFromStart] = new UnpinFromStartAction(),
-			[CommandCodes.PinItemToFavorites] = new PinItemAction(),
-			[CommandCodes.UnpinItemFromFavorites] = new UnpinItemAction(),
+			[CommandCodes.PinFolderToSidebar] = new PinFolderToSidebarAction(),
+			[CommandCodes.UnpinFolderFromSidebar] = new UnpinFolderFromSidebarAction(),
 			[CommandCodes.SetAsWallpaperBackground] = new SetAsWallpaperBackgroundAction(),
 			[CommandCodes.SetAsSlideshowBackground] = new SetAsSlideshowBackgroundAction(),
 			[CommandCodes.SetAsLockscreenBackground] = new SetAsLockscreenBackgroundAction(),
@@ -259,6 +270,7 @@ namespace Files.App.Data.Commands
 			[CommandCodes.CompressIntoZip] = new CompressIntoZipAction(),
 			[CommandCodes.DecompressArchive] = new DecompressArchive(),
 			[CommandCodes.DecompressArchiveHere] = new DecompressArchiveHere(),
+			[CommandCodes.DecompressArchiveHereSmart] = new DecompressArchiveHereSmart(),
 			[CommandCodes.DecompressArchiveToChildFolder] = new DecompressArchiveToChildFolderAction(),
 			[CommandCodes.RotateLeft] = new RotateLeftAction(),
 			[CommandCodes.RotateRight] = new RotateRightAction(),
@@ -275,10 +287,9 @@ namespace Files.App.Data.Commands
 			[CommandCodes.LayoutDecreaseSize] = new LayoutDecreaseSizeAction(),
 			[CommandCodes.LayoutIncreaseSize] = new LayoutIncreaseSizeAction(),
 			[CommandCodes.LayoutDetails] = new LayoutDetailsAction(),
+			[CommandCodes.LayoutList] = new LayoutListAction(),
 			[CommandCodes.LayoutTiles] = new LayoutTilesAction(),
-			[CommandCodes.LayoutGridSmall] = new LayoutGridSmallAction(),
-			[CommandCodes.LayoutGridMedium] = new LayoutGridMediumAction(),
-			[CommandCodes.LayoutGridLarge] = new LayoutGridLargeAction(),
+			[CommandCodes.LayoutGrid] = new LayoutGridAction(),
 			[CommandCodes.LayoutColumns] = new LayoutColumnsAction(),
 			[CommandCodes.LayoutAdaptive] = new LayoutAdaptiveAction(),
 			[CommandCodes.SortByName] = new SortByNameAction(),
@@ -294,7 +305,9 @@ namespace Files.App.Data.Commands
 			[CommandCodes.SortAscending] = new SortAscendingAction(),
 			[CommandCodes.SortDescending] = new SortDescendingAction(),
 			[CommandCodes.ToggleSortDirection] = new ToggleSortDirectionAction(),
-			[CommandCodes.ToggleSortDirectoriesAlongsideFiles] = new ToggleSortDirectoriesAlongsideFilesAction(),
+			[CommandCodes.SortFoldersFirst] = new SortFoldersFirstAction(),
+			[CommandCodes.SortFilesFirst] = new SortFilesFirstAction(),
+			[CommandCodes.SortFilesAndFoldersTogether] = new SortFilesAndFoldersTogetherAction(),
 			[CommandCodes.GroupByNone] = new GroupByNoneAction(),
 			[CommandCodes.GroupByName] = new GroupByNameAction(),
 			[CommandCodes.GroupByDateModified] = new GroupByDateModifiedAction(),
@@ -308,16 +321,20 @@ namespace Files.App.Data.Commands
 			[CommandCodes.GroupByFolderPath] = new GroupByFolderPathAction(),
 			[CommandCodes.GroupByDateModifiedYear] = new GroupByDateModifiedYearAction(),
 			[CommandCodes.GroupByDateModifiedMonth] = new GroupByDateModifiedMonthAction(),
+			[CommandCodes.GroupByDateModifiedDay] = new GroupByDateModifiedDayAction(),
 			[CommandCodes.GroupByDateCreatedYear] = new GroupByDateCreatedYearAction(),
 			[CommandCodes.GroupByDateCreatedMonth] = new GroupByDateCreatedMonthAction(),
+			[CommandCodes.GroupByDateCreatedDay] = new GroupByDateCreatedDayAction(),
 			[CommandCodes.GroupByDateDeletedYear] = new GroupByDateDeletedYearAction(),
 			[CommandCodes.GroupByDateDeletedMonth] = new GroupByDateDeletedMonthAction(),
+			[CommandCodes.GroupByDateDeletedDay] = new GroupByDateDeletedDayAction(),
 			[CommandCodes.GroupAscending] = new GroupAscendingAction(),
 			[CommandCodes.GroupDescending] = new GroupDescendingAction(),
 			[CommandCodes.ToggleGroupDirection] = new ToggleGroupDirectionAction(),
 			[CommandCodes.GroupByYear] = new GroupByYearAction(),
 			[CommandCodes.GroupByMonth] = new GroupByMonthAction(),
 			[CommandCodes.ToggleGroupByDateUnit] = new ToggleGroupByDateUnitAction(),
+			[CommandCodes.NewWindow] = new NewWindowAction(),
 			[CommandCodes.NewTab] = new NewTabAction(),
 			[CommandCodes.FormatDrive] = new FormatDriveAction(),
 			[CommandCodes.NavigateBack] = new NavigateBackAction(),
@@ -350,19 +367,28 @@ namespace Files.App.Data.Commands
 			[CommandCodes.OpenAllTaggedItems] = new OpenAllTaggedActions(),
 		};
 
+		/// <summary>
+		/// Replace default hotkey collection with customized one(s) if exists.
+		/// </summary>
 		private void UpdateHotKeys()
 		{
-			ISet<HotKey> useds = new HashSet<HotKey>();
+			if (GeneralSettingsService.Actions is null)
+				return;
+
+			var useds = new HashSet<HotKey>();
 
 			var customs = new Dictionary<CommandCodes, HotKeyCollection>();
-			foreach (var custom in settings.Actions)
+
+			// Get custom hotkeys from the user settings
+			foreach (var custom in GeneralSettingsService.Actions)
 			{
 				if (Enum.TryParse(custom.Key, true, out CommandCodes code))
 				{
 					if (code is CommandCodes.None)
 						continue;
 
-					var hotKeys = new HotKeyCollection(HotKeyCollection.Parse(custom.Value).Except(useds));
+					// Parse and add the hotkeys
+					var hotKeys = new HotKeyCollection(HotKeyCollection.Parse(custom.Value, false).Except(useds));
 					customs.Add(code, new(hotKeys));
 
 					foreach (var hotKey in hotKeys)
@@ -381,6 +407,7 @@ namespace Files.App.Data.Commands
 					? customs[command.Code]
 					: new HotKeyCollection(GetHotKeys(command.Action).Except(useds));
 
+				// Replace with custom hotkeys
 				command.UpdateHotKeys(isCustom, hotkeys);
 			}
 
@@ -389,7 +416,7 @@ namespace Files.App.Data.Commands
 				.ToImmutableDictionary(item => item.HotKey, item => item.Command);
 		}
 
-		private static HotKeyCollection GetHotKeys(IAction action)
+		public static HotKeyCollection GetHotKeys(IAction action)
 			=> new(action.HotKey, action.SecondHotKey, action.ThirdHotKey, action.MediaHotKey);
 
 		private void Settings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -398,9 +425,12 @@ namespace Files.App.Data.Commands
 				UpdateHotKeys();
 		}
 
+		// TODO: Move to a new file
 		[DebuggerDisplay("Command {Code}")]
-		internal class ActionCommand : ObservableObject, IRichCommand
+		internal sealed class ActionCommand : ObservableObject, IRichCommand
 		{
+			private IGeneralSettingsService GeneralSettingsService { get; } = Ioc.Default.GetRequiredService<IGeneralSettingsService>();
+
 			public event EventHandler? CanExecuteChanged;
 
 			private readonly CommandManager manager;
@@ -426,7 +456,7 @@ namespace Files.App.Data.Commands
 			{
 				get
 				{
-					string text = HotKeys.Label;
+					string text = HotKeys.LocalizedLabel;
 					if (string.IsNullOrEmpty(text))
 						return null;
 					return text;
@@ -443,18 +473,20 @@ namespace Files.App.Data.Commands
 						return;
 
 					string code = Code.ToString();
-					var customs = new Dictionary<string, string>(manager.settings.Actions);
+					var customs = new Dictionary<string, string>(GeneralSettingsService.Actions);
 
 					if (!customs.ContainsKey(code))
-						customs.Add(code, value.Code);
+						customs.Add(code, value.RawLabel);
 					else if (value != GetHotKeys(Action))
-						customs[code] = value.Code;
+						customs[code] = value.RawLabel;
 					else
 						customs.Remove(code);
 
-					manager.settings.Actions = customs;
+					GeneralSettingsService.Actions = customs;
 				}
 			}
+
+			public HotKeyCollection DefaultHotKeys { get; }
 
 			public bool IsToggle => Action is IToggleAction;
 
@@ -478,7 +510,8 @@ namespace Files.App.Data.Commands
 				Icon = action.Glyph.ToIcon();
 				FontIcon = action.Glyph.ToFontIcon();
 				OpacityStyle = action.Glyph.ToOpacityStyle();
-				hotKeys = GetHotKeys(action);
+				hotKeys = CommandManager.GetHotKeys(action);
+				DefaultHotKeys = CommandManager.GetHotKeys(action);
 
 				if (action is INotifyPropertyChanging notifyPropertyChanging)
 					notifyPropertyChanging.PropertyChanging += Action_PropertyChanging;
@@ -507,9 +540,9 @@ namespace Files.App.Data.Commands
 				if (!IsCustomHotKeys)
 					return;
 
-				var customs = new Dictionary<string, string>(manager.settings.Actions);
+				var customs = new Dictionary<string, string>(GeneralSettingsService.Actions);
 				customs.Remove(Code.ToString());
-				manager.settings.Actions = customs;
+				GeneralSettingsService.Actions = customs;
 			}
 
 			internal void UpdateHotKeys(bool isCustom, HotKeyCollection hotKeys)

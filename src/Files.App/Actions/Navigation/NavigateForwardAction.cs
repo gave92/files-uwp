@@ -1,9 +1,9 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Actions
 {
-	internal class NavigateForwardAction : ObservableObject, IAction
+	internal sealed class NavigateForwardAction : ObservableObject, IAction
 	{
 		private readonly IContentPageContext context;
 
@@ -14,13 +14,13 @@ namespace Files.App.Actions
 			=> "NavigateForwardDescription".GetLocalizedResource();
 
 		public HotKey HotKey
-			=> new(Keys.Right, KeyModifiers.Menu);
+			=> new(Keys.Right, KeyModifiers.Alt);
 
 		public HotKey SecondHotKey
 			=> new(Keys.Mouse5);
 
 		public HotKey MediaHotKey
-			=> new(Keys.GoForward, false);
+			=> new(Keys.GoForward, KeyModifiers.None, false);
 
 		public RichGlyph Glyph
 			=> new("\uE72A");

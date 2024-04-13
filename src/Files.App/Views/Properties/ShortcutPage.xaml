@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <vm:BasePropertiesPage
 	x:Class="Files.App.Views.Properties.ShortcutPage"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -75,7 +75,7 @@
 					Grid.Column="1"
 					VerticalAlignment="Center"
 					IsReadOnly="{x:Bind ViewModel.IsShortcutItemPathReadOnly, Mode=OneWay}"
-					Text="{x:Bind ViewModel.ShortcutItemPath, Mode=TwoWay}"
+					Text="{x:Bind ViewModel.ShortcutItemPathEditedValue, Mode=TwoWay}"
 					Visibility="Visible" />
 			</Grid>
 
@@ -117,7 +117,7 @@
 					Grid.Column="1"
 					VerticalAlignment="Center"
 					x:Load="{x:Bind ViewModel.ShortcutItemArgumentsVisibility, Mode=OneWay}"
-					Text="{x:Bind ViewModel.ShortcutItemArguments, Mode=TwoWay}" />
+					Text="{x:Bind ViewModel.ShortcutItemArgumentsEditedValue, Mode=TwoWay}" />
 
 				<TextBlock
 					x:Name="PropertiesShortcutItemWorkingDir"
@@ -134,7 +134,7 @@
 					Grid.Column="1"
 					VerticalAlignment="Center"
 					x:Load="{x:Bind ViewModel.ShortcutItemWorkingDirVisibility, Mode=OneWay}"
-					Text="{x:Bind ViewModel.ShortcutItemWorkingDir, Mode=TwoWay}" />
+					Text="{x:Bind ViewModel.ShortcutItemWorkingDirEditedValue, Mode=TwoWay}" />
 			</Grid>
 
 			<settingsuc:SettingsBlockControl
@@ -144,7 +144,7 @@
 				x:Load="{x:Bind ViewModel.RunAsAdminEnabled, Mode=OneWay}">
 				<ToggleSwitch
 					AutomationProperties.Name="{helpers:ResourceString Name=RunAsAdministrator}"
-					IsOn="{x:Bind ViewModel.RunAsAdmin, Mode=TwoWay}"
+					IsOn="{x:Bind ViewModel.RunAsAdminEditedValue, Mode=TwoWay}"
 					Style="{StaticResource RightAlignedToggleSwitchStyle}" />
 			</settingsuc:SettingsBlockControl>
 

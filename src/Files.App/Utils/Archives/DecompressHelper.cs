@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Dialogs;
@@ -32,7 +32,7 @@ namespace Files.App.Utils.Archives
 			// Fill files
 
 			byte[] buffer = new byte[4096];
-			int entriesAmount = zipFile.ArchiveFileData.Where(x => !x.IsDirectory).Count();
+			int entriesAmount = zipFile.ArchiveFileData.Count(x => !x.IsDirectory);
 
 			StatusCenterItemProgressModel fsProgress = new(
 				progress,
@@ -175,7 +175,7 @@ namespace Files.App.Utils.Archives
 				await NavigationHelpers.OpenPath(destinationFolderPath, associatedInstance, FilesystemItemType.Directory);
 		}
 
-		public static async Task DecompressArchiveHereAsync(IShellPage associatedInstance)
+		public static async Task DecompressArchiveHereAsync(IShellPage associatedInstance, bool smart = false)
 		{
 			if (associatedInstance?.SlimContentPage?.SelectedItems == null)
 				return;
@@ -210,7 +210,13 @@ namespace Files.App.Utils.Archives
 					password = Encoding.UTF8.GetString(decompressArchiveViewModel.Password);
 				}
 
-				await DecompressArchiveAsync(archive, currentFolder, password);
+				if (smart && currentFolder is not null && await FilesystemTasks.Wrap(() => IsMultipleItems(archive)))
+				{
+					var destinationFolder = await FilesystemTasks.Wrap(() => currentFolder.CreateFolderAsync(Path.GetFileNameWithoutExtension(archive.Path), CreationCollisionOption.GenerateUniqueName).AsTask());
+					await DecompressArchiveAsync(archive, destinationFolder, password);
+				}
+				else
+					await DecompressArchiveAsync(archive, currentFolder, password);
 			}
 		}
 
@@ -273,6 +279,22 @@ namespace Files.App.Utils.Archives
 				return true;
 
 			return zipFile.ArchiveFileData.Any(file => file.Encrypted || file.Method.Contains("Crypto") || file.Method.Contains("AES"));
+		}
+
+		private static async Task<bool> IsMultipleItems(BaseStorageFile archive)
+		{
+			using SevenZipExtractor? zipFile = await GetZipFile(archive);
+			if (zipFile is null)
+				return true;
+
+			return zipFile.ArchiveFileData.Select(file =>
+			{
+				var pathCharIndex = file.FileName.IndexOfAny(['/', '\\']);
+				if (pathCharIndex == -1)
+					return file.FileName;
+				else
+					return file.FileName.Substring(0, pathCharIndex);
+			}).Distinct().Count() > 1;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Win32;
@@ -8,7 +8,7 @@ using System.Runtime.Versioning;
 namespace Files.App.Utils.Cloud
 {
 	[SupportedOSPlatform("Windows10.0.10240")]
-	public class CloudDrivesDetector
+	public sealed class CloudDrivesDetector
 	{
 		private readonly static string programFilesFolder = Environment.GetEnvironmentVariable("ProgramFiles");
 
@@ -60,7 +60,7 @@ namespace Files.App.Utils.Cloud
 			using var clsidKey = Registry.ClassesRoot.OpenSubKey(@"CLSID");
 			using var namespaceKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace");
 
-			foreach (var subKeyName in namespaceKey?.GetSubKeyNames() ?? Array.Empty<string>())
+			foreach (var subKeyName in namespaceKey?.GetSubKeyNames() ?? [])
 			{
 				using var clsidSubKey = SafetyExtensions.IgnoreExceptions(() => clsidKey.OpenSubKey(subKeyName));
 				if (clsidSubKey is not null && (int?)clsidSubKey.GetValue("System.IsPinnedToNameSpaceTree") is 1)
@@ -139,7 +139,7 @@ namespace Files.App.Utils.Cloud
 						SyncFolder = syncedFolder,
 						IconData = driveID switch
 						{
-							CloudProviders.ProtonDrive => Win32API.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 32512 }).FirstOrDefault()?.IconData,
+							CloudProviders.ProtonDrive => Win32Helper.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 32512 }).FirstOrDefault()?.IconData,
 							_ => null
 						}
 					});
@@ -190,14 +190,14 @@ namespace Files.App.Utils.Cloud
 			var sharepointAccounts = new List<ICloudProvider>();
 			foreach (var account in oneDriveAccountsKey.GetSubKeyNames())
 			{
-				var accountKeyName = @$"{oneDriveAccountsKey.Name}\{account}";
-				var displayName = (string)Registry.GetValue(accountKeyName, "DisplayName", null);
-				var userFolderToExcludeFromResults = (string)Registry.GetValue(accountKeyName, "UserFolder", null);
-				var accountName = string.IsNullOrWhiteSpace(displayName) ? "SharePoint" : $"SharePoint - {displayName}";
+				var accountKey = oneDriveAccountsKey.OpenSubKey(account);
+				if (accountKey is null)
+					continue;
 
-				var sharePointSyncFolders = new List<string>();
-				var mountPointKeyName = @$"SOFTWARE\Microsoft\OneDrive\Accounts\{account}\ScopeIdToMountPointPathCache";
-				using (var mountPointsKey = Registry.CurrentUser.OpenSubKey(mountPointKeyName))
+				var userFolderToExcludeFromResults = (string)accountKey.GetValue("UserFolder", "");
+
+				var sharePointParentFolders = new List<DirectoryInfo>();
+				using (var mountPointsKey = accountKey.OpenSubKey("ScopeIdToMountPointPathCache"))
 				{
 					if (mountPointsKey is null)
 					{
@@ -207,25 +207,27 @@ namespace Files.App.Utils.Cloud
 					var valueNames = mountPointsKey.GetValueNames();
 					foreach (var valueName in valueNames)
 					{
-						var value = (string)Registry.GetValue(@$"HKEY_CURRENT_USER\{mountPointKeyName}", valueName, null);
-						if (!string.Equals(value, userFolderToExcludeFromResults, StringComparison.OrdinalIgnoreCase))
+						var directory = (string?)mountPointsKey.GetValue(valueName, null);
+						if (directory != null && !string.Equals(directory, userFolderToExcludeFromResults, StringComparison.OrdinalIgnoreCase))
 						{
-							sharePointSyncFolders.Add(value);
+							var parentFolder = Directory.GetParent(directory);
+							if (parentFolder != null)
+								sharePointParentFolders.Add(parentFolder);
 						}
 					}
 				}
 
-				sharePointSyncFolders.Sort(StringComparer.Ordinal);
-				foreach (var sharePointSyncFolder in sharePointSyncFolders)
+				sharePointParentFolders.Sort((left, right) => left.FullName.CompareTo(right.FullName));
+
+				foreach (var sharePointParentFolder in sharePointParentFolders)
 				{
-					var parentFolder = Directory.GetParent(sharePointSyncFolder)?.FullName ?? string.Empty;
-					if (!sharepointAccounts.Any(acc =>
-						string.Equals(acc.Name, accountName, StringComparison.OrdinalIgnoreCase)) && !string.IsNullOrWhiteSpace(parentFolder))
+					string name = $"SharePoint - {sharePointParentFolder.Name}";
+					if (!sharepointAccounts.Any(acc => string.Equals(acc.Name, name, StringComparison.OrdinalIgnoreCase)))
 					{
 						sharepointAccounts.Add(new CloudProvider(CloudProviders.OneDriveCommercial)
 						{
-							Name = accountName,
-							SyncFolder = parentFolder,
+							Name = name,
+							SyncFolder = sharePointParentFolder.FullName,
 						});
 					}
 				}
@@ -243,7 +245,7 @@ namespace Files.App.Utils.Cloud
 			if (syncedFolder is not null)
 			{
 				string iconPath = Path.Combine(programFilesFolder, "pCloud Drive", "pCloud.exe");
-				var iconFile = Win32API.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 32512 }, 32).FirstOrDefault();
+				var iconFile = Win32Helper.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 32512 }, 32).FirstOrDefault();
 
 				App.AppModel.PCloudDrivePath = syncedFolder;
 
@@ -266,7 +268,7 @@ namespace Files.App.Utils.Cloud
 			if (NutstoreKey is not null)
 			{
 				string iconPath = Path.Combine(programFilesFolder, "Nutstore", "Nutstore.exe");
-				var iconFile = Win32API.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 101 }).FirstOrDefault();
+				var iconFile = Win32Helper.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 101 }).FirstOrDefault();
 
 				// get every folder under the Nutstore folder in %userprofile%
 				var mainFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Nutstore");
@@ -298,7 +300,7 @@ namespace Files.App.Utils.Cloud
 			if (SeadriveKey is not null)
 			{
 				string iconPath = Path.Combine(programFilesFolder, "SeaDrive", "bin", "seadrive.exe");
-				var iconFile = Win32API.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 101 }).FirstOrDefault();
+				var iconFile = Win32Helper.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 101 }).FirstOrDefault();
 
 				results.Add(new CloudProvider(CloudProviders.Seadrive)
 				{
@@ -319,7 +321,7 @@ namespace Files.App.Utils.Cloud
 			if (AutodeskKey is not null)
 			{
 				string iconPath = Path.Combine(programFilesFolder, "Autodesk", "Desktop Connector", "DesktopConnector.Applications.Tray.exe");
-				var iconFile = Win32API.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 32512 }).FirstOrDefault();
+				var iconFile = Win32Helper.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 32512 }).FirstOrDefault();
 				var mainFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "DC");
 				var autodeskFolders = Directory.GetDirectories(mainFolder, "", SearchOption.AllDirectories);
 

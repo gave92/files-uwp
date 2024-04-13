@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using System;
@@ -20,12 +20,12 @@ namespace Files.Shared.Extensions
 		/// <returns><see cref="IEnumerable{T}"/> with <paramref name="item"/></returns>
 		public static IEnumerable<T> CreateEnumerable<T>(this T item)
 		{
-			return new[] { item };
+			return [item];
 		}
 
 		public static List<T> CreateList<T>(this T item)
 		{
-			return new() { item };
+			return [item];
 		}
 
 		public static IList<T> AddIfNotPresent<T>(this IList<T> list, T element)

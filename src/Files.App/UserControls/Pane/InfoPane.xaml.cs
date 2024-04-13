@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Xaml;
@@ -21,6 +21,8 @@ namespace Files.App.UserControls
 		private readonly IInfoPaneSettingsService PaneSettingsService;
 
 		private readonly ICommandManager Commands;
+
+		private IContentPageContext contentPageContext { get; } = Ioc.Default.GetRequiredService<IContentPageContext>();
 
 		public InfoPaneViewModel ViewModel { get; private set; }
 
@@ -74,7 +76,7 @@ namespace Files.App.UserControls
 			VisualStateManager.GoToState((UserControl)sender, "Normal", true);
 		}
 
-		private class ObservableContext : ObservableObject
+		private sealed class ObservableContext : ObservableObject
 		{
 			private bool isHorizontal = false;
 			public bool IsHorizontal
@@ -82,6 +84,15 @@ namespace Files.App.UserControls
 				get => isHorizontal;
 				set => SetProperty(ref isHorizontal, value);
 			}
+		}
+		
+		private void TagItem_Tapped(object sender, TappedRoutedEventArgs e)
+		{
+			var tagName = ((sender as StackPanel)?.Children[1] as TextBlock)?.Text;
+			if (tagName is null)
+				return;
+
+			contentPageContext.ShellPage?.SubmitSearch($"tag:{tagName}");
 		}
 	}
 }

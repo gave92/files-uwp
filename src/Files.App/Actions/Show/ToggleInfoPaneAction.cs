@@ -1,9 +1,9 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Actions
 {
-	internal class ToggleInfoPaneAction : ObservableObject, IToggleAction
+	internal sealed class ToggleInfoPaneAction : ObservableObject, IToggleAction
 	{
 		private readonly InfoPaneViewModel viewModel;
 
@@ -17,7 +17,7 @@ namespace Files.App.Actions
 			=> new(opacityStyle: "ColorIconRightPane");
 
 		public HotKey HotKey
-			=> new(Keys.I, KeyModifiers.MenuCtrl);
+			=> new(Keys.I, KeyModifiers.CtrlAlt);
 
 		public bool IsOn
 			=> viewModel.IsEnabled;

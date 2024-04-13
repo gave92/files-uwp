@@ -1,8 +1,8 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using CommunityToolkit.WinUI.UI;
-using Files.App.UserControls.TabBar;
+using Files.App.Server.Data.Enums;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -69,7 +69,6 @@ namespace Files.App.Views.Shells
 					IsSearchResultPage = ColumnParams.IsSearchResultPage,
 					SearchQuery = ColumnParams.SearchQuery,
 					NavPathParam = ColumnParams.NavPathParam,
-					SearchUnindexedItems = ColumnParams.SearchUnindexedItems,
 					SearchPathParam = ColumnParams.SearchPathParam,
 					AssociatedTabInstance = this,
 					SelectItems = ColumnParams.SelectItems
@@ -93,11 +92,11 @@ namespace Files.App.Views.Shells
 			NotifyPropertyChanged(nameof(FilesystemViewModel));
 		}
 
-		protected override void ViewModel_WorkingDirectoryModified(object sender, WorkingDirectoryModifiedEventArgs e)
+		protected override async void ViewModel_WorkingDirectoryModified(object sender, WorkingDirectoryModifiedEventArgs e)
 		{
 			string value = e.Path;
 			if (!string.IsNullOrWhiteSpace(value))
-				UpdatePathUIToWorkingDirectory(value);
+				await UpdatePathUIToWorkingDirectoryAsync(value);
 		}
 
 		private async void ItemDisplayFrame_Navigated(object sender, NavigationEventArgs e)
@@ -167,12 +166,15 @@ namespace Files.App.Views.Shells
 
 		public override void Up_Click()
 		{
+			if (!ToolbarViewModel.CanNavigateToParent)
+				return;
+
 			this.FindAscendant<ColumnsLayoutPage>()?.NavigateUp();
 		}
 
 		public override void NavigateToPath(string navigationPath, Type sourcePageType, NavigationArguments navArgs = null)
 		{
-			this.FindAscendant<ColumnsLayoutPage>().SetSelectedPathOrNavigate(navigationPath, sourcePageType, navArgs);
+			this.FindAscendant<ColumnsLayoutPage>()?.SetSelectedPathOrNavigate(navigationPath, sourcePageType, navArgs);
 		}
 
 		public override void NavigateHome()
@@ -188,18 +190,16 @@ namespace Files.App.Views.Shells
 			ItemDisplayFrame.BackStack.Remove(ItemDisplayFrame.BackStack.Last());
 		}
 
-		public void SubmitSearch(string query, bool searchUnindexedItems)
+		public void SubmitSearch(string query)
 		{
 			FilesystemViewModel.CancelSearch();
 			InstanceViewModel.CurrentSearchQuery = query;
-			InstanceViewModel.SearchedUnindexedItems = searchUnindexedItems;
 			ItemDisplayFrame.Navigate(typeof(ColumnLayoutPage), new NavigationArguments()
 			{
 				AssociatedTabInstance = this,
 				IsSearchResultPage = true,
 				SearchPathParam = FilesystemViewModel.WorkingDirectory,
 				SearchQuery = query,
-				SearchUnindexedItems = searchUnindexedItems,
 			});
 
 			//this.FindAscendant<ColumnViewBrowser>().SetSelectedPathOrNavigate(null, typeof(ColumnViewBase), navArgs);

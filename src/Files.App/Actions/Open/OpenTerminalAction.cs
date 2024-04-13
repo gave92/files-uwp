@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using System.Text;
@@ -85,10 +85,10 @@ namespace Files.App.Actions
 			}
 			else if (context.Folder is not null)
 			{
-				return new string[1] { context.Folder.ItemPath };
+				return [context.Folder.ItemPath];
 			}
 
-			return Array.Empty<string>();
+			return [];
 		}
 
 		private bool GetIsExecutable()

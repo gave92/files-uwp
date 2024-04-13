@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Extensions;
@@ -6,8 +6,8 @@ using Files.App.Utils;
 using Files.App.Helpers;
 using Files.App.Utils.Serialization;
 using Files.App.Utils.Serialization.Implementation;
-using Files.Core.Services.Settings;
-using Files.Core.ViewModels.FileTags;
+using Files.App.Services.Settings;
+using Files.App.ViewModels.FileTags;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using Windows.Storage;
@@ -20,13 +20,13 @@ namespace Files.App.Services.Settings
 
 		public event EventHandler OnTagsUpdated;
 
-		private static readonly List<TagViewModel> DefaultFileTags = new List<TagViewModel>()
-		{
+		private static readonly List<TagViewModel> DefaultFileTags =
+		[
 			new("Home", "#0072BD", "f7e0e137-2eb5-4fa4-a50d-ddd65df17c34"),
 			new("Work", "#D95319", "c84a8131-c4de-47d9-9440-26e859d14b3d"),
 			new("Photos", "#EDB120", "d4b8d4bd-ceaf-4e58-ac61-a185fcf96c5d"),
 			new("Important", "#77AC30", "79376daf-c44a-4fe4-aa3b-8b30baea453e")
-		};
+		];
 
 		public FileTagsSettingsService()
 		{
@@ -101,22 +101,19 @@ namespace Files.App.Services.Settings
 
 		public void EditTag(string uid, string name, string color)
 		{
-			var (tag, index) = GetTagAndIndex(uid);
-			if (tag is null)
+			var index = GetTagIndex(uid);
+			if (index == -1)
 				return;
-
-			tag.Name = name;
-			tag.Color = color;
 
 			var oldTags = FileTagList.ToList();
 			oldTags.RemoveAt(index);
-			oldTags.Insert(index, tag);
+			oldTags.Insert(index, new TagViewModel(name, color, uid));
 			FileTagList = oldTags;
 		}
 
 		public void DeleteTag(string uid)
 		{
-			var (_, index) = GetTagAndIndex(uid);
+			var index = GetTagIndex(uid);
 			if (index == -1)
 				return;
 
@@ -151,26 +148,24 @@ namespace Files.App.Services.Settings
 
 		public override object ExportSettings()
 		{
-			// Return string in Json format
-			return JsonSettingsSerializer.SerializeToJson(FileTagList);
+			var settings = new Dictionary<string, object>
+			{
+				{ "FileTagList", FileTagList }
+			};
+
+			// Serialize settings to JSON format
+			return JsonSettingsSerializer.SerializeToJson(settings);
 		}
 
-		private (TagViewModel?, int) GetTagAndIndex(string uid)
+		private int GetTagIndex(string uid)
 		{
-			TagViewModel? tag = null;
-			int index = -1;
-
 			for (int i = 0; i < FileTagList.Count; i++)
 			{
 				if (FileTagList[i].Uid == uid)
-				{
-					tag = FileTagList[i];
-					index = i;
-					break;
-				}
+					return i;
 			}
 
-			return (tag, index);
+			return -1;
 		}
 
 		private void UntagAllFiles(string uid)

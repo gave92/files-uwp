@@ -1,11 +1,11 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using System.Windows.Input;
 
 namespace Files.App.ViewModels.Settings
 {
-	public class TagsViewModel : ObservableObject
+	public sealed class TagsViewModel : ObservableObject
 	{
 		private readonly IFileTagsSettingsService fileTagsSettingsService = Ioc.Default.GetRequiredService<IFileTagsSettingsService>();
 
@@ -35,7 +35,7 @@ namespace Files.App.ViewModels.Settings
 			SaveNewTagCommand = new RelayCommand(DoSaveNewTag);
 			CancelNewTagCommand = new RelayCommand(DoCancelNewTag);
 
-			Tags = new ObservableCollection<ListedTagViewModel>();
+			Tags = [];
 			Tags.CollectionChanged += Tags_CollectionChanged;
 			fileTagsSettingsService.FileTagList?.ForEach(tag => Tags.Add(new ListedTagViewModel(tag)));
 
@@ -102,7 +102,7 @@ namespace Files.App.ViewModels.Settings
 		}
 	}
 
-	public class NewTagViewModel : ObservableObject
+	public sealed class NewTagViewModel : ObservableObject
 	{
 		private string name = string.Empty;
 		public string Name

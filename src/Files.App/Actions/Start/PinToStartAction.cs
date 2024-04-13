@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -6,7 +6,7 @@ using Files.Core.Storage;
 
 namespace Files.App.Actions
 {
-	internal class PinToStartAction : IAction
+	internal sealed class PinToStartAction : IAction
 	{
 		private IStorageService StorageService { get; } = Ioc.Default.GetRequiredService<IStorageService>();
 
@@ -21,7 +21,7 @@ namespace Files.App.Actions
 			=> "PinToStartDescription".GetLocalizedResource();
 
 		public RichGlyph Glyph
-			=> new(opacityStyle: "ColorIconPinToFavorites");
+			=> new(opacityStyle: "Icons.Pin.16x16");
 
 		public bool IsExecutable =>
 			context.ShellPage is not null;
@@ -37,8 +37,12 @@ namespace Files.App.Actions
 			{
 				foreach (ListedItem listedItem in context.ShellPage.SlimContentPage.SelectedItems)
 				{
-					var folder = await StorageService.GetFolderAsync(listedItem.ItemPath);
-					await StartMenuService.PinAsync(folder, listedItem.Name);
+					IStorable storable = listedItem.IsFolder switch
+					{
+						true => await StorageService.GetFolderAsync(listedItem.ItemPath),
+						_ => await StorageService.GetFileAsync((listedItem as ShortcutItem)?.TargetPath ?? listedItem.ItemPath)
+					};
+					await StartMenuService.PinAsync(storable, listedItem.Name);
 				}
 			}
 			else if (context.ShellPage?.FilesystemViewModel?.CurrentFolder is not null)

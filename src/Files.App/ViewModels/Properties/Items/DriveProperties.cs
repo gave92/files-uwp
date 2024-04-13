@@ -9,7 +9,7 @@ using Windows.Storage.FileProperties;
 
 namespace Files.App.ViewModels.Properties
 {
-	internal class DriveProperties : BaseProperties
+	internal sealed class DriveProperties : BaseProperties
 	{
 		public DriveItem Drive { get; }
 
@@ -50,16 +50,24 @@ namespace Files.App.ViewModels.Properties
 
 			if (ViewModel.LoadFileIcon)
 			{
-				if (diskRoot is not null)
-				{
-					ViewModel.IconData = await FileThumbnailHelper.LoadIconFromStorageItemAsync(diskRoot, 80, ThumbnailMode.SingleItem, ThumbnailOptions.ResizeThumbnail);
-				}
+				var result = await FileThumbnailHelper.GetIconAsync(
+					Drive.Path,
+					Constants.ShellIconSizes.ExtraLarge,
+					true,
+					IconOptions.ReturnIconOnly | IconOptions.UseCurrentScale);
+
+				if (result is not null)
+					ViewModel.IconData = result;
 				else
 				{
-					ViewModel.IconData = await FileThumbnailHelper.LoadIconWithoutOverlayAsync(Drive.Path, 80);
-				}
+					result = await FileThumbnailHelper.GetIconAsync(
+						Drive.DeviceID,
+						Constants.ShellIconSizes.ExtraLarge,
+						true,
+						IconOptions.ReturnIconOnly | IconOptions.UseCurrentScale); // For network shortcuts
 
-				ViewModel.IconData ??= await FileThumbnailHelper.LoadIconWithoutOverlayAsync(Drive.DeviceID, 80); // For network shortcuts
+					ViewModel.IconData = result;
+				}
 			}
 
 			if (diskRoot is null || diskRoot.Properties is null)
@@ -75,7 +83,7 @@ namespace Files.App.ViewModels.Properties
 				string capacity = "System.Capacity";
 				string fileSystem = "System.Volume.FileSystem";
 
-				var properties = await diskRoot.Properties.RetrievePropertiesAsync(new[] { freeSpace, capacity, fileSystem });
+				var properties = await diskRoot.Properties.RetrievePropertiesAsync([freeSpace, capacity, fileSystem]);
 
 				ViewModel.DriveCapacityValue = (ulong)properties[capacity];
 				ViewModel.DriveFreeSpaceValue = (ulong)properties[freeSpace];

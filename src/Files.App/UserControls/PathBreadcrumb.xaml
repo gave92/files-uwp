@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <UserControl
 	x:Class="Files.App.UserControls.PathBreadcrumb"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -100,6 +100,8 @@
 								<MenuFlyout.MenuFlyoutPresenterStyle>
 									<Style TargetType="MenuFlyoutPresenter">
 										<Setter Property="MaxHeight" Value="400" />
+										<!--  Workaround for https://github.com/files-community/Files/issues/13078  -->
+										<Setter Target="HighContrastAdjustment" Value="None" />
 									</Style>
 								</MenuFlyout.MenuFlyoutPresenterStyle>
 							</MenuFlyout>

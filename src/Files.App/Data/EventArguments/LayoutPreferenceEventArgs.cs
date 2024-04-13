@@ -1,18 +1,18 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Data.EventArguments
 {
-	public class LayoutPreferenceEventArgs
+	public sealed class LayoutPreferenceEventArgs
 	{
 		public readonly bool IsAdaptiveLayoutUpdateRequired;
 
-		public readonly LayoutPreferences LayoutPreference;
+		public readonly LayoutPreferencesItem LayoutPreference;
 
-		internal LayoutPreferenceEventArgs(LayoutPreferences layoutPref)
+		internal LayoutPreferenceEventArgs(LayoutPreferencesItem layoutPref)
 			=> LayoutPreference = layoutPref;
 
-		internal LayoutPreferenceEventArgs(LayoutPreferences layoutPref, bool isAdaptiveLayoutUpdateRequired)
+		internal LayoutPreferenceEventArgs(LayoutPreferencesItem layoutPref, bool isAdaptiveLayoutUpdateRequired)
 			=> (LayoutPreference, IsAdaptiveLayoutUpdateRequired) = (layoutPref, isAdaptiveLayoutUpdateRequired);
 	}
 }

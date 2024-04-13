@@ -1,11 +1,10 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Xaml.Controls;
 
 namespace Files.App.Data.Items
 {
-
 	public class TagsListItem
 	{
 		public bool IsTag
@@ -21,7 +20,7 @@ namespace Files.App.Data.Items
 			=> this as FlyoutItem;
 	}
 
-	public class TagItem : TagsListItem
+	public sealed class TagItem : TagsListItem
 	{
 		public TagViewModel Tag { get; set; }
 
@@ -31,7 +30,7 @@ namespace Files.App.Data.Items
 		}
 	}
 
-	public class FlyoutItem : TagsListItem
+	public sealed class FlyoutItem : TagsListItem
 	{
 		public MenuFlyout Flyout { get; set; }
 

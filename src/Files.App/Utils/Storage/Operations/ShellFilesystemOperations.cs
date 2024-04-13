@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using System.IO;
@@ -9,7 +9,7 @@ namespace Files.App.Utils.Storage
 	/// <summary>
 	/// Provides group of shell file system operation for given page instance.
 	/// </summary>
-	public class ShellFilesystemOperations : IFilesystemOperations
+	public sealed class ShellFilesystemOperations : IFilesystemOperations
 	{
 		private IShellPage _associatedInstance;
 
@@ -38,7 +38,8 @@ namespace Files.App.Utils.Storage
 
 		public async Task<IStorageHistory> CopyItemsAsync(IList<IStorageItemWithPath> source, IList<string> destination, IList<FileNameConflictResolveOptionType> collisions, IProgress<StatusCenterItemProgressModel> progress, CancellationToken cancellationToken, bool asAdmin = false)
 		{
-			if (source.Any(x => string.IsNullOrWhiteSpace(x.Path) || x.Path.StartsWith(@"\\?\", StringComparison.Ordinal)) || destination.Any(x => string.IsNullOrWhiteSpace(x) || x.StartsWith(@"\\?\", StringComparison.Ordinal) || FtpHelpers.IsFtpPath(x) || ZipStorageFolder.IsZipPath(x, false)))
+			if (source.Any(x => string.IsNullOrWhiteSpace(x.Path) || x.Path.StartsWith(@"\\?\", StringComparison.Ordinal) || FtpHelpers.IsFtpPath(x.Path) || ZipStorageFolder.IsZipPath(x.Path, false))
+				|| destination.Any(x => string.IsNullOrWhiteSpace(x) || x.StartsWith(@"\\?\", StringComparison.Ordinal) || FtpHelpers.IsFtpPath(x) || ZipStorageFolder.IsZipPath(x, false)))
 			{
 				// Fallback to built-in file operations
 				return await _filesystemOperations.CopyItemsAsync(source, destination, collisions, progress, cancellationToken);
@@ -48,7 +49,7 @@ namespace Files.App.Utils.Storage
 				progress,
 				true,
 				FileSystemStatusCode.InProgress,
-				source.Count());
+				source.Count);
 
 			fsProgress.Report();
 
@@ -352,7 +353,7 @@ namespace Files.App.Utils.Storage
 				progress,
 				true,
 				FileSystemStatusCode.InProgress,
-				source.Count());
+				source.Count);
 
 			fsProgress.Report();
 
@@ -471,7 +472,7 @@ namespace Files.App.Utils.Storage
 				progress,
 				true,
 				FileSystemStatusCode.InProgress,
-				source.Count());
+				source.Count);
 
 			fsProgress.Report();
 
@@ -657,7 +658,17 @@ namespace Files.App.Utils.Storage
 				if (renameResult.Items.Any(x => CopyEngineResult.Convert(x.HResult) == FileSystemStatusCode.Unauthorized))
 				{
 					if (!asAdmin && await RequestAdminOperation())
-						return await RenameAsync(source, newName, collision, progress, cancellationToken, true);
+					{
+						var res = await RenameAsync(source, newName, collision, progress, cancellationToken, true);
+						if (res is null)
+						{
+							await DynamicDialogFactory
+								.GetFor_RenameRequiresHigherPermissions(source.Path)
+								.TryShowAsync();
+						}
+
+						return res;
+					}
 				}
 				else if (renameResult.Items.Any(x => CopyEngineResult.Convert(x.HResult) == FileSystemStatusCode.InUse))
 				{
@@ -726,7 +737,7 @@ namespace Files.App.Utils.Storage
 			using var r = cancellationToken.Register(CancelOperation, operationID, false);
 
 			var moveResult = new ShellOperationResult();
-			var (status, response) = await FileOperationsHelpers.MoveItemAsync(source.Select(s => s.Path).ToArray(), destination.ToArray(), false, MainWindow.Instance.WindowHandle.ToInt64(), asAdmin, progress, operationID);
+			var (status, response) = await FileOperationsHelpers.MoveItemAsync(source.Select(s => s.Path).ToArray(), [.. destination], false, MainWindow.Instance.WindowHandle.ToInt64(), asAdmin, progress, operationID);
 
 			var result = (FilesystemResult)status;
 			moveResult.Items.AddRange(response?.Final ?? Enumerable.Empty<ShellOperationItemResult>());

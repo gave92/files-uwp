@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Xaml;
@@ -8,7 +8,7 @@ using Microsoft.UI.Xaml.Input;
 namespace Files.App.Data.Commands
 {
 	[DebuggerDisplay("Command None")]
-	internal class NoneCommand : IRichCommand
+	internal sealed class NoneCommand : IRichCommand
 	{
 		public event EventHandler? CanExecuteChanged { add { } remove { } }
 		public event PropertyChangingEventHandler? PropertyChanging { add { } remove { } }
@@ -30,6 +30,12 @@ namespace Files.App.Data.Commands
 		public bool IsCustomHotKeys => false;
 		public string? HotKeyText => null;
 		public HotKeyCollection HotKeys
+		{
+			get => HotKeyCollection.Empty;
+			set => throw new InvalidOperationException("This command is readonly.");
+		}
+
+		public HotKeyCollection DefaultHotKeys
 		{
 			get => HotKeyCollection.Empty;
 			set => throw new InvalidOperationException("This command is readonly.");

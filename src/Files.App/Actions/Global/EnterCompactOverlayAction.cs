@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Windowing;
@@ -6,7 +6,7 @@ using Windows.Graphics;
 
 namespace Files.App.Actions
 {
-	internal class EnterCompactOverlayAction : ObservableObject, IAction
+	internal sealed class EnterCompactOverlayAction : ObservableObject, IAction
 	{
 		private readonly IWindowContext windowContext;
 
@@ -17,7 +17,7 @@ namespace Files.App.Actions
 			=> new(opacityStyle: "ColorIconEnterCompactOverlay");
 
 		public HotKey HotKey
-			=> new(Keys.Up, KeyModifiers.MenuCtrl);
+			=> new(Keys.Up, KeyModifiers.CtrlAlt);
 
 		public string Description
 			=> "EnterCompactOverlayDescription".GetLocalizedResource();

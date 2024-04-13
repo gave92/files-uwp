@@ -1,4 +1,4 @@
-// Copyright(c) 2023 Files Community
+// Copyright(c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.Shared.Helpers;
@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Files.App.ViewModels.Properties
 {
-	public class FileProperties : BaseProperties, IFileProperties
+	public sealed class FileProperties : BaseProperties, IFileProperties
 	{
 		public ListedItem Item { get; }
 
@@ -45,6 +45,9 @@ namespace Files.App.ViewModels.Properties
 			ViewModel.CustomIconSource = Item.CustomIconSource;
 			ViewModel.LoadFileIcon = Item.LoadFileIcon;
 			ViewModel.IsDownloadedFile = NativeFileOperationsHelper.ReadStringFromFile($"{Item.ItemPath}:Zone.Identifier") is not null;
+			ViewModel.IsEditAlbumCoverVisible = 
+				FileExtensionHelpers.IsVideoFile(Item.FileExtension) ||
+				FileExtensionHelpers.IsAudioFile(Item.FileExtension);
 
 			if (!Item.IsShortcut)
 				return;
@@ -74,12 +77,12 @@ namespace Files.App.ViewModels.Properties
 				if (Item.IsLinkItem)
 				{
 					var tmpItem = (ShortcutItem)Item;
-					await Win32Helpers.InvokeWin32ComponentAsync(ViewModel.ShortcutItemPath, AppInstance, ViewModel.ShortcutItemArguments, ViewModel.RunAsAdmin, ViewModel.ShortcutItemWorkingDir);
+					await Win32Helper.InvokeWin32ComponentAsync(ViewModel.ShortcutItemPath, AppInstance, ViewModel.ShortcutItemArguments, ViewModel.RunAsAdmin, ViewModel.ShortcutItemWorkingDir);
 				}
 				else
 				{
 					await MainWindow.Instance.DispatcherQueue.EnqueueOrInvokeAsync(
-						() => NavigationHelpers.OpenPathInNewTab(Path.GetDirectoryName(ViewModel.ShortcutItemPath)));
+						() => NavigationHelpers.OpenPathInNewTab(Path.GetDirectoryName(ViewModel.ShortcutItemPath), true));
 				}
 			},
 			() =>
@@ -103,10 +106,15 @@ namespace Files.App.ViewModels.Properties
 				ViewModel.ItemSizeOnDisk = NativeFileOperationsHelper.GetFileSizeOnDisk(Item.ItemPath)?.ToLongSizeString() ??
 				   string.Empty;
 
-			var fileIconData = await FileThumbnailHelper.LoadIconFromPathAsync(Item.ItemPath, 80, Windows.Storage.FileProperties.ThumbnailMode.DocumentsView, Windows.Storage.FileProperties.ThumbnailOptions.ResizeThumbnail, false);
-			if (fileIconData is not null)
+			var result = await FileThumbnailHelper.GetIconAsync(
+				Item.ItemPath,
+				Constants.ShellIconSizes.ExtraLarge,
+				false,
+				IconOptions.UseCurrentScale);
+
+			if (result is not null)
 			{
-				ViewModel.IconData = fileIconData;
+				ViewModel.IconData = result;
 				ViewModel.LoadUnknownTypeGlyph = false;
 				ViewModel.LoadFileIcon = true;
 			}
@@ -115,7 +123,6 @@ namespace Files.App.ViewModels.Properties
 			{
 				ViewModel.ItemCreatedTimestampReal = Item.ItemDateCreatedReal;
 				ViewModel.ItemAccessedTimestampReal = Item.ItemDateAccessedReal;
-				ViewModel.LoadLinkIcon = Item.LoadWebShortcutGlyph;
 				if (Item.IsLinkItem || string.IsNullOrWhiteSpace(((ShortcutItem)Item).TargetPath))
 				{
 					// Can't show any other property
@@ -165,6 +172,10 @@ namespace Files.App.ViewModels.Properties
 
 			// Find Encoding Bitrate property and convert it to kbps
 			var encodingBitrate = list.Find(x => x.Property == "System.Audio.EncodingBitrate");
+
+			if (encodingBitrate?.Value is null)
+				encodingBitrate = list.Find(x => x.Property == "System.Video.EncodingBitrate");
+
 			if (encodingBitrate?.Value is not null)
 			{
 				var sizes = new string[] { "Bps", "KBps", "MBps", "GBps" };
@@ -200,8 +211,10 @@ namespace Files.App.ViewModels.Properties
 				{
 					if (!prop.IsReadOnly && prop.Modified)
 					{
-						var newDict = new Dictionary<string, object>();
-						newDict.Add(prop.Property, prop.Value);
+						var newDict = new Dictionary<string, object>
+						{
+							{ prop.Property, prop.Value }
+						};
 
 						try
 						{
@@ -238,8 +251,10 @@ namespace Files.App.ViewModels.Properties
 				{
 					if (!prop.IsReadOnly)
 					{
-						var newDict = new Dictionary<string, object>();
-						newDict.Add(prop.Property, null);
+						var newDict = new Dictionary<string, object>
+						{
+							{ prop.Property, null }
+						};
 
 						try
 						{
@@ -263,46 +278,32 @@ namespace Files.App.ViewModels.Properties
 		{
 			switch (e.PropertyName)
 			{
-				case "IsReadOnly":
-					if (ViewModel.IsReadOnly)
+				case nameof(ViewModel.IsReadOnly):
+					if (ViewModel.IsReadOnly is not null)
 					{
-						NativeFileOperationsHelper.SetFileAttribute(
-							Item.ItemPath,
-							System.IO.FileAttributes.ReadOnly
-						);
-					}
-					else
-					{
-						NativeFileOperationsHelper.UnsetFileAttribute(
-							Item.ItemPath,
-							System.IO.FileAttributes.ReadOnly
-						);
+						if ((bool)ViewModel.IsReadOnly)
+							NativeFileOperationsHelper.SetFileAttribute(Item.ItemPath, System.IO.FileAttributes.ReadOnly);
+						else
+							NativeFileOperationsHelper.UnsetFileAttribute(Item.ItemPath, System.IO.FileAttributes.ReadOnly);
 					}
 
 					break;
 
-				case "IsHidden":
-					if (ViewModel.IsHidden)
+				case nameof(ViewModel.IsHidden):
+					if (ViewModel.IsHidden is not null)
 					{
-						NativeFileOperationsHelper.SetFileAttribute(
-							Item.ItemPath,
-							System.IO.FileAttributes.Hidden
-						);
-					}
-					else
-					{
-						NativeFileOperationsHelper.UnsetFileAttribute(
-							Item.ItemPath,
-							System.IO.FileAttributes.Hidden
-						);
+						if ((bool)ViewModel.IsHidden)
+							NativeFileOperationsHelper.SetFileAttribute(Item.ItemPath,	System.IO.FileAttributes.Hidden);
+						else
+							NativeFileOperationsHelper.UnsetFileAttribute(Item.ItemPath, System.IO.FileAttributes.Hidden);
 					}
 
 					break;
 
-				case "RunAsAdmin":
-				case "ShortcutItemPath":
-				case "ShortcutItemWorkingDir":
-				case "ShortcutItemArguments":
+				case nameof(ViewModel.RunAsAdmin):
+				case nameof(ViewModel.ShortcutItemPath):
+				case nameof(ViewModel.ShortcutItemWorkingDir):
+				case nameof(ViewModel.ShortcutItemArguments):
 					if (string.IsNullOrWhiteSpace(ViewModel.ShortcutItemPath))
 						return;
 

@@ -1,7 +1,6 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using Files.Core.Services;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.IO.Pipes;
@@ -9,7 +8,7 @@ using System.Security.Principal;
 
 namespace Files.App.Services.PreviewPopupProviders
 {
-	public class QuickLookProvider : IPreviewPopupProvider
+	public sealed class QuickLookProvider : IPreviewPopupProvider
 	{
 		public static QuickLookProvider Instance { get; } = new();
 
@@ -41,9 +40,9 @@ namespace Files.App.Services.PreviewPopupProviders
 				await writer.WriteLineAsync($"{message}|{path}");
 				await writer.FlushAsync();
 			}
-			catch (TimeoutException)
+			catch (Exception ex) when (ex is TimeoutException or IOException)
 			{
-				client.Close();
+				// ignore
 			}
 		}
 
@@ -63,9 +62,8 @@ namespace Files.App.Services.PreviewPopupProviders
 
 					return serverInstances;
 				}
-				catch (TimeoutException)
+				catch (Exception ex) when (ex is TimeoutException or IOException)
 				{
-					client.Close();
 					return 0;
 				}
 			}

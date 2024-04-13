@@ -1,8 +1,8 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
+using Files.App.Server.Data.Enums;
 using Files.Shared.Helpers;
-using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage;
@@ -17,17 +17,17 @@ namespace Files.App.Helpers
 		private static DrivesViewModel DrivesViewModel { get; } = Ioc.Default.GetRequiredService<DrivesViewModel>();
 		private static NetworkDrivesViewModel NetworkDrivesViewModel { get; } = Ioc.Default.GetRequiredService<NetworkDrivesViewModel>();
 
-		public static Task OpenPathInNewTab(string? path)
+		public static Task OpenPathInNewTab(string? path, bool focusNewTab)
 		{
-			return AddNewTabByPathAsync(typeof(PaneHolderPage), path);
+			return AddNewTabByPathAsync(typeof(PaneHolderPage), path, focusNewTab);
 		}
 
 		public static Task AddNewTabAsync()
 		{
-			return AddNewTabByPathAsync(typeof(PaneHolderPage), "Home");
+			return AddNewTabByPathAsync(typeof(PaneHolderPage), "Home", true);
 		}
 
-		public static async Task AddNewTabByPathAsync(Type type, string? path, int atIndex = -1)
+		public static async Task AddNewTabByPathAsync(Type type, string? path, bool focusNewTab, int atIndex = -1)
 		{
 			if (string.IsNullOrEmpty(path))
 			{
@@ -60,7 +60,8 @@ namespace Files.App.Helpers
 
 			MainPageViewModel.AppInstances.Insert(index, tabItem);
 
-			App.AppModel.TabStripSelectedIndex = index;
+			if (focusNewTab)
+				App.AppModel.TabStripSelectedIndex = index;
 		}
 
 		public static async Task AddNewTabByParamAsync(Type type, object tabViewItemArgs, int atIndex = -1)
@@ -137,30 +138,15 @@ namespace Files.App.Helpers
 				iconSource.ImageSource = new BitmapImage(new Uri(Constants.FluentIconsPaths.HomeIcon));
 			}
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.DesktopPath, StringComparison.OrdinalIgnoreCase))
-			{
 				tabLocationHeader = "Desktop".GetLocalizedResource();
-			}
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.DownloadsPath, StringComparison.OrdinalIgnoreCase))
-			{
 				tabLocationHeader = "Downloads".GetLocalizedResource();
-			}
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
-			{
 				tabLocationHeader = "RecycleBin".GetLocalizedResource();
-
-				// Use 48 for higher resolution, the other items look fine with 16.
-				var iconData = await FileThumbnailHelper.LoadIconFromPathAsync(currentPath, 48u, Windows.Storage.FileProperties.ThumbnailMode.ListView, Windows.Storage.FileProperties.ThumbnailOptions.UseCurrentScale, true);
-				if (iconData is not null)
-					iconSource.ImageSource = await iconData.ToBitmapAsync();
-			}
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.MyComputerPath, StringComparison.OrdinalIgnoreCase))
-			{
 				tabLocationHeader = "ThisPC".GetLocalizedResource();
-			}
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.NetworkFolderPath, StringComparison.OrdinalIgnoreCase))
-			{
 				tabLocationHeader = "SidebarNetworkDrives".GetLocalizedResource();
-			}
 			else if (App.LibraryManager.TryGetLibrary(currentPath, out LibraryLocationItem library))
 			{
 				var libName = System.IO.Path.GetFileNameWithoutExtension(library.Path).GetLocalizedResource();
@@ -203,15 +189,20 @@ namespace Files.App.Helpers
 
 			if (iconSource.ImageSource is null)
 			{
-				var iconData = await FileThumbnailHelper.LoadIconFromPathAsync(currentPath, 16u, Windows.Storage.FileProperties.ThumbnailMode.ListView, Windows.Storage.FileProperties.ThumbnailOptions.UseCurrentScale, true);
-				if (iconData is not null)
-					iconSource.ImageSource = await iconData.ToBitmapAsync();
+				var result = await FileThumbnailHelper.GetIconAsync(
+					currentPath,
+					Constants.ShellIconSizes.Small,
+					true,
+					IconOptions.ReturnIconOnly | IconOptions.UseCurrentScale);
+
+				if (result is not null)
+					iconSource.ImageSource = await result.ToBitmapAsync();
 			}
 
 			return (tabLocationHeader, iconSource, toolTipText);
 		}
 
-		public static async Task UpdateInstancePropertiesAsync(object navigationArg)
+		public static async Task UpdateInstancePropertiesAsync(object? navigationArg)
 		{
 			await SafetyExtensions.IgnoreExceptions(async () =>
 			{
@@ -280,7 +271,7 @@ namespace Files.App.Helpers
 
 		public static Task LaunchNewWindowAsync()
 		{
-			var filesUWPUri = new Uri("files-uwp:");
+			var filesUWPUri = new Uri("files-uwp:?window=");
 			return Launcher.LaunchUriAsync(filesUWPUri).AsTask();
 		}
 
@@ -302,7 +293,7 @@ namespace Files.App.Helpers
 				selectedItems.Count > 1 &&
 				selectedItems.All(x => x.PrimaryItemAttribute == StorageItemTypes.File && !x.IsExecutable && !x.IsShortcut))
 			{
-				opened = await Win32Helpers.InvokeWin32ComponentAsync(string.Join('|', selectedItems.Select(x => x.ItemPath)), associatedInstance);
+				opened = await Win32Helper.InvokeWin32ComponentAsync(string.Join('|', selectedItems.Select(x => x.ItemPath)), associatedInstance);
 			}
 
 			if (opened)
@@ -329,7 +320,7 @@ namespace Files.App.Helpers
 				return;
 
 			var arguments = string.Join(" ", items.Select(item => $"\"{item.Path}\""));
-			await Win32Helpers.InvokeWin32ComponentAsync(executablePath, associatedInstance, arguments);
+			await Win32Helper.InvokeWin32ComponentAsync(executablePath, associatedInstance, arguments);
 		}
 
 		/// <summary>
@@ -368,7 +359,7 @@ namespace Files.App.Helpers
 				}
 				else
 				{
-					await NavigationHelpers.OpenPathInNewTab(path);
+					await NavigationHelpers.OpenPathInNewTab(path, true);
 				}
 
 				return true;
@@ -479,7 +470,7 @@ namespace Files.App.Helpers
 			{
 				if (string.IsNullOrEmpty(shortcutInfo.TargetPath))
 				{
-					await Win32Helpers.InvokeWin32ComponentAsync(path, associatedInstance);
+					await Win32Helper.InvokeWin32ComponentAsync(path, associatedInstance);
 					opened = (FilesystemResult)true;
 				}
 				else
@@ -508,7 +499,7 @@ namespace Files.App.Helpers
 				if (opened)
 					await OpenPath(forceOpenInNewTab, UserSettingsService.FoldersSettingsService.OpenFoldersInNewTab, path, associatedInstance, selectItems);
 				else
-					await Win32Helpers.InvokeWin32ComponentAsync(path, associatedInstance);
+					await Win32Helper.InvokeWin32ComponentAsync(path, associatedInstance);
 			}
 			return opened;
 		}
@@ -523,7 +514,7 @@ namespace Files.App.Helpers
 			{
 				if (string.IsNullOrEmpty(shortcutInfo.TargetPath))
 				{
-					await Win32Helpers.InvokeWin32ComponentAsync(path, associatedInstance, args);
+					await Win32Helper.InvokeWin32ComponentAsync(path, associatedInstance, args);
 				}
 				else
 				{
@@ -534,13 +525,13 @@ namespace Files.App.Helpers
 						if (childFile?.Item is SystemStorageFile)
 							App.RecentItemsManager.AddToRecentItems(childFile.Path);
 					}
-					await Win32Helpers.InvokeWin32ComponentAsync(shortcutInfo.TargetPath, associatedInstance, $"{args} {shortcutInfo.Arguments}", shortcutInfo.RunAsAdmin, shortcutInfo.WorkingDirectory);
+					await Win32Helper.InvokeWin32ComponentAsync(shortcutInfo.TargetPath, associatedInstance, $"{args} {shortcutInfo.Arguments}", shortcutInfo.RunAsAdmin, shortcutInfo.WorkingDirectory);
 				}
 				opened = (FilesystemResult)true;
 			}
 			else if (isHiddenItem)
 			{
-				await Win32Helpers.InvokeWin32ComponentAsync(path, associatedInstance, args);
+				await Win32Helper.InvokeWin32ComponentAsync(path, associatedInstance, args);
 			}
 			else
 			{
@@ -640,7 +631,7 @@ namespace Files.App.Helpers
 							}
 
 							if (!launchSuccess)
-								await Win32Helpers.InvokeWin32ComponentAsync(path, associatedInstance, args);
+								await Win32Helper.InvokeWin32ComponentAsync(path, associatedInstance, args);
 						}
 					});
 			}
@@ -661,7 +652,7 @@ namespace Files.App.Helpers
 		{
 			if (forceOpenInNewTab || openFolderInNewTabSetting)
 			{
-				await OpenPathInNewTab(text);
+				await OpenPathInNewTab(text, true);
 			}
 			else
 			{

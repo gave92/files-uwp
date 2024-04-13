@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Dialogs;
@@ -25,7 +25,7 @@ namespace Files.App.Helpers
 			{
 				RequestedOperation = DataPackageOperation.Move
 			};
-			ConcurrentBag<IStorageItem> items = new();
+			ConcurrentBag<IStorageItem> items = [];
 
 			if (associatedInstance.SlimContentPage.IsItemSelected)
 			{
@@ -134,7 +134,7 @@ namespace Files.App.Helpers
 			{
 				RequestedOperation = DataPackageOperation.Copy
 			};
-			ConcurrentBag<IStorageItem> items = new();
+			ConcurrentBag<IStorageItem> items = [];
 
 			if (associatedInstance.SlimContentPage.IsItemSelected)
 			{
@@ -324,7 +324,10 @@ namespace Files.App.Helpers
 					break;
 			}
 
-			if (created.Status == ReturnResult.AccessUnauthorized)
+			// Add newly created item to recent files list
+			if (created.Status == ReturnResult.Success && created.Item?.Path is not null)
+				App.RecentItemsManager.AddToRecentItems(created.Item.Path);
+			else if (created.Status == ReturnResult.AccessUnauthorized)
 			{
 				await DialogDisplayHelper.ShowDialogAsync
 				(
@@ -377,7 +380,7 @@ namespace Files.App.Helpers
 
 			foreach (ListedItem selectedItem in selectedItems)
 			{
-				var fileName = string.Format("ShortcutCreateNewSuffix".GetLocalizedResource(), selectedItem.Name) + ".lnk";
+				var fileName = FilesystemHelpers.GetShortcutNamingPreference(selectedItem.Name);
 				var filePath = Path.Combine(currentPath ?? string.Empty, fileName);
 
 				if (!await FileOperationsHelpers.CreateOrUpdateLinkAsync(filePath, selectedItem.ItemPath))

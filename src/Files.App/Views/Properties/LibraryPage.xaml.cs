@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -28,7 +28,7 @@ namespace Files.App.Views.Properties
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		public ObservableCollection<LibraryFolder> Folders { get; } = new();
+		public ObservableCollection<LibraryFolder> Folders { get; } = [];
 
 		public bool IsLibraryEmpty => Folders.Count == 0;
 
@@ -232,7 +232,7 @@ namespace Files.App.Views.Properties
 
 	}
 
-	public class LibraryFolder : ObservableObject
+	public sealed class LibraryFolder : ObservableObject
 	{
 		public string Path { get; set; }
 

@@ -1,11 +1,11 @@
-﻿// Copyright(c) 2023 Files Community
+﻿// Copyright(c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Dispatching;
 
 namespace Files.App.ViewModels.Properties
 {
-	internal class CombinedFileProperties : CombinedProperties, IFileProperties
+	internal sealed class CombinedFileProperties : CombinedProperties, IFileProperties
 	{
 		public CombinedFileProperties(
 			SelectedItemsPropertiesViewModel viewModel,
@@ -34,6 +34,10 @@ namespace Files.App.ViewModels.Properties
 
 				// Find Encoding Bitrate property and convert it to kbps
 				var encodingBitrate = list.Find(x => x.Property == "System.Audio.EncodingBitrate");
+
+				if (encodingBitrate?.Value is null)
+					encodingBitrate = list.Find(x => x.Property == "System.Video.EncodingBitrate");
+
 				if (encodingBitrate?.Value is not null)
 				{
 					var sizes = new string[] { "Bps", "KBps", "MBps", "GBps" };
@@ -95,8 +99,10 @@ namespace Files.App.ViewModels.Properties
 				{
 					if (!prop.IsReadOnly && prop.Modified)
 					{
-						var newDict = new Dictionary<string, object>();
-						newDict.Add(prop.Property, prop.Value);
+						var newDict = new Dictionary<string, object>
+						{
+							{ prop.Property, prop.Value }
+						};
 
 						foreach (var file in files)
 						{
@@ -142,8 +148,10 @@ namespace Files.App.ViewModels.Properties
 				{
 					if (!prop.IsReadOnly)
 					{
-						var newDict = new Dictionary<string, object>();
-						newDict.Add(prop.Property, null);
+						var newDict = new Dictionary<string, object>
+						{
+							{ prop.Property, null }
+						};
 
 						foreach (var file in files)
 						{

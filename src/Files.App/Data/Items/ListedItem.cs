@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.ViewModels.Properties;
@@ -70,13 +70,6 @@ namespace Files.App.Utils
 			set => SetProperty(ref loadFileIcon, value);
 		}
 
-		private bool loadWebShortcutGlyph;
-		public bool LoadWebShortcutGlyph
-		{
-			get => loadWebShortcutGlyph;
-			set => SetProperty(ref loadWebShortcutGlyph, value);
-		}
-
 		private bool loadCustomIcon;
 		public bool LoadCustomIcon
 		{
@@ -107,6 +100,7 @@ namespace Files.App.Utils
 			{
 				if (SetProperty(ref fileTags, value))
 				{
+					Debug.Assert(value != null);
 					var dbInstance = FileTagsHelper.GetDbInstance();
 					dbInstance.SetTags(ItemPath, FileFRN, value);
 					HasTags = !FileTags.IsEmpty();
@@ -176,13 +170,12 @@ namespace Files.App.Utils
 					{
 						LoadFileIcon = true;
 						NeedsPlaceholderGlyph = false;
-						LoadWebShortcutGlyph = false;
 					}
 				}
 			}
 		}
 
-		public bool IsItemPinnedToStart => StartMenuService.IsPinned(ItemPath);
+		public bool IsItemPinnedToStart => StartMenuService.IsPinned((this as ShortcutItem)?.TargetPath ?? ItemPath);
 
 		private BitmapImage iconOverlay;
 		public BitmapImage IconOverlay
@@ -374,10 +367,10 @@ namespace Files.App.Utils
 		public bool IsAlternateStream => this is AlternateStreamItem;
 		public bool IsGitItem => this is GitItem;
 		public virtual bool IsExecutable => FileExtensionHelpers.IsExecutableFile(ItemPath);
-		public virtual bool IsPythonFile => FileExtensionHelpers.IsPythonFile(ItemPath);
-		public bool IsPinned => App.QuickAccessManager.Model.FavoriteItems.Contains(itemPath);
+		public virtual bool IsScriptFile => FileExtensionHelpers.IsScriptFile(ItemPath);
+		public bool IsPinned => App.QuickAccessManager.Model.PinnedFolders.Contains(itemPath);
 		public bool IsDriveRoot => ItemPath == PathNormalization.GetPathRoot(ItemPath);
-		public bool IsElevated => CheckElevationRights();
+		public bool IsElevationRequired { get; set; }
 
 		private BaseStorageFile itemFile;
 		public BaseStorageFile ItemFile
@@ -401,20 +394,9 @@ namespace Files.App.Utils
 		{
 			ContainsFilesOrFolders = FolderHelpers.CheckForFilesFolders(ItemPath);
 		}
-
-		private bool CheckElevationRights()
-		{
-			// Avoid downloading file to check elevation
-			if (SyncStatusUI.LoadSyncStatus)
-				return false;
-
-			return IsShortcut
-				? ElevationHelpers.IsElevationRequired(((ShortcutItem)this).TargetPath)
-				: ElevationHelpers.IsElevationRequired(this.ItemPath);
-		}
 	}
 
-	public class RecycleBinItem : ListedItem
+	public sealed class RecycleBinItem : ListedItem
 	{
 		public RecycleBinItem(string folderRelativeId) : base(folderRelativeId)
 		{
@@ -443,7 +425,7 @@ namespace Files.App.Utils
 		public string ItemOriginalFolderName => Path.GetFileName(ItemOriginalFolder);
 	}
 
-	public class FtpItem : ListedItem
+	public sealed class FtpItem : ListedItem
 	{
 		public FtpItem(FtpListItem item, string folder) : base(null)
 		{
@@ -479,7 +461,7 @@ namespace Files.App.Utils
 		};
 	}
 
-	public class ShortcutItem : ListedItem
+	public sealed class ShortcutItem : ListedItem
 	{
 		public ShortcutItem(string folderRelativeId) : base(folderRelativeId)
 		{
@@ -503,7 +485,7 @@ namespace Files.App.Utils
 		public override bool IsExecutable => FileExtensionHelpers.IsExecutableFile(TargetPath, true);
 	}
 
-	public class ZipItem : ListedItem
+	public sealed class ZipItem : ListedItem
 	{
 		public ZipItem(string folderRelativeId) : base(folderRelativeId)
 		{
@@ -527,7 +509,7 @@ namespace Files.App.Utils
 		{ }
 	}
 
-	public class LibraryItem : ListedItem
+	public sealed class LibraryItem : ListedItem
 	{
 		public LibraryItem(LibraryLocationItem library) : base(null)
 		{
@@ -554,7 +536,7 @@ namespace Files.App.Utils
 		public ReadOnlyCollection<string> Folders { get; }
 	}
 
-	public class AlternateStreamItem : ListedItem
+	public sealed class AlternateStreamItem : ListedItem
 	{
 		public string MainStreamPath => ItemPath.Substring(0, ItemPath.LastIndexOf(':'));
 		public string MainStreamName => Path.GetFileName(MainStreamPath);
@@ -574,7 +556,7 @@ namespace Files.App.Utils
 		}
 	}
 
-	public class GitItem : ListedItem
+	public sealed class GitItem : ListedItem
 	{
 		private volatile int statusPropertiesInitialized = 0;
 		public bool StatusPropertiesInitialized

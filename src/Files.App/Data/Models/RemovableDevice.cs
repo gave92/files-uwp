@@ -1,14 +1,14 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using static Files.App.Helpers.NativeIoDeviceControlHelper;
+using static Files.App.Helpers.Win32PInvoke;
 
 namespace Files.App.Data.Models
 {
-	public class RemovableDevice
+	public sealed class RemovableDevice
 	{
 		private nint handle;
 		private char driveLetter;
@@ -77,9 +77,7 @@ namespace Files.App.Data.Models
 
 		private bool PreventRemovalOfVolume(bool prevent)
 		{
-			byte[] buf = new byte[1];
-			buf[0] = prevent ? (byte)1 : (byte)0;
-
+			byte[] buf = [prevent ? (byte)1 : (byte)0];
 			return DeviceIoControl(handle, IOCTL_STORAGE_MEDIA_REMOVAL, buf, 1, nint.Zero, 0, out _, nint.Zero);
 		}
 

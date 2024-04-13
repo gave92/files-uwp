@@ -1,14 +1,14 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using Files.Core.Utils.Cloud;
+using Files.App.Utils.Cloud;
 
 namespace Files.App.Utils.Cloud
 {
 	/// <summary>
 	/// Provides an utility for cloud detection.
 	/// </summary>
-	public class CloudDetector : ICloudDetector
+	public sealed class CloudDetector : ICloudDetector
 	{
 		public async Task<IEnumerable<ICloudProvider>> DetectCloudProvidersAsync()
 		{

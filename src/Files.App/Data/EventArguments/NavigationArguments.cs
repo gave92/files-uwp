@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Data.EventArguments
@@ -16,8 +16,6 @@ namespace Files.App.Data.EventArguments
 		public string? SearchPathParam { get; set; } = null;
 
 		public string? SearchQuery { get; set; } = null;
-
-		public bool SearchUnindexedItems { get; set; } = false;
 
 		public bool IsLayoutSwitch { get; set; } = false;
 

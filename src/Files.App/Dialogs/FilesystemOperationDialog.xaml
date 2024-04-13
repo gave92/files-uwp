@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <ContentDialog
 	x:Class="Files.App.Dialogs.FilesystemOperationDialog"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,12 +9,13 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:templateselectors="using:Files.App.Data.TemplateSelectors"
 	xmlns:tvc="using:CommunityToolkit.WinUI.UI.Converters"
-	xmlns:vm="using:Files.Core.ViewModels.Dialogs.FileSystemDialog"
+	xmlns:vm="using:Files.App.ViewModels.Dialogs.FileSystemDialog"
 	x:Name="RootDialog"
 	Title="{x:Bind ViewModel.Title, Mode=OneWay}"
 	Closing="RootDialog_Closing"
 	CornerRadius="{StaticResource OverlayCornerRadius}"
 	DefaultButton="Primary"
+	HighContrastAdjustment="None"
 	IsPrimaryButtonEnabled="{x:Bind ViewModel.PrimaryButtonEnabled, Mode=OneWay}"
 	Opened="FilesystemOperationDialog_Opened"
 	PrimaryButtonText="{x:Bind ViewModel.PrimaryButtonText, Mode=OneWay}"
@@ -104,15 +105,15 @@
 				</Grid>
 
 				<!--  Options  -->
+				<!--  x:Load cannot be used (#14000)  -->
 				<ComboBox
 					x:Name="ConflictOptions"
 					Grid.Column="2"
 					Width="200"
 					HorizontalAlignment="Right"
 					VerticalAlignment="Center"
-					x:Load="{x:Bind IsConflict, Mode=OneWay}"
-					Loaded="ConflictOptions_Loaded"
-					SelectedIndex="{x:Bind ConflictResolveOption, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ConflictResolveOptionToIndexConverter}}">
+					SelectedIndex="{x:Bind ConflictResolveOption, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ConflictResolveOptionToIndexConverter}}"
+					Visibility="{x:Bind IsConflict, Mode=OneWay}">
 					<ComboBox.Items>
 						<ComboBoxItem Content="{helpers:ResourceString Name=GenerateNewName}" />
 						<ComboBoxItem Content="{helpers:ResourceString Name=ReplaceExisting}" />

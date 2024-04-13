@@ -1,4 +1,4 @@
-<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <Page
 	x:Class="Files.App.Views.Settings.AboutPage"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -82,6 +82,22 @@
 				IsClickable="True">
 				<local:SettingsBlockControl.Icon>
 					<FontIcon Glyph="&#xE736;" />
+				</local:SettingsBlockControl.Icon>
+
+				<FontIcon
+					FontSize="14"
+					Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+					Glyph="&#xE8A7;" />
+			</local:SettingsBlockControl>
+
+			<!--  Questions & discussions  -->
+			<local:SettingsBlockControl
+				Title="{helpers:ResourceString Name=QuestionsAndDiscussions}"
+				HorizontalAlignment="Stretch"
+				ButtonCommand="{x:Bind ViewModel.OpenDiscordCommand}"
+				IsClickable="True">
+				<local:SettingsBlockControl.Icon>
+					<FontIcon Glyph="&#xE8F2;" />
 				</local:SettingsBlockControl.Icon>
 
 				<FontIcon

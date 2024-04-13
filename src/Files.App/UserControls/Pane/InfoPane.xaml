@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <UserControl
 	x:Class="Files.App.UserControls.InfoPane"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -315,6 +315,7 @@
 											AutomationProperties.Name="{x:Bind AsTag.Tag.Name, Mode=OneWay}"
 											Orientation="Horizontal"
 											Spacing="8"
+											Tapped="TagItem_Tapped"
 											ToolTipService.ToolTip="{x:Bind AsTag.Tag.Name, Mode=OneWay}">
 											<!--  Tag icon  -->
 											<PathIcon

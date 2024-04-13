@@ -1,13 +1,14 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Views;
+using Files.Shared.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace Files.App.Data.EventArguments
 {
-	public class PathBoxItemDroppedEventArgs
+	public sealed class PathBoxItemDroppedEventArgs
 	{
 		public DataPackageView Package { get; set; }
 

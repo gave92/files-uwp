@@ -1,4 +1,4 @@
-﻿<!--  Copyright (c) 2023 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+﻿<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
 <Page
 	x:Class="Files.App.Views.MainPage"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -11,13 +11,13 @@
 	xmlns:sidebar="using:Files.App.UserControls.Sidebar"
 	xmlns:tabbar="using:Files.App.UserControls.TabBar"
 	xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-	xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
 	xmlns:uc="using:Files.App.UserControls"
 	xmlns:viewmodels="using:Files.App.ViewModels"
 	xmlns:wctconverters="using:CommunityToolkit.WinUI.UI.Converters"
 	AllowDrop="True"
 	Background="{ThemeResource App.Theme.BackgroundBrush}"
 	DataContext="{x:Bind ViewModel, Mode=OneWay}"
+	HighContrastAdjustment="None"
 	KeyboardAcceleratorPlacementMode="Hidden"
 	Loaded="Page_Loaded"
 	NavigationCacheMode="Required"
@@ -37,7 +37,7 @@
 
 
 			<MenuFlyout x:Key="SidebarContextMenu">
-				<ToggleMenuFlyoutItem IsChecked="{x:Bind SidebarAdaptiveViewModel.ShowFavoritesSection, Mode=TwoWay}" Text="{helpers:ResourceString Name=SidebarFavorites}" />
+				<ToggleMenuFlyoutItem IsChecked="{x:Bind SidebarAdaptiveViewModel.ShowPinnedFoldersSection, Mode=TwoWay}" Text="{helpers:ResourceString Name=Pinned}" />
 				<ToggleMenuFlyoutItem IsChecked="{x:Bind SidebarAdaptiveViewModel.ShowLibrarySection, Mode=TwoWay}" Text="{helpers:ResourceString Name=SidebarLibraries}" />
 				<ToggleMenuFlyoutItem IsChecked="{x:Bind SidebarAdaptiveViewModel.ShowDrivesSection, Mode=TwoWay}" Text="{helpers:ResourceString Name=Drives}" />
 				<ToggleMenuFlyoutItem IsChecked="{x:Bind SidebarAdaptiveViewModel.ShowCloudDrivesSection, Mode=TwoWay}" Text="{helpers:ResourceString Name=SidebarCloudDrives}" />
@@ -115,13 +115,6 @@
 				</icore:EventTriggerBehavior>
 			</i:Interaction.Behaviors>
 		</KeyboardAccelerator>
-		<KeyboardAccelerator Key="N" Modifiers="Control">
-			<i:Interaction.Behaviors>
-				<icore:EventTriggerBehavior EventName="Invoked">
-					<icore:InvokeCommandAction Command="{x:Bind ViewModel.OpenNewWindowAcceleratorCommand}" />
-				</icore:EventTriggerBehavior>
-			</i:Interaction.Behaviors>
-		</KeyboardAccelerator>
 	</Page.KeyboardAccelerators>
 
 	<Grid>
@@ -156,10 +149,13 @@
 						Padding="8"
 						HorizontalAlignment="Left"
 						VerticalAlignment="Bottom"
+						AllowDrop="True"
 						AutomationProperties.Name="{x:Bind Commands.NewTab.AutomationName}"
 						Background="Transparent"
 						BorderThickness="0"
 						Command="{x:Bind Commands.NewTab}"
+						DragOver="HorizontalMultitaskingControlAddButton_DragOver"
+						Drop="HorizontalMultitaskingControlAddButton_Drop"
 						ToolTipService.ToolTip="{x:Bind Commands.NewTab.LabelWithHotKey, Mode=OneWay}">
 						<Button.Content>
 							<FontIcon
@@ -239,8 +235,8 @@
 					Grid.ColumnSpan="3"
 					x:Load="False"
 					Loaded="NavToolbar_Loaded"
-					ShowPreviewPaneButton="{x:Bind ShouldPreviewPaneBeDisplayed, Mode=OneWay}"
-					ShowViewControlButton="{x:Bind ShouldViewControlBeDisplayed, Mode=OneWay}"
+					ShowPreviewPaneButton="{x:Bind ViewModel.ShouldPreviewPaneBeDisplayed, Mode=OneWay}"
+					ShowViewControlButton="{x:Bind ViewModel.ShouldViewControlBeDisplayed, Mode=OneWay}"
 					TabIndex="2" />
 
 				<!--  Page Content  -->
@@ -256,7 +252,7 @@
 					x:Name="PaneSplitter"
 					Grid.Row="1"
 					Grid.Column="1"
-					x:Load="{x:Bind ShouldPreviewPaneBeActive, Mode=OneWay}"
+					x:Load="{x:Bind ViewModel.ShouldPreviewPaneBeActive, Mode=OneWay}"
 					ManipulationCompleted="PaneSplitter_ManipulationCompleted"
 					ManipulationStarted="PaneSplitter_ManipulationStarted"
 					ResizeBehavior="BasedOnAlignment"
@@ -268,7 +264,7 @@
 					Grid.Row="1"
 					Grid.Column="2"
 					HorizontalContentAlignment="Stretch"
-					x:Load="{x:Bind ShouldPreviewPaneBeActive, Mode=OneWay}"
+					x:Load="{x:Bind ViewModel.ShouldPreviewPaneBeActive, Mode=OneWay}"
 					Loaded="PreviewPane_Loaded"
 					Unloaded="PreviewPane_Unloaded" />
 
@@ -280,8 +276,8 @@
 					x:Load="{x:Bind ViewModel.IsTerminalViewOpen, Mode=OneWay}" />
 
 				<!--  Status Bar  -->
-				<uc:StatusBarControl
-					x:Name="StatusBarControl"
+				<uc:StatusBar
+					x:Name="StatusBar"
 					Grid.Row="5"
 					Grid.ColumnSpan="3"
 					x:Load="False"

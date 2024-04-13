@@ -1,7 +1,8 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using CommunityToolkit.WinUI.UI;
+using Files.App.Server.Data.Enums;
 using Files.App.ViewModels.Layouts;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
@@ -130,7 +131,7 @@ namespace Files.App.Views.Layouts
 			ParentShellPageInstance.FilesystemViewModel.CancelExtendedPropertiesLoading();
 			ParentShellPageInstance.SlimContentPage.SelectedItem.ItemPropertiesInitialized = false;
 
-			await ParentShellPageInstance.FilesystemViewModel.LoadExtendedItemPropertiesAsync(ParentShellPageInstance.SlimContentPage.SelectedItem, IconSize);
+			await ParentShellPageInstance.FilesystemViewModel.LoadExtendedItemPropertiesAsync(ParentShellPageInstance.SlimContentPage.SelectedItem);
 
 			if (ParentShellPageInstance.FilesystemViewModel.EnabledGitProperties is not GitProperties.None &&
 				ParentShellPageInstance.SlimContentPage.SelectedItem is GitItem gitItem)
@@ -149,7 +150,7 @@ namespace Files.App.Views.Layouts
 			foreach (var selectedItem in ParentShellPageInstance.SlimContentPage.SelectedItems)
 			{
 				selectedItem.ItemPropertiesInitialized = false;
-				await ParentShellPageInstance.FilesystemViewModel.LoadExtendedItemPropertiesAsync(selectedItem, IconSize);
+				await ParentShellPageInstance.FilesystemViewModel.LoadExtendedItemPropertiesAsync(selectedItem);
 			}
 
 			if (ParentShellPageInstance.FilesystemViewModel.EnabledGitProperties is not GitProperties.None)
@@ -286,6 +287,8 @@ namespace Files.App.Views.Layouts
 		protected async void RenameTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
 		{
 			var textBox = (TextBox)sender;
+			var isShiftPressed = (Win32PInvoke.GetKeyState((int)VirtualKey.Shift) & KEY_DOWN_MASK) != 0;
+
 			switch (e.Key)
 			{
 				case VirtualKey.Escape:
@@ -300,11 +303,13 @@ namespace Files.App.Views.Layouts
 					e.Handled = true;
 					break;
 				case VirtualKey.Up:
-					textBox.SelectionStart = 0;
+					if (!isShiftPressed)
+						textBox.SelectionStart = 0;
 					e.Handled = true;
 					break;
 				case VirtualKey.Down:
-					textBox.SelectionStart = textBox.Text.Length;
+					if (!isShiftPressed)
+						textBox.SelectionStart = textBox.Text.Length;
 					e.Handled = true;
 					break;
 				case VirtualKey.Left:
@@ -316,7 +321,6 @@ namespace Files.App.Views.Layouts
 				case VirtualKey.Tab:
 					textBox.LostFocus -= RenameTextBox_LostFocus;
 
-					var isShiftPressed = (InteropHelpers.GetKeyState((int)VirtualKey.Shift) & KEY_DOWN_MASK) != 0;
 					NextRenameIndex = isShiftPressed ? -1 : 1;
 
 					if (textBox.Text != OldItemName)

@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Extensions.Logging;
@@ -6,13 +6,13 @@ using System.IO;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
-using static Files.Core.Helpers.NativeFindStorageItemHelper;
+using static Files.App.Helpers.NativeFindStorageItemHelper;
 using FileAttributes = System.IO.FileAttributes;
-using WIN32_FIND_DATA = Files.Core.Helpers.NativeFindStorageItemHelper.WIN32_FIND_DATA;
+using WIN32_FIND_DATA = Files.App.Helpers.NativeFindStorageItemHelper.WIN32_FIND_DATA;
 
 namespace Files.App.Utils.Storage
 {
-	public class FolderSearch
+	public sealed class FolderSearch
 	{
 		private IUserSettingsService UserSettingsService { get; } = Ioc.Default.GetRequiredService<IUserSettingsService>();
 		private DrivesViewModel drivesViewModel = Ioc.Default.GetRequiredService<DrivesViewModel>();
@@ -26,7 +26,6 @@ namespace Files.App.Utils.Storage
 
 		public uint MaxItemCount { get; set; } = 0; // 0: no limit
 		public uint ThumbnailSize { get; set; } = 24;
-		public bool SearchUnindexedItems { get; set; } = false;
 
 		private uint UsedMaxItemCount => MaxItemCount > 0 ? MaxItemCount : uint.MaxValue;
 
@@ -111,7 +110,7 @@ namespace Files.App.Utils.Storage
 
 		public async Task<ObservableCollection<ListedItem>> SearchAsync()
 		{
-			ObservableCollection<ListedItem> results = new ObservableCollection<ListedItem>();
+			ObservableCollection<ListedItem> results = [];
 			try
 			{
 				var token = CancellationToken.None;
@@ -494,15 +493,16 @@ namespace Files.App.Utils.Storage
 			}
 			if (listedItem is not null && MaxItemCount > 0) // Only load icon for searchbox suggestions
 			{
-				var iconData = await FileThumbnailHelper.LoadIconFromStorageItemAsync(item, ThumbnailSize, ThumbnailMode.ListView, ThumbnailOptions.ResizeThumbnail);
-				if (iconData is not null)
-				{
-					listedItem.FileImage = await iconData.ToBitmapAsync();
-				}
+				var iconResult = await FileThumbnailHelper.GetIconAsync(
+					item.Path,
+					Constants.ShellIconSizes.Small,
+					item.IsOfType(StorageItemTypes.Folder),
+					IconOptions.ReturnIconOnly | IconOptions.UseCurrentScale);
+
+				if (iconResult is not null)
+					listedItem.FileImage = await iconResult.ToBitmapAsync();
 				else
-				{
 					listedItem.NeedsPlaceholderGlyph = true;
-				}
 			}
 			return listedItem;
 		}
@@ -515,9 +515,7 @@ namespace Files.App.Utils.Storage
 				UserSearchFilter = AQSQuery ?? string.Empty,
 			};
 
-			query.IndexerOption = SearchUnindexedItems
-				? IndexerOption.DoNotUseIndexer
-				: IndexerOption.OnlyUseIndexerAndOptimizeForIndexedProperties;
+			query.IndexerOption = IndexerOption.UseIndexerWhenAvailable;
 
 			query.SortOrder.Clear();
 			query.SortOrder.Add(new SortEntry { PropertyName = "System.Search.Rank", AscendingOrder = false });

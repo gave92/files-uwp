@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Utils.Storage.Operations;
@@ -11,7 +11,7 @@ namespace Files.App.Utils.Archives
 	/// <summary>
 	/// Provides an archive creation support.
 	/// </summary>
-	public class CompressArchiveModel : ICompressArchiveModel
+	public sealed class CompressArchiveModel : ICompressArchiveModel
 	{
 		private StatusCenterItemProgressModel _fileSystemProgress;
 
@@ -54,6 +54,7 @@ namespace Files.App.Utils.Archives
 			ArchiveSplittingSizes.Mo10 => 10 * 1000 * 1000L,
 			ArchiveSplittingSizes.Mo100 => 100 * 1000 * 1000L,
 			ArchiveSplittingSizes.Mo1024 => 1024 * 1000 * 1000L,
+			ArchiveSplittingSizes.Mo2048 => 2048 * 1000 * 1000L,
 			ArchiveSplittingSizes.Mo5120 => 5120 * 1000 * 1000L,
 			ArchiveSplittingSizes.Fat4092 => 4092 * 1000 * 1000L,
 			ArchiveSplittingSizes.Cd650 => 650 * 1000 * 1000L,
@@ -162,7 +163,7 @@ namespace Files.App.Utils.Archives
 				var files = sources.Where(File.Exists).ToArray();
 				var directories = sources.Where(SystemIO.Directory.Exists);
 
-				_sizeCalculator = new FileSizeCalculator(files.Concat(directories).ToArray());
+				_sizeCalculator = new FileSizeCalculator([.. files, .. directories]);
 				var sizeTask = _sizeCalculator.ComputeSizeAsync(cts.Token);
 				_ = sizeTask.ContinueWith(_ =>
 				{

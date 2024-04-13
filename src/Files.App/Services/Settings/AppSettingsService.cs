@@ -1,8 +1,8 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Utils.Serialization;
-using Files.Core.Services.Settings;
+using Files.App.Services.Settings;
 using Microsoft.AppCenter.Analytics;
 
 namespace Files.App.Services.Settings
@@ -16,6 +16,12 @@ namespace Files.App.Services.Settings
 		}
 
 		public bool ShowStatusCenterTeachingTip
+		{
+			get => Get(true);
+			set => Set(value);
+		}
+
+		public bool ShowBackgroundRunningNotification
 		{
 			get => Get(true);
 			set => Set(value);

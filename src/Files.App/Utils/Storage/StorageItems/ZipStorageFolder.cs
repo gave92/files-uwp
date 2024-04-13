@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.Shared.Helpers;
@@ -11,6 +11,7 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
+using Windows.Win32;
 using IO = System.IO;
 
 namespace Files.App.Utils.Storage
@@ -350,7 +351,7 @@ namespace Files.App.Utils.Storage
 					else
 					{
 						var fileName = IO.Path.Combine(IO.Path.GetDirectoryName(Path), desiredName);
-						NativeFileOperationsHelper.MoveFileFromApp(Path, fileName);
+						PInvoke.MoveFileFromApp(Path, fileName);
 					}
 				}
 				else
@@ -397,7 +398,7 @@ namespace Files.App.Utils.Storage
 					}
 					else if (option == StorageDeleteOption.PermanentDelete)
 					{
-						NativeFileOperationsHelper.DeleteFileFromApp(Path);
+						PInvoke.DeleteFileFromApp(Path);
 					}
 					else
 					{
@@ -516,7 +517,7 @@ namespace Files.App.Utils.Storage
 				return false;
 			}
 		}
-		private static async Task<bool> CheckAccess(IStorageFile file)
+		private static async Task<bool> CheckAccess(BaseStorageFile file)
 		{
 			return await SafetyExtensions.IgnoreExceptions(async () =>
 			{
@@ -645,7 +646,7 @@ namespace Files.App.Utils.Storage
 			}, ((IPasswordProtectedItem)this).RetryWithCredentialsAsync));
 		}
 
-		private class ZipFolderBasicProperties : BaseBasicProperties
+		private sealed class ZipFolderBasicProperties : BaseBasicProperties
 		{
 			private ArchiveFileInfo entry;
 

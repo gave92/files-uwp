@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Utils.Storage.Operations;
@@ -16,7 +16,7 @@ using Windows.ApplicationModel.DataTransfer;
 
 namespace Files.App.Utils.Storage
 {
-	public class FileOperationsHelpers
+	public sealed class FileOperationsHelpers
 	{
 		private static readonly Ole32.PROPERTYKEY PKEY_FilePlaceholderStatus = new Ole32.PROPERTYKEY(new Guid("B2F9B9D6-FEC4-4DD5-94D7-8957488C807B"), 2);
 		private const uint PS_CLOUDFILE_PLACEHOLDER = 8;
@@ -25,13 +25,13 @@ namespace Files.App.Utils.Storage
 
 		public static Task SetClipboard(string[] filesToCopy, DataPackageOperation operation)
 		{
-			return Win32API.StartSTATask(() =>
+			return Win32Helper.StartSTATask(() =>
 			{
 				System.Windows.Forms.Clipboard.Clear();
 				var fileList = new System.Collections.Specialized.StringCollection();
 				fileList.AddRange(filesToCopy);
 				MemoryStream dropEffect = new MemoryStream(operation == DataPackageOperation.Copy ?
-					new byte[] { 5, 0, 0, 0 } : new byte[] { 2, 0, 0, 0 });
+					[5, 0, 0, 0] : [2, 0, 0, 0]);
 				var data = new System.Windows.Forms.DataObject();
 				data.SetFileDropList(fileList);
 				data.SetData("Preferred DropEffect", dropEffect);
@@ -41,7 +41,7 @@ namespace Files.App.Utils.Storage
 
 		public static Task<(bool, ShellOperationResult)> CreateItemAsync(string filePath, string fileOp, long ownerHwnd, bool asAdmin, string template = "", byte[]? dataBytes = null)
 		{
-			return Win32API.StartSTATask(async () =>
+			return Win32Helper.StartSTATask(async () =>
 			{
 				using var op = new ShellFileOperations2();
 
@@ -110,7 +110,7 @@ namespace Files.App.Utils.Storage
 
 		public static Task<(bool, ShellOperationResult)> TestRecycleAsync(string[] fileToDeletePath)
 		{
-			return Win32API.StartSTATask(async () =>
+			return Win32Helper.StartSTATask(async () =>
 			{
 				using var op = new ShellFileOperations2();
 
@@ -219,7 +219,7 @@ namespace Files.App.Utils.Storage
 			fsProgress.Report();
 			progressHandler ??= new();
 
-			return Win32API.StartSTATask(async () =>
+			return Win32Helper.StartSTATask(async () =>
 			{
 				using var op = new ShellFileOperations2();
 
@@ -337,7 +337,7 @@ namespace Files.App.Utils.Storage
 
 			progressHandler ??= new();
 
-			return Win32API.StartSTATask(async () =>
+			return Win32Helper.StartSTATask(async () =>
 			{
 				using var op = new ShellFileOperations2();
 				var shellOperationResult = new ShellOperationResult();
@@ -421,7 +421,7 @@ namespace Files.App.Utils.Storage
 			fsProgress.Report();
 			progressHandler ??= new();
 
-			return Win32API.StartSTATask(async () =>
+			return Win32Helper.StartSTATask(async () =>
 			{
 				using var op = new ShellFileOperations2();
 				var shellOperationResult = new ShellOperationResult();
@@ -549,7 +549,7 @@ namespace Files.App.Utils.Storage
 			fsProgress.Report();
 			progressHandler ??= new();
 
-			return Win32API.StartSTATask(async () =>
+			return Win32Helper.StartSTATask(async () =>
 			{
 				using var op = new ShellFileOperations2();
 
@@ -661,7 +661,7 @@ namespace Files.App.Utils.Storage
 
 		public static IEnumerable<Win32Process>? CheckFileInUse(string[] fileToCheckPath)
 		{
-			var processes = SafetyExtensions.IgnoreExceptions(() => FileUtils.WhoIsLocking(fileToCheckPath), App.Logger);
+			var processes = SafetyExtensions.IgnoreExceptions(() => Win32Helper.WhoIsLocking(fileToCheckPath), App.Logger);
 
 			if (processes is not null)
 			{
@@ -699,7 +699,7 @@ namespace Files.App.Utils.Storage
 				}
 				else if (FileExtensionHelpers.IsWebLinkFile(linkPath))
 				{
-					targetPath = await Win32API.StartSTATask(() =>
+					targetPath = await Win32Helper.StartSTATask(() =>
 					{
 						var ipf = new Url.IUniformResourceLocator();
 						(ipf as System.Runtime.InteropServices.ComTypes.IPersistFile).Load(linkPath, 0);
@@ -746,7 +746,7 @@ namespace Files.App.Utils.Storage
 				}
 				else if (FileExtensionHelpers.IsWebLinkFile(linkSavePath))
 				{
-					return Win32API.StartSTATask(() =>
+					return Win32Helper.StartSTATask(() =>
 					{
 						var ipf = new Url.IUniformResourceLocator();
 						ipf.SetUrl(targetPath, Url.IURL_SETURL_FLAGS.IURL_SETURL_FL_GUESS_PROTOCOL);
@@ -784,7 +784,7 @@ namespace Files.App.Utils.Storage
 
 		public static Task<string?> OpenObjectPickerAsync(long hWnd)
 		{
-			return Win32API.StartSTATask(() =>
+			return Win32Helper.StartSTATask(() =>
 			{
 				var picker = new DirectoryObjectPickerDialog()
 				{
@@ -800,7 +800,7 @@ namespace Files.App.Utils.Storage
 
 				using (picker)
 				{
-					if (picker.ShowDialog(Win32API.Win32Window.FromLong(hWnd)) == System.Windows.Forms.DialogResult.OK)
+					if (picker.ShowDialog(Win32Helper.Win32Window.FromLong(hWnd)) == System.Windows.Forms.DialogResult.OK)
 					{
 						try
 						{
@@ -814,27 +814,6 @@ namespace Files.App.Utils.Storage
 
 				return null;
 			});
-		}
-
-		public static string? ReadCompatOptions(string filePath)
-			=> SafetyExtensions.IgnoreExceptions(() =>
-			{
-				using var compatKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers");
-				if (compatKey is null)
-				{
-					return null;
-				}
-				return (string?)compatKey.GetValue(filePath, null);
-			}, App.Logger);
-
-		public static bool SetCompatOptions(string filePath, string options)
-		{
-			if (string.IsNullOrEmpty(options) || options == "~")
-			{
-				return Win32API.RunPowershellCommand(@$"Remove-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name '{filePath}' | Out-Null", true);
-			}
-
-			return Win32API.RunPowershellCommand(@$"New-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name '{filePath}' -Value '{options}' -PropertyType String -Force | Out-Null", true);
 		}
 
 		private static ShellItem? GetFirstFile(ShellItem shi)
@@ -875,7 +854,7 @@ namespace Files.App.Utils.Storage
 				};
 				if (destination is null)
 				{
-					dbInstance.SetTags(sourcePath, null, null); // remove tag from deleted files
+					dbInstance.SetTags(sourcePath, null, []); // remove tag from deleted files
 				}
 				else
 				{
@@ -883,7 +862,7 @@ namespace Files.App.Utils.Storage
 					{
 						if (operationType == "copy")
 						{
-							var tag = dbInstance.GetTags(sourcePath);
+							var tag = dbInstance.GetTags(sourcePath, null);
 
 							dbInstance.SetTags(destination, FileTagsHelper.GetFileFRN(destination), tag); // copy tag to new files
 							using var si = new ShellItem(destination);
@@ -903,7 +882,7 @@ namespace Files.App.Utils.Storage
 					var tags = dbInstance.GetAllUnderPath(sourcePath).ToList();
 					if (destination is null) // remove tag for items contained in the folder
 					{
-						tags.ForEach(t => dbInstance.SetTags(t.FilePath, null, null));
+						tags.ForEach(t => dbInstance.SetTags(t.FilePath, null, []));
 					}
 					else
 					{
@@ -914,7 +893,7 @@ namespace Files.App.Utils.Storage
 								SafetyExtensions.IgnoreExceptions(() =>
 								{
 									var subPath = t.FilePath.Replace(sourcePath, destination, StringComparison.Ordinal);
-									dbInstance.SetTags(subPath, FileTagsHelper.GetFileFRN(subPath), t.Tags);
+									dbInstance.SetTags(subPath, FileTagsHelper.GetFileFRN(subPath), t.Tags ?? []);
 								}, App.Logger);
 							});
 						}
@@ -937,11 +916,11 @@ namespace Files.App.Utils.Storage
 		public static void WaitForCompletion()
 			=> progressHandler?.WaitForCompletion();
 
-		private class ProgressHandler : Disposable
+		private sealed class ProgressHandler : Disposable
 		{
 			private readonly ManualResetEvent operationsCompletedEvent;
 
-			public class OperationWithProgress
+			public sealed class OperationWithProgress
 			{
 				public double Progress { get; set; }
 				public bool Canceled { get; set; }
@@ -954,7 +933,7 @@ namespace Files.App.Utils.Storage
 
 			public ProgressHandler()
 			{
-				taskbar = Win32API.CreateTaskbarObject();
+				taskbar = Win32Helper.CreateTaskbarObject();
 				operations = new ConcurrentDictionary<string, OperationWithProgress>();
 				operationsCompletedEvent = new ManualResetEvent(true);
 			}

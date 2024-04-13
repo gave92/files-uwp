@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Win32;
@@ -35,7 +35,7 @@ namespace Files.App.Utils.Shell
 			if (!newMenuItems.Any(x => ".txt".Equals(x.Extension, StringComparison.OrdinalIgnoreCase)))
 				newMenuItems.Add(await CreateShellNewEntry(".txt", null, null, null));
 
-			return newMenuItems.OrderBy(item => item.Name).ToList();
+			return [.. newMenuItems.OrderBy(item => item.Name)];
 		}
 
 		public static async Task<ShellNewEntry> GetNewContextMenuEntryForType(string extension)

@@ -117,11 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NavigationToolbarNewWindow.Label" xml:space="preserve">
+  <data name="NewWindow" xml:space="preserve">
     <value>Nova janela</value>
   </data>
   <data name="CopyPath" xml:space="preserve">
     <value>Copiar caminho</value>
+  </data>
+  <data name="CopyPathWithQuotes" xml:space="preserve">
+    <value>Copiar caminho entre aspas</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>Navegar</value>
@@ -270,8 +273,8 @@
   <data name="Delete" xml:space="preserve">
     <value>Excluir</value>
   </data>
-  <data name="PinToFavorites" xml:space="preserve">
-    <value>Fixar nos Favoritos</value>
+  <data name="PinFolderToSidebar" xml:space="preserve">
+    <value>Fixar na Barra Lateral</value>
   </data>
   <data name="WelcomeDialog.Title" xml:space="preserve">
     <value>Bem-vindo ao Files!</value>
@@ -346,6 +349,12 @@
     <value>Unidade desconectada</value>
   </data>
   <data name="FileNotFoundDialog.Text" xml:space="preserve">
+    <value>O arquivo que você está tentando acessar pode ter sido movido ou excluído.</value>
+  </data>
+  <data name="CannotAccessPropertiesTitle" xml:space="preserve">
+    <value>Não foi possível abrir propriedades para este arquivo</value>
+  </data>
+  <data name="CannotAccessPropertiesContent" xml:space="preserve">
     <value>O arquivo que você está tentando acessar pode ter sido movido ou excluído.</value>
   </data>
   <data name="FileNotFoundDialog.Title" xml:space="preserve">
@@ -629,9 +638,6 @@
   </data>
   <data name="AddDialogListFolderSubHeader" xml:space="preserve">
     <value>Cria uma pasta vazia</value>
-  </data>
-  <data name="LayoutMode" xml:space="preserve">
-    <value>Modo de layout</value>
   </data>
   <data name="NavResfreshButton.AutomationProperties.Name" xml:space="preserve">
     <value>Atualize o diretório</value>
@@ -975,9 +981,6 @@
   <data name="SearchPagePathBoxOverrideText" xml:space="preserve">
     <value>Resultados da pesquisa em {1} para {0}</value>
   </data>
-  <data name="SettingsListAndSortDirectoriesAlongsideFiles" xml:space="preserve">
-    <value>Listar e classificar diretórios ao lado dos arquivos</value>
-  </data>
   <data name="Details" xml:space="preserve">
     <value>Detalhes</value>
   </data>
@@ -986,9 +989,6 @@
   </data>
   <data name="ShowProtectedSystemFiles" xml:space="preserve">
     <value>Mostrar arquivos de sistema protegido</value>
-  </data>
-  <data name="SettingsSearchUnindexedItems" xml:space="preserve">
-    <value>Incluir itens não indexados nos resultados de pesquisa</value>
   </data>
   <data name="SyncFolderPreferencesAcrossDirectories" xml:space="preserve">
     <value>Sincronizar o layout e a ordenação entre diretórios</value>
@@ -1014,26 +1014,26 @@
   <data name="ShowOpenInNewPane" xml:space="preserve">
     <value>Mostrar opção para abrir pastas em um novo painel</value>
   </data>
+  <data name="ShowCopyPath" xml:space="preserve">
+    <value>Mostrar a opção de copiar o caminho</value>
+  </data>
+  <data name="ShowCreateFolderWithSelection" xml:space="preserve">
+    <value>Exibir opção para criar uma pasta com a seleção</value>
+  </data>
+  <data name="ShowCreateShortcut" xml:space="preserve">
+    <value>Mostrar a opção de criar um atalho</value>
+  </data>
   <data name="NavigationToolbarNewPane.Label" xml:space="preserve">
     <value>Novo painel</value>
   </data>
   <data name="OpenInNewPane" xml:space="preserve">
     <value>Abrir em novo painel</value>
   </data>
-  <data name="Folders" xml:space="preserve">
-    <value>Pastas</value>
+  <data name="FilesAndFolders" xml:space="preserve">
+    <value>Arquivos e pastas</value>
   </data>
   <data name="NavToolbarDetails.ToolTipService.ToolTip" xml:space="preserve">
     <value>Detalhado (Ctrl+Shift+1)</value>
-  </data>
-  <data name="NavToolbarLargeIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Ícones grandes (Ctrl+Shift+5)</value>
-  </data>
-  <data name="NavToolbarMediumIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Ícones médios (Ctrl+Shift+4)</value>
-  </data>
-  <data name="NavToolbarSmallIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Ícones pequenos (Ctrl+Shift+3)</value>
   </data>
   <data name="NavToolbarTiles.ToolTipService.ToolTip" xml:space="preserve">
     <value>Blocos (Ctrl+Shift+2)</value>
@@ -1071,8 +1071,8 @@
   <data name="PropertyItemName" xml:space="preserve">
     <value>Nome do Item</value>
   </data>
-  <data name="UnpinFromFavorites" xml:space="preserve">
-    <value>Desafixar dos Favoritos</value>
+  <data name="UnpinFolderFromSidebar" xml:space="preserve">
+    <value>Desafixar da Barra Lateral</value>
   </data>
   <data name="SidebarNetworkDrives" xml:space="preserve">
     <value>Unidades em Rede</value>
@@ -1158,8 +1158,8 @@
   <data name="DrivesWidgetOptionsFlyoutMapNetDriveMenuItem.Text" xml:space="preserve">
     <value>Mapear unidade em rede</value>
   </data>
-  <data name="SidebarFavorites" xml:space="preserve">
-    <value>Favoritos</value>
+  <data name="Pinned" xml:space="preserve">
+    <value>Fixado</value>
   </data>
   <data name="SidebarLibraries" xml:space="preserve">
     <value>Bibliotecas</value>
@@ -1272,12 +1272,6 @@
   <data name="PropertyISO" xml:space="preserve">
     <value>Velocidade ISO</value>
   </data>
-  <data name="SearchUnindexedItemsLabel.Text" xml:space="preserve">
-    <value>Não encontrou o que procurava?</value>
-  </data>
-  <data name="SearchUnindexedItemsButton.Content" xml:space="preserve">
-    <value>Pesquisar itens não indexados</value>
-  </data>
   <data name="ReplaceExisting" xml:space="preserve">
     <value>Substituir existente</value>
   </data>
@@ -1320,17 +1314,11 @@
   <data name="Sort" xml:space="preserve">
     <value>Ordenar</value>
   </data>
-  <data name="NavToolbarGroupByRadioButtons.Text" xml:space="preserve">
-    <value>Agrupar por</value>
-  </data>
   <data name="DateModifiedLowerCase" xml:space="preserve">
     <value>Data de modificação</value>
   </data>
   <data name="OriginalFolder" xml:space="preserve">
     <value>Pasta original</value>
-  </data>
-  <data name="NavToolbarSortByRadioButtons.Text" xml:space="preserve">
-    <value>Ordenar por</value>
   </data>
   <data name="Descending" xml:space="preserve">
     <value>Descendente</value>
@@ -1656,23 +1644,11 @@
   <data name="Home" xml:space="preserve">
     <value>Início</value>
   </data>
-  <data name="NavigationToolbarNewWindow.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+N</value>
-  </data>
   <data name="BaseLayoutContextFlyoutDetails.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+1</value>
   </data>
   <data name="BaseLayoutContextFlyoutTiles.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+2</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutSmallIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+3</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutMediumIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+4</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutLargeIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+5</value>
   </data>
   <data name="BaseLayoutContextFlyoutColumn.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+6</value>
@@ -1739,15 +1715,6 @@
   </data>
   <data name="Columns" xml:space="preserve">
     <value>Colunas</value>
-  </data>
-  <data name="LargeIcons" xml:space="preserve">
-    <value>Ícones largos</value>
-  </data>
-  <data name="MediumIcons" xml:space="preserve">
-    <value>Ícones Médios</value>
-  </data>
-  <data name="SmallIcons" xml:space="preserve">
-    <value>Ícones pequenos</value>
   </data>
   <data name="Tiles" xml:space="preserve">
     <value>Blocos</value>
@@ -1830,65 +1797,59 @@
   <data name="None" xml:space="preserve">
     <value>Nenhuma</value>
   </data>
-  <data name="HighDpiOption_UseDPIOnLogin" xml:space="preserve">
+  <data name="CompatibilityOnWindowsLogin" xml:space="preserve">
     <value>Quando entrar no Windows</value>
   </data>
-  <data name="HighDpiOption_UseDPIOnProgramStart" xml:space="preserve">
+  <data name="CompatibilityOnProgramStart" xml:space="preserve">
     <value>Quando iniciar o programa</value>
   </data>
-  <data name="HighDpiOverride_System" xml:space="preserve">
+  <data name="System" xml:space="preserve">
     <value>Sistema</value>
   </data>
-  <data name="HighDpiOverride_SystemAdvanced" xml:space="preserve">
-    <value>Sistema (avancado)</value>
+  <data name="CompatibilitySystemEnhanced" xml:space="preserve">
+    <value>Sistema (Aprimorado)</value>
   </data>
-  <data name="OSCompatibility_Windows7" xml:space="preserve">
-    <value>Windows 7</value>
+  <data name="CompatibilityReducedColorModeColor16bit" xml:space="preserve">
+    <value>Cor de 16 bits (65536)</value>
   </data>
-  <data name="OSCompatibility_Windows8" xml:space="preserve">
-    <value>Windows 8</value>
+  <data name="CompatibilityReducedColorModeColor8bit" xml:space="preserve">
+    <value>Cor de 8 bits (256)</value>
   </data>
-  <data name="OSCompatibility_WindowsVista" xml:space="preserve">
-    <value>Windows Vista</value>
-  </data>
-  <data name="OSCompatibility_WindowsVistaSP1" xml:space="preserve">
-    <value>Windows Vista SP1</value>
-  </data>
-  <data name="OSCompatibility_WindowsVistaSP2" xml:space="preserve">
-    <value>Windows Vista SP2</value>
-  </data>
-  <data name="ReducedColorMode_Color16Bit" xml:space="preserve">
-    <value>Cores de 16 Bits (65536)</value>
-  </data>
-  <data name="ReducedColorMode_Color8Bit" xml:space="preserve">
-    <value>Cores de 8 Bits (256)</value>
-  </data>
-  <data name="CompatibilityMode" xml:space="preserve">
-    <value>Modo de compatibilidade</value>
-  </data>
-  <data name="DisableFullscreenOptimizations" xml:space="preserve">
+  <data name="CompatibilityDisableFullscreenOptimizations" xml:space="preserve">
     <value>Desativar otimizações de tela cheia</value>
   </data>
-  <data name="ExecuteAt640X480" xml:space="preserve">
-    <value>Executar em resolução de 640 x 480</value>
+  <data name="CompatibilityRunIn640x480Resolution" xml:space="preserve">
+    <value>Executar em resolução de tela de 640 x 480</value>
   </data>
-  <data name="OverrideDPIScalingBehaviour" xml:space="preserve">
+  <data name="CompatibilityOverrideHighDPIBehavior" xml:space="preserve">
     <value>Substituir o ajuste de DPI alto</value>
   </data>
-  <data name="ReducedColorMode" xml:space="preserve">
+  <data name="CompatibilityReducedColorMode" xml:space="preserve">
     <value>Modo de cor reduzido</value>
   </data>
-  <data name="RegisterForRestart" xml:space="preserve">
-    <value>Registrar para reinicialização</value>
+  <data name="CompatibilityRegisterThisProgramForRestart" xml:space="preserve">
+    <value>Registre este programa para reiniciar</value>
   </data>
   <data name="RunAsAdministrator" xml:space="preserve">
     <value>Executar como administrador</value>
   </data>
-  <data name="RunCompatibilityTroubleShooter" xml:space="preserve">
+  <data name="CompatibilityRunTroubleshooter" xml:space="preserve">
     <value>Executar solução de problemas de compatibilidade</value>
   </data>
-  <data name="UseMainMonitorDPISettings" xml:space="preserve">
-    <value>Usar o DPI definido para minha tela principal</value>
+  <data name="CompatibilityUseDPISettings" xml:space="preserve">
+    <value>Usar as configurações de DPI do monitor principal</value>
+  </data>
+  <data name="CompatibilityDoNotAdjustDPI" xml:space="preserve">
+    <value>Não ajustar o DPI</value>
+  </data>
+  <data name="CompatibilityDoNotOverrideDPI" xml:space="preserve">
+    <value>Não substituir o DPI</value>
+  </data>
+  <data name="CompatibilityMode" xml:space="preserve">
+    <value>Modo de compatibilidade</value>
+  </data>
+  <data name="CompatibilityNoReducedColor" xml:space="preserve">
+    <value>Sem cor reduzida</value>
   </data>
   <data name="ThirdPartyLicenses" xml:space="preserve">
     <value>Licenças de terceiros</value>
@@ -1928,9 +1889,6 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>Tipo</value>
-  </data>
-  <data name="IconGrid" xml:space="preserve">
-    <value>Grade de ícones</value>
   </data>
   <data name="Bytes" xml:space="preserve">
     <value>Bytes</value>
@@ -1988,9 +1946,6 @@
   </data>
   <data name="FileTags" xml:space="preserve">
     <value>Etiquetas</value>
-  </data>
-  <data name="UseCompactSpacing" xml:space="preserve">
-    <value>Usar espaçamento compacto no layout de detalhes</value>
   </data>
   <data name="Universal" xml:space="preserve">
     <value>Universal</value>
@@ -2063,9 +2018,6 @@
   </data>
   <data name="TypeColumn" xml:space="preserve">
     <value>Coluna de tipo</value>
-  </data>
-  <data name="DetailsLayoutColumns" xml:space="preserve">
-    <value>Detalhes das colunas de layout</value>
   </data>
   <data name="Lockscreen" xml:space="preserve">
     <value>Tela de bloqueio</value>
@@ -2176,7 +2128,7 @@
     <value>Senha</value>
   </data>
   <data name="Format" xml:space="preserve">
-    <value>Formato</value>
+    <value>Formatar</value>
   </data>
   <data name="DetailsViewHeaderFlyout_ShowSyncStatus.Text" xml:space="preserve">
     <value>Sincronizar coluna estado</value>
@@ -2234,6 +2186,9 @@
   </data>
   <data name="ShowEditTagsMenu" xml:space="preserve">
     <value>Exibir etiquetas de edição de flyout</value>
+  </data>
+  <data name="ShowCompressionOptions" xml:space="preserve">
+    <value>Exibir opções de compressão</value>
   </data>
   <data name="ShowSendToMenu" xml:space="preserve">
     <value>Mostrar Enviar para o menu</value>
@@ -2296,7 +2251,7 @@
     <value>Mostrar itens ocultos</value>
   </data>
   <data name="FormatDriveText" xml:space="preserve">
-    <value>Formato...</value>
+    <value>Formatar...</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Ajuda</value>
@@ -2341,7 +2296,7 @@
     <value>Ocorreu um erro durante o cálculo</value>
   </data>
   <data name="CalculationErrorFileIsOpen" xml:space="preserve">
-    <value>Failed to calculate the hash, please close the file and try again.</value>
+    <value>Falha ao calcular os dados, por favor feche o arquivo e tente novamente.</value>
   </data>
   <data name="CalculationOnlineFileHashError" xml:space="preserve">
     <value>Hashes não estão disponíveis para arquivos online</value>
@@ -2419,7 +2374,10 @@
     <value>Copiar item(s) para área de transferência</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
-    <value>Copiar caminho do arquivo para área de transferência</value>
+    <value>Copiar o caminho dos itens selecionados para a área de transferência</value>
+  </data>
+  <data name="CopyPathWithQuotesDescription" xml:space="preserve">
+    <value>Copiar o caminho dos itens selecionados com cotas para a área de transferência</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
     <value>Recortar item(s) para área de transferência</value>
@@ -2490,11 +2448,11 @@
   <data name="UnpinFromStartDescription" xml:space="preserve">
     <value>Desafixar item(ns) do Menu Inicial</value>
   </data>
-  <data name="PinItemToFavoritesDescription" xml:space="preserve">
-    <value>Fixar pasta(s) aos Favoritos</value>
+  <data name="PinFolderToSidebarDescription" xml:space="preserve">
+    <value>Fixar a(s) pasta(s) na Barra lateral</value>
   </data>
-  <data name="UnpinItemFromFavoritesDescription" xml:space="preserve">
-    <value>Desafixar pasta(s) dos Favoritos</value>
+  <data name="UnpinFolderFromSidebarDescription" xml:space="preserve">
+    <value>Desafixar a(s) pasta(s) da Barra lateral</value>
   </data>
   <data name="SetAsWallpaperBackgroundDescription" xml:space="preserve">
     <value>Definir imagem selecionada como fundo da área de trabalho</value>
@@ -2560,10 +2518,10 @@
     <value>Abrir pasta no terminal como administrador</value>
   </data>
   <data name="LayoutDecreaseSizeDescription" xml:space="preserve">
-    <value>Diminuir tamanho do ícone na exibição em grade</value>
+    <value>Diminuir o tamanho do item na visualização atual</value>
   </data>
   <data name="LayoutIncreaseSizeDescription" xml:space="preserve">
-    <value>Aumentar tamanho do ícone na exibição em grade</value>
+    <value>Aumentar tamanho do item na vista atual</value>
   </data>
   <data name="LayoutDetailsDescription" xml:space="preserve">
     <value>Alternar para exibição de detalhes</value>
@@ -2571,14 +2529,17 @@
   <data name="LayoutTilesDescription" xml:space="preserve">
     <value>Alternar para visualização de blocos</value>
   </data>
-  <data name="LayoutGridSmallDescription" xml:space="preserve">
-    <value>Alterne para a visualização em grade com ícones pequenos</value>
+  <data name="LayoutListDescription" xml:space="preserve">
+    <value>Alternar para visualização em lista</value>
   </data>
-  <data name="LayoutGridMediumDescription" xml:space="preserve">
-    <value>Alternar para visualização em grade com ícones médios</value>
+  <data name="List" xml:space="preserve">
+    <value>Lista</value>
   </data>
-  <data name="LayoutGridLargeDescription" xml:space="preserve">
-    <value>Alternar para visualização em grade com ícones grandes</value>
+  <data name="Grid" xml:space="preserve">
+    <value>Grade</value>
+  </data>
+  <data name="LayoutGridDescription" xml:space="preserve">
+    <value>Alterado para exibição em grade</value>
   </data>
   <data name="LayoutColumnsDescription" xml:space="preserve">
     <value>Alternar para visualização de colunas</value>
@@ -2621,9 +2582,6 @@
   </data>
   <data name="ToggleSortDirectionDescription" xml:space="preserve">
     <value>Alternar direção da ordem dos itens</value>
-  </data>
-  <data name="ToggleSortDirectoriesAlongsideFilesDescription" xml:space="preserve">
-    <value>Listar e classificar diretórios ao lado dos arquivos</value>
   </data>
   <data name="GroupByNoneDescription" xml:space="preserve">
     <value>Não agrupar itens</value>
@@ -2962,9 +2920,6 @@
   <data name="ShowCheckboxesWhenSelectingItems" xml:space="preserve">
     <value>Mostrar caixas de seleção ao selecionar itens</value>
   </data>
-  <data name="SearchUnindexedItemsDescription" xml:space="preserve">
-    <value>Pesquisar itens não indexados</value>
-  </data>
   <data name="EditPathDescription" xml:space="preserve">
     <value>Foco na barra de endereço</value>
   </data>
@@ -3004,6 +2959,9 @@
   <data name="Month" xml:space="preserve">
     <value>Mês</value>
   </data>
+  <data name="Day" xml:space="preserve">
+    <value>Dia</value>
+  </data>
   <data name="ToggleGroupByDateUnitDescription" xml:space="preserve">
     <value>Alternar unidade para agrupar por data</value>
   </data>
@@ -3013,8 +2971,11 @@
   <data name="Year" xml:space="preserve">
     <value>Ano</value>
   </data>
-  <data name="GroupByMonthInsteadOfYear" xml:space="preserve">
-    <value>Agrupar por mês em vez do ano</value>
+  <data name="GroupByDateUnit" xml:space="preserve">
+    <value>Agrupar por Data</value>
+  </data>
+  <data name="GroupByDateCreatedDayDescription" xml:space="preserve">
+    <value>Agrupar itens pelo dia da data criada</value>
   </data>
   <data name="GroupByDateCreatedMonthDescription" xml:space="preserve">
     <value>Agrupar itens por mês da data de criação</value>
@@ -3022,11 +2983,17 @@
   <data name="GroupByDateCreatedYearDescription" xml:space="preserve">
     <value>Agrupar itens por ano de data de criação</value>
   </data>
+  <data name="GroupByDateDeletedDayDescription" xml:space="preserve">
+    <value>Agrupar itens por dia da data eliminada</value>
+  </data>
   <data name="GroupByDateDeletedMonthDescription" xml:space="preserve">
     <value>Agrupar itens por mês da data de exclusão</value>
   </data>
   <data name="GroupByDateDeletedYearDescription" xml:space="preserve">
     <value>Agrupar itens por ano da data de exclusão</value>
+  </data>
+  <data name="GroupByDateModifiedDayDescription" xml:space="preserve">
+    <value>Agrupar itens por dia da data modificada</value>
   </data>
   <data name="GroupByDateModifiedMonthDescription" xml:space="preserve">
     <value>Agrupar itens por mês da data de modificação</value>
@@ -3504,38 +3471,22 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteCanceled_Header" xml:space="preserve">
-    <value>Cancelado excluir permanentemente item(s) {0} de "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
-    <value>Excluído permanentemente item {0} de "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
-    <value>Erro ao excluir permanentemente {0} item(s) de "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
-    <value>Falha ao excluir permanentemente item(s) {0} de "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
-    <value>Excluindo permanentemente item(s) {0} de "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_RecycleCanceled_Header" xml:space="preserve">
     <value>Exclusão cancelada do item {0} de "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleComplete_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
     <value> {0} item(s) apagados de "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleFailed_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
     <value>Erro ao excluir item(s) {0} de "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleInProgress_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
+    <value>Falha em excluir {0} itens de {1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
     <value>Excluindo Item(s) {0} de "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
@@ -3613,5 +3564,156 @@
   </data>
   <data name="FailedToSetBackground" xml:space="preserve">
     <value>Falha ao definir o plano de fundo</value>
+  </data>
+  <data name="GitDeleteBranch" xml:space="preserve">
+    <value>Apagar a Ramificação do Git</value>
+  </data>
+  <data name="GitDeleteBranchSubtitle" xml:space="preserve">
+    <value>Você tem certeza que quer excluir permanentemente "{0}" a ramificação?</value>
+  </data>
+  <data name="ConnectedToGitHub" xml:space="preserve">
+    <value>Conectado ao GitHub</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="ConnectToGitHub" xml:space="preserve">
+    <value>Conectar ao GitHub</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="ErrorApplyingTagContent" xml:space="preserve">
+    <value>As etiquetas são atualmente compatíveis apenas em unidades formatadas como NTFS.</value>
+  </data>
+  <data name="ErrorApplyingTagTitle" xml:space="preserve">
+    <value>Ocorreu um erro ao aplicar esta etiqueta</value>
+  </data>
+  <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
+    <value>Extrair itens do(s) arquivo(s) selecionado(s) para a pasta atual para um único arquivo, ou para uma nova pasta para arquivo de vários itens</value>
+  </data>
+  <data name="ExtractHereSmart" xml:space="preserve">
+    <value>Extraia aqui (Inteligente)</value>
+  </data>
+  <data name="SortFilesAndFoldersTogether" xml:space="preserve">
+    <value>Ordenar arquivos e pastas juntos</value>
+  </data>
+  <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
+    <value>Ordenar arquivos e pastas juntos</value>
+  </data>
+  <data name="SortFilesFirst" xml:space="preserve">
+    <value>Ordene arquivos primeiro</value>
+  </data>
+  <data name="SortFilesFirstDescription" xml:space="preserve">
+    <value>Ordenar arquivos primeiro e depois pastas</value>
+  </data>
+  <data name="SortFoldersFirst" xml:space="preserve">
+    <value>Organize pastas primeiro</value>
+  </data>
+  <data name="SortFoldersFirstDescription" xml:space="preserve">
+    <value>Ordenar pastas primeiro e depois arquivos</value>
+  </data>
+  <data name="SortPriority" xml:space="preserve">
+    <value>Prioridade de classificação</value>
+  </data>
+  <data name="FailedToRotateImage" xml:space="preserve">
+    <value>Falha ao rotacionar a imagem</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>Reiniciar</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="FaildToShareItems" xml:space="preserve">
+    <value>Falha ao compartilhar itens</value>
+  </data>
+  <data name="ScrollToPreviousFolderWhenNavigatingUp" xml:space="preserve">
+    <value>Rolar para a pasta anterior ao navegar para cima</value>
+  </data>
+  <data name="NewWindowDescription" xml:space="preserve">
+    <value>Abrir uma nova janela</value>
+  </data>
+  <data name="ChangeAlbumCover" xml:space="preserve">
+    <value>Alterar capa do álbum</value>
+  </data>
+  <data name="ItemRenameFailed" xml:space="preserve">
+    <value>Falha ao renomear item</value>
+  </data>
+  <data name="HigherPermissionsRequired" xml:space="preserve">
+    <value>Editar "{0}" requer permissões adicionais</value>
+  </data>
+  <data name="EditPermissions" xml:space="preserve">
+    <value>Editar permissões</value>
+  </data>
+  <data name="BackgroundRunningNotificationBody" xml:space="preserve">
+    <value>Files ainda está em execução em segundo plano para melhorar o desempenho da inicialização.</value>
+  </data>
+  <data name="BackgroundRunningNotificationHeader" xml:space="preserve">
+    <value>Aonde o Files foi?</value>
+  </data>
+  <data name="QuestionsAndDiscussions" xml:space="preserve">
+    <value>Perguntas &amp; discussões</value>
+  </data>
+  <data name="TilesViewSizeInfo" xml:space="preserve">
+    <value>Tamanhos adicionais ainda não estão disponíveis para a Visualização em Blocos.</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Compacto</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Small" xml:space="preserve">
+    <value>Pequeno</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Médio</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+" xml:space="preserve">
+    <value>Médio +</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium++" xml:space="preserve">
+    <value>Médio ++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+++" xml:space="preserve">
+    <value>Médio +++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium++++" xml:space="preserve">
+    <value>Médio ++++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+++++" xml:space="preserve">
+    <value>Médio +++++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large" xml:space="preserve">
+    <value>Grande</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large+" xml:space="preserve">
+    <value>Grande +</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large++" xml:space="preserve">
+    <value>Grande ++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large+++" xml:space="preserve">
+    <value>Grande +++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="ExtraLarge" xml:space="preserve">
+    <value>Extra grande</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="DetailsView" xml:space="preserve">
+    <value>Exibição de detalhes</value>
+  </data>
+  <data name="LayoutType" xml:space="preserve">
+    <value>Tipo de layout</value>
   </data>
 </root>

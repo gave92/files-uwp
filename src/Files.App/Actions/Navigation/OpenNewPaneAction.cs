@@ -1,9 +1,9 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Actions
 {
-	internal class OpenNewPaneAction : ObservableObject, IAction
+	internal sealed class OpenNewPaneAction : ObservableObject, IAction
 	{
 		private readonly IContentPageContext context;
 
@@ -14,10 +14,10 @@ namespace Files.App.Actions
 			=> "OpenNewPaneDescription".GetLocalizedResource();
 
 		public HotKey HotKey
-			=> new(Keys.OemPlus, KeyModifiers.MenuShift);
+			=> new(Keys.OemPlus, KeyModifiers.AltShift);
 
 		public HotKey SecondHotKey
-			=> new(Keys.Add, KeyModifiers.MenuShift);
+			=> new(Keys.Add, KeyModifiers.AltShift);
 
 		public RichGlyph Glyph
 			=> new(opacityStyle: "ColorIconOpenNewPane");

@@ -1,4 +1,4 @@
-// Copyright(c) 2023 Files Community
+// Copyright(c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Converters;
@@ -12,7 +12,7 @@ namespace Files.App.ViewModels.Properties
 	/// <summary>
 	/// This class is represents a system file property from the Windows.Storage API
 	/// </summary>
-	public class FileProperty : ObservableObject
+	public sealed class FileProperty : ObservableObject
 	{
 		/// <summary>
 		/// The name to display
@@ -163,8 +163,10 @@ namespace Files.App.ViewModels.Properties
 				return Task.CompletedTask;
 			}
 
-			var propsToSave = new Dictionary<string, object>();
-			propsToSave.Add(Property, Converter.ConvertBack(Value, null, null, null));
+			var propsToSave = new Dictionary<string, object>
+			{
+				{ Property, Converter.ConvertBack(Value, null, null, null) }
+			};
 
 			return file.Properties.SavePropertiesAsync(propsToSave).AsTask();
 		}
@@ -273,7 +275,7 @@ namespace Files.App.ViewModels.Properties
 			return value;
 		}
 
-		private static Dictionary<string, string> cachedPropertiesListFiles = new Dictionary<string, string>();
+		private static Dictionary<string, string> cachedPropertiesListFiles = [];
 
 		/// <summary>
 		/// This function retrieves the list of properties to display from the PropertiesInformation.json
@@ -319,7 +321,7 @@ namespace Files.App.ViewModels.Properties
 				{
 					if (file.Properties is not null)
 					{
-						val = (await file.Properties.RetrievePropertiesAsync(new string[] { prop })).First().Value;
+						val = (await file.Properties.RetrievePropertiesAsync([prop])).First().Value;
 					}
 				}
 				catch (ArgumentException e)

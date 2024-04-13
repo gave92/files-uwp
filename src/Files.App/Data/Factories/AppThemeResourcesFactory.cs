@@ -1,12 +1,12 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Data.Factories
 {
 	public static class AppThemeResourceFactory
 	{
-		public static ObservableCollection<AppThemeResourceItem> AppThemeResources { get; } = new ObservableCollection<AppThemeResourceItem>()
-		{
+		public static ObservableCollection<AppThemeResourceItem> AppThemeResources { get; } =
+		[
 			new AppThemeResourceItem
 			{
 				BackgroundColor = "#00000000", /* Transparent */
@@ -107,6 +107,6 @@ namespace Files.App.Data.Factories
 				BackgroundColor = "#327E735F", /* #7E735F */
 				Name = "Camouflage".GetLocalizedResource()
 			}
-		};
+		];
 	}
 }

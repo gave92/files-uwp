@@ -1,9 +1,10 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.Core.Storage;
 using Files.Core.Storage.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -23,9 +24,9 @@ namespace Files.App.Utils.Storage
 
 		private IShellPage associatedInstance;
 		private readonly IJumpListService jumpListService;
-		private IFilesystemOperations filesystemOperations;
+		private ShellFilesystemOperations filesystemOperations;
 
-		private ItemManipulationModel itemManipulationModel => associatedInstance.SlimContentPage?.ItemManipulationModel;
+		private ItemManipulationModel? itemManipulationModel => associatedInstance.SlimContentPage?.ItemManipulationModel;
 
 		private readonly CancellationToken cancellationToken;
 		private static char[] RestrictedCharacters
@@ -34,13 +35,13 @@ namespace Files.App.Utils.Storage
 			{
 				var userSettingsService = Ioc.Default.GetRequiredService<IUserSettingsService>();
 				return userSettingsService.FoldersSettingsService.AreAlternateStreamsVisible
-					? new[] { '\\', '/', '*', '?', '"', '<', '>', '|' } // Allow ":" char
-					: new[] { '\\', '/', ':', '*', '?', '"', '<', '>', '|' };
+					? ['\\', '/', '*', '?', '"', '<', '>', '|'] // Allow ":" char
+					: ['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
 			}
 		}
 
-		private static readonly string[] RestrictedFileNames = new string[]
-		{
+		private static readonly string[] RestrictedFileNames =
+		[
 				"CON", "PRN", "AUX",
 				"NUL", "COM1", "COM2",
 				"COM3", "COM4", "COM5",
@@ -48,7 +49,7 @@ namespace Files.App.Utils.Storage
 				"COM9", "LPT1", "LPT2",
 				"LPT3", "LPT4", "LPT5",
 				"LPT6", "LPT7", "LPT8", "LPT9"
-		};
+		];
 
 		private IUserSettingsService UserSettingsService { get; } = Ioc.Default.GetRequiredService<IUserSettingsService>();
 		public FilesystemHelpers(IShellPage associatedInstance, CancellationToken cancellationToken)
@@ -58,7 +59,7 @@ namespace Files.App.Utils.Storage
 			jumpListService = Ioc.Default.GetRequiredService<IJumpListService>();
 			filesystemOperations = new ShellFilesystemOperations(this.associatedInstance);
 		}
-		public async Task<(ReturnResult, IStorageItem)> CreateAsync(IStorageItemWithPath source, bool registerHistory)
+		public async Task<(ReturnResult, IStorageItem?)> CreateAsync(IStorageItemWithPath source, bool registerHistory)
 		{
 			var returnStatus = ReturnResult.InProgress;
 			var progress = new Progress<StatusCenterItemProgressModel>();
@@ -124,7 +125,7 @@ namespace Files.App.Utils.Storage
 					(canBeSentToBin ? permanently : true, canBeSentToBin),
 					FilesystemOperationType.Delete,
 					incomingItems,
-					new());
+					[]);
 
 				var dialogService = Ioc.Default.GetRequiredService<IDialogService>();
 
@@ -232,7 +233,7 @@ namespace Files.App.Utils.Storage
 			bool showDialog,
 			bool registerHistory,
 			bool isTargetExecutable = false,
-			bool isTargetPythonFile = false)
+			bool isTargetScriptFile = false)
 		{
 			try
 			{
@@ -244,22 +245,20 @@ namespace Files.App.Utils.Storage
 				{
 					return await RecycleItemsFromClipboard(packageView, destination, UserSettingsService.FoldersSettingsService.DeleteConfirmationPolicy, registerHistory);
 				}
-				else if (operation.HasFlag(DataPackageOperation.Copy))
-				{
-					return await CopyItemsFromClipboard(packageView, destination, showDialog, registerHistory);
-				}
 				else if (operation.HasFlag(DataPackageOperation.Move))
 				{
 					return await MoveItemsFromClipboard(packageView, destination, showDialog, registerHistory);
 				}
+				else if (operation.HasFlag(DataPackageOperation.Copy))
+				{
+					return await CopyItemsFromClipboard(packageView, destination, showDialog, registerHistory);
+				}
 				else if (operation.HasFlag(DataPackageOperation.Link))
 				{
 					// Open with piggybacks off of the link operation, since there isn't one for it
-					if (isTargetExecutable || isTargetPythonFile)
+					if (isTargetExecutable || isTargetScriptFile)
 					{
 						var items = await GetDraggedStorageItems(packageView);
-						if (isTargetPythonFile && !SoftwareHelpers.IsPythonInstalled())
-							return ReturnResult.Cancelled;
 						NavigationHelpers.OpenItemsWithExecutableAsync(associatedInstance, items, destination);
 						return ReturnResult.Success;
 					}
@@ -363,7 +362,7 @@ namespace Files.App.Utils.Storage
 				ReturnResult returnStatus = ReturnResult.InProgress;
 
 				var destinations = new List<string>();
-				List<ShellFileItem> binItems = null;
+				List<ShellFileItem>? binItems = null;
 				foreach (var item in source)
 				{
 					if (RecycleBinHelpers.IsPathUnderRecycleBin(item.Path))
@@ -394,7 +393,7 @@ namespace Files.App.Utils.Storage
 					using var imageStream = await imgSource.OpenReadAsync();
 					var folder = await StorageFileExtensions.DangerousGetFolderFromPathAsync(destination);
 					// Set the name of the file to be the current time and date
-					var file = await folder.CreateFileAsync($"{DateTime.Now:mm-dd-yy-HHmmss}.png", CreationCollisionOption.GenerateUniqueName);
+					var file = await folder.CreateFileAsync($"{DateTime.Now:MM-dd-yy-HHmmss}.png", CreationCollisionOption.GenerateUniqueName);
 
 					SoftwareBitmap softwareBitmap;
 
@@ -511,7 +510,7 @@ namespace Files.App.Utils.Storage
 			ReturnResult returnStatus = ReturnResult.InProgress;
 
 			var destinations = new List<string>();
-			List<ShellFileItem> binItems = null;
+			List<ShellFileItem>? binItems = null;
 			foreach (var item in source)
 			{
 				if (RecycleBinHelpers.IsPathUnderRecycleBin(item.Path))
@@ -551,7 +550,7 @@ namespace Files.App.Utils.Storage
 				return ReturnResult.Failed;
 			}
 
-			IStorageHistory history = null;
+			IStorageHistory? history = null;
 
 			switch (source.ItemType)
 			{
@@ -612,9 +611,8 @@ namespace Files.App.Utils.Storage
 			progress.ProgressChanged += (s, e) => returnStatus = returnStatus < ReturnResult.Failed ? e.Status!.Value.ToStatus() : returnStatus;
 
 			source = source.Where(x => !string.IsNullOrEmpty(x.Path));
-			var dest = source.Select(x => Path.Combine(destination,
-				string.Format("ShortcutCreateNewSuffix".GetLocalizedResource(), x.Name) + ".lnk"));
 
+			var dest = source.Select(x => Path.Combine(destination, FilesystemHelpers.GetShortcutNamingPreference(x.Name)));
 			source = await source.ToListAsync();
 			dest = await dest.ToListAsync();
 
@@ -658,7 +656,8 @@ namespace Files.App.Utils.Storage
 			{
 				var itemPathOrName = string.IsNullOrEmpty(item.src.Path) ? item.src.Item.Name : item.src.Path;
 				incomingItems.Add(new FileSystemDialogConflictItemViewModel() { ConflictResolveOption = FileNameConflictResolveOptionType.None, SourcePath = itemPathOrName, DestinationPath = item.dest, DestinationDisplayName = Path.GetFileName(item.dest) });
-				if (collisions.ContainsKey(incomingItems.ElementAt(item.index).SourcePath))
+				var path = incomingItems.ElementAt(item.index).SourcePath;
+				if (path is not null && collisions.ContainsKey(path))
 				{
 					// Something strange happened, log
 					App.Logger.LogWarning($"Duplicate key when resolving conflicts: {incomingItems.ElementAt(item.index).SourcePath}, {item.src.Name}\n" +
@@ -670,8 +669,8 @@ namespace Files.App.Utils.Storage
 				if (string.IsNullOrEmpty(item.src.Path) || item.src.Path != item.dest)
 				{
 					// Same item names in both directories
-					if (StorageHelpers.Exists(item.dest) || 
-						(FtpHelpers.IsFtpPath(item.dest) && 
+					if (StorageHelpers.Exists(item.dest) ||
+						(FtpHelpers.IsFtpPath(item.dest) &&
 						await Ioc.Default.GetRequiredService<IFtpStorageService>().TryGetFileAsync(item.dest) is not null))
 					{
 						(incomingItems[item.index] as FileSystemDialogConflictItemViewModel)!.ConflictResolveOption = FileNameConflictResolveOptionType.GenerateNewName;
@@ -700,7 +699,7 @@ namespace Files.App.Utils.Storage
 				{
 					if (result != DialogResult.Primary) // Operation was cancelled
 					{
-						return (new(), true, itemsResult);
+						return ([], true, itemsResult);
 					}
 				}
 
@@ -796,7 +795,7 @@ namespace Files.App.Utils.Storage
 					catch (COMException)
 					{
 					}
-					
+
 					if (bytesRead > 0)
 					{
 						IntPtr dropStructPointer = Marshal.AllocHGlobal(dropBytes!.Length);
@@ -866,10 +865,34 @@ namespace Files.App.Utils.Storage
 			return false;
 		}
 
+
+		/// <summary>
+		/// Gets the shortcut naming template from File Explorer
+		/// </summary>
+		public static string GetShortcutNamingPreference(string itemName)
+		{
+			var keyName = @"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates";
+			var value = Registry.GetValue(keyName, "ShortcutNameTemplate", null);
+
+			if (value is null)
+				return string.Format("ShortcutCreateNewSuffix".GetLocalizedResource(), itemName) + ".lnk";
+			else
+			{
+				// Trim the quotes and the "%s" from the string
+				value = value?.ToString()?.TrimStart(['"', '%', 's']);
+				value = value?.ToString()?.TrimEnd(['"']);
+
+				return itemName + value;
+			}
+		}
+
+
 		public void Dispose()
 		{
 			filesystemOperations?.Dispose();
 
+			// SUPPRESS: Cannot convert null literal to non-nullable reference type.
+#pragma warning disable CS8625
 			associatedInstance = null;
 			filesystemOperations = null;
 		}

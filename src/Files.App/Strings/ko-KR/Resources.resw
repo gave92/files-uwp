@@ -117,11 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NavigationToolbarNewWindow.Label" xml:space="preserve">
+  <data name="NewWindow" xml:space="preserve">
     <value>새 창</value>
   </data>
   <data name="CopyPath" xml:space="preserve">
     <value>경로 복사</value>
+  </data>
+  <data name="CopyPathWithQuotes" xml:space="preserve">
+    <value>홑 따옴표를 포함하여 경로 복사</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>탐색</value>
@@ -142,7 +145,7 @@
     <value>디스크 할당 크기</value>
   </data>
   <data name="UncompressedSize" xml:space="preserve">
-    <value>Uncompressed size:</value>
+    <value>압축 해제 후 크기:</value>
   </data>
   <data name="ErrorDialogThisActionCannotBeDone" xml:space="preserve">
     <value>작업을 수행할 수 없습니다.</value>
@@ -160,10 +163,10 @@
     <value>모두 선택</value>
   </data>
   <data name="InvertSelection" xml:space="preserve">
-    <value>Invert selection</value>
+    <value>선택 반전</value>
   </data>
   <data name="ClearSelection" xml:space="preserve">
-    <value>Clear selection</value>
+    <value>선택 취소</value>
   </data>
   <data name="PropertiesModified.Text" xml:space="preserve">
     <value>수정한 날짜:</value>
@@ -270,14 +273,14 @@
   <data name="Delete" xml:space="preserve">
     <value>삭제</value>
   </data>
-  <data name="PinToFavorites" xml:space="preserve">
-    <value>즐겨찾기에 고정</value>
+  <data name="PinFolderToSidebar" xml:space="preserve">
+    <value>사이드 바에 고정</value>
   </data>
   <data name="WelcomeDialog.Title" xml:space="preserve">
     <value>Files에 오신 걸 환영합니다!</value>
   </data>
   <data name="WelcomeDialog.PrimaryButtonText" xml:space="preserve">
-    <value>Grant permission</value>
+    <value>권한 부여</value>
   </data>
   <data name="WelcomeDialogTextBlock.Text" xml:space="preserve">
     <value>시작하기 위해서는 파일 표시 권한이 필요합니다. 권한을 얻기 위한 설정 페이지가 열리고, 권한 부여 후 앱을 재시작 하면 됩니다. </value>
@@ -289,7 +292,7 @@
     <value>항목 이름을 입력하세요</value>
   </data>
   <data name="RenameDialog.PrimaryButtonText" xml:space="preserve">
-    <value>Set name</value>
+    <value>이름 설정</value>
   </data>
   <data name="LightTheme" xml:space="preserve">
     <value>밝게</value>
@@ -304,10 +307,10 @@
     <value>시스템</value>
   </data>
   <data name="NewFolder" xml:space="preserve">
-    <value>New folder</value>
+    <value>새 폴더</value>
   </data>
   <data name="NewFile" xml:space="preserve">
-    <value>New file</value>
+    <value>새 파일</value>
   </data>
   <data name="EmptyFolder.Text" xml:space="preserve">
     <value>이 폴더는 비어있습니다.</value>
@@ -343,9 +346,15 @@
     <value>파일에 접근하려면 드라이브를 삽입하세요.</value>
   </data>
   <data name="DriveUnpluggedDialog.Title" xml:space="preserve">
-    <value>Drive unplugged</value>
+    <value>드라이브 분리됨</value>
   </data>
   <data name="FileNotFoundDialog.Text" xml:space="preserve">
+    <value>접근하려는 파일이 이동되거나 삭제되었을 수 있습니다.</value>
+  </data>
+  <data name="CannotAccessPropertiesTitle" xml:space="preserve">
+    <value>Cannot open properties for this file</value>
+  </data>
+  <data name="CannotAccessPropertiesContent" xml:space="preserve">
     <value>접근하려는 파일이 이동되거나 삭제되었을 수 있습니다.</value>
   </data>
   <data name="FileNotFoundDialog.Title" xml:space="preserve">
@@ -613,7 +622,7 @@
     <value>취소</value>
   </data>
   <data name="AddDialog.Title" xml:space="preserve">
-    <value>Create a new item</value>
+    <value>새 아이템 만들기</value>
   </data>
   <data name="AddDialogDescription.Text" xml:space="preserve">
     <value>새로운 항목의 유형을 선택해주세요.</value>
@@ -629,9 +638,6 @@
   </data>
   <data name="AddDialogListFolderSubHeader" xml:space="preserve">
     <value>빈 폴더를 생성합니다.</value>
-  </data>
-  <data name="LayoutMode" xml:space="preserve">
-    <value>레이아웃 설정</value>
   </data>
   <data name="NavResfreshButton.AutomationProperties.Name" xml:space="preserve">
     <value>경로 새로고침</value>
@@ -970,13 +976,10 @@
     <value>여기서 파일 작업 현황을 확인하세요.</value>
   </data>
   <data name="OngoingTasksTeachingTip.Title" xml:space="preserve">
-    <value>Status center</value>
+    <value>작업 현황</value>
   </data>
   <data name="SearchPagePathBoxOverrideText" xml:space="preserve">
     <value>{0}에 대한 {1}의 검색 결과</value>
-  </data>
-  <data name="SettingsListAndSortDirectoriesAlongsideFiles" xml:space="preserve">
-    <value>파일과 함께 경로 나열 및 정렬</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>자세히</value>
@@ -986,9 +989,6 @@
   </data>
   <data name="ShowProtectedSystemFiles" xml:space="preserve">
     <value>보호된 시스템 파일 표시</value>
-  </data>
-  <data name="SettingsSearchUnindexedItems" xml:space="preserve">
-    <value>검색 결과에 색인되지 않은 항목 포함</value>
   </data>
   <data name="SyncFolderPreferencesAcrossDirectories" xml:space="preserve">
     <value>디렉토리 간 레이아웃 및 정렬 설정 동기화</value>
@@ -1014,26 +1014,26 @@
   <data name="ShowOpenInNewPane" xml:space="preserve">
     <value>'새 분할 화면에서 폴더 열기' 옵션 표시</value>
   </data>
+  <data name="ShowCopyPath" xml:space="preserve">
+    <value>Show option to copy path</value>
+  </data>
+  <data name="ShowCreateFolderWithSelection" xml:space="preserve">
+    <value>Show option to create folder with selection</value>
+  </data>
+  <data name="ShowCreateShortcut" xml:space="preserve">
+    <value>Show option to create shortcut</value>
+  </data>
   <data name="NavigationToolbarNewPane.Label" xml:space="preserve">
     <value>새 분할 화면</value>
   </data>
   <data name="OpenInNewPane" xml:space="preserve">
     <value>새 분할 화면에서 열기</value>
   </data>
-  <data name="Folders" xml:space="preserve">
-    <value>폴더</value>
+  <data name="FilesAndFolders" xml:space="preserve">
+    <value>Files &amp; folders</value>
   </data>
   <data name="NavToolbarDetails.ToolTipService.ToolTip" xml:space="preserve">
     <value>자세히 (Ctrl+Shift+1)</value>
-  </data>
-  <data name="NavToolbarLargeIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>큰 아이콘 (Ctrl+Shift+5)</value>
-  </data>
-  <data name="NavToolbarMediumIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>중간 아이콘 (Ctrl+Shift+4)</value>
-  </data>
-  <data name="NavToolbarSmallIcons.ToolTipService.ToolTip" xml:space="preserve">
-    <value>작은 아이콘 (Ctrl+Shift+3)</value>
   </data>
   <data name="NavToolbarTiles.ToolTipService.ToolTip" xml:space="preserve">
     <value>타일 (Ctrl+Shift+2)</value>
@@ -1054,16 +1054,16 @@
     <value>미리보기 화면</value>
   </data>
   <data name="ToggleDetailsPane" xml:space="preserve">
-    <value>Toggle the details pane</value>
+    <value>세부정보 보기</value>
   </data>
   <data name="ToggleDetailsPaneDescription" xml:space="preserve">
-    <value>Toggle the details pane to view basic file properties</value>
+    <value>기본 파일 속성을 보려면 세부정보 보기로 전환하세요.</value>
   </data>
   <data name="ToggleInfoPane" xml:space="preserve">
-    <value>Toggle the info pane</value>
+    <value>정보 보기</value>
   </data>
   <data name="ToggleInfoPaneDescription" xml:space="preserve">
-    <value>Toggle the info pane to view the detail\preview panes</value>
+    <value>Toggle the info pane to view the detail/preview panes</value>
   </data>
   <data name="DetailsPanePreviewNotAvaliableText" xml:space="preserve">
     <value>가능한 미리보기가 없습니다</value>
@@ -1071,8 +1071,8 @@
   <data name="PropertyItemName" xml:space="preserve">
     <value>이름</value>
   </data>
-  <data name="UnpinFromFavorites" xml:space="preserve">
-    <value>즐겨찾기에서 고정 해제</value>
+  <data name="UnpinFolderFromSidebar" xml:space="preserve">
+    <value>Unpin from Sidebar</value>
   </data>
   <data name="SidebarNetworkDrives" xml:space="preserve">
     <value>네트워크 드라이브</value>
@@ -1158,8 +1158,8 @@
   <data name="DrivesWidgetOptionsFlyoutMapNetDriveMenuItem.Text" xml:space="preserve">
     <value>네트워크 드라이브 연결</value>
   </data>
-  <data name="SidebarFavorites" xml:space="preserve">
-    <value>즐겨찾기</value>
+  <data name="Pinned" xml:space="preserve">
+    <value>Pinned</value>
   </data>
   <data name="SidebarLibraries" xml:space="preserve">
     <value>라이브러리</value>
@@ -1272,12 +1272,6 @@
   <data name="PropertyISO" xml:space="preserve">
     <value>ISO 감도</value>
   </data>
-  <data name="SearchUnindexedItemsLabel.Text" xml:space="preserve">
-    <value>원하는 항목을 찾지 못했나요?</value>
-  </data>
-  <data name="SearchUnindexedItemsButton.Content" xml:space="preserve">
-    <value>색인되지 않은 항목 검색</value>
-  </data>
   <data name="ReplaceExisting" xml:space="preserve">
     <value>기존 항목 대체</value>
   </data>
@@ -1320,17 +1314,11 @@
   <data name="Sort" xml:space="preserve">
     <value>정렬</value>
   </data>
-  <data name="NavToolbarGroupByRadioButtons.Text" xml:space="preserve">
-    <value>분류 방법</value>
-  </data>
   <data name="DateModifiedLowerCase" xml:space="preserve">
     <value>수정한 날짜</value>
   </data>
   <data name="OriginalFolder" xml:space="preserve">
     <value>원본 폴더</value>
-  </data>
-  <data name="NavToolbarSortByRadioButtons.Text" xml:space="preserve">
-    <value>정렬 기준</value>
   </data>
   <data name="Descending" xml:space="preserve">
     <value>내림차순</value>
@@ -1402,7 +1390,7 @@
     <value>휴지통</value>
   </data>
   <data name="Canceling" xml:space="preserve">
-    <value>Canceling</value>
+    <value>취소 중</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>제거</value>
@@ -1462,7 +1450,7 @@
     <value>알 수 없는 소유자</value>
   </data>
   <data name="ExtractArchive" xml:space="preserve">
-    <value>Extract archive</value>
+    <value>압축풀기</value>
   </data>
   <data name="DecompressArchiveDialogOpenDestinationWhenComplete.Content" xml:space="preserve">
     <value>완료 후 압축을 해제한 폴더 표시</value>
@@ -1656,23 +1644,11 @@
   <data name="Home" xml:space="preserve">
     <value>홈</value>
   </data>
-  <data name="NavigationToolbarNewWindow.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+N</value>
-  </data>
   <data name="BaseLayoutContextFlyoutDetails.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+1</value>
   </data>
   <data name="BaseLayoutContextFlyoutTiles.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+2</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutSmallIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+3</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutMediumIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+4</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutLargeIcons.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+5</value>
   </data>
   <data name="BaseLayoutContextFlyoutColumn.KeyboardAcceleratorTextOverride" xml:space="preserve">
     <value>Ctrl+Shift+6</value>
@@ -1699,7 +1675,7 @@
     <value>세트 중 일부</value>
   </data>
   <data name="InsertDiscDialog.OpenDriveButton" xml:space="preserve">
-    <value>Open drive</value>
+    <value>드라이브 열기</value>
   </data>
   <data name="InsertDiscDialog.Text" xml:space="preserve">
     <value>드라이브 {0}에 디스크를 삽입하세요.</value>
@@ -1711,7 +1687,7 @@
     <value>확인</value>
   </data>
   <data name="AskCredentialDialog.Title" xml:space="preserve">
-    <value>Credential required</value>
+    <value>자격 증명 필요</value>
   </data>
   <data name="CredentialDialogAnonymous.Content" xml:space="preserve">
     <value>익명</value>
@@ -1723,10 +1699,10 @@
     <value>사용자명</value>
   </data>
   <data name="DrivesWidgetAutomationProperties.Name" xml:space="preserve">
-    <value>Drives widget</value>
+    <value>드라이브 위젯</value>
   </data>
   <data name="RecentFilesWidgetAutomationProperties.Name" xml:space="preserve">
-    <value>Recent Files widget</value>
+    <value>최근 파일 위젯</value>
   </data>
   <data name="NoSearchResultsFound" xml:space="preserve">
     <value>항목 없음</value>
@@ -1740,15 +1716,6 @@
   <data name="Columns" xml:space="preserve">
     <value>열</value>
   </data>
-  <data name="LargeIcons" xml:space="preserve">
-    <value>Large icons</value>
-  </data>
-  <data name="MediumIcons" xml:space="preserve">
-    <value>Medium icons</value>
-  </data>
-  <data name="SmallIcons" xml:space="preserve">
-    <value>Small icons</value>
-  </data>
   <data name="Tiles" xml:space="preserve">
     <value>타일</value>
   </data>
@@ -1756,7 +1723,7 @@
     <value>새 탭에서 폴더 열기</value>
   </data>
   <data name="StatusCenter" xml:space="preserve">
-    <value>Status center</value>
+    <value>작업 현황</value>
   </data>
   <data name="DetailsViewHeaderFlyout_ShowDateCreated.Text" xml:space="preserve">
     <value>생성된 날짜 열</value>
@@ -1792,10 +1759,10 @@
     <value>폴더 경로</value>
   </data>
   <data name="ExportSettings" xml:space="preserve">
-    <value>Export settings</value>
+    <value>설정 내보내기</value>
   </data>
   <data name="ImportSettings" xml:space="preserve">
-    <value>Import settings</value>
+    <value>설정 가져오기</value>
   </data>
   <data name="SettingsImportErrorDescription" xml:space="preserve">
     <value>설정을 불러올지 못했어요. 설정 파일이 손상된 것 같아요.</value>
@@ -1830,65 +1797,59 @@
   <data name="None" xml:space="preserve">
     <value>없음</value>
   </data>
-  <data name="HighDpiOption_UseDPIOnLogin" xml:space="preserve">
-    <value>Windows 로그인 시</value>
+  <data name="CompatibilityOnWindowsLogin" xml:space="preserve">
+    <value>On Windows login</value>
   </data>
-  <data name="HighDpiOption_UseDPIOnProgramStart" xml:space="preserve">
-    <value>프로그램 시작 시</value>
+  <data name="CompatibilityOnProgramStart" xml:space="preserve">
+    <value>On this program start</value>
   </data>
-  <data name="HighDpiOverride_System" xml:space="preserve">
+  <data name="System" xml:space="preserve">
     <value>시스템</value>
   </data>
-  <data name="HighDpiOverride_SystemAdvanced" xml:space="preserve">
-    <value>시스템 (고급)</value>
+  <data name="CompatibilitySystemEnhanced" xml:space="preserve">
+    <value>System (Enhanced)</value>
   </data>
-  <data name="OSCompatibility_Windows7" xml:space="preserve">
-    <value>Windows 7</value>
+  <data name="CompatibilityReducedColorModeColor16bit" xml:space="preserve">
+    <value>16-bit (65536) color</value>
   </data>
-  <data name="OSCompatibility_Windows8" xml:space="preserve">
-    <value>Windows 8</value>
+  <data name="CompatibilityReducedColorModeColor8bit" xml:space="preserve">
+    <value>8-bit (256) color</value>
   </data>
-  <data name="OSCompatibility_WindowsVista" xml:space="preserve">
-    <value>Windows Vista</value>
+  <data name="CompatibilityDisableFullscreenOptimizations" xml:space="preserve">
+    <value>Disable full-screen optimizations</value>
   </data>
-  <data name="OSCompatibility_WindowsVistaSP1" xml:space="preserve">
-    <value>Windows Vista (서비스 팩 1)</value>
+  <data name="CompatibilityRunIn640x480Resolution" xml:space="preserve">
+    <value>Run in 640 x 480 screen resolution</value>
   </data>
-  <data name="OSCompatibility_WindowsVistaSP2" xml:space="preserve">
-    <value>Windows Vista (서비스 팩 2)</value>
+  <data name="CompatibilityOverrideHighDPIBehavior" xml:space="preserve">
+    <value>Override high DPI scaling behavior</value>
   </data>
-  <data name="ReducedColorMode_Color16Bit" xml:space="preserve">
-    <value>16비트(65536) 색상</value>
+  <data name="CompatibilityReducedColorMode" xml:space="preserve">
+    <value>Reduced color mode</value>
   </data>
-  <data name="ReducedColorMode_Color8Bit" xml:space="preserve">
-    <value>8비트(256) 색상</value>
-  </data>
-  <data name="CompatibilityMode" xml:space="preserve">
-    <value>호환성 모드</value>
-  </data>
-  <data name="DisableFullscreenOptimizations" xml:space="preserve">
-    <value>전체 화면 최적화 해제</value>
-  </data>
-  <data name="ExecuteAt640X480" xml:space="preserve">
-    <value>640 x 480 화면 해상도로 실행</value>
-  </data>
-  <data name="OverrideDPIScalingBehaviour" xml:space="preserve">
-    <value>높은 DPI 조정 재정의</value>
-  </data>
-  <data name="ReducedColorMode" xml:space="preserve">
-    <value>축소된 컬러 모드</value>
-  </data>
-  <data name="RegisterForRestart" xml:space="preserve">
-    <value>확인 및 재시작</value>
+  <data name="CompatibilityRegisterThisProgramForRestart" xml:space="preserve">
+    <value>Register this program for restart</value>
   </data>
   <data name="RunAsAdministrator" xml:space="preserve">
     <value>관리자 권한으로 실행</value>
   </data>
-  <data name="RunCompatibilityTroubleShooter" xml:space="preserve">
-    <value>호환성 문제 해결사 실행</value>
+  <data name="CompatibilityRunTroubleshooter" xml:space="preserve">
+    <value>Run compatibility troubleshooter</value>
   </data>
-  <data name="UseMainMonitorDPISettings" xml:space="preserve">
-    <value>주 모니터의 DPI 설정 사용</value>
+  <data name="CompatibilityUseDPISettings" xml:space="preserve">
+    <value>Use DPI settings of the main monitor</value>
+  </data>
+  <data name="CompatibilityDoNotAdjustDPI" xml:space="preserve">
+    <value>Do not adjust DPI</value>
+  </data>
+  <data name="CompatibilityDoNotOverrideDPI" xml:space="preserve">
+    <value>Do not override DPI</value>
+  </data>
+  <data name="CompatibilityMode" xml:space="preserve">
+    <value>호환성 모드</value>
+  </data>
+  <data name="CompatibilityNoReducedColor" xml:space="preserve">
+    <value>No reduced color</value>
   </data>
   <data name="ThirdPartyLicenses" xml:space="preserve">
     <value>제 3자 라이선스</value>
@@ -1909,7 +1870,7 @@
     <value>최근 항목</value>
   </data>
   <data name="SettingsOpenInLogin" xml:space="preserve">
-    <value>Open Files on Windows startup</value>
+    <value>Files를 윈도우 시작 프로그램으로 등록</value>
   </data>
   <data name="Attributes" xml:space="preserve">
     <value>특성</value>
@@ -1928,9 +1889,6 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>유형</value>
-  </data>
-  <data name="IconGrid" xml:space="preserve">
-    <value>Icon grid</value>
   </data>
   <data name="Bytes" xml:space="preserve">
     <value>바이트</value>
@@ -1989,9 +1947,6 @@
   <data name="FileTags" xml:space="preserve">
     <value>태그</value>
   </data>
-  <data name="UseCompactSpacing" xml:space="preserve">
-    <value>자세히 레이아웃에서 폭을 더 좁게 설정</value>
-  </data>
   <data name="Universal" xml:space="preserve">
     <value>유니버설</value>
   </data>
@@ -2017,7 +1972,7 @@
     <value>바탕화면의 슬라이드 쇼로 지정하기</value>
   </data>
   <data name="SizeAllColumnsToFit" xml:space="preserve">
-    <value>Size all columns to fit</value>
+    <value>모든 열의 크기 맞추기</value>
   </data>
   <data name="Adaptive" xml:space="preserve">
     <value>Automatically choose the best layout</value>
@@ -2063,9 +2018,6 @@
   </data>
   <data name="TypeColumn" xml:space="preserve">
     <value>유형 열</value>
-  </data>
-  <data name="DetailsLayoutColumns" xml:space="preserve">
-    <value>자세히 레이아웃 열</value>
   </data>
   <data name="Lockscreen" xml:space="preserve">
     <value>잠금화면</value>
@@ -2209,10 +2161,10 @@
     <value>Windows 파일 탐색기에서 최근 사용된 파일은 현재 사용할 수 없습니다.</value>
   </data>
   <data name="EditSettingsFile" xml:space="preserve">
-    <value>Edit settings file</value>
+    <value>Files 설정 파일 수정</value>
   </data>
   <data name="WhatsNew" xml:space="preserve">
-    <value>What's new</value>
+    <value>새로운 기능</value>
   </data>
   <data name="CannotCreateShortcutDialogTitle" xml:space="preserve">
     <value>이 위치에 바로 가기를 만들려면 관리자 권한이 필요합니다</value>
@@ -2235,8 +2187,11 @@
   <data name="ShowEditTagsMenu" xml:space="preserve">
     <value>'태그 편집' 표시</value>
   </data>
+  <data name="ShowCompressionOptions" xml:space="preserve">
+    <value>Show compression options</value>
+  </data>
   <data name="ShowSendToMenu" xml:space="preserve">
-    <value>'보내기' 옵션 표시</value>
+    <value>Show send to menu</value>
   </data>
   <data name="ShowOpenInNewTab" xml:space="preserve">
     <value>'새 탭에서 폴더 열기' 옵션 표시</value>
@@ -2251,7 +2206,7 @@
     <value>{0} 로 연결 할 자격 증명을 입력하세요</value>
   </data>
   <data name="NetworkAuthenticationDialogTitle" xml:space="preserve">
-    <value>Enter network credentials</value>
+    <value>네트워크 자격 증명을 입력하세요</value>
   </data>
   <data name="NetworkAuthenticationSaveCheckbox" xml:space="preserve">
     <value>내 자격 증명 기억하기</value>
@@ -2320,10 +2275,10 @@
     <value>모든 항목에 적용</value>
   </data>
   <data name="OpenTerminal" xml:space="preserve">
-    <value>Open in Windows Terminal</value>
+    <value>Windows Terminal에서 열기</value>
   </data>
   <data name="OpenTerminalAsAdmin" xml:space="preserve">
-    <value>Open in Windows Terminal as administrator</value>
+    <value>관리자 권한으로 Windows Terminal에서 열기</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>저장</value>
@@ -2341,10 +2296,10 @@
     <value>작업 도중 오류가 발생했습니다</value>
   </data>
   <data name="CalculationErrorFileIsOpen" xml:space="preserve">
-    <value>Failed to calculate the hash, please close the file and try again.</value>
+    <value>해시를 계산하지 못했습니다. 파일을 닫고 다시 시도해주십시오.</value>
   </data>
   <data name="CalculationOnlineFileHashError" xml:space="preserve">
-    <value>Hashes aren't available for online files</value>
+    <value>온라인 파일인 경우 해시값을 계산할 수 없습니다.</value>
   </data>
   <data name="Algorithm" xml:space="preserve">
     <value>알고리즘</value>
@@ -2419,7 +2374,10 @@
     <value>클립보드에 복사</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
-    <value>클립보드에 경로 복사</value>
+    <value>선택된 요소들의 경로를 클립보드에 복사하기</value>
+  </data>
+  <data name="CopyPathWithQuotesDescription" xml:space="preserve">
+    <value>선택된 요소들의 경로를 홑따옴표를 포함하여 클립보드에 복사하기</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
     <value>클립보드에 잘라내기</value>
@@ -2490,11 +2448,11 @@
   <data name="UnpinFromStartDescription" xml:space="preserve">
     <value>시작 화면에 고정 해제</value>
   </data>
-  <data name="PinItemToFavoritesDescription" xml:space="preserve">
-    <value>즐겨찾기에 추가</value>
+  <data name="PinFolderToSidebarDescription" xml:space="preserve">
+    <value>Pin folder(s) to Sidebar</value>
   </data>
-  <data name="UnpinItemFromFavoritesDescription" xml:space="preserve">
-    <value>즐겨찾기에서 제거</value>
+  <data name="UnpinFolderFromSidebarDescription" xml:space="preserve">
+    <value>Unpin folder(s) from Sidebar</value>
   </data>
   <data name="SetAsWallpaperBackgroundDescription" xml:space="preserve">
     <value>바탕 화면 배경으로 설정</value>
@@ -2560,10 +2518,10 @@
     <value>관리자 권한으로 터미널에서 열기</value>
   </data>
   <data name="LayoutDecreaseSizeDescription" xml:space="preserve">
-    <value>아이콘 크기 축소</value>
+    <value>Decrease item size in the current view</value>
   </data>
   <data name="LayoutIncreaseSizeDescription" xml:space="preserve">
-    <value>아이콘 크기 확대</value>
+    <value>Increase item size in the current view</value>
   </data>
   <data name="LayoutDetailsDescription" xml:space="preserve">
     <value>자세히 보기로 전환</value>
@@ -2571,14 +2529,17 @@
   <data name="LayoutTilesDescription" xml:space="preserve">
     <value>타일 보기로 전환</value>
   </data>
-  <data name="LayoutGridSmallDescription" xml:space="preserve">
-    <value>작은 아이콘</value>
+  <data name="LayoutListDescription" xml:space="preserve">
+    <value>Switch to list view</value>
   </data>
-  <data name="LayoutGridMediumDescription" xml:space="preserve">
-    <value>보통 아이콘</value>
+  <data name="List" xml:space="preserve">
+    <value>List</value>
   </data>
-  <data name="LayoutGridLargeDescription" xml:space="preserve">
-    <value>큰 아이콘</value>
+  <data name="Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="LayoutGridDescription" xml:space="preserve">
+    <value>Switch to grid view</value>
   </data>
   <data name="LayoutColumnsDescription" xml:space="preserve">
     <value>열 보기로 전환</value>
@@ -2621,9 +2582,6 @@
   </data>
   <data name="ToggleSortDirectionDescription" xml:space="preserve">
     <value>항목 정렬 방향 전환</value>
-  </data>
-  <data name="ToggleSortDirectoriesAlongsideFilesDescription" xml:space="preserve">
-    <value>파일과 함께 경로 나열 및 정렬</value>
   </data>
   <data name="GroupByNoneDescription" xml:space="preserve">
     <value>분류하지 않고 나열</value>
@@ -2912,7 +2870,7 @@
     <value>변경</value>
   </data>
   <data name="ToggleSelect" xml:space="preserve">
-    <value>Toggle selection</value>
+    <value>선택 반전</value>
   </data>
   <data name="ShowFileExtensionWarning" xml:space="preserve">
     <value>파일 확장자를 변경할 때 경고 표시</value>
@@ -2962,9 +2920,6 @@
   <data name="ShowCheckboxesWhenSelectingItems" xml:space="preserve">
     <value>항목 확인란 표시</value>
   </data>
-  <data name="SearchUnindexedItemsDescription" xml:space="preserve">
-    <value>색인되지 않은 항목 검색</value>
-  </data>
   <data name="EditPathDescription" xml:space="preserve">
     <value>경로 표시기 강조</value>
   </data>
@@ -3004,6 +2959,9 @@
   <data name="Month" xml:space="preserve">
     <value>월</value>
   </data>
+  <data name="Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
   <data name="ToggleGroupByDateUnitDescription" xml:space="preserve">
     <value>분류 기준을 날짜로 전환</value>
   </data>
@@ -3013,8 +2971,11 @@
   <data name="Year" xml:space="preserve">
     <value>연도</value>
   </data>
-  <data name="GroupByMonthInsteadOfYear" xml:space="preserve">
-    <value>월별로 분류</value>
+  <data name="GroupByDateUnit" xml:space="preserve">
+    <value>Group by date unit</value>
+  </data>
+  <data name="GroupByDateCreatedDayDescription" xml:space="preserve">
+    <value>Group items by day of date created</value>
   </data>
   <data name="GroupByDateCreatedMonthDescription" xml:space="preserve">
     <value>만든 날짜의 월별로 분류</value>
@@ -3022,11 +2983,17 @@
   <data name="GroupByDateCreatedYearDescription" xml:space="preserve">
     <value>만든 날짜의 년별로 분류</value>
   </data>
+  <data name="GroupByDateDeletedDayDescription" xml:space="preserve">
+    <value>Group items by day of date deleted</value>
+  </data>
   <data name="GroupByDateDeletedMonthDescription" xml:space="preserve">
     <value>삭제된 날짜의 월별로 분류</value>
   </data>
   <data name="GroupByDateDeletedYearDescription" xml:space="preserve">
     <value>삭제된 날짜의 년별로 분류</value>
+  </data>
+  <data name="GroupByDateModifiedDayDescription" xml:space="preserve">
+    <value>Group items by day of date modified</value>
   </data>
   <data name="GroupByDateModifiedMonthDescription" xml:space="preserve">
     <value>수정한 날짜의 월별로 분류</value>
@@ -3059,7 +3026,7 @@
     <value>이 분기에서 변경 사항을 커밋하지 않았습니다. 어떻게 하시겠습니까?</value>
   </data>
   <data name="SwitchBranch" xml:space="preserve">
-    <value>Switch branch</value>
+    <value>브랜치 바꾸기</value>
   </data>
   <data name="Branches" xml:space="preserve">
     <value>분기</value>
@@ -3122,7 +3089,7 @@
     <value>Git 상태</value>
   </data>
   <data name="GitError" xml:space="preserve">
-    <value>Git error</value>
+    <value>Git 오류</value>
   </data>
   <data name="PullTimeoutError" xml:space="preserve">
     <value>끌어오기 요청이 시간초과로 실패했습니다</value>
@@ -3189,16 +3156,16 @@
     <value>현재 GitHub에 액세스할 수 없습니다.</value>
   </data>
   <data name="OpenInVSCode" xml:space="preserve">
-    <value>Open folder in VS Code</value>
+    <value>VS Code에서 폴더 열기</value>
   </data>
   <data name="OpenInVSCodeDescription" xml:space="preserve">
     <value>Visual Studio Code로 열기</value>
   </data>
   <data name="OpenRepoInVSCode" xml:space="preserve">
-    <value>Open repo in VS Code</value>
+    <value>VS Code에서 저장소 열기</value>
   </data>
   <data name="OpenRepoInVSCodeDescription" xml:space="preserve">
-    <value>Open the root of the Git repo in Visual Studio Code</value>
+    <value>Git 저장소 root를 Visual Studio Code에서 열기</value>
   </data>
   <data name="CopyCode" xml:space="preserve">
     <value>코드 복사</value>
@@ -3252,14 +3219,14 @@
     <value>모두 열기</value>
   </data>
   <data name="OpenAllTaggedItemsDescription" xml:space="preserve">
-    <value>Open all tagged items</value>
+    <value>태그된 모든 요소 열기</value>
   </data>
   <data name="DriveWithLetter" xml:space="preserve">
     <value>{0} 드라이브</value>
     <comment>{0} is the drive letter.</comment>
   </data>
   <data name="InvalidCommand" xml:space="preserve">
-    <value>Invalid command</value>
+    <value>잘못된 명령입니다</value>
   </data>
   <data name="InvalidCommandContent" xml:space="preserve">
     <value>'{0}' is not recognized as a command.</value>
@@ -3271,13 +3238,13 @@
     <value>The '{0}' command is not ready to be executed.</value>
   </data>
   <data name="CommandPalette" xml:space="preserve">
-    <value>Command palette</value>
+    <value>명령어 팔레트</value>
   </data>
   <data name="OpenCommandPaletteDescription" xml:space="preserve">
-    <value>Open command palette</value>
+    <value>명령어 팔레트 열기</value>
   </data>
   <data name="ShortcutItemWorkingDir" xml:space="preserve">
-    <value>Start in:</value>
+    <value>시작 시간:</value>
   </data>
   <data name="TurnOnBitLocker" xml:space="preserve">
     <value>BitLocker 켜기</value>
@@ -3289,7 +3256,7 @@
     <value>다음 항목을 드라이브로 복사하기에 너무 큽니다.</value>
   </data>
   <data name="FormatDrive" xml:space="preserve">
-    <value>Format drive</value>
+    <value>드라이브 포맷</value>
   </data>
   <data name="DontShowAgain" xml:space="preserve">
     <value>다시 표시 안 함</value>
@@ -3304,7 +3271,7 @@
     <value>Leave app running in the background when the window is closed</value>
   </data>
   <data name="Blue" xml:space="preserve">
-    <value>Blue</value>
+    <value>파란색</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="BlueGray" xml:space="preserve">
@@ -3324,15 +3291,15 @@
     <comment>One of the custom color themes</comment>
   </data>
   <data name="Gray" xml:space="preserve">
-    <value>Gray</value>
+    <value>회색</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="GrayDark" xml:space="preserve">
-    <value>Gray Dark</value>
+    <value>어두운 회색</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="Green" xml:space="preserve">
-    <value>Green</value>
+    <value>녹색</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="IrisPastel" xml:space="preserve">
@@ -3356,7 +3323,7 @@
     <comment>One of the custom color themes</comment>
   </data>
   <data name="Red" xml:space="preserve">
-    <value>Red</value>
+    <value>빨간색</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="RoseBright" xml:space="preserve">
@@ -3383,7 +3350,7 @@
     <value>Clear completed</value>
   </data>
   <data name="NameWithColon" xml:space="preserve">
-    <value>Name:</value>
+    <value>이름:</value>
   </data>
   <data name="StatusCenter_ProcessedSize_Header" xml:space="preserve">
     <value>{0} of {1} processed</value>
@@ -3393,19 +3360,19 @@
     <value>항목</value>
   </data>
   <data name="CannotInitializeGitRepo" xml:space="preserve">
-    <value>Files can't initialize this directory as a Git repository.</value>
+    <value>이 디렉토리를 Git 저장소로 초기화할 수 없습니다.</value>
   </data>
   <data name="ContributingArtist" xml:space="preserve">
     <value>Contributing Artist</value>
   </data>
   <data name="AddPage" xml:space="preserve">
-    <value>Add page</value>
+    <value>페이지 추가</value>
   </data>
   <data name="ProcessingItems" xml:space="preserve">
     <value>Processing items...</value>
   </data>
   <data name="SpeedWithColon" xml:space="preserve">
-    <value>Speed:</value>
+    <value>속도:</value>
   </data>
   <data name="StatusCenter_CompressCanceled_Header" xml:space="preserve">
     <value>Canceled compressing {0} items to "{1}"</value>
@@ -3480,7 +3447,7 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DecompressComplete_Header" xml:space="preserve">
-    <value>Extracted "{0}" to "{1}"</value>
+    <value>"{0}"에서 "{1}"(으)로 압축풀기</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DecompressComplete_SubHeader" xml:space="preserve">
@@ -3504,38 +3471,22 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteCanceled_Header" xml:space="preserve">
-    <value>Canceled permanently deleting {0} item(s) from "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
-    <value>Permanently deleted {0} item(s) from "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
-    <value>Error permanently deleting {0} item(s) from "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
-    <value>Failed to permanently delete {0} item(s) from "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
-    <value>Permanently deleting {0} item(s) from "{1}"</value>
-    <comment>Shown in a StatusCenter card.</comment>
-  </data>
-  <data name="StatusCenter_RecycleCanceled_Header" xml:space="preserve">
     <value>Canceled deleting {0} item(s) from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleComplete_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
     <value>Deleted {0} item(s) from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleFailed_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
     <value>Error deleting {0} item(s) from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
-  <data name="StatusCenter_RecycleInProgress_Header" xml:space="preserve">
+  <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
+    <value>Failed to delete {0} item(s) from "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
     <value>Deleting {0} item(s) from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
@@ -3576,11 +3527,11 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinComplete_Header" xml:space="preserve">
-    <value>Emptied Recycle Bin</value>
+    <value>휴지통 비우기</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinInProgress_Header" xml:space="preserve">
-    <value>Emptying Recycle Bin</value>
+    <value>휴지통을 비우는 중</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinFailed_Header" xml:space="preserve">
@@ -3609,9 +3560,160 @@
     <value>The option to open Files on Windows Startup is not available due to your system settings or group policy. To re-enable, open the startup page in Task Manager.</value>
   </data>
   <data name="FailedToRestore" xml:space="preserve">
-    <value>Failed to restore items from Recycle Bin</value>
+    <value>휴지통에서 요소를 복구하지 못하였습니다.</value>
   </data>
   <data name="FailedToSetBackground" xml:space="preserve">
-    <value>Failed to set the background wallpaper</value>
+    <value>배경 화면 이미지를 설정하지 못하였습니다.</value>
+  </data>
+  <data name="GitDeleteBranch" xml:space="preserve">
+    <value>Git 브랜치 삭제</value>
+  </data>
+  <data name="GitDeleteBranchSubtitle" xml:space="preserve">
+    <value>정말로 "{0}" 브랜치를 영구적으로 삭제하시겠습니까?</value>
+  </data>
+  <data name="ConnectedToGitHub" xml:space="preserve">
+    <value>GitHub에 연결</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>로그아웃</value>
+  </data>
+  <data name="ConnectToGitHub" xml:space="preserve">
+    <value>GitHub에 연결</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>로그인</value>
+  </data>
+  <data name="ErrorApplyingTagContent" xml:space="preserve">
+    <value>Tags are currently only compatible on drives formatted as NTFS.</value>
+  </data>
+  <data name="ErrorApplyingTagTitle" xml:space="preserve">
+    <value>There was an error applying this tag</value>
+  </data>
+  <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
+    <value>Extract items from selected archive(s) to current folder for single-item archive, or to new folder for multi-item archive</value>
+  </data>
+  <data name="ExtractHereSmart" xml:space="preserve">
+    <value>Extract here (Smart)</value>
+  </data>
+  <data name="SortFilesAndFoldersTogether" xml:space="preserve">
+    <value>Sort files and folders together</value>
+  </data>
+  <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
+    <value>Sort files and folders together</value>
+  </data>
+  <data name="SortFilesFirst" xml:space="preserve">
+    <value>Sort files first</value>
+  </data>
+  <data name="SortFilesFirstDescription" xml:space="preserve">
+    <value>Sort files first then folders</value>
+  </data>
+  <data name="SortFoldersFirst" xml:space="preserve">
+    <value>Sort folders first</value>
+  </data>
+  <data name="SortFoldersFirstDescription" xml:space="preserve">
+    <value>Sort folders first then files</value>
+  </data>
+  <data name="SortPriority" xml:space="preserve">
+    <value>Sort priority</value>
+  </data>
+  <data name="FailedToRotateImage" xml:space="preserve">
+    <value>Failed to rotate the image</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="FaildToShareItems" xml:space="preserve">
+    <value>Failed to share items</value>
+  </data>
+  <data name="ScrollToPreviousFolderWhenNavigatingUp" xml:space="preserve">
+    <value>Scroll to previous folder when navigating up</value>
+  </data>
+  <data name="NewWindowDescription" xml:space="preserve">
+    <value>Open new window</value>
+  </data>
+  <data name="ChangeAlbumCover" xml:space="preserve">
+    <value>Change album cover</value>
+  </data>
+  <data name="ItemRenameFailed" xml:space="preserve">
+    <value>Failed to rename item</value>
+  </data>
+  <data name="HigherPermissionsRequired" xml:space="preserve">
+    <value>Editing "{0}" requires additional permissions</value>
+  </data>
+  <data name="EditPermissions" xml:space="preserve">
+    <value>Edit permissions</value>
+  </data>
+  <data name="BackgroundRunningNotificationBody" xml:space="preserve">
+    <value>Files is still running in the background to improve startup performance.</value>
+  </data>
+  <data name="BackgroundRunningNotificationHeader" xml:space="preserve">
+    <value>Where did Files go?</value>
+  </data>
+  <data name="QuestionsAndDiscussions" xml:space="preserve">
+    <value>Questions &amp; discussions</value>
+  </data>
+  <data name="TilesViewSizeInfo" xml:space="preserve">
+    <value>Additional sizes are not yet available for the Tiles View.</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Compact</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Small" xml:space="preserve">
+    <value>작게</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>보통</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+" xml:space="preserve">
+    <value>Medium +</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium++" xml:space="preserve">
+    <value>Medium ++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+++" xml:space="preserve">
+    <value>Medium +++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium++++" xml:space="preserve">
+    <value>Medium ++++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Medium+++++" xml:space="preserve">
+    <value>Medium +++++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large" xml:space="preserve">
+    <value>크게</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large+" xml:space="preserve">
+    <value>Large +</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large++" xml:space="preserve">
+    <value>Large ++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="Large+++" xml:space="preserve">
+    <value>Large +++</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="ExtraLarge" xml:space="preserve">
+    <value>Extra large</value>
+    <comment>Used to describe layout sizes</comment>
+  </data>
+  <data name="DetailsView" xml:space="preserve">
+    <value>Details view</value>
+  </data>
+  <data name="LayoutType" xml:space="preserve">
+    <value>Layout type</value>
   </data>
 </root>

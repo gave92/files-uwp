@@ -1,11 +1,11 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Windows.ApplicationModel.DataTransfer;
 
 namespace Files.App.Actions
 {
-	internal class CopyPathWithQuotesAction : IAction
+	internal sealed class CopyPathWithQuotesAction : IAction
 	{
 		private readonly IContentPageContext context;
 
@@ -19,7 +19,7 @@ namespace Files.App.Actions
 			=> new RichGlyph(opacityStyle: "ColorIconCopyPath");
 
 		public HotKey HotKey
-			=> new(Keys.C, KeyModifiers.MenuCtrl);
+			=> new(Keys.C, KeyModifiers.CtrlAlt);
 
 		public bool IsExecutable
 			=> context.HasSelection;

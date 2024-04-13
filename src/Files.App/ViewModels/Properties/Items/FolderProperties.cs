@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Extensions.Logging;
@@ -8,7 +8,7 @@ using ByteSize = ByteSizeLib.ByteSize;
 
 namespace Files.App.ViewModels.Properties
 {
-	internal class FolderProperties : BaseProperties
+	internal sealed class FolderProperties : BaseProperties
 	{
 		public ListedItem Item { get; }
 
@@ -59,7 +59,7 @@ namespace Files.App.ViewModels.Properties
 					ViewModel.ShortcutItemOpenLinkCommand = new RelayCommand(async () =>
 					{
 						await MainWindow.Instance.DispatcherQueue.EnqueueOrInvokeAsync(
-							() => NavigationHelpers.OpenPathInNewTab(Path.GetDirectoryName(Environment.ExpandEnvironmentVariables(ViewModel.ShortcutItemPath))));
+							() => NavigationHelpers.OpenPathInNewTab(Path.GetDirectoryName(Environment.ExpandEnvironmentVariables(ViewModel.ShortcutItemPath)), true));
 					},
 					() =>
 					{
@@ -74,10 +74,15 @@ namespace Files.App.ViewModels.Properties
 			ViewModel.IsHidden = NativeFileOperationsHelper.HasFileAttribute(
 				Item.ItemPath, System.IO.FileAttributes.Hidden);
 
-			var fileIconData = await FileThumbnailHelper.LoadIconFromPathAsync(Item.ItemPath, 80, Windows.Storage.FileProperties.ThumbnailMode.SingleItem, Windows.Storage.FileProperties.ThumbnailOptions.UseCurrentScale, true);
-			if (fileIconData is not null)
+			var result = await FileThumbnailHelper.GetIconAsync(
+				Item.ItemPath,
+				Constants.ShellIconSizes.ExtraLarge,
+				true,
+				IconOptions.UseCurrentScale);
+			
+			if (result is not null)
 			{
-				ViewModel.IconData = fileIconData;
+				ViewModel.IconData = result;
 				ViewModel.LoadFolderGlyph = false;
 				ViewModel.LoadFileIcon = true;
 			}
@@ -118,7 +123,7 @@ namespace Files.App.ViewModels.Properties
 			}
 			else if (Item.ItemPath.Equals(Constants.UserEnvironmentPaths.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
 			{
-				var recycleBinQuery = Win32Shell.QueryRecycleBin();
+				var recycleBinQuery = Win32Helper.QueryRecycleBin();
 				if (recycleBinQuery.BinSize is long binSize)
 				{
 					ViewModel.ItemSizeBytes = binSize;
@@ -195,15 +200,12 @@ namespace Files.App.ViewModels.Properties
 			switch (e.PropertyName)
 			{
 				case "IsHidden":
-					if (ViewModel.IsHidden)
+					if (ViewModel.IsHidden is not null)
 					{
-						NativeFileOperationsHelper.SetFileAttribute(
-							Item.ItemPath, System.IO.FileAttributes.Hidden);
-					}
-					else
-					{
-						NativeFileOperationsHelper.UnsetFileAttribute(
-							Item.ItemPath, System.IO.FileAttributes.Hidden);
+						if ((bool)ViewModel.IsHidden)
+							NativeFileOperationsHelper.SetFileAttribute(Item.ItemPath, System.IO.FileAttributes.Hidden);
+						else
+							NativeFileOperationsHelper.UnsetFileAttribute(Item.ItemPath, System.IO.FileAttributes.Hidden);
 					}
 					break;
 

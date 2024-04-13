@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using System.Collections.Specialized;
@@ -12,7 +12,7 @@ namespace Files.App.Utils
 	{
 		public static EventHandler<NotifyCollectionChangedEventArgs> DataChanged;
 
-		private static readonly List<WslDistroItem> distros = new();
+		private static readonly List<WslDistroItem> distros = [];
 		public static IReadOnlyList<WslDistroItem> Distros
 		{
 			get

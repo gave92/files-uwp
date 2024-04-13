@@ -1,11 +1,11 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.ViewModels.Properties;
 
 namespace Files.App.ViewModels.Previews
 {
-	internal class ShortcutPreviewViewModel : BasePreviewModel
+	internal sealed class ShortcutPreviewViewModel : BasePreviewModel
 	{
 		public ShortcutPreviewViewModel(ListedItem item) : base(item) { }
 
@@ -36,11 +36,14 @@ namespace Files.App.ViewModels.Previews
 
 		private async Task LoadItemThumbnailAsync()
 		{
-			var iconData = await FileThumbnailHelper.LoadIconWithoutOverlayAsync(Item.ItemPath, 256);
-			if (iconData is not null)
-			{
-				FileImage = await iconData.ToBitmapAsync();
-			}
+			var result = await FileThumbnailHelper.GetIconAsync(
+				Item.ItemPath,
+				Constants.ShellIconSizes.Jumbo,
+				false,
+				IconOptions.None);
+
+			if (result is not null)
+				FileImage = await result.ToBitmapAsync();
 		}
 	}
 }

@@ -1,9 +1,9 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App.Data.Items
 {
-	public class NavigationBarSuggestionItem : ObservableObject
+	public sealed class NavigationBarSuggestionItem : ObservableObject
 	{
 		private string? _Text;
 		public string? Text
@@ -67,6 +67,13 @@ namespace Files.App.Data.Items
 		{
 			get => _SupplementaryDisplay;
 			set => SetProperty(ref _SupplementaryDisplay, value);
+		}
+
+		private HotKeyCollection _HotKeys = new();
+		public HotKeyCollection HotKeys
+		{
+			get => _HotKeys;
+			set => SetProperty(ref _HotKeys, value);
 		}
 
 		private void UpdatePrimaryDisplay()

@@ -1,11 +1,7 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Storage.WindowsStorage;
-using Files.Core.Storage;
-using Files.Core.Storage.Enums;
-using Files.Core.Storage.LocatableStorage;
-using Files.Core.Storage.NestedStorage;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -15,7 +11,7 @@ using ByteSize = ByteSizeLib.ByteSize;
 
 namespace Files.App.Data.Items
 {
-	public class DriveItem : ObservableObject, INavigationControlItem, ILocatableFolder
+	public sealed class DriveItem : ObservableObject, INavigationControlItem, ILocatableFolder
 	{
 		private BitmapImage icon;
 		public BitmapImage Icon
@@ -52,7 +48,7 @@ namespace Files.App.Data.Items
 			=> Type == DriveType.Network;
 
 		public bool IsPinned
-			=> App.QuickAccessManager.Model.FavoriteItems.Contains(path);
+			=> App.QuickAccessManager.Model.PinnedFolders.Contains(path);
 
 		public string MaxSpaceText
 			=> MaxSpace.ToSizeString();
@@ -219,7 +215,7 @@ namespace Files.App.Data.Items
 				ToolTipService.SetToolTip(itemDecorator, "Eject".GetLocalizedResource());
 
 				itemDecorator.Click += ItemDecorator_Click;
-        
+
 				return itemDecorator;
 			}
 		}
@@ -264,7 +260,7 @@ namespace Files.App.Data.Items
 		{
 			try
 			{
-				var properties = await Root.Properties.RetrievePropertiesAsync(new[] { "System.ItemNameDisplay" })
+				var properties = await Root.Properties.RetrievePropertiesAsync(["System.ItemNameDisplay"])
 					.AsTask().WithTimeoutAsync(TimeSpan.FromSeconds(5));
 				Text = (string)properties["System.ItemNameDisplay"];
 			}
@@ -277,7 +273,7 @@ namespace Files.App.Data.Items
 		{
 			try
 			{
-				var properties = await Root.Properties.RetrievePropertiesAsync(new[] { "System.FreeSpace", "System.Capacity" })
+				var properties = await Root.Properties.RetrievePropertiesAsync(["System.FreeSpace", "System.Capacity"])
 					.AsTask().WithTimeoutAsync(TimeSpan.FromSeconds(5));
 
 				if (properties is not null && properties["System.Capacity"] is not null && properties["System.FreeSpace"] is not null)
@@ -314,29 +310,30 @@ namespace Files.App.Data.Items
 			return result == 0 ? Text.CompareTo(other.Text) : result;
 		}
 
-		public async Task LoadThumbnailAsync(bool isSidebar = false)
+		public async Task LoadThumbnailAsync()
 		{
-			if (!isSidebar)
+			if (!string.IsNullOrEmpty(DeviceID) && !string.Equals(DeviceID, "network-folder"))
+			{
+				var result = await FileThumbnailHelper.GetIconAsync(
+					DeviceID,
+					Constants.ShellIconSizes.Small,
+					false,
+					IconOptions.ReturnIconOnly | IconOptions.UseCurrentScale);
+
+				IconData ??= result;
+			}
+
+			if (Root is not null)
 			{
 				using var thumbnail = await DriveHelpers.GetThumbnailAsync(Root);
 				IconData ??= await thumbnail.ToByteArrayAsync();
 			}
-			else
-			{
-				if (!string.IsNullOrEmpty(DeviceID) && !string.Equals(DeviceID, "network-folder"))
-					IconData ??= await FileThumbnailHelper.LoadIconWithoutOverlayAsync(DeviceID, 16);
 
-				if (Root is not null)
-				{
-					using var thumbnail = await DriveHelpers.GetThumbnailAsync(Root);
-					IconData ??= await thumbnail.ToByteArrayAsync();
-				}
+			if (string.Equals(DeviceID, "network-folder"))
+				IconData ??= UIHelpers.GetSidebarIconResourceInfo(Constants.ImageRes.NetworkDrives).IconData;
 
-				if (string.Equals(DeviceID, "network-folder"))
-					IconData ??= UIHelpers.GetSidebarIconResourceInfo(Constants.ImageRes.NetworkDrives).IconData;
+			IconData ??= UIHelpers.GetSidebarIconResourceInfo(Constants.ImageRes.Folder).IconData;
 
-				IconData ??= UIHelpers.GetSidebarIconResourceInfo(Constants.ImageRes.Folder).IconData;
-			}
 			Icon ??= await IconData.ToBitmapAsync();
 		}
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using CommunityToolkit.WinUI.UI.Controls;
@@ -16,7 +16,7 @@ namespace Files.App.Views.Settings
 
 		private async void ThirdPartyLicenses_Click(object sender, bool e)
 		{
-			if (e && ViewModel.ThirdPartyNotices is null)
+			if (e && string.IsNullOrEmpty(ViewModel.ThirdPartyNotices))
 				await ViewModel.LoadThirdPartyNoticesAsync();
 		}
 

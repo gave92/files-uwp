@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 namespace Files.App
@@ -64,7 +64,7 @@ namespace Files.App
 		public static class FluentIconsPaths
 		{
 			public const string CloudDriveIcon = "ms-appx:///Assets/FluentIcons/CloudDrive.png";
-			public const string FavoritesIcon = "ms-appx:///Assets/FluentIcons/Favorites.png";
+			public const string StarIcon = "ms-appx:///Assets/FluentIcons/Star.png";
 			public const string FileTagsIcon = "ms-appx:///Assets/FluentIcons/FileTags.png";
 			public const string HomeIcon = "ms-appx:///Assets/FluentIcons/Home.png";
 		}
@@ -118,35 +118,16 @@ namespace Files.App
 			public const string StandardFont = "Segoe UI Variable";
 		}
 
-		public static class Browser
+		// Default icon sizes that are available for files and folders
+		public static class ShellIconSizes
 		{
-			public static class GridViewBrowser
-			{
-				public const int GridViewIncrement = 20;
+			public const int Small = 16;
 
-				// Max achievable ctrl + scroll, not a default layout size
-				public const int GridViewSizeMax = 300;
+			public const int Large = 32;
 
-				public const int GridViewSizeLarge = 220;
+			public const int ExtraLarge = 48;
 
-				public const int GridViewSizeMedium = 160;
-
-				public const int GridViewSizeSmall = 100;
-
-				public const int TilesView = 260;
-			}
-
-			public static class DetailsLayoutBrowser
-			{
-				public const int DetailsViewSize = 32;
-			}
-
-			public static class ColumnViewBrowser
-			{
-				public const int ColumnViewSize = 32;
-
-				public const int ColumnViewSizeSmall = 24;
-			}
+			public const int Jumbo = 256;
 		}
 
 		public static class Widgets
@@ -155,8 +136,6 @@ namespace Files.App
 			{
 				public const float LowStorageSpacePercentageThreshold = 90.0f;
 			}
-
-			public const int WidgetIconSize = 256;
 		}
 
 		public static class LocalSettings
@@ -209,14 +188,21 @@ namespace Files.App
 			public const string CachedEmptyItemName = "fileicon_cache";
 		}
 
-		public static class GitHub
+		public static class ExternalUrl
 		{
 			public const string GitHubRepoUrl = @"https://github.com/files-community/Files";
 			public const string DocumentationUrl = @"https://files.community/docs";
+			public const string DiscordUrl = @"https://discord.gg/files";
 			public const string FeatureRequestUrl = @"https://github.com/files-community/Files/issues/new?labels=feature+request&template=feature_request.yml";
 			public const string BugReportUrl = @"https://github.com/files-community/Files/issues/new?labels=bug&template=bug_report.yml";
-			public const string PrivacyPolicyUrl = @"https://github.com/files-community/Files/blob/main/Privacy.md";
+			public const string PrivacyPolicyUrl = @"https://github.com/files-community/Files/blob/main/.github/PRIVACY.md";
 			public const string SupportUsUrl = @"https://github.com/sponsors/yaira2";
+			public const string CrowdinUrl = @"https://crowdin.com/project/files-app";
+		}
+
+		public static class DocsPath
+		{
+			public const string ThirdPartyNoticePath = @"ms-appx:///NOTICE.md";
 		}
 
 		public static class Actions

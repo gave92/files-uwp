@@ -1,5 +1,7 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
+
+using Windows.Win32.Foundation;
 
 namespace Files.App.Utils.Storage
 {
@@ -12,11 +14,15 @@ namespace Files.App.Utils.Storage
 		public static implicit operator FileSystemStatusCode(FilesystemResult res) => res.ErrorCode;
 		public static implicit operator FilesystemResult(FileSystemStatusCode res) => new(res);
 
-		public static implicit operator bool(FilesystemResult res) => res is not null && res.ErrorCode is FileSystemStatusCode.Success;
+		public static implicit operator bool(FilesystemResult res) => res?.ErrorCode is FileSystemStatusCode.Success;
 		public static explicit operator FilesystemResult(bool res) => new(res ? FileSystemStatusCode.Success : FileSystemStatusCode.Generic);
+		
+		
+		public static implicit operator BOOL(FilesystemResult res) => res?.ErrorCode is FileSystemStatusCode.Success;
+		public static explicit operator FilesystemResult(BOOL res) => new(res ? FileSystemStatusCode.Success : FileSystemStatusCode.Generic);
 	}
 
-	public class FilesystemResult<T> : FilesystemResult
+	public sealed class FilesystemResult<T> : FilesystemResult
 	{
 		public T Result { get; }
 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Xaml.Automation.Peers;
@@ -30,11 +30,11 @@ namespace Files.App.UserControls.Sidebar
 		public IRawElementProviderSimple[] GetSelection()
 		{
 			if (Owner.SelectedItemContainer != null)
-				return new IRawElementProviderSimple[]
-				{
+				return
+				[
 				ProviderFromPeer(CreatePeerForElement(Owner.SelectedItemContainer))
-				};
-			return Array.Empty<IRawElementProviderSimple>();
+				];
+			return [];
 		}
 	}
 }

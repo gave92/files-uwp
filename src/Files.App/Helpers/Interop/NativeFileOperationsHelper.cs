@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Win32.SafeHandles;
@@ -10,10 +10,11 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading;
 using Vanara.PInvoke;
+using static Files.App.Helpers.NativeFindStorageItemHelper;
 
 namespace Files.App.Helpers
 {
-	public class NativeFileOperationsHelper
+	public sealed class NativeFileOperationsHelper
 	{
 		public enum File_Attributes : uint
 		{
@@ -139,23 +140,6 @@ namespace Files.App.Helpers
 		public static extern bool CreateDirectoryFromApp(
 			string lpPathName,
 			IntPtr SecurityAttributes
-		);
-
-		[DllImport("api-ms-win-core-file-fromapp-l1-1-0.dll", CharSet = CharSet.Auto,
-		CallingConvention = CallingConvention.StdCall,
-		SetLastError = true)]
-		public static extern bool MoveFileFromApp(
-			string lpExistingFileName,
-			string lpNewFileName
-		);
-
-		[DllImport("api-ms-win-core-file-fromapp-l1-1-0.dll", CharSet = CharSet.Auto,
-		CallingConvention = CallingConvention.StdCall,
-		SetLastError = true)]
-		public static extern bool CopyFileFromApp(
-			string lpExistingFileName,
-			string lpNewFileName,
-			bool bFailIfExists
 		);
 
 		[DllImport("api-ms-win-core-file-fromapp-l1-1-0.dll", CharSet = CharSet.Auto,
@@ -315,6 +299,21 @@ namespace Files.App.Helpers
 
 		[DllImport("api-ms-win-core-file-l2-1-1.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
 		private static extern bool GetFileInformationByHandleEx(IntPtr hFile, FILE_INFO_BY_HANDLE_CLASS infoClass, IntPtr dirInfo, uint dwBufferSize);
+
+		private enum StreamInfoLevels { FindStreamInfoStandard = 0 }
+
+		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)]
+		private static extern IntPtr FindFirstStreamW(string lpFileName, StreamInfoLevels InfoLevel, [In, Out, MarshalAs(UnmanagedType.LPStruct)] WIN32_FIND_STREAM_DATA lpFindStreamData, uint dwFlags);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool FindNextStreamW(IntPtr hndFindFile, [In, Out, MarshalAs(UnmanagedType.LPStruct)] WIN32_FIND_STREAM_DATA lpFindStreamData);
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		private sealed class WIN32_FIND_STREAM_DATA {
+			public long StreamSize;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 296)]
+			public string cStreamName;
+		}
 
 		public static bool GetFileDateModified(string filePath, out FILETIME dateModified)
 		{
@@ -526,29 +525,27 @@ namespace Files.App.Helpers
 			return null;
 		}
 
+		// https://stackoverflow.com/a/7988352
 		public static IEnumerable<(string Name, long Size)> GetAlternateStreams(string path)
 		{
-			using var handle = OpenFileForRead(path);
-			if (!handle.IsInvalid)
+			WIN32_FIND_STREAM_DATA findStreamData = new WIN32_FIND_STREAM_DATA();
+			IntPtr hFile = FindFirstStreamW(path, StreamInfoLevels.FindStreamInfoStandard, findStreamData, 0);
+
+			if (hFile.ToInt64() != -1)
 			{
-				var bufferSize = Marshal.SizeOf(typeof(FILE_STREAM_INFO)) * 10;
-				var mem = Marshal.AllocHGlobal(bufferSize);
-				if (GetFileInformationByHandleEx(handle.DangerousGetHandle(), FILE_INFO_BY_HANDLE_CLASS.FileStreamInfo, mem, (uint)bufferSize))
+				do
 				{
-					uint offset = 0;
-					FILE_STREAM_INFO fileStruct;
-					do
+					// The documentation for FindFirstStreamW says that it is always a ::$DATA
+					// stream type, but FindNextStreamW doesn't guarantee that for subsequent
+					// streams so we check to make sure
+					if (findStreamData.cStreamName.EndsWith(":$DATA") && findStreamData.cStreamName != "::$DATA")
 					{
-						fileStruct = Marshal.PtrToStructure<FILE_STREAM_INFO>(new IntPtr(mem.ToInt64() + offset));
-						var name = fileStruct.StreamName.Substring(0, (int)fileStruct.StreamNameLength / 2);
-						if (name.EndsWith(":$DATA") && name != "::$DATA")
-						{
-							yield return (name, fileStruct.StreamSize);
-						}
-						offset += fileStruct.NextEntryOffset;
-					} while (fileStruct.NextEntryOffset != 0);
+						yield return (findStreamData.cStreamName, findStreamData.StreamSize);
+					}
 				}
-				Marshal.FreeHGlobal(mem);
+				while (FindNextStreamW(hFile, findStreamData));
+
+				FindClose(hFile);
 			}
 		}
 	}

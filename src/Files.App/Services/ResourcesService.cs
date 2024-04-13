@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Xaml;
@@ -7,7 +7,7 @@ using System.Drawing;
 namespace Files.App.Services
 {
 	/// <inheritdoc cref="IResourcesService"/>
-	public class ResourcesService : IResourcesService
+	public sealed class ResourcesService : IResourcesService
 	{
 		/// <inheritdoc/>
 		public void SetAppThemeBackgroundColor(Color appThemeBackgroundColor)
@@ -40,16 +40,6 @@ namespace Files.App.Services
 		public void SetAppThemeFontFamily(string contentControlThemeFontFamily)
 		{
 			Application.Current.Resources["ContentControlThemeFontFamily"] = contentControlThemeFontFamily;
-		}
-
-		/// <inheritdoc/>
-		public void SetCompactSpacing(bool useCompactSpacing)
-		{
-			var listItemHeight = useCompactSpacing ? 28 : 36;
-			var listItemMargin = useCompactSpacing ? "-2" : "0";
-
-			Application.Current.Resources["ListItemHeight"] = listItemHeight;
-			Application.Current.Resources["ListItemMargin"] = listItemMargin;
 		}
 
 		/// <inheritdoc/>

@@ -1,13 +1,12 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using Files.Core.Services.SizeProvider;
+using Files.App.Services.SizeProvider;
 using Files.Shared.Helpers;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System.IO;
 using Vanara.PInvoke;
 using Windows.Storage;
-using static Files.Core.Helpers.NativeFindStorageItemHelper;
+using static Files.App.Helpers.NativeFindStorageItemHelper;
 using FileAttributes = System.IO.FileAttributes;
 
 namespace Files.App.Utils.Storage
@@ -18,7 +17,7 @@ namespace Files.App.Utils.Storage
 
 		private static readonly string folderTypeTextLocalized = "Folder".GetLocalizedResource();
 
-		private static readonly IStorageCacheController fileListCache = StorageCacheController.GetInstance();
+		private static readonly StorageCacheController fileListCache = StorageCacheController.GetInstance();
 
 		public static async Task<List<ListedItem>> ListEntries(
 			string path,
@@ -26,8 +25,7 @@ namespace Files.App.Utils.Storage
 			NativeFindStorageItemHelper.WIN32_FIND_DATA findData,
 			CancellationToken cancellationToken,
 			int countLimit,
-			Func<List<ListedItem>, Task> intermediateAction,
-			Dictionary<string, BitmapImage> defaultIconPairs = null
+			Func<List<ListedItem>, Task> intermediateAction
 		)
 		{
 			var sampler = new IntervalSampler(500);
@@ -54,18 +52,6 @@ namespace Files.App.Utils.Storage
 						var file = await GetFile(findData, path, isGitRepo, cancellationToken);
 						if (file is not null)
 						{
-							if (defaultIconPairs is not null)
-							{
-								if (!string.IsNullOrEmpty(file.FileExtension))
-								{
-									var lowercaseExtension = file.FileExtension.ToLowerInvariant();
-									if (defaultIconPairs.ContainsKey(lowercaseExtension))
-									{
-										file.FileImage = defaultIconPairs[lowercaseExtension];
-									}
-								}
-							}
-
 							tempList.Add(file);
 							++count;
 
@@ -82,12 +68,6 @@ namespace Files.App.Utils.Storage
 							var folder = await GetFolder(findData, path, isGitRepo, cancellationToken);
 							if (folder is not null)
 							{
-								if (defaultIconPairs?.ContainsKey(string.Empty) ?? false)
-								{
-									// Set folder icon (found by empty extension string)
-									folder.FileImage = defaultIconPairs[string.Empty];
-								}
-
 								tempList.Add(folder);
 								++count;
 
@@ -306,7 +286,6 @@ namespace Files.App.Utils.Storage
 					Opacity = opacity,
 					FileImage = null,
 					LoadFileIcon = itemThumbnailImgVis,
-					LoadWebShortcutGlyph = false,
 					ItemNameRaw = itemName,
 					ItemDateModifiedReal = itemModifiedDate,
 					ItemDateAccessedReal = itemLastAccessDate,
@@ -335,7 +314,6 @@ namespace Files.App.Utils.Storage
 					Opacity = opacity,
 					FileImage = null,
 					LoadFileIcon = !shInfo.IsFolder && itemThumbnailImgVis,
-					LoadWebShortcutGlyph = !shInfo.IsFolder && isUrl && itemEmptyImgVis,
 					ItemNameRaw = itemName,
 					ItemDateModifiedReal = itemModifiedDate,
 					ItemDateAccessedReal = itemLastAccessDate,

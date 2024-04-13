@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Extensions.Logging;
@@ -14,7 +14,7 @@ using Windows.System;
 
 namespace Files.App.ViewModels.Settings
 {
-	public class AdvancedViewModel : ObservableObject
+	public sealed class AdvancedViewModel : ObservableObject
 	{
 		private IUserSettingsService UserSettingsService { get; } = Ioc.Default.GetRequiredService<IUserSettingsService>();
 
@@ -77,7 +77,7 @@ namespace Files.App.ViewModels.Settings
 			var dataPath = Environment.ExpandEnvironmentVariables("%LocalAppData%\\Files");
 			if (IsSetAsDefaultFileManager)
 			{
-				if (!await Win32API.RunPowershellCommandAsync($"-command \"New-Item -Force -Path '{dataPath}' -ItemType Directory; Copy-Item -Filter *.* -Path '{destFolder}\\*' -Recurse -Force -Destination '{dataPath}'\"", false))
+				if (!await Win32Helper.RunPowershellCommandAsync($"-command \"New-Item -Force -Path '{dataPath}' -ItemType Directory; Copy-Item -Filter *.* -Path '{destFolder}\\*' -Recurse -Force -Destination '{dataPath}'\"", false))
 				{
 					// Error copying files
 					await DetectResult();
@@ -86,7 +86,7 @@ namespace Files.App.ViewModels.Settings
 			}
 			else
 			{
-				await Win32API.RunPowershellCommandAsync($"-command \"Remove-Item -Path '{dataPath}' -Recurse -Force\"", false);
+				await Win32Helper.RunPowershellCommandAsync($"-command \"Remove-Item -Path '{dataPath}' -Recurse -Force\"", false);
 			}
 
 			try
@@ -176,15 +176,15 @@ namespace Files.App.ViewModels.Settings
 					var fileTagsList = await zipFolder.GetFileAsync(Constants.LocalSettings.FileTagSettingsFileName);
 					string importTags = await fileTagsList.ReadTextAsync();
 					fileTagsSettingsService.ImportSettings(importTags);
-					var fileTagsDB = await zipFolder.GetFileAsync(Path.GetFileName(FileTagsHelper.FileTagsDbPath));
+					var fileTagsDB = await zipFolder.GetFileAsync(Path.GetFileName(Server.Database.FileTagsDatabase.FileTagsDbPath));
 					string importTagsDB = await fileTagsDB.ReadTextAsync();
 					var tagDbInstance = FileTagsHelper.GetDbInstance();
 					tagDbInstance.Import(importTagsDB);
 
 					// Import layout preferences and DB
-					var layoutPrefsDB = await zipFolder.GetFileAsync(Path.GetFileName(FolderSettingsViewModel.LayoutSettingsDbPath));
+					var layoutPrefsDB = await zipFolder.GetFileAsync(Path.GetFileName(LayoutPreferencesManager.LayoutSettingsDbPath));
 					string importPrefsDB = await layoutPrefsDB.ReadTextAsync();
-					var layoutDbInstance = FolderSettingsViewModel.GetDbInstance();
+					var layoutDbInstance = LayoutPreferencesManager.GetDatabaseManagerInstance();
 					layoutDbInstance.Import(importPrefsDB);
 				}
 				catch (Exception ex)
@@ -198,11 +198,9 @@ namespace Files.App.ViewModels.Settings
 
 		private async Task ExportSettingsAsync()
 		{
-			var applicationService = Ioc.Default.GetRequiredService<IApplicationService>();
-
 			FileSavePicker filePicker = InitializeWithWindow(new FileSavePicker());
-			filePicker.FileTypeChoices.Add("Zip File", new[] { ".zip" });
-			filePicker.SuggestedFileName = $"Files_{applicationService.AppVersion}";
+			filePicker.FileTypeChoices.Add("Zip File", [".zip"]);
+			filePicker.SuggestedFileName = $"Files_{AppLifecycleHelper.AppVersion}";
 
 			StorageFile file = await filePicker.PickSaveFileAsync();
 			if (file is not null)
@@ -226,12 +224,12 @@ namespace Files.App.ViewModels.Settings
 					await zipFolder.CreateFileAsync(new MemoryStream(exportTags), Constants.LocalSettings.FileTagSettingsFileName, CreationCollisionOption.ReplaceExisting);
 					var tagDbInstance = FileTagsHelper.GetDbInstance();
 					byte[] exportTagsDB = UTF8Encoding.UTF8.GetBytes(tagDbInstance.Export());
-					await zipFolder.CreateFileAsync(new MemoryStream(exportTagsDB), Path.GetFileName(FileTagsHelper.FileTagsDbPath), CreationCollisionOption.ReplaceExisting);
+					await zipFolder.CreateFileAsync(new MemoryStream(exportTagsDB), Path.GetFileName(Server.Database.FileTagsDatabase.FileTagsDbPath), CreationCollisionOption.ReplaceExisting);
 
 					// Export layout preferences DB
-					var layoutDbInstance = FolderSettingsViewModel.GetDbInstance();
+					var layoutDbInstance = LayoutPreferencesManager.GetDatabaseManagerInstance();
 					byte[] exportPrefsDB = UTF8Encoding.UTF8.GetBytes(layoutDbInstance.Export());
-					await zipFolder.CreateFileAsync(new MemoryStream(exportPrefsDB), Path.GetFileName(FolderSettingsViewModel.LayoutSettingsDbPath), CreationCollisionOption.ReplaceExisting);
+					await zipFolder.CreateFileAsync(new MemoryStream(exportPrefsDB), Path.GetFileName(LayoutPreferencesManager.LayoutSettingsDbPath), CreationCollisionOption.ReplaceExisting);
 				}
 				catch (Exception ex)
 				{

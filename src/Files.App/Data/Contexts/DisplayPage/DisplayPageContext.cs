@@ -1,16 +1,18 @@
-﻿// Copyright (c) 2023 Files Community
+﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using static Files.App.Constants.Browser.GridViewBrowser;
+using Files.App.Server.Data.Enums;
+using static Files.App.Constants;
 
 namespace Files.App.Data.Contexts
 {
-	internal class DisplayPageContext : ObservableObject, IDisplayPageContext
+	internal sealed class DisplayPageContext : ObservableObject, IDisplayPageContext
 	{
 		private readonly IPageContext context = Ioc.Default.GetRequiredService<IPageContext>();
 		private readonly IFoldersSettingsService settings = Ioc.Default.GetRequiredService<IFoldersSettingsService>();
+		private readonly ILayoutSettingsService layoutSettingsService = Ioc.Default.GetRequiredService<ILayoutSettingsService>();
 
-		public bool IsLayoutAdaptiveEnabled => !settings.SyncFolderPreferencesAcrossDirectories;
+		public bool IsLayoutAdaptiveEnabled => !layoutSettingsService.SyncFolderPreferencesAcrossDirectories;
 
 		private LayoutTypes _LayoutType = LayoutTypes.None;
 		public LayoutTypes LayoutType
@@ -27,17 +29,14 @@ namespace Files.App.Data.Contexts
 					case LayoutTypes.Details:
 						viewModel.ToggleLayoutModeDetailsView(true);
 						break;
+					case LayoutTypes.List:
+						viewModel.ToggleLayoutModeList(true);
+						break;
 					case LayoutTypes.Tiles:
 						viewModel.ToggleLayoutModeTiles(true);
 						break;
-					case LayoutTypes.GridSmall:
-						viewModel.ToggleLayoutModeGridViewSmall(true);
-						break;
-					case LayoutTypes.GridMedium:
-						viewModel.ToggleLayoutModeGridViewMedium(true);
-						break;
-					case LayoutTypes.GridLarge:
-						viewModel.ToggleLayoutModeGridViewLarge(true);
+					case LayoutTypes.Grid:
+						viewModel.ToggleLayoutModeGridView(true);
 						break;
 					case LayoutTypes.Columns:
 						viewModel.ToggleLayoutModeColumnView(true);
@@ -55,7 +54,7 @@ namespace Files.App.Data.Contexts
 			get => _SortOption;
 			set
 			{
-				if (FolderSettings is FolderSettingsViewModel viewModel)
+				if (FolderSettings is LayoutPreferencesManager viewModel)
 					viewModel.DirectorySortOption = value;
 			}
 		}
@@ -66,7 +65,7 @@ namespace Files.App.Data.Contexts
 			get => _SortDirection;
 			set
 			{
-				if (FolderSettings is FolderSettingsViewModel viewModel)
+				if (FolderSettings is LayoutPreferencesManager viewModel)
 					viewModel.DirectorySortDirection = value;
 			}
 		}
@@ -77,7 +76,7 @@ namespace Files.App.Data.Contexts
 			get => _GroupOption;
 			set
 			{
-				if (FolderSettings is FolderSettingsViewModel viewModel)
+				if (FolderSettings is LayoutPreferencesManager viewModel)
 					viewModel.DirectoryGroupOption = value;
 			}
 		}
@@ -88,7 +87,7 @@ namespace Files.App.Data.Contexts
 			get => _GroupDirection;
 			set
 			{
-				if (FolderSettings is FolderSettingsViewModel viewModel)
+				if (FolderSettings is LayoutPreferencesManager viewModel)
 					viewModel.DirectoryGroupDirection = value;
 			}
 		}
@@ -99,7 +98,7 @@ namespace Files.App.Data.Contexts
 			get => _GroupByDateUnit;
 			set
 			{
-				if (FolderSettings is FolderSettingsViewModel viewModel)
+				if (FolderSettings is LayoutPreferencesManager viewModel)
 					viewModel.DirectoryGroupByDateUnit = value;
 			}
 		}
@@ -110,29 +109,29 @@ namespace Files.App.Data.Contexts
 			get => _SortDirectoriesAlongsideFiles;
 			set
 			{
-				if (FolderSettings is FolderSettingsViewModel viewModel)
+				if (FolderSettings is LayoutPreferencesManager viewModel)
 					viewModel.SortDirectoriesAlongsideFiles = value;
 			}
 		}
 
-		private FolderSettingsViewModel? FolderSettings => context.PaneOrColumn?.InstanceViewModel?.FolderSettings;
+		private bool _SortFilesFirst = false;
+		public bool SortFilesFirst
+		{
+			get => _SortFilesFirst;
+			set
+			{
+				if (FolderSettings is LayoutPreferencesManager viewModel)
+					viewModel.SortFilesFirst = value;
+			}
+		}
+
+		private LayoutPreferencesManager? FolderSettings => context.PaneOrColumn?.InstanceViewModel?.FolderSettings;
 
 		public DisplayPageContext()
 		{
 			context.Changing += Context_Changing;
 			context.Changed += Context_Changed;
 			settings.PropertyChanged += Settings_PropertyChanged;
-		}
-
-		public void DecreaseLayoutSize()
-		{
-			if (FolderSettings is FolderSettingsViewModel viewModel)
-				viewModel.GridViewSize -= GridViewIncrement;
-		}
-		public void IncreaseLayoutSize()
-		{
-			if (FolderSettings is FolderSettingsViewModel viewModel)
-				viewModel.GridViewSize += GridViewIncrement;
 		}
 
 		private void Context_Changing(object? sender, EventArgs e)
@@ -158,35 +157,37 @@ namespace Files.App.Data.Contexts
 
 			switch (e.PropertyName)
 			{
-				case nameof(FolderSettingsViewModel.LayoutMode):
-				case nameof(FolderSettingsViewModel.GridViewSize):
-				case nameof(FolderSettingsViewModel.IsAdaptiveLayoutEnabled):
+				case nameof(LayoutPreferencesManager.LayoutMode):
+				case nameof(LayoutPreferencesManager.IsAdaptiveLayoutEnabled):
 					SetProperty(ref _LayoutType, GetLayoutType(), nameof(LayoutType));
 					break;
-				case nameof(FolderSettingsViewModel.DirectorySortOption):
+				case nameof(LayoutPreferencesManager.DirectorySortOption):
 					SetProperty(ref _SortOption, viewModel.DirectorySortOption, nameof(SortOption));
 					break;
-				case nameof(FolderSettingsViewModel.DirectorySortDirection):
+				case nameof(LayoutPreferencesManager.DirectorySortDirection):
 					SetProperty(ref _SortDirection, viewModel.DirectorySortDirection, nameof(SortDirection));
 					break;
-				case nameof(FolderSettingsViewModel.DirectoryGroupOption):
+				case nameof(LayoutPreferencesManager.DirectoryGroupOption):
 					SetProperty(ref _GroupOption, viewModel.DirectoryGroupOption, nameof(GroupOption));
 					break;
-				case nameof(FolderSettingsViewModel.DirectoryGroupDirection):
+				case nameof(LayoutPreferencesManager.DirectoryGroupDirection):
 					SetProperty(ref _GroupDirection, viewModel.DirectoryGroupDirection, nameof(GroupDirection));
 					break;
-				case nameof(FolderSettingsViewModel.DirectoryGroupByDateUnit):
+				case nameof(LayoutPreferencesManager.DirectoryGroupByDateUnit):
 					SetProperty(ref _GroupByDateUnit, viewModel.DirectoryGroupByDateUnit, nameof(GroupByDateUnit));
 					break;
-				case nameof(FolderSettingsViewModel.SortDirectoriesAlongsideFiles):
+				case nameof(LayoutPreferencesManager.SortDirectoriesAlongsideFiles):
 					SetProperty(ref _SortDirectoriesAlongsideFiles, viewModel.SortDirectoriesAlongsideFiles, nameof(SortDirectoriesAlongsideFiles));
+					break;
+				case nameof(LayoutPreferencesManager.SortFilesFirst):
+					SetProperty(ref _SortFilesFirst, viewModel.SortFilesFirst, nameof(SortFilesFirst));
 					break;
 			}
 		}
 
 		private void Settings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName is nameof(IFoldersSettingsService.SyncFolderPreferencesAcrossDirectories))
+			if (e.PropertyName is nameof(ILayoutSettingsService.SyncFolderPreferencesAcrossDirectories))
 			{
 				OnPropertyChanged(nameof(IsLayoutAdaptiveEnabled));
 				SetProperty(ref _LayoutType, GetLayoutType(), nameof(LayoutType));
@@ -214,6 +215,7 @@ namespace Files.App.Data.Contexts
 				SetProperty(ref _GroupDirection, viewModel.DirectoryGroupDirection, nameof(GroupDirection));
 				SetProperty(ref _GroupByDateUnit, viewModel.DirectoryGroupByDateUnit, nameof(GroupByDateUnit));
 				SetProperty(ref _SortDirectoriesAlongsideFiles, viewModel.SortDirectoriesAlongsideFiles, nameof(SortDirectoriesAlongsideFiles));
+				SetProperty(ref _SortFilesFirst, viewModel.SortFilesFirst, nameof(SortFilesFirst));
 			}
 		}
 
@@ -230,14 +232,9 @@ namespace Files.App.Data.Contexts
 			return viewModel.LayoutMode switch
 			{
 				FolderLayoutModes.DetailsView => LayoutTypes.Details,
+				FolderLayoutModes.ListView => LayoutTypes.List,
 				FolderLayoutModes.TilesView => LayoutTypes.Tiles,
-				FolderLayoutModes.GridView => viewModel.GridViewSizeKind switch
-				{
-					GridViewSizeKind.Small => LayoutTypes.GridSmall,
-					GridViewSizeKind.Medium => LayoutTypes.GridMedium,
-					GridViewSizeKind.Large => LayoutTypes.GridLarge,
-					_ => throw new InvalidEnumArgumentException(),
-				},
+				FolderLayoutModes.GridView => LayoutTypes.Grid,
 				FolderLayoutModes.ColumnView => LayoutTypes.Columns,
 				_ => throw new InvalidEnumArgumentException(),
 			};

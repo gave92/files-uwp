@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.UserControls.TabBar;
@@ -19,10 +19,6 @@ namespace Files.App
 {
 	public sealed partial class MainWindow : WindowEx
 	{
-		private readonly IApplicationService ApplicationService;
-
-		private MainPageViewModel mainPageViewModel;
-
 		private static MainWindow? _Instance;
 		public static MainWindow Instance => _Instance ??= new();
 
@@ -30,8 +26,6 @@ namespace Files.App
 
 		private MainWindow()
 		{
-			ApplicationService = new ApplicationService();
-
 			WindowHandle = this.GetWindowHandle();
 
 			InitializeComponent();
@@ -49,14 +43,18 @@ namespace Files.App
 			MinWidth = 516;
 
 			AppWindow.Title = "Files";
-			AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, ApplicationService.AppIcoPath));
+			AppWindow.SetIcon(AppLifecycleHelper.AppIconPath);
 			AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
 			AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
 			AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
 			// Workaround for full screen window messing up the taskbar
 			// https://github.com/microsoft/microsoft-ui-xaml/issues/8431
-			InteropHelpers.SetPropW(WindowHandle, "NonRudeHWND", new IntPtr(1));
+			// This property should only be set if the "Automatically hide the taskbar" in Windows 11,
+			// or "Automatically hide the taskbar in desktop mode" in Windows 10 is enabled.
+			// Setting this property when the setting is disabled will result in the taskbar overlapping the application
+			if (AppLifecycleHelper.IsAutoHideTaskbarEnabled()) 
+				Win32PInvoke.SetPropW(WindowHandle, "NonRudeHWND", new IntPtr(1));
 		}
 
 		public void ShowSplashScreen()
@@ -95,8 +93,10 @@ namespace Files.App
 					}
 					else if (!(string.IsNullOrEmpty(launchArgs.Arguments) && MainPageViewModel.AppInstances.Count > 0))
 					{
-						InteropHelpers.SwitchToThisWindow(WindowHandle, true);
-						await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), launchArgs.Arguments);
+						// Bring to foreground (#14730)
+						Win32Helper.BringToForegroundEx(new(WindowHandle));
+
+						await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), launchArgs.Arguments, true);
 					}
 					else
 					{
@@ -108,6 +108,12 @@ namespace Files.App
 					if (eventArgs.Uri.AbsoluteUri == "files-uwp:")
 					{
 						rootFrame.Navigate(typeof(MainPage), null, new SuppressNavigationTransitionInfo());
+
+						if (MainPageViewModel.AppInstances.Count > 0)
+						{
+							// Bring to foreground (#14730)
+							Win32Helper.BringToForegroundEx(new(WindowHandle));
+						}
 					}
 					else
 					{
@@ -173,10 +179,14 @@ namespace Files.App
 						index = 1;
 					}
 					else
-						InteropHelpers.SwitchToThisWindow(WindowHandle, true);
+					{
+						// Bring to foreground (#14730)
+						Win32Helper.BringToForegroundEx(new(WindowHandle));
+					}
+
 					for (; index < fileArgs.Files.Count; index++)
 					{
-						await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), fileArgs.Files[index].Path);
+						await NavigationHelpers.AddNewTabByPathAsync(typeof(PaneHolderPage), fileArgs.Files[index].Path, true);
 					}
 					break;
 
@@ -247,7 +257,9 @@ namespace Files.App
 
 				if (rootFrame.Content is MainPage && MainPageViewModel.AppInstances.Any())
 				{
-					InteropHelpers.SwitchToThisWindow(WindowHandle, true);
+					// Bring to foreground (#14730)
+					Win32Helper.BringToForegroundEx(new(WindowHandle));
+
 					await NavigationHelpers.AddNewTabByParamAsync(typeof(PaneHolderPage), paneNavigationArgs);
 				}
 				else
@@ -278,7 +290,7 @@ namespace Files.App
 								.OnSuccess(item => FileTagsHelper.GetFileFRN(item));
 							if (fileFRN is not null)
 							{
-								var tagUid = tag is not null ? new[] { tag.Uid } : null;
+								var tagUid = tag is not null ? new[] { tag.Uid } : [];
 								var dbInstance = FileTagsHelper.GetDbInstance();
 								dbInstance.SetTags(file, fileFRN, tagUid);
 								FileTagsHelper.WriteFileTag(file, tagUid);

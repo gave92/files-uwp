@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using OpenQA.Selenium.Appium.Windows;
@@ -18,7 +18,7 @@ namespace Files.InteractionTests.Helper
 
 		public static List<WindowsElement> GetItemsWithContent(ICollection<WindowsElement> elements, string content)
 		{
-			List<WindowsElement> elementsToReturn = new List<WindowsElement>();
+			List<WindowsElement> elementsToReturn = [];
 			foreach (WindowsElement element in elements)
 			{
 				if (element.Text.Contains(content, StringComparison.OrdinalIgnoreCase))

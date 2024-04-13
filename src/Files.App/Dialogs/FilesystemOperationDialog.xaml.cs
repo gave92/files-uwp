@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using CommunityToolkit.WinUI.UI;
@@ -104,19 +104,6 @@ namespace Files.App.Dialogs
 		private void NameEdit_Loaded(object sender, RoutedEventArgs e)
 		{
 			(sender as TextBox)?.Focus(FocusState.Programmatic);
-		}
-
-		private void ConflictOptions_Loaded(object sender, RoutedEventArgs e)
-		{
-			if (sender is ComboBox comboBox)
-				comboBox.SelectedIndex = ViewModel.LoadConflictResolveOption() switch
-				{
-					FileNameConflictResolveOptionType.None => -1,
-					FileNameConflictResolveOptionType.GenerateNewName => 0,
-					FileNameConflictResolveOptionType.ReplaceExisting => 1,
-					FileNameConflictResolveOptionType.Skip => 2,
-					_ => -1
-				};
 		}
 
 		private void FilesystemOperationDialog_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)

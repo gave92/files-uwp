@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Xaml.Controls;
@@ -19,12 +19,12 @@ namespace Files.App.Utils.RecycleBin
 
 		public static async Task<List<ShellFileItem>> EnumerateRecycleBin()
 		{
-			return (await Win32Shell.GetShellFolderAsync(Constants.UserEnvironmentPaths.RecycleBinPath, "Enumerate", 0, int.MaxValue)).Enumerate;
+			return (await Win32Helper.GetShellFolderAsync(Constants.UserEnvironmentPaths.RecycleBinPath, false, true, 0, int.MaxValue)).Enumerate;
 		}
 
 		public static ulong GetSize()
 		{
-			return (ulong)Win32Shell.QueryRecycleBin().BinSize;
+			return (ulong)Win32Helper.QueryRecycleBin().BinSize;
 		}
 
 		public static async Task<bool> IsRecycleBinItem(IStorageItem item)
@@ -117,10 +117,14 @@ namespace Files.App.Utils.RecycleBin
 
 		public static async Task RestoreSelectionRecycleBinAsync(IShellPage associatedInstance)
 		{
+			var items = associatedInstance.SlimContentPage.SelectedItems;
+			if (items == null) 
+				return;
 			var ConfirmEmptyBinDialog = new ContentDialog()
 			{
 				Title = "ConfirmRestoreSelectionBinDialogTitle".GetLocalizedResource(),
-				Content = string.Format("ConfirmRestoreSelectionBinDialogContent".GetLocalizedResource(), associatedInstance.SlimContentPage.SelectedItems.Count),
+				
+				Content = string.Format("ConfirmRestoreSelectionBinDialogContent".GetLocalizedResource(), items.Count),
 				PrimaryButtonText = "Yes".GetLocalizedResource(),
 				SecondaryButtonText = "Cancel".GetLocalizedResource(),
 				DefaultButton = ContentDialogButton.Primary
@@ -147,12 +151,15 @@ namespace Files.App.Utils.RecycleBin
 
 		public static bool RecycleBinHasItems()
 		{
-			return Win32Shell.QueryRecycleBin().NumItems > 0;
+			return Win32Helper.QueryRecycleBin().NumItems > 0;
 		}
 
 		public static async Task RestoreItemAsync(IShellPage associatedInstance)
 		{
-			var items = associatedInstance.SlimContentPage.SelectedItems.ToList().Where(x => x is RecycleBinItem).Select((item) => new
+			var selected = associatedInstance.SlimContentPage.SelectedItems;
+			if (selected == null) 
+				return;
+			var items = selected.ToList().Where(x => x is RecycleBinItem).Select((item) => new
 			{
 				Source = StorageHelpers.FromPathAndType(
 					item.ItemPath,
@@ -164,7 +171,10 @@ namespace Files.App.Utils.RecycleBin
 
 		public static async Task DeleteItemAsync(IShellPage associatedInstance)
 		{
-			var items = associatedInstance.SlimContentPage.SelectedItems.ToList().Select((item) => StorageHelpers.FromPathAndType(
+			var selected = associatedInstance.SlimContentPage.SelectedItems;
+			if (selected == null) 
+				return;
+			var items = selected.ToList().Select((item) => StorageHelpers.FromPathAndType(
 				item.ItemPath,
 				item.PrimaryItemAttribute == StorageItemTypes.File ? FilesystemItemType.File : FilesystemItemType.Directory));
 			await associatedInstance.FilesystemHelpers.DeleteItemsAsync(items, userSettingsService.FoldersSettingsService.DeleteConfirmationPolicy, false, true);

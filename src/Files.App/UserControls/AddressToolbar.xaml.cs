@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.UI.Input;
@@ -45,10 +45,10 @@ namespace Files.App.UserControls
 
 		// Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty ViewModelProperty =
-			DependencyProperty.Register(nameof(ViewModel), typeof(ToolbarViewModel), typeof(AddressToolbar), new PropertyMetadata(null));
-		public ToolbarViewModel ViewModel
+			DependencyProperty.Register(nameof(ViewModel), typeof(AddressToolbarViewModel), typeof(AddressToolbar), new PropertyMetadata(null));
+		public AddressToolbarViewModel? ViewModel
 		{
-			get => (ToolbarViewModel)GetValue(ViewModelProperty);
+			get => (AddressToolbarViewModel)GetValue(ViewModelProperty);
 			set => SetValue(ViewModelProperty, value);
 		}
 
@@ -95,6 +95,9 @@ namespace Files.App.UserControls
 		}
 		private void VisiblePath_LostFocus(object _, RoutedEventArgs e)
 		{
+			if (App.AppModel.IsMainWindowClosed)
+				return;
+
 			var element = FocusManager.GetFocusedElement(MainWindow.Instance.Content.XamlRoot);
 			if (element is FlyoutBase or AppBarButton or Popup)
 				return;

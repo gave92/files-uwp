@@ -3,7 +3,7 @@ using Windows.Security.Credentials;
 
 namespace Files.App.Helpers
 {
-	internal class CredentialsHelpers
+	internal sealed class CredentialsHelpers
 	{
 		public static void SavePassword(string resourceName, string username, string password)
 		{
@@ -34,7 +34,7 @@ namespace Files.App.Helpers
 				return credential.Password;
 			}
 			// Thrown if the resource does not exist
-			catch (COMException)
+			catch (Exception)
 			{
 				return string.Empty;
 			}

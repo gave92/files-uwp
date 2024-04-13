@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Files Community
+// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Extensions.Logging;
@@ -10,7 +10,7 @@ using Vanara.Windows.Shell;
 
 namespace Files.App.Utils.RecentItem
 {
-	public class RecentItems : IDisposable
+	public sealed class RecentItems : IDisposable
 	{
 		private const string QuickAccessGuid = "::{679f85cb-0220-4080-b29b-5540cc05aab6}";
 
@@ -18,7 +18,7 @@ namespace Files.App.Utils.RecentItem
 		public EventHandler<NotifyCollectionChangedEventArgs>? RecentFoldersChanged;
 
 		// recent files
-		private readonly List<RecentItem> recentFiles = new();
+		private readonly List<RecentItem> recentFiles = [];
 		public IReadOnlyList<RecentItem> RecentFiles    // already sorted
 		{
 			get
@@ -31,7 +31,7 @@ namespace Files.App.Utils.RecentItem
 		}
 
 		// recent folders
-		private readonly List<RecentItem> recentFolders = new();
+		private readonly List<RecentItem> recentFolders = [];
 		public IReadOnlyList<RecentItem> RecentFolders  // already sorted
 		{
 			get
@@ -43,9 +43,15 @@ namespace Files.App.Utils.RecentItem
 			}
 		}
 
-		public RecentItems()
+		private readonly IUserSettingsService UserSettingsService;
+
+		private bool ShowFileExtensions => UserSettingsService.FoldersSettingsService.ShowFileExtensions;
+
+
+		public RecentItems(IUserSettingsService userSettingsService)
 		{
 			RecentItemsManager.Default.RecentItemsChanged += OnRecentItemsChangedAsync;
+			UserSettingsService = userSettingsService;
 		}
 
 		private async void OnRecentItemsChangedAsync(object? sender, EventArgs e)
@@ -103,9 +109,9 @@ namespace Files.App.Utils.RecentItem
 		/// </summary>
 		public async Task<List<RecentItem>> ListRecentFilesAsync()
 		{
-			return (await Win32Shell.GetShellFolderAsync(QuickAccessGuid, "Enumerate", 0, int.MaxValue)).Enumerate
+			return (await Win32Helper.GetShellFolderAsync(QuickAccessGuid, false, true, 0, int.MaxValue)).Enumerate
 				.Where(link => !link.IsFolder)
-				.Select(link => new RecentItem(link)).ToList();
+				.Select(link => new RecentItem(link, ShowFileExtensions)).ToList();
 		}
 
 		/// <summary>
@@ -127,7 +133,7 @@ namespace Files.App.Utils.RecentItem
 						if (!string.IsNullOrEmpty(link.TargetPath) && link.Target.IsFolder)
 						{
 							var shellLinkItem = ShellFolderExtensions.GetShellLinkItem(link);
-							return new RecentItem(shellLinkItem);
+							return new RecentItem(shellLinkItem, ShowFileExtensions);
 						}
 					}
 					catch (FileNotFoundException)
