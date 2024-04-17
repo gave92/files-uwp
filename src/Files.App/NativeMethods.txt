@@ -44,6 +44,8 @@ CopyFileFromApp
 MoveFileFromApp
 DeleteFileFromApp
 RemoveDirectoryFromApp
+GetKeyState
+CreateDirectoryFromApp
 CreateFile
 // Console api
 AllocConsole

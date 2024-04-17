@@ -18,7 +18,7 @@ namespace Files.App.ViewModels
 		// Dependency injections
 
 		private IAppearanceSettingsService AppearanceSettingsService { get; } = Ioc.Default.GetRequiredService<IAppearanceSettingsService>();
-		private NetworkDrivesViewModel NetworkDrivesViewModel { get; } = Ioc.Default.GetRequiredService<NetworkDrivesViewModel>();
+		private INetworkDrivesService NetworkDrivesService { get; } = Ioc.Default.GetRequiredService<INetworkDrivesService>();
 		private IUserSettingsService UserSettingsService { get; } = Ioc.Default.GetRequiredService<IUserSettingsService>();
 		private IResourcesService ResourcesService { get; } = Ioc.Default.GetRequiredService<IResourcesService>();
 		private DrivesViewModel DrivesViewModel { get; } = Ioc.Default.GetRequiredService<DrivesViewModel>();
@@ -90,10 +90,6 @@ namespace Files.App.ViewModels
 		{
 			if (e.NavigationMode == NavigationMode.Back)
 				return;
-
-			// Initialize the static theme helper to capture a reference to this window
-			// to handle theme changes without restarting the app
-			var isInitialized = ThemeHelper.Initialize();
 
 			var parameter = e.Parameter;
 			var ignoreStartupSettings = false;
@@ -194,15 +190,12 @@ namespace Files.App.ViewModels
 					await NavigationHelpers.AddNewTabByParamAsync(tabArgs.InitialPageType, tabArgs.NavigationParameter);
 			}
 
-			if (isInitialized)
-			{
-				// Load the app theme resources
-				ResourcesService.LoadAppResources(AppearanceSettingsService);
+			// Load the app theme resources
+			ResourcesService.LoadAppResources(AppearanceSettingsService);
 
-				await Task.WhenAll(
-					DrivesViewModel.UpdateDrivesAsync(),
-					NetworkDrivesViewModel.UpdateDrivesAsync());
-			}
+			await Task.WhenAll(
+				DrivesViewModel.UpdateDrivesAsync(),
+				NetworkDrivesService.UpdateDrivesAsync());
 		}
 
 		// Command methods
