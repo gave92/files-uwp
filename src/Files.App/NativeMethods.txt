@@ -5,6 +5,7 @@ WNDPROC
 WNDCLASSEXW
 RegisterClassEx
 CreateWindowEx
+ShowWindow
 DestroyWindow
 GetModuleHandle
 RECT
@@ -43,3 +44,16 @@ CopyFileFromApp
 MoveFileFromApp
 DeleteFileFromApp
 RemoveDirectoryFromApp
+CreateFile
+// Console api
+AllocConsole
+GetConsoleWindow
+GetStdHandle
+SetConsoleMode
+GetConsoleMode
+COORD
+CreatePseudoConsole
+ResizePseudoConsole
+ClosePseudoConsole
+CreatePipe
+PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE
