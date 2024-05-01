@@ -34,6 +34,11 @@ namespace Files.App.Data.Enums
 		OutputPath,
 
 		/// <summary>
+		/// App user model ID command type
+		/// </summary>
+		AppUserModelID,
+
+		/// <summary>
 		/// Select path command type
 		/// </summary>
 		SelectItem,

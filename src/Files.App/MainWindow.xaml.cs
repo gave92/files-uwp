@@ -1,6 +1,7 @@
 // Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
+using System.Runtime.InteropServices;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Controls;
@@ -318,6 +319,16 @@ namespace Files.App
 
 					case ParsedCommandType.OutputPath:
 						App.OutputPath = command.Payload;
+						break;
+
+					case ParsedCommandType.AppUserModelID:
+						App.AppUserModelID = command.Payload;
+						Vanara.PInvoke.Shell32.SHGetPropertyStoreForWindow(new(WindowHandle), typeof(Vanara.PInvoke.PropSys.IPropertyStore).GUID, out var ppvo);
+						var ppv = (Vanara.PInvoke.PropSys.IPropertyStore)ppvo;
+						Vanara.PInvoke.Ole32.PROPVARIANT var = new(App.AppUserModelID, VarEnum.VT_LPWSTR);
+						ppv.SetValue(Vanara.PInvoke.Ole32.PROPERTYKEY.System.AppUserModel.ID, var);
+						Marshal.ReleaseComObject(ppv);
+						Marshal.ReleaseComObject(ppvo);
 						break;
 				}
 			}

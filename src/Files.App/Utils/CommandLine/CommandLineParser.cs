@@ -59,6 +59,10 @@ namespace Files.App.Utils.CommandLine
 						command.Type = ParsedCommandType.OutputPath;
 						break;
 
+					case string s when "AppUserModelID".Equals(s, StringComparison.OrdinalIgnoreCase):
+						command.Type = ParsedCommandType.AppUserModelID;
+						break;
+
 					case string s when "Select".Equals(s, StringComparison.OrdinalIgnoreCase):
 						command.Type = ParsedCommandType.SelectItem;
 						break;

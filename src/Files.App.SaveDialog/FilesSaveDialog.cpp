@@ -9,6 +9,11 @@
 #include <cstdio>
 #include <locale>
 #include <codecvt>
+#include <propkey.h>
+#include <propvarutil.h>
+
+// Link additional libraries
+#pragma comment(lib, "Propsys.lib")
 
 //#define SYSTEMDIALOG
 
@@ -437,24 +442,26 @@ HRESULT __stdcall CFilesSaveDialog::Show(HWND hwndOwner)
 	TCHAR args[1024] = { 0 };
 	ExpandEnvironmentStrings(L"%LOCALAPPDATA%\\Microsoft\\WindowsApps\\files.exe", szBuf, MAX_PATH - 1);
 
-	HANDLE closeEvent = CreateEvent(NULL, FALSE, FALSE, TEXT("FILEDIALOG"));
+	std::wstring appUserModelID = L"FILESDIALOG_" + std::to_wstring(GetCurrentProcessId());
+
+	HANDLE closeEvent = CreateEvent(NULL, FALSE, FALSE, appUserModelID.c_str());
 
 	if (_initFolder && SUCCEEDED(_initFolder->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &pszPath)))
 	{
 		if (!_initName.empty())
 		{
-			swprintf(args, _countof(args) - 1, L"\"%s\" -directory \"%s\" -outputpath \"%s\" -select \"%s\"", szBuf, pszPath, _outputPath.c_str(), _initName.c_str());
+			swprintf(args, _countof(args) - 1, L"\"%s\" -directory \"%s\" -outputpath \"%s\" -select \"%s\" -appusermodelid \"%s\"", szBuf, pszPath, _outputPath.c_str(), _initName.c_str(), appUserModelID.c_str());
 		}
 		else
 		{
-			swprintf(args, _countof(args) - 1, L"\"%s\" -directory \"%s\" -outputpath \"%s\"", szBuf, pszPath, _outputPath.c_str());
+			swprintf(args, _countof(args) - 1, L"\"%s\" -directory \"%s\" -outputpath \"%s\" -appusermodelid \"%s\"", szBuf, pszPath, _outputPath.c_str(), appUserModelID.c_str());
 		}
 		wcout << L"Invoking: " << args << endl;
 		CoTaskMemFree(pszPath);
 	}
 	else
 	{
-		swprintf(args, _countof(args) - 1, L"\"%s\" -outputpath \"%s\"", szBuf, _outputPath.c_str());
+		swprintf(args, _countof(args) - 1, L"\"%s\" -outputpath \"%s\" -appusermodelid \"%s\"", szBuf, _outputPath.c_str(), appUserModelID.c_str());
 	}
 
 	std::wstring uriWithArgs = L"files-uwp:?cmd=" + str2wstr(wstring_to_utf8_hex(args));
@@ -462,19 +469,35 @@ HRESULT __stdcall CFilesSaveDialog::Show(HWND hwndOwner)
 	ShExecInfo.nShow = SW_SHOW;
 	ShellExecuteEx(&ShExecInfo);
 
+	IPropertyStore* pps = NULL;
+	PROPVARIANT currentAppUserModelID;
+	PropVariantInit(&currentAppUserModelID);
+
 	if (hwndOwner)
+	{
 		EnableWindow(hwndOwner, FALSE);
+		HRESULT hr = SHGetPropertyStoreForWindow(hwndOwner, IID_PPV_ARGS(&pps));
+		if (SUCCEEDED(hr))
+		{
+			PROPVARIANT aumid;
+			InitPropVariantFromString(appUserModelID.c_str(), &aumid);
+			pps->GetValue(PKEY_AppUserModel_ID, &currentAppUserModelID);
+			pps->SetValue(PKEY_AppUserModel_ID, aumid);
+		}
+	}
 
 	MSG msg;
+	HANDLE waitHandles[] = { ShExecInfo.hProcess , closeEvent };
 	while (ShExecInfo.hProcess)
 	{
-		switch (MsgWaitForMultipleObjectsEx(1, &closeEvent, INFINITE, QS_ALLINPUT, 0))
+		switch (MsgWaitForMultipleObjectsEx(2, waitHandles, INFINITE, QS_ALLINPUT, 0))
 		{
 		case WAIT_OBJECT_0:
+		case WAIT_OBJECT_0 + 1:
 			CloseHandle(ShExecInfo.hProcess);
 			ShExecInfo.hProcess = NULL;
 			break;
-		case WAIT_OBJECT_0 + 1:
+		case WAIT_OBJECT_0 + 2:
 			while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
@@ -492,6 +515,12 @@ HRESULT __stdcall CFilesSaveDialog::Show(HWND hwndOwner)
 	{
 		EnableWindow(hwndOwner, TRUE);
 		SetForegroundWindow(hwndOwner);
+		if (pps)
+		{
+			// Restore previous AppUserModelID
+			pps->SetValue(PKEY_AppUserModel_ID, currentAppUserModelID);
+			pps->Release();
+		}
 	}
 
 	std::ifstream file(_outputPath);

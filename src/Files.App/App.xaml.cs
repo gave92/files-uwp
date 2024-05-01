@@ -23,6 +23,7 @@ namespace Files.App
 
 		public static TaskCompletionSource? SplashScreenLoadingTCS { get; private set; }
 		public static string? OutputPath { get; set; }
+		public static string? AppUserModelID { get; set; }
 
 		private static CommandBarFlyout? _LastOpenedFlyout;
 		public static CommandBarFlyout? LastOpenedFlyout
@@ -224,7 +225,7 @@ namespace Files.App
 				var results = items.Select(x => x.ItemPath).ToList();
 				System.IO.File.WriteAllLines(OutputPath, results);
 
-				IntPtr eventHandle = Win32PInvoke.CreateEvent(IntPtr.Zero, false, false, "FILEDIALOG");
+				IntPtr eventHandle = Win32PInvoke.CreateEvent(IntPtr.Zero, false, false, App.AppUserModelID!);
 				Win32PInvoke.SetEvent(eventHandle);
 				Win32PInvoke.CloseHandle(eventHandle);
 			}
