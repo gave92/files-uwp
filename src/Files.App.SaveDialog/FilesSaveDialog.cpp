@@ -26,7 +26,7 @@ using std::endl;
 CComPtr<IFileSaveDialog> GetSystemDialog()
 {
 	HINSTANCE lib = CoLoadLibrary(L"C:\\Windows\\System32\\comdlg32.dll", false);
-	BOOL(WINAPI* dllGetClassObject)(REFCLSID, REFIID, LPVOID*) =
+	BOOL(WINAPI * dllGetClassObject)(REFCLSID, REFIID, LPVOID*) =
 		(BOOL(WINAPI*)(REFCLSID, REFIID, LPVOID*))GetProcAddress(lib, "DllGetClassObject");
 	CComPtr<IClassFactory> pClassFactory;
 	dllGetClassObject(CLSID_FileSaveDialog, IID_IClassFactory, (void**)&pClassFactory);
@@ -436,7 +436,7 @@ HRESULT __stdcall CFilesSaveDialog::Show(HWND hwndOwner)
 	SHELLEXECUTEINFO ShExecInfo = { 0 };
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
-	
+
 	PWSTR pszPath = NULL;
 	WCHAR szBuf[MAX_PATH];
 	TCHAR args[1024] = { 0 };

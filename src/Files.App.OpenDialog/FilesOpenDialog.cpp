@@ -204,7 +204,7 @@ STDAPICALL CFilesOpenDialog::Show(HWND hwndOwner)
 	}
 
 	MSG msg;
-	HANDLE waitHandles[] = {ShExecInfo.hProcess , closeEvent};
+	HANDLE waitHandles[] = { ShExecInfo.hProcess , closeEvent };
 	while (ShExecInfo.hProcess)
 	{
 		switch (MsgWaitForMultipleObjectsEx(2, waitHandles, INFINITE, QS_ALLINPUT, 0))
@@ -262,7 +262,7 @@ STDAPICALL CFilesOpenDialog::Show(HWND hwndOwner)
 	}
 
 	return !_selectedItems.empty() ? S_OK : HRESULT_FROM_WIN32(ERROR_CANCELLED);
-	}
+}
 
 STDAPICALL CFilesOpenDialog::SetFileTypes(UINT cFileTypes, const COMDLG_FILTERSPEC* rgFilterSpec)
 {
@@ -369,7 +369,7 @@ STDAPICALL CFilesOpenDialog::SetFolder(IShellItem* psi)
 	}
 	_initFolder = CloneShellItem(psi);
 	return S_OK;
-	}
+}
 
 STDAPICALL CFilesOpenDialog::GetFolder(IShellItem** ppsi)
 {
@@ -411,7 +411,7 @@ STDAPICALL CFilesOpenDialog::GetFileName(LPWSTR* pszName)
 		SHStrDupW(_selectedItems[0].c_str(), pszName);
 	}
 	return S_OK;
-	}
+}
 
 STDAPICALL CFilesOpenDialog::SetTitle(LPCWSTR pszTitle)
 {
@@ -544,7 +544,7 @@ STDAPICALL CFilesOpenDialog::GetResults(IShellItemArray** ppenum)
 		return hr;
 	}
 	return E_NOTIMPL;
-	}
+}
 
 STDAPICALL CFilesOpenDialog::GetSelectedItems(IShellItemArray** ppsai)
 {
