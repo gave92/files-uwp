@@ -216,7 +216,7 @@ namespace Files.App.Services.Settings
 			get => Get(true);
 			set => Set(value);
 		}
-		
+
 		public bool ShowCreateFolderWithSelection
 		{
 			get => Get(true);
@@ -236,6 +236,12 @@ namespace Files.App.Services.Settings
 #else
 			get => Get(false);
 #endif
+			set => Set(value);
+		}
+
+		public bool IsTerminalIntegrationEnabled
+		{
+			get => Get(false);
 			set => Set(value);
 		}
 

@@ -3743,4 +3743,7 @@
   <data name="AdaptiveLayoutDisabledNotification" xml:space="preserve">
     <value>Adaptive layout is not available when preferences are synced, the default layout has been changed to Details.</value>
   </data>
+  <data name="SettingsTerminalIntegration" xml:space="preserve">
+    <value>Enable Terminal integration</value>
+  </data>
 </root>
