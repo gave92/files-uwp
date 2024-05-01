@@ -166,7 +166,7 @@ STDAPICALL CFilesOpenDialog::Show(HWND hwndOwner)
 	TCHAR args[1024] = { 0 };
 	ExpandEnvironmentStrings(L"%LOCALAPPDATA%\\Microsoft\\WindowsApps\\files.exe", szBuf, MAX_PATH - 1);
 
-	std::wstring appUserModelID = L"FILESDIALOG_" + std::to_wstring(GetCurrentProcessId());
+	std::wstring appUserModelID = L"FILESDIALOG_" + std::to_wstring(GetCurrentProcessId()) + std::to_wstring(GetCurrentThreadId());
 
 	HANDLE closeEvent = CreateEvent(NULL, FALSE, FALSE, appUserModelID.c_str());
 
