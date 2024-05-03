@@ -46,3 +46,9 @@ DeleteFileFromApp
 RemoveDirectoryFromApp
 GetKeyState
 CreateDirectoryFromApp
+SHGetPropertyStoreForWindow
+IPropertyStore
+PROPVARIANT
+PROPERTYKEY
+VARENUM
+InitPropVariantFromStringVector

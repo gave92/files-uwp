@@ -1,6 +1,7 @@
 // Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
@@ -9,6 +10,9 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.Shell.PropertiesSystem;
 using WinUIEx;
 using IO = System.IO;
 
@@ -323,12 +327,16 @@ namespace Files.App
 
 					case ParsedCommandType.AppUserModelID:
 						App.AppUserModelID = command.Payload;
-						Vanara.PInvoke.Shell32.SHGetPropertyStoreForWindow(new(WindowHandle), typeof(Vanara.PInvoke.PropSys.IPropertyStore).GUID, out var ppvo);
-						var ppv = (Vanara.PInvoke.PropSys.IPropertyStore)ppvo;
-						Vanara.PInvoke.Ole32.PROPVARIANT var = new(App.AppUserModelID, VarEnum.VT_LPWSTR);
-						ppv.SetValue(Vanara.PInvoke.Ole32.PROPERTYKEY.System.AppUserModel.ID, var);
-						Marshal.ReleaseComObject(ppv);
-						Marshal.ReleaseComObject(ppvo);
+						unsafe
+						{
+							PInvoke.SHGetPropertyStoreForWindow(new(WindowHandle), typeof(IPropertyStore).GUID, out var ppvo);
+							var ppv = (IPropertyStore)ppvo;
+							var pwstr = new PCWSTR((char*)Marshal.StringToCoTaskMemUni(App.AppUserModelID));
+							PInvoke.InitPropVariantFromStringVector(new ReadOnlySpan<PCWSTR>(ref pwstr), out var propVar);
+							var key = new PROPERTYKEY() { fmtid = new Guid("{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}"), pid = 5 };
+							fixed (PROPERTYKEY* keyp = &Unsafe.AsRef(in key))
+								ppv.SetValue(keyp, propVar);
+						}
 						break;
 				}
 			}
