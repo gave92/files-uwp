@@ -336,6 +336,8 @@ namespace Files.App
 							var key = new PROPERTYKEY() { fmtid = new Guid("{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}"), pid = 5 };
 							fixed (PROPERTYKEY* keyp = &Unsafe.AsRef(in key))
 								ppv.SetValue(keyp, propVar);
+							Marshal.ReleaseComObject(ppv);
+							Marshal.ReleaseComObject(ppvo);
 						}
 						break;
 				}
