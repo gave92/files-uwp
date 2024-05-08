@@ -92,6 +92,8 @@ namespace Files.App.ViewModels
 			NavigateToNumberedTabKeyboardAcceleratorCommand = new RelayCommand<KeyboardAcceleratorInvokedEventArgs>(ExecuteNavigateToNumberedTabKeyboardAcceleratorCommand);
 			TerminalAddCommand = new RelayCommand<ShellProfile>((e) =>
 			{
+				if (Terminals.IsEmpty())
+					IsTerminalViewOpen = true;
 				Terminals.Add(new TerminalView(e ?? TerminalSelectedProfile)
 				{
 					Tag = $"Terminal {Terminals.Count}"
@@ -124,6 +126,8 @@ namespace Files.App.ViewModels
 				(terminal as IDisposable)?.Dispose();
 				Terminals.Remove(terminal);
 				SelectedTerminal = int.Min(SelectedTerminal, Terminals.Count - 1);
+				if (Terminals.IsEmpty())
+					IsTerminalViewOpen = false;
 				OnPropertyChanged(nameof(ActiveTerminal));
 				OnPropertyChanged(nameof(TerminalNames));
 			});
@@ -168,11 +172,6 @@ namespace Files.App.ViewModels
 					GetTerminalFolder = null;
 					SetTerminalFolder = null;
 				}
-			}
-			else if (e.PropertyName == nameof(SelectedTerminal))
-			{
-				if (Terminals.IsEmpty())
-					IsTerminalViewOpen = false;
 			}
 		}
 
