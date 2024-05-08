@@ -69,7 +69,22 @@ namespace Files.App.ViewModels
 		public MainPageViewModel()
 		{
 			NavigateToNumberedTabKeyboardAcceleratorCommand = new RelayCommand<KeyboardAcceleratorInvokedEventArgs>(ExecuteNavigateToNumberedTabKeyboardAcceleratorCommand);
-			TerminalToggleCommand = new RelayCommand(() => IsTerminalViewOpen = !IsTerminalViewOpen);
+			TerminalAddCommand = new RelayCommand<ShellProfile>((e) =>
+			{
+				Terminals.Add(new TerminalView(e ?? TerminalSelectedProfile)
+				{
+					Tag = $"Terminal {Terminals.Count}"
+				});
+				OnPropertyChanged(nameof(SelectedTerminal));
+				OnPropertyChanged(nameof(ActiveTerminal));
+				OnPropertyChanged(nameof(TerminalNames));
+			});
+			TerminalToggleCommand = new RelayCommand(() =>
+			{
+				IsTerminalViewOpen = !IsTerminalViewOpen;
+				if (IsTerminalViewOpen && Terminals.IsEmpty())
+					TerminalAddCommand.Execute(TerminalSelectedProfile);
+			});
 			TerminalSyncUpCommand = new AsyncRelayCommand(async () =>
 			{
 				var context = Ioc.Default.GetRequiredService<IContentPageContext>();
@@ -82,8 +97,40 @@ namespace Files.App.ViewModels
 				if (context.Folder?.ItemPath is string currentFolder)
 					SetTerminalFolder?.Invoke(currentFolder);
 			});
+			TerminalCloseCommand = new RelayCommand<string>((name) =>
+			{
+				var terminal = Terminals.First(x => x.Tag.ToString() == name);
+				(terminal as IDisposable)?.Dispose();
+				Terminals.Remove(terminal);
+				SelectedTerminal = int.Min(SelectedTerminal, Terminals.Count - 1);
+				OnPropertyChanged(nameof(ActiveTerminal));
+				OnPropertyChanged(nameof(TerminalNames));
+			});
 			TerminalSelectedProfile = TerminalProfiles[0];
 			GeneralSettingsService.PropertyChanged += GeneralSettingsService_PropertyChanged;
+			PropertyChanged += MainPageViewModel_PropertyChanged;
+		}
+
+		private void MainPageViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(ActiveTerminal))
+			{
+				if (ActiveTerminal is TerminalView termView)
+				{
+					GetTerminalFolder = termView.GetTerminalFolder;
+					SetTerminalFolder = termView.SetTerminalFolder;
+				}
+				else
+				{
+					GetTerminalFolder = null;
+					SetTerminalFolder = null;
+				}
+			}
+			else if (e.PropertyName == nameof(SelectedTerminal))
+			{
+				if (Terminals.IsEmpty())
+					IsTerminalViewOpen = false;
+			}
 		}
 
 		private void GeneralSettingsService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -239,6 +286,8 @@ namespace Files.App.ViewModels
 		public ICommand TerminalToggleCommand { get; init; }
 		public ICommand TerminalSyncUpCommand { get; init; }
 		public ICommand TerminalSyncDownCommand { get; init; }
+		public IRelayCommand<string> TerminalCloseCommand { get; init; }
+		public IRelayCommand<ShellProfile> TerminalAddCommand { get; init; }
 
 		public Func<Task<string?>>? GetTerminalFolder { get; set; }
 		public Action<string>? SetTerminalFolder { get; set; }
@@ -252,6 +301,23 @@ namespace Files.App.ViewModels
 		{
 			get => _isTerminalViewOpen;
 			set => SetProperty(ref _isTerminalViewOpen, value);
+		}
+
+		public Control? ActiveTerminal => SelectedTerminal >= 0 && SelectedTerminal < Terminals.Count ? Terminals[SelectedTerminal] : null;
+
+		public List<Control> Terminals { get; } = new();
+		public List<string> TerminalNames => Terminals.Select(x => x.Tag.ToString()!).ToList();
+
+		private int _selectedTerminal;
+		public int SelectedTerminal
+		{
+			get => _selectedTerminal;
+			set
+			{
+				if (value != -1)
+					if (SetProperty(ref _selectedTerminal, value))
+						OnPropertyChanged(nameof(ActiveTerminal));
+			}
 		}
 
 		private ShellProfile _terminalSelectedProfile;

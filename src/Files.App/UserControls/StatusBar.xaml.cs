@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See the LICENSE.
 
 using Files.App.Data.Commands;
+using Files.App.Utils.Terminal;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -78,6 +79,16 @@ namespace Files.App.UserControls
 
 			BranchesFlyout.Hide();
 			await DirectoryPropertiesViewModel.ExecuteDeleteBranch(((BranchItem)((Button)sender).DataContext).Name);
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			MainPageViewModel.TerminalCloseCommand.Execute(((Button)sender).Tag.ToString());
+		}
+
+		private void ShellProfileList_ItemClick(object sender, ItemClickEventArgs e)
+		{
+			MainPageViewModel.TerminalAddCommand.Execute((ShellProfile)e.ClickedItem);
 		}
 	}
 }
