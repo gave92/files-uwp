@@ -60,3 +60,13 @@ ResizePseudoConsole
 ClosePseudoConsole
 CreatePipe
 PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE
+STARTUPINFOEXW
+STARTUPINFOW
+PROCESS_CREATION_FLAGS
+PROCESS_INFORMATION
+SECURITY_ATTRIBUTES
+CloseHandle
+DeleteProcThreadAttributeList
+UpdateProcThreadAttribute
+InitializeProcThreadAttributeList
+CreateProcess
