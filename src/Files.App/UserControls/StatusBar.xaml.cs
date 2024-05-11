@@ -81,7 +81,7 @@ namespace Files.App.UserControls
 			await DirectoryPropertiesViewModel.ExecuteDeleteBranch(((BranchItem)((Button)sender).DataContext).Name);
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void TerminalCloseButton_Click(object sender, RoutedEventArgs e)
 		{
 			MainPageViewModel.TerminalCloseCommand.Execute(((Button)sender).Tag.ToString());
 		}
