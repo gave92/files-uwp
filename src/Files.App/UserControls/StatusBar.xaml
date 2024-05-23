@@ -10,8 +10,7 @@
 	xmlns:helpers="using:Files.App.Helpers"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:usercontrols="using:Files.App.UserControls"
-	d:DesignHeight="32"
-	d:DesignWidth="400"
+	DataContext="{x:Bind StatusBarViewModel, Mode=OneWay}"
 	mc:Ignorable="d">
 
 	<UserControl.Resources>
@@ -103,7 +102,7 @@
 		</Style>
 	</UserControl.Resources>
 
-	<Grid Padding="8,0" ColumnSpacing="4">
+	<Grid Padding="8,0,0,0">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
 			<ColumnDefinition Width="Auto" />
@@ -111,6 +110,7 @@
 			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
 
+		<!--  Folder and selection info  -->
 		<StackPanel
 			Grid.Column="0"
 			Height="32"
@@ -125,7 +125,7 @@
 				VerticalAlignment="Center"
 				x:Load="{x:Bind ShowInfoText, Mode=OneWay}"
 				Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-				Text="{x:Bind DirectoryPropertiesViewModel.DirectoryItemCount, Mode=OneWay}" />
+				Text="{x:Bind StatusBarViewModel.DirectoryItemCount, Mode=OneWay}" />
 
 			<!--  Divider  -->
 			<Border
@@ -158,11 +158,11 @@
 				Text="{x:Bind SelectedItemsPropertiesViewModel.ItemSize, Mode=OneWay}" />
 		</StackPanel>
 
+		<!--  Actions panel  -->
 		<StackPanel
 			x:Name="GitActionsPanel"
 			Grid.Column="1"
 			VerticalAlignment="Center"
-			x:Load="{x:Bind DirectoryPropertiesViewModel.GitBranchDisplayName, Mode=OneWay, Converter={StaticResource NullToFalseConverter}, FallbackValue=False}"
 			Orientation="Horizontal"
 			Spacing="4">
 
@@ -172,7 +172,8 @@
 				Height="24"
 				Padding="8,0,8,0"
 				VerticalAlignment="Center"
-				x:Load="{x:Bind Commands.OpenInVSCode.IsExecutable, Mode=OneWay}"
+				x:Load="{x:Bind StatusBarViewModel.ShowOpenInIDEButton, Mode=OneWay}"
+				AutomationProperties.Name="{helpers:ResourceString Name=Open}"
 				Background="Transparent"
 				BorderBrush="Transparent">
 				<Button.Content>
@@ -198,7 +199,8 @@
 							Command="{x:Bind Commands.OpenRepoInVSCode}"
 							KeyboardAcceleratorTextOverride="{x:Bind Commands.OpenRepoInVSCode.HotKeys, Mode=OneWay}"
 							Text="{x:Bind Commands.OpenRepoInVSCode.Label, Mode=OneWay}"
-							ToolTipService.ToolTip="{x:Bind Commands.OpenRepoInVSCode.LabelWithHotKey, Mode=OneWay}" />
+							ToolTipService.ToolTip="{x:Bind Commands.OpenRepoInVSCode.LabelWithHotKey, Mode=OneWay}"
+							Visibility="{x:Bind StatusBarViewModel.GitBranchDisplayName, Mode=OneWay, Converter={StaticResource NullToVisibilityCollapsedConverter}, FallbackValue=Collapsed}" />
 					</MenuFlyout>
 				</Button.Flyout>
 			</Button>
@@ -207,7 +209,7 @@
 				x:Name="VSCodeDivider"
 				Width="1"
 				Height="18"
-				x:Load="{x:Bind Commands.OpenInVSCode.IsExecutable, Mode=OneWay}"
+				x:Load="{x:Bind StatusBarViewModel.GitBranchDisplayName, Mode=OneWay, Converter={StaticResource NullToFalseConverter}, FallbackValue=False}"
 				Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
 
 			<Button
@@ -215,9 +217,10 @@
 				Height="24"
 				Padding="8,0,8,0"
 				VerticalAlignment="Center"
+				x:Load="{x:Bind StatusBarViewModel.GitBranchDisplayName, Mode=OneWay, Converter={StaticResource NullToFalseConverter}, FallbackValue=False}"
 				Background="Transparent"
 				BorderBrush="Transparent"
-				ToolTipService.ToolTip="{x:Bind DirectoryPropertiesViewModel.ExtendedStatusInfo, Mode=OneWay}">
+				ToolTipService.ToolTip="{x:Bind StatusBarViewModel.ExtendedStatusInfo, Mode=OneWay}">
 				<Button.Flyout>
 					<MenuFlyout>
 						<!--  Pull Button  -->
@@ -265,13 +268,15 @@
 						Style="{StaticResource ColorIconGitGeneral}" />
 
 					<!--  Outgoing / Incoming commits  -->
-					<TextBlock Text="{x:Bind DirectoryPropertiesViewModel.StatusInfo, Mode=OneWay}" />
+					<TextBlock Text="{x:Bind StatusBarViewModel.StatusInfo, Mode=OneWay}" />
 				</StackPanel>
 			</Button>
 			<!--  Divider  -->
 			<Border
+				x:Name="BranchNameDivider"
 				Width="1"
 				Height="18"
+				x:Load="{x:Bind StatusBarViewModel.GitBranchDisplayName, Mode=OneWay, Converter={StaticResource NullToFalseConverter}, FallbackValue=False}"
 				Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
 		</StackPanel>
 
@@ -280,11 +285,12 @@
 			x:Name="GitBranch"
 			Grid.Column="2"
 			Height="24"
+			Margin="4,0,0,0"
 			Padding="8,0,8,0"
 			Background="Transparent"
 			BorderBrush="Transparent"
 			ToolTipService.ToolTip="{helpers:ResourceString Name=ManageBranches}"
-			Visibility="{x:Bind DirectoryPropertiesViewModel.GitBranchDisplayName, Mode=OneWay, Converter={StaticResource NullToVisibilityCollapsedConverter}, FallbackValue=Collapsed}">
+			Visibility="{x:Bind StatusBarViewModel.GitBranchDisplayName, Mode=OneWay, Converter={StaticResource NullToVisibilityCollapsedConverter}, FallbackValue=Collapsed}">
 
 			<Button.Content>
 				<StackPanel Orientation="Horizontal" Spacing="8">
@@ -294,7 +300,7 @@
 						Style="{StaticResource ColorIconGitBranches}" />
 
 					<!--  Branch Name  -->
-					<TextBlock Text="{x:Bind DirectoryPropertiesViewModel.GitBranchDisplayName, Mode=OneWay}" />
+					<TextBlock Text="{x:Bind StatusBarViewModel.GitBranchDisplayName, Mode=OneWay}" />
 				</StackPanel>
 			</Button.Content>
 
@@ -328,7 +334,7 @@
 								Orientation="Horizontal">
 								<RadioButton
 									Content="{helpers:ResourceString Name=Locals}"
-									IsChecked="{x:Bind DirectoryPropertiesViewModel.ShowLocals, Mode=TwoWay}"
+									IsChecked="{x:Bind StatusBarViewModel.ShowLocals, Mode=TwoWay}"
 									Style="{StaticResource Local.RadioButtonStyle}" />
 								<RadioButton Content="{helpers:ResourceString Name=Remotes}" Style="{StaticResource Local.RadioButtonStyle}" />
 							</StackPanel>
@@ -339,7 +345,7 @@
 								Height="24"
 								Padding="8,0"
 								HorizontalAlignment="Right"
-								Command="{x:Bind DirectoryPropertiesViewModel.NewBranchCommand, Mode=OneWay}"
+								Command="{x:Bind StatusBarViewModel.NewBranchCommand, Mode=OneWay}"
 								Content="{helpers:ResourceString Name=CreateBranch}"
 								FontSize="12"
 								ToolTipService.ToolTip="{helpers:ResourceString Name=CreateBranch}" />
@@ -353,8 +359,8 @@
 							Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
 							IsItemClickEnabled="True"
 							ItemClick="BranchesList_ItemClick"
-							ItemsSource="{x:Bind DirectoryPropertiesViewModel.Branches, Mode=OneWay}"
-							SelectedIndex="{x:Bind DirectoryPropertiesViewModel.SelectedBranchIndex, Mode=TwoWay}"
+							ItemsSource="{x:Bind StatusBarViewModel.Branches, Mode=OneWay}"
+							SelectedIndex="{x:Bind StatusBarViewModel.SelectedBranchIndex, Mode=TwoWay}"
 							SelectionMode="Single">
 
 							<ListView.ItemTemplate>
