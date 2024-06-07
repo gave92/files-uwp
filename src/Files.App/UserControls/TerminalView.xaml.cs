@@ -2,6 +2,7 @@ using CommunityToolkit.WinUI;
 using Files.App.Utils.Terminal;
 using Files.App.Utils.Terminal.ConPTY;
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System.IO;
@@ -109,7 +110,7 @@ namespace Files.App.UserControls
 		public event EventHandler<string> OnPaste;
 		public event EventHandler<string> OnSessionRestart;
 
-		public WebView2 WebView => WebViewControl;
+		public WebView2Ex.UI.WebView2Ex WebView => WebViewControl;
 
 		private Terminal _terminal;
 		private BufferedReader _reader;
@@ -126,7 +127,7 @@ namespace Files.App.UserControls
 
 		private async void WebViewControl_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
 		{
-			if (WebViewControl.Source is not null)
+			if (WebViewControl.WebView2Runtime?.CoreWebView2?.Source is not null)
 				return;
 
 			var envOptions = new CoreWebView2EnvironmentOptions()
@@ -136,14 +137,19 @@ namespace Files.App.UserControls
 				AdditionalBrowserArguments = "--enable-features=OverlayScrollbar,OverlayScrollbarWinStyle,OverlayScrollbarWinStyleAnimation"
 			};
 			var environment = await CoreWebView2Environment.CreateWithOptionsAsync("", "", envOptions);
-			await WebViewControl.EnsureCoreWebView2Async(environment);
+
+			var window = AppWindow.GetFromWindowId(XamlRoot.ContentIslandEnvironment.AppWindowId);
+			WebViewControl.SetWindow(window);
+			WebViewControl.WebView2Runtime = await WebView2Ex.WebView2Runtime.CreateAsync(environment, (nint)window.Id.Value);
+			WebViewControl.WebView2Runtime.Controller!.DefaultBackgroundColor = Microsoft.UI.Colors.Transparent;
+
 			//WebViewControl.CoreWebView2.OpenDevToolsWindow();
-			WebViewControl.NavigationCompleted += WebViewControl_NavigationCompleted;
-			WebViewControl.CoreWebView2.SetVirtualHostNameToFolderMapping(
+			WebViewControl.WebView2Runtime.CoreWebView2.NavigationCompleted += WebViewControl_NavigationCompleted;
+			WebViewControl.WebView2Runtime.CoreWebView2.SetVirtualHostNameToFolderMapping(
 				"terminal.files",
 				Path.Combine(Package.Current.InstalledLocation.Path, "Utils", "Terminal", "UI"),
 				CoreWebView2HostResourceAccessKind.DenyCors);
-			WebViewControl.Source = new Uri("http://terminal.files/index.html");
+			WebViewControl.WebView2Runtime.CoreWebView2.Navigate("http://terminal.files/index.html");
 
 			// Waiting for WebView.NavigationCompleted event to happen
 			await _tcsNavigationCompleted.Task;
@@ -153,7 +159,7 @@ namespace Files.App.UserControls
 			var keyBindings = provider.GetCommandKeyBindings();
 			var theme = provider.GetPreInstalledThemes().First(x => x.Id == _profile.TerminalThemeId);
 
-			WebViewControl.CoreWebView2.Profile.PreferredColorScheme = (ActualTheme == Microsoft.UI.Xaml.ElementTheme.Dark) ? CoreWebView2PreferredColorScheme.Dark : CoreWebView2PreferredColorScheme.Light;
+			WebViewControl.WebView2Runtime.CoreWebView2.Profile.PreferredColorScheme = (ActualTheme == Microsoft.UI.Xaml.ElementTheme.Dark) ? CoreWebView2PreferredColorScheme.Dark : CoreWebView2PreferredColorScheme.Light;
 
 			var size = await CreateXtermViewAsync(options, theme.Colors,
 				keyBindings.Values.SelectMany(k => k)).ConfigureAwait(false);
@@ -207,10 +213,10 @@ namespace Files.App.UserControls
 			return ExecuteScriptAsync(@"serializeTerminal()");
 		}
 
-		private async void WebViewControl_NavigationCompleted(WebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
+		private async void WebViewControl_NavigationCompleted(CoreWebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
 		{
 			var _terminalBridge = new TerminalBridge(this);
-			await WebViewControl.AddWebAllowedObject("terminalBridge", _terminalBridge);
+			await WebViewControl.WebView2Runtime.CoreWebView2.AddWebAllowedObject("terminalBridge", _terminalBridge);
 			_tcsNavigationCompleted.TrySetResult(null);
 		}
 
@@ -447,7 +453,7 @@ namespace Files.App.UserControls
 			serializerSettings.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 			var theme = new DefaultValueProvider().GetPreInstalledThemes().First(x => x.Id == _profile.TerminalThemeId);
 
-			WebViewControl.CoreWebView2.Profile.PreferredColorScheme = (ActualTheme == Microsoft.UI.Xaml.ElementTheme.Dark) ? CoreWebView2PreferredColorScheme.Dark : CoreWebView2PreferredColorScheme.Light;
+			WebViewControl.WebView2Runtime.CoreWebView2.Profile.PreferredColorScheme = (ActualTheme == Microsoft.UI.Xaml.ElementTheme.Dark) ? CoreWebView2PreferredColorScheme.Dark : CoreWebView2PreferredColorScheme.Light;
 
 			var serializedTheme = JsonSerializer.Serialize(theme.Colors, serializerSettings);
 			await ExecuteScriptAsync($"changeTheme('{serializedTheme}')");
