@@ -6,20 +6,19 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="using:Files.App.Terminal"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:ww2="using:WebView2Ex.UI"
 	d:DesignHeight="300"
 	d:DesignWidth="400"
 	ActualThemeChanged="TerminalView_ActualThemeChanged"
 	Unloaded="TerminalView_Unloaded"
 	mc:Ignorable="d">
 
-	<Border x:Name="RootGrid" CornerRadius="8">
+	<Border x:Name="RootGrid">
 
-		<ww2:WebView2Ex
+		<WebView2
 			x:Name="WebViewControl"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Stretch"
-			CornerRadius="8"
+			DefaultBackgroundColor="Transparent"
 			Loaded="WebViewControl_Loaded" />
 
 	</Border>

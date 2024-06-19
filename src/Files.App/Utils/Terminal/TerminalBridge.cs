@@ -122,6 +122,6 @@ namespace Files.App.Utils.Terminal
 		event EventHandler<string> OnPaste;
 		event EventHandler<string> OnSessionRestart;
 
-		public WebView2Ex.UI.WebView2Ex WebView { get; }
+		public WebView2 WebView { get; }
 	}
 }

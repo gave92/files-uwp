@@ -11,13 +11,18 @@ using Windows.Foundation;
 
 namespace Files.App.Extensions
 {
-	using WebViewMessageReceivedHandler = TypedEventHandler<CoreWebView2, CoreWebView2WebMessageReceivedEventArgs>;
+	using WebViewMessageReceivedHandler = TypedEventHandler<WebView2, CoreWebView2WebMessageReceivedEventArgs>;
 
 	/// <summary>
 	/// Code modified from https://gist.github.com/mqudsi/ceb4ecee76eb4c32238a438664783480
 	/// </summary>
 	public static class WebView2Extensions
 	{
+		public static void Navigate(this WebView2 webview, Uri url)
+		{
+			webview.Source = url;
+		}
+
 		private enum PropertyAction
 		{
 			Read = 0,
@@ -45,7 +50,7 @@ namespace Files.App.Extensions
 		}
 
 		public static List<WebViewMessageReceivedHandler> _handlers = new();
-		public static async Task AddWebAllowedObject<T>(this CoreWebView2 webview, string name, T @object)
+		public static async Task AddWebAllowedObject<T>(this WebView2 webview, string name, T @object)
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine($"window.{name} = {{ ");
@@ -191,7 +196,7 @@ namespace Files.App.Extensions
 			webview.WebMessageReceived += handler;
 		}
 
-		public static async Task<string> InvokeScriptAsync(this WebView2Ex.UI.WebView2Ex webview, string function, params object[] args)
+		public static async Task<string> InvokeScriptAsync(this WebView2 webview, string function, params object[] args)
 		{
 			var array = JsonConvert.SerializeObject(args);
 			string result = null;
@@ -201,7 +206,7 @@ namespace Files.App.Extensions
 				var script = $"{function}(...{array});";
 				try
 				{
-					result = await webview.WebView2Runtime.CoreWebView2.ExecuteScriptAsync(script).AsTask();
+					result = await webview.ExecuteScriptAsync(script).AsTask();
 					result = JsonConvert.DeserializeObject<string>(result);
 				}
 				catch (Exception ex)
