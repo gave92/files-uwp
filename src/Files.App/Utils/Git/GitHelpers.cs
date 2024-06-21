@@ -3,7 +3,7 @@
 
 using Files.App.Dialogs;
 using LibGit2Sharp;
-using Microsoft.AppCenter.Analytics;
+using Sentry;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -78,10 +78,16 @@ namespace Files.App.Utils.Git
 
 			try
 			{
-				return
-					Repository.IsValid(path)
-						? path
-						: GetGitRepositoryPath(PathNormalization.GetParentDir(path), root);
+				if (Repository.IsValid(path))
+					return path;
+				else
+				{
+					var parentDir = PathNormalization.GetParentDir(path);
+					if (parentDir == path)
+						return null;
+					else
+						return GetGitRepositoryPath(parentDir, root);
+				}
 			}
 			catch (Exception ex) when (ex is LibGit2SharpException or EncoderFallbackException)
 			{
@@ -172,7 +178,7 @@ namespace Files.App.Utils.Git
 
 		public static async Task<bool> Checkout(string? repositoryPath, string? branch)
 		{
-			Analytics.TrackEvent("Triggered git checkout");
+			SentrySdk.Metrics.Increment("Triggered git checkout");
 
 			if (string.IsNullOrWhiteSpace(repositoryPath) || !Repository.IsValid(repositoryPath))
 				return false;
@@ -244,7 +250,7 @@ namespace Files.App.Utils.Git
 
 		public static async Task CreateNewBranchAsync(string repositoryPath, string activeBranch)
 		{
-			Analytics.TrackEvent("Triggered create git branch");
+			SentrySdk.Metrics.Increment("Triggered create git branch");
 
 			var viewModel = new AddBranchDialogViewModel(repositoryPath, activeBranch);
 			var loadBranchesTask = viewModel.LoadBranches();
@@ -274,7 +280,7 @@ namespace Files.App.Utils.Git
 
 		public static async Task DeleteBranchAsync(string? repositoryPath, string? activeBranch, string? branchToDelete)
 		{
-			Analytics.TrackEvent("Triggered delete git branch");
+			SentrySdk.Metrics.Increment("Triggered delete git branch");
 
 			if (string.IsNullOrWhiteSpace(repositoryPath) ||
 				string.IsNullOrWhiteSpace(activeBranch) ||
@@ -617,7 +623,7 @@ namespace Files.App.Utils.Git
 					viewModel.Subtitle = "AuthorizationSucceded".GetLocalizedResource();
 					viewModel.LoginConfirmed = true;
 				}
-				catch (SocketException ex)
+				catch (Exception ex)
 				{
 					_logger.LogWarning(ex.Message);
 					dialog.Hide();
