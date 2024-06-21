@@ -81,6 +81,9 @@ namespace Files.App.ViewModels
 		public HorizontalAlignment AppThemeBackgroundImageHorizontalAlignment
 			=> AppearanceSettingsService.AppThemeBackgroundImageHorizontalAlignment;
 
+		public bool ShowToolbar
+			=> AppearanceSettingsService.ShowToolbar;
+
 
 		// Commands
 
@@ -156,6 +159,9 @@ namespace Files.App.ViewModels
 						break;
 					case nameof(AppearanceSettingsService.AppThemeBackgroundImageHorizontalAlignment):
 						OnPropertyChanged(nameof(AppThemeBackgroundImageHorizontalAlignment));
+						break;
+					case nameof(AppearanceSettingsService.ShowToolbar):
+						OnPropertyChanged(nameof(ShowToolbar));
 						break;
 				}
 			};
