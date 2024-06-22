@@ -56,25 +56,24 @@ namespace Files.App.Helpers
 			if (runAsAdmin)
 			{
 				// TODO In the long run, we should consider modifying HandleApplicationLaunch to handle this correctly.
-
-				ProcessStartInfo startInfo = new ProcessStartInfo
+				return SafetyExtensions.IgnoreExceptions(() =>
 				{
-					FileName = application,
-					Arguments = arguments,
-					Verb = "runas",
-					WorkingDirectory = workingDirectory,
-					UseShellExecute = true
-				};
+					ProcessStartInfo startInfo = new ProcessStartInfo
+					{
+						FileName = application,
+						Arguments = arguments,
+						Verb = "runas",
+						WorkingDirectory = workingDirectory,
+						UseShellExecute = true
+					};
 
-				Process process = new Process
-				{
-					StartInfo = startInfo
-				};
+					using Process process = new Process
+					{
+						StartInfo = startInfo
+					};
 
-				process.Start();
-				process.WaitForExit();
-
-				return true;
+					process.Start();
+				});
 			}
 			else
 			{
