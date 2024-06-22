@@ -25,9 +25,9 @@ namespace Files.App.Utils.Shell
 				out _);
 		}
 
-		public static Task<bool> LaunchAppAsync(string application, string arguments, string workingDirectory)
+		public static Task<bool> LaunchAppAsync(string application, string arguments, string workingDirectory, bool runAsAdmin = false)
 		{
-			return HandleApplicationLaunch(application, arguments, workingDirectory);
+			return HandleApplicationLaunch(application, arguments, workingDirectory, runAsAdmin ? "runas" : "");
 		}
 
 		public static Task<bool> RunCompatibilityTroubleshooterAsync(string filePath)
@@ -51,7 +51,7 @@ namespace Files.App.Utils.Shell
 			return HandleApplicationLaunch("MSDT.exe", $"/id PCWDiagnostic /af \"{compatibilityTroubleshooterAnswerFile}\"", "");
 		}
 
-		private static async Task<bool> HandleApplicationLaunch(string application, string arguments, string workingDirectory)
+		private static async Task<bool> HandleApplicationLaunch(string application, string arguments, string workingDirectory, string verb = "")
 		{
 			var currentWindows = Win32Helper.GetDesktopWindows();
 
@@ -70,7 +70,7 @@ namespace Files.App.Utils.Shell
 				// Show window if workingDirectory (opening terminal)
 				process.StartInfo.CreateNoWindow = string.IsNullOrEmpty(workingDirectory);
 
-				if (arguments == "RunAs")
+				if ("RunAs".Equals(verb, StringComparison.OrdinalIgnoreCase))
 				{
 					process.StartInfo.UseShellExecute = true;
 					process.StartInfo.Verb = "RunAs";
@@ -80,8 +80,12 @@ namespace Files.App.Utils.Shell
 						process.StartInfo.FileName = "MSIEXEC.exe";
 						process.StartInfo.Arguments = $"/a \"{application}\"";
 					}
+					else
+					{
+						process.StartInfo.Arguments = arguments;
+					}
 				}
-				else if (arguments == "RunAsUser")
+				else if ("RunAsUser".Equals(verb, StringComparison.OrdinalIgnoreCase))
 				{
 					process.StartInfo.UseShellExecute = true;
 					process.StartInfo.Verb = "RunAsUser";
@@ -90,6 +94,10 @@ namespace Files.App.Utils.Shell
 					{
 						process.StartInfo.FileName = "MSIEXEC.exe";
 						process.StartInfo.Arguments = $"/i \"{application}\"";
+					}
+					else
+					{
+						process.StartInfo.Arguments = arguments;
 					}
 				}
 				else

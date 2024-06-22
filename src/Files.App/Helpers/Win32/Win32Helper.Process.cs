@@ -46,39 +46,20 @@ namespace Files.App.Helpers
 
 		public static async Task<bool> InvokeWin32ComponentsAsync(IEnumerable<string> applicationPaths, IShellPage associatedInstance, string arguments = null, bool runAsAdmin = false, string workingDirectory = null)
 		{
+			Debug.WriteLine("Launching EXE in FullTrustProcess");
+
 			if (string.IsNullOrEmpty(workingDirectory))
+			{
 				workingDirectory = associatedInstance.FilesystemViewModel.WorkingDirectory;
+			}
 
 			var application = applicationPaths.FirstOrDefault();
 			if (string.IsNullOrEmpty(workingDirectory))
+			{
 				workingDirectory = associatedInstance?.FilesystemViewModel?.WorkingDirectory;
-
-			if (runAsAdmin)
-			{
-				// TODO In the long run, we should consider modifying HandleApplicationLaunch to handle this correctly.
-				return SafetyExtensions.IgnoreExceptions(() =>
-				{
-					ProcessStartInfo startInfo = new ProcessStartInfo
-					{
-						FileName = application,
-						Arguments = arguments,
-						Verb = "runas",
-						WorkingDirectory = workingDirectory,
-						UseShellExecute = true
-					};
-
-					using Process process = new Process
-					{
-						StartInfo = startInfo
-					};
-
-					process.Start();
-				});
 			}
-			else
-			{
-				return await LaunchHelper.LaunchAppAsync(application, arguments, workingDirectory);
-			}
+
+			return await LaunchHelper.LaunchAppAsync(application, arguments, workingDirectory, runAsAdmin);
 		}
 
 		/// <summary>
