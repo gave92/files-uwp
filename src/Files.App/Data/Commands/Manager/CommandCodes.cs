@@ -24,6 +24,7 @@ namespace Files.App.Data.Commands
 		TogglePreviewPane,
 		ToggleDetailsPane,
 		ToggleInfoPane,
+		ToggleToolbar,
 
 		// File System
 		CopyItem,
@@ -185,10 +186,14 @@ namespace Files.App.Data.Commands
 		PreviousTab,
 		NextTab,
 		CloseSelectedTab,
-		OpenNewPane,
-		ClosePane,
-		FocusLeftPane,
-		FocusRightPane,
+
+		// Shell Panes
+		CloseActivePane,
+		FocusOtherPane,
+		AddVerticalPane,
+		AddHorizontalPane,
+		ArrangePanesVertically,
+		ArrangePanesHorizontally,
 
 		// OpenInNew
 		OpenInNewPane,

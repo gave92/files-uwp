@@ -30,23 +30,26 @@ namespace Files.App.Services
 
 		public async Task AddFolderAsync(string path)
 		{
-			if (JumpList.IsSupported())
+			try
 			{
-				var instance = await JumpList.LoadCurrentAsync();
-				// Disable automatic jumplist. It doesn't work.
-				instance.SystemGroupKind = JumpListSystemGroupKind.None;
-
-				// Saving to jumplist may fail randomly with error: ERROR_UNABLE_TO_REMOVE_REPLACED
-				// In that case app should just catch the error and proceed as usual
-				try
+				if (JumpList.IsSupported())
 				{
+					var instance = await JumpList.LoadCurrentAsync();
+					// Disable automatic jumplist. It doesn't work.
+					instance.SystemGroupKind = JumpListSystemGroupKind.None;
+
+					// Saving to jumplist may fail randomly with error: ERROR_UNABLE_TO_REMOVE_REPLACED
+					// In that case app should just catch the error and proceed as usual
 					if (instance is not null)
 					{
 						AddFolder(path, JumpListRecentGroupHeader, instance);
 						await instance.SaveAsync();
 					}
 				}
-				catch { }
+			}
+			catch (Exception ex)
+			{
+				App.Logger.LogWarning(ex, ex.Message);
 			}
 		}
 
@@ -77,6 +80,8 @@ namespace Files.App.Services
 		{
 			try
 			{
+				App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = false;
+
 				if (JumpList.IsSupported())
 				{
 					var instance = await JumpList.LoadCurrentAsync();
@@ -94,6 +99,10 @@ namespace Files.App.Services
 			}
 			catch
 			{
+			}
+			finally
+			{
+				App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = true;
 			}
 		}
 
@@ -123,7 +132,7 @@ namespace Files.App.Services
 
 				if (path.StartsWith("\\\\SHELL", StringComparison.OrdinalIgnoreCase))
 					displayName = "ThisPC".GetLocalizedResource();
-				
+
 				if (path.EndsWith('\\'))
 				{
 					var drivesViewModel = Ioc.Default.GetRequiredService<DrivesViewModel>();
