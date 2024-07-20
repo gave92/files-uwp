@@ -8,6 +8,8 @@
 	xmlns:local="using:Files.App.UserControls.TabBar"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:root="using:Files.App"
+	xmlns:uc="using:Files.App.UserControls"
+	xmlns:wctconverters="using:CommunityToolkit.WinUI.UI.Converters"
 	mc:Ignorable="d">
 
 	<local:BaseTabBar.Resources>
@@ -55,14 +57,20 @@
 					</MenuFlyout>
 				</ResourceDictionary>
 			</ResourceDictionary.MergedDictionaries>
+
+			<wctconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
 		</ResourceDictionary>
 	</local:BaseTabBar.Resources>
 
+	<!--  TODO: Use TitleBar of WinAppSdk 1.6 when available  -->
 	<Border
 		x:Name="TitlebarArea"
 		HorizontalAlignment="Stretch"
 		x:FieldModifier="public"
 		Background="Transparent">
+
+		<!--  TabBar + Draggable Right Padding  -->
 		<TabView
 			x:Name="HorizontalTabView"
 			Margin="0,10,0,0"
@@ -85,6 +93,120 @@
 			TabStripDragOver="TabView_TabStripDragOver"
 			TabStripDrop="TabView_TabStripDrop">
 
+			<!--  Header  -->
+			<TabView.TabStripHeader>
+				<Button
+					Width="30"
+					Height="30"
+					Margin="4,0,-2,0"
+					Padding="0"
+					VerticalAlignment="Center"
+					AutomationProperties.Name="{helpers:ResourceString Name=TabActions}"
+					Background="Transparent"
+					BorderThickness="0"
+					ToolTipService.ToolTip="{helpers:ResourceString Name=TabActions}"
+					Visibility="{x:Bind ShowTabActionsButton, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+
+					<uc:OpacityIcon
+						Width="16"
+						Height="16"
+						Style="{StaticResource ColorIconPaneFull}" />
+
+					<Button.Flyout>
+						<MenuFlyout Placement="BottomEdgeAlignedLeft">
+
+							<!--  New Window  -->
+							<uc:MenuFlyoutItemWithOpacityIcon
+								x:Name="OpenNewWindowTabActionButton"
+								Command="{x:Bind Commands.NewWindow}"
+								KeyboardAcceleratorTextOverride="{x:Bind Commands.NewWindow.HotKeyText, Mode=OneWay}"
+								OpacityStyle="{x:Bind Commands.NewWindow.OpacityStyle}"
+								Text="{x:Bind Commands.NewWindow.Label}" />
+
+							<!--  Enter Compact Overlay  -->
+							<uc:MenuFlyoutItemWithOpacityIcon
+								x:Name="EnterCompactOverlayTabActionButton"
+								x:Load="{x:Bind Commands.EnterCompactOverlay.IsExecutable, Mode=OneWay}"
+								Command="{x:Bind Commands.EnterCompactOverlay}"
+								OpacityStyle="{x:Bind Commands.EnterCompactOverlay.OpacityStyle}"
+								Text="{x:Bind Commands.EnterCompactOverlay.Label}" />
+
+							<!--  Exit Compact Overlay  -->
+							<uc:MenuFlyoutItemWithOpacityIcon
+								x:Name="ExitCompactOverlayTabActionButton"
+								x:Load="{x:Bind Commands.ExitCompactOverlay.IsExecutable, Mode=OneWay}"
+								Command="{x:Bind Commands.ExitCompactOverlay}"
+								OpacityStyle="{x:Bind Commands.ExitCompactOverlay.OpacityStyle}"
+								Text="{x:Bind Commands.ExitCompactOverlay.Label}" />
+
+							<!--  Add Pane  -->
+							<MenuFlyoutSubItem
+								x:Name="SplitPaneMenuItem"
+								x:Load="{x:Bind Commands.AddHorizontalPane.IsExecutable, Mode=OneWay}"
+								Text="{helpers:ResourceString Name=AddPane}">
+								<MenuFlyoutSubItem.Items>
+									<!--  Horizontal  -->
+									<uc:MenuFlyoutItemWithOpacityIcon
+										x:Name="AddHorizontalPaneTabActionButton"
+										Command="{x:Bind Commands.AddHorizontalPane, Mode=OneWay}"
+										KeyboardAcceleratorTextOverride="{x:Bind Commands.AddHorizontalPane.HotKeyText, Mode=OneWay}"
+										OpacityStyle="{x:Bind Commands.AddHorizontalPane.OpacityStyle}"
+										Text="{x:Bind Commands.AddHorizontalPane.Label}" />
+
+									<!--  Vertical  -->
+									<uc:MenuFlyoutItemWithOpacityIcon
+										x:Name="AddVerticalPaneTabActionButton"
+										Command="{x:Bind Commands.AddVerticalPane, Mode=OneWay}"
+										KeyboardAcceleratorTextOverride="{x:Bind Commands.AddVerticalPane.HotKeyText, Mode=OneWay}"
+										OpacityStyle="{x:Bind Commands.AddVerticalPane.OpacityStyle}"
+										Text="{x:Bind Commands.AddVerticalPane.Label}" />
+								</MenuFlyoutSubItem.Items>
+							</MenuFlyoutSubItem>
+
+							<!--  Arrange Panes  -->
+							<MenuFlyoutSubItem
+								x:Name="ArrangePanesMenuItem"
+								x:Load="{x:Bind Commands.CloseActivePane.IsExecutable, Mode=OneWay}"
+								Text="{helpers:ResourceString Name=ArrangePanes}">
+								<MenuFlyoutSubItem.Items>
+									<!--  Horizontal  -->
+									<uc:ToggleMenuFlyoutItemWithOpacityIcon
+										x:Name="ArrangePanesHorizontallyTabActionButton"
+										Command="{x:Bind Commands.ArrangePanesHorizontally, Mode=OneWay}"
+										IsChecked="{x:Bind Commands.ArrangePanesHorizontally.IsOn, Mode=OneWay}"
+										KeyboardAcceleratorTextOverride="{x:Bind Commands.ArrangePanesHorizontally.HotKeyText, Mode=OneWay}"
+										OpacityStyle="{x:Bind Commands.ArrangePanesHorizontally.OpacityStyle}"
+										Text="{x:Bind Commands.ArrangePanesHorizontally.Label}" />
+
+									<!--  Vertical  -->
+									<uc:ToggleMenuFlyoutItemWithOpacityIcon
+										x:Name="ArrangePanesVerticallyTabActionButton"
+										Command="{x:Bind Commands.ArrangePanesVertically, Mode=OneWay}"
+										IsChecked="{x:Bind Commands.ArrangePanesVertically.IsOn, Mode=OneWay}"
+										KeyboardAcceleratorTextOverride="{x:Bind Commands.ArrangePanesVertically.HotKeyText, Mode=OneWay}"
+										OpacityStyle="{x:Bind Commands.ArrangePanesVertically.OpacityStyle}"
+										Text="{x:Bind Commands.ArrangePanesVertically.Label}" />
+								</MenuFlyoutSubItem.Items>
+							</MenuFlyoutSubItem>
+
+							<!--  Close Active Pane  -->
+							<uc:MenuFlyoutItemWithOpacityIcon
+								x:Name="CloseActivePaneTabActionButton"
+								x:Load="{x:Bind Commands.CloseActivePane.IsExecutable, Mode=OneWay}"
+								Command="{x:Bind Commands.CloseActivePane}"
+								KeyboardAcceleratorTextOverride="{x:Bind Commands.CloseActivePane.HotKeyText, Mode=OneWay}"
+								Text="{x:Bind Commands.CloseActivePane.Label}">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Foreground="{ThemeResource App.Theme.IconBaseBrush}" Glyph="{x:Bind Commands.CloseActivePane.Glyph.BaseGlyph}" />
+								</MenuFlyoutItem.Icon>
+							</uc:MenuFlyoutItemWithOpacityIcon>
+
+						</MenuFlyout>
+					</Button.Flyout>
+
+				</Button>
+			</TabView.TabStripHeader>
+
 			<!--  Item Template  -->
 			<TabView.TabItemTemplate>
 				<DataTemplate x:DataType="local:TabBarItem">
@@ -102,7 +224,7 @@
 				</DataTemplate>
 			</TabView.TabItemTemplate>
 
-			<!--  TabStrip Footer  -->
+			<!--  Footer  -->
 			<TabView.TabStripFooter>
 				<Grid>
 					<Grid.ColumnDefinitions>

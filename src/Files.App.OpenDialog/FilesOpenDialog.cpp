@@ -26,8 +26,11 @@ using std::endl;
 
 CComPtr<IFileOpenDialog> GetSystemDialog()
 {
-	HINSTANCE lib = CoLoadLibrary(L"C:\\Windows\\System32\\comdlg32.dll", false);
-	BOOL(WINAPI * dllGetClassObject)(REFCLSID, REFIID, LPVOID*) =
+	WCHAR comdlg32Path[MAX_PATH];
+	ExpandEnvironmentStringsW(L"%WINDIR%\\System32\\comdlg32.dll", comdlg32Path, MAX_PATH - 1);
+
+	HINSTANCE lib = CoLoadLibrary(comdlg32Path, false);
+	BOOL(WINAPI* dllGetClassObject)(REFCLSID, REFIID, LPVOID*) = 
 		(BOOL(WINAPI*)(REFCLSID, REFIID, LPVOID*))GetProcAddress(lib, "DllGetClassObject");
 	CComPtr<IClassFactory> pClassFactory;
 	dllGetClassObject(CLSID_FileOpenDialog, IID_IClassFactory, (void**)&pClassFactory);
@@ -164,7 +167,7 @@ STDAPICALL CFilesOpenDialog::Show(HWND hwndOwner)
 	PWSTR pszPath = NULL;
 	WCHAR szBuf[MAX_PATH];
 	TCHAR args[1024] = { 0 };
-	ExpandEnvironmentStrings(L"%LOCALAPPDATA%\\Microsoft\\WindowsApps\\files.exe", szBuf, MAX_PATH - 1);
+	ExpandEnvironmentStringsW(L"%LOCALAPPDATA%\\Microsoft\\WindowsApps\\files.exe", szBuf, MAX_PATH - 1);
 
 	std::wstring appUserModelID = L"FILESDIALOG_" + std::to_wstring(GetCurrentProcessId()) + std::to_wstring(GetCurrentThreadId());
 
