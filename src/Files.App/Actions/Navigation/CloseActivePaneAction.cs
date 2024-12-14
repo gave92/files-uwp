@@ -14,10 +14,10 @@ namespace Files.App.Actions
 			=> "CloseActivePaneDescription".GetLocalizedResource();
 
 		public HotKey HotKey
-			=> new(Keys.W, KeyModifiers.CtrlShift);
+			=> new(Keys.W, KeyModifiers.CtrlAlt);
 
 		public RichGlyph Glyph
-			=> new("\uE89F");
+			=> new(themedIconStyle: "App.ThemedIcons.PanelLeftClose");
 
 		public bool IsExecutable
 			=> ContentPageContext.IsMultiPaneActive;

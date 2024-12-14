@@ -1,15 +1,15 @@
 ﻿// Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Runtime.InteropServices;
+using Windows.ApplicationModel;
 using Windows.Foundation;
+using Windows.System;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.Shell;
 using Windows.Win32.UI.WindowsAndMessaging;
-using Windows.ApplicationModel;
-using Windows.System;
 
 namespace Files.App.Utils.Taskbar
 {
@@ -27,7 +27,16 @@ namespace Files.App.Utils.Taskbar
 
 		// Fields
 
-		private readonly static Guid _trayIconGuid = new("684F2832-AC2B-4630-98C2-73D6AEBD46B7");
+		private readonly static Guid _trayIconGuid = AppLifecycleHelper.AppEnvironment switch
+		{
+			AppEnvironment.Dev => new Guid("684F2832-AC2B-4630-98C2-73D6AEBD4001"),
+			AppEnvironment.SideloadPreview => new Guid("684F2832-AC2B-4630-98C2-73D6AEBD4002"),
+			AppEnvironment.StorePreview => new Guid("684F2832-AC2B-4630-98C2-73D6AEBD4003"),
+			AppEnvironment.SideloadStable => new Guid("684F2832-AC2B-4630-98C2-73D6AEBD4004"),
+			AppEnvironment.StoreStable => new Guid("684F2832-AC2B-4630-98C2-73D6AEBD4005"),
+			_ => new Guid("684F2832-AC2B-4630-98C2-73D6AEBD4001")
+		};
+
 
 		private readonly SystemTrayIconWindow _IconWindow;
 
@@ -264,7 +273,7 @@ namespace Files.App.Utils.Taskbar
 			{
 				_lastLaunchDate = DateTime.Now;
 
-				_ = Launcher.LaunchUriAsync(new Uri("files-uwp:"));
+				_ = Launcher.LaunchUriAsync(new Uri("files-dev:"));
 			}
 			else
 				MainWindow.Instance.Activate();
@@ -279,7 +288,10 @@ namespace Files.App.Utils.Taskbar
 		{
 			Microsoft.Windows.AppLifecycle.AppInstance.Restart("");
 
-			Program.Pool.Release();
+			var pool = new Semaphore(0, 1, $"Files-{AppLifecycleHelper.AppEnvironment}-Instance", out var isNew);
+			if (!isNew)
+				pool.Release();
+
 			Environment.Exit(0);
 		}
 
@@ -288,8 +300,10 @@ namespace Files.App.Utils.Taskbar
 			Hide();
 
 			App.AppModel.ForceProcessTermination = true;
-			if (Program.Pool is not null)
-				Program.Pool.Release();
+
+			var pool = new Semaphore(0, 1, $"Files-{AppLifecycleHelper.AppEnvironment}-Instance", out var isNew);
+			if (!isNew)
+				pool.Release();
 			else
 				App.Current.Exit();
 		}

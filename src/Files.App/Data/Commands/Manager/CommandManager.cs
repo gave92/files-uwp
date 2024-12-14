@@ -1,10 +1,10 @@
 // Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using System.Collections.Frozen;
-using System.Collections.Immutable;
 using Files.App.Actions;
 using Microsoft.Extensions.Logging;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 
 namespace Files.App.Data.Commands
 {
@@ -51,6 +51,7 @@ namespace Files.App.Data.Commands
 		public IRichCommand Redo => commands[CommandCodes.Redo];
 		public IRichCommand Undo => commands[CommandCodes.Undo];
 		public IRichCommand ToggleShowHiddenItems => commands[CommandCodes.ToggleShowHiddenItems];
+		public IRichCommand ToggleDotFilesSetting => commands[CommandCodes.ToggleDotFilesSetting];
 		public IRichCommand ToggleShowFileExtensions => commands[CommandCodes.ToggleShowFileExtensions];
 		public IRichCommand TogglePreviewPane => commands[CommandCodes.TogglePreviewPane];
 		public IRichCommand ToggleDetailsPane => commands[CommandCodes.ToggleDetailsPane];
@@ -66,6 +67,7 @@ namespace Files.App.Data.Commands
 		public IRichCommand RestoreAllRecycleBin => commands[CommandCodes.RestoreAllRecycleBin];
 		public IRichCommand RefreshItems => commands[CommandCodes.RefreshItems];
 		public IRichCommand Rename => commands[CommandCodes.Rename];
+		public IRichCommand CreateAlternateDataStream => commands[CommandCodes.CreateAlternateDataStream];
 		public IRichCommand CreateShortcut => commands[CommandCodes.CreateShortcut];
 		public IRichCommand CreateShortcutFromDialog => commands[CommandCodes.CreateShortcutFromDialog];
 		public IRichCommand CreateFolder => commands[CommandCodes.CreateFolder];
@@ -80,10 +82,13 @@ namespace Files.App.Data.Commands
 		public IRichCommand SetAsLockscreenBackground => commands[CommandCodes.SetAsLockscreenBackground];
 		public IRichCommand SetAsAppBackground => commands[CommandCodes.SetAsAppBackground];
 		public IRichCommand CopyItem => commands[CommandCodes.CopyItem];
+		public IRichCommand CopyItemPath => commands[CommandCodes.CopyItemPath];
 		public IRichCommand CopyPath => commands[CommandCodes.CopyPath];
+		public IRichCommand CopyItemPathWithQuotes => commands[CommandCodes.CopyItemPathWithQuotes];
 		public IRichCommand CopyPathWithQuotes => commands[CommandCodes.CopyPathWithQuotes];
 		public IRichCommand CutItem => commands[CommandCodes.CutItem];
 		public IRichCommand PasteItem => commands[CommandCodes.PasteItem];
+		public IRichCommand PasteItemAsShortcut => commands[CommandCodes.PasteItemAsShortcut];
 		public IRichCommand PasteItemToSelection => commands[CommandCodes.PasteItemToSelection];
 		public IRichCommand DeleteItem => commands[CommandCodes.DeleteItem];
 		public IRichCommand DeleteItemPermanently => commands[CommandCodes.DeleteItemPermanently];
@@ -101,6 +106,7 @@ namespace Files.App.Data.Commands
 		public IRichCommand DecompressArchiveHere => commands[CommandCodes.DecompressArchiveHere];
 		public IRichCommand DecompressArchiveHereSmart => commands[CommandCodes.DecompressArchiveHereSmart];
 		public IRichCommand DecompressArchiveToChildFolder => commands[CommandCodes.DecompressArchiveToChildFolder];
+		public IRichCommand FlattenFolder => commands[CommandCodes.FlattenFolder];
 		public IRichCommand RotateLeft => commands[CommandCodes.RotateLeft];
 		public IRichCommand RotateRight => commands[CommandCodes.RotateRight];
 		public IRichCommand OpenItem => commands[CommandCodes.OpenItem];
@@ -109,9 +115,16 @@ namespace Files.App.Data.Commands
 		public IRichCommand OpenInVSCode => commands[CommandCodes.OpenInVSCode];
 		public IRichCommand OpenRepoInVSCode => commands[CommandCodes.OpenRepoInVSCode];
 		public IRichCommand OpenProperties => commands[CommandCodes.OpenProperties];
+		public IRichCommand OpenReleaseNotes => commands[CommandCodes.OpenReleaseNotes];
+		public IRichCommand OpenClassicProperties => commands[CommandCodes.OpenClassicProperties];
+		public IRichCommand OpenStorageSense => commands[CommandCodes.OpenStorageSense];
+		public IRichCommand OpenStorageSenseFromHome => commands[CommandCodes.OpenStorageSenseFromHome];
+		public IRichCommand OpenStorageSenseFromSidebar => commands[CommandCodes.OpenStorageSenseFromSidebar];
 		public IRichCommand OpenSettings => commands[CommandCodes.OpenSettings];
 		public IRichCommand OpenTerminal => commands[CommandCodes.OpenTerminal];
 		public IRichCommand OpenTerminalAsAdmin => commands[CommandCodes.OpenTerminalAsAdmin];
+		public IRichCommand OpenTerminalFromSidebar => commands[CommandCodes.OpenTerminalFromSidebar];
+		public IRichCommand OpenTerminalFromHome => commands[CommandCodes.OpenTerminalFromHome];
 		public IRichCommand OpenCommandPalette => commands[CommandCodes.OpenCommandPalette];
 		public IRichCommand EditInNotepad => commands[CommandCodes.EditInNotepad];
 		public IRichCommand LayoutDecreaseSize => commands[CommandCodes.LayoutDecreaseSize];
@@ -167,9 +180,12 @@ namespace Files.App.Data.Commands
 		public IRichCommand NewWindow => commands[CommandCodes.NewWindow];
 		public IRichCommand NewTab => commands[CommandCodes.NewTab];
 		public IRichCommand FormatDrive => commands[CommandCodes.FormatDrive];
+		public IRichCommand FormatDriveFromHome => commands[CommandCodes.FormatDriveFromHome];
+		public IRichCommand FormatDriveFromSidebar => commands[CommandCodes.FormatDriveFromSidebar];
 		public IRichCommand NavigateBack => commands[CommandCodes.NavigateBack];
 		public IRichCommand NavigateForward => commands[CommandCodes.NavigateForward];
 		public IRichCommand NavigateUp => commands[CommandCodes.NavigateUp];
+		public IRichCommand NavigateHome => commands[CommandCodes.NavigateHome];
 		public IRichCommand DuplicateCurrentTab => commands[CommandCodes.DuplicateCurrentTab];
 		public IRichCommand DuplicateSelectedTab => commands[CommandCodes.DuplicateSelectedTab];
 		public IRichCommand CloseTabsToTheLeftCurrent => commands[CommandCodes.CloseTabsToTheLeftCurrent];
@@ -178,6 +194,7 @@ namespace Files.App.Data.Commands
 		public IRichCommand CloseTabsToTheRightSelected => commands[CommandCodes.CloseTabsToTheRightSelected];
 		public IRichCommand CloseOtherTabsCurrent => commands[CommandCodes.CloseOtherTabsCurrent];
 		public IRichCommand CloseOtherTabsSelected => commands[CommandCodes.CloseOtherTabsSelected];
+		public IRichCommand CloseAllTabs => commands[CommandCodes.CloseAllTabs];
 		public IRichCommand OpenInNewPaneAction => commands[CommandCodes.OpenInNewPane];
 		public IRichCommand OpenInNewPaneFromHomeAction => commands[CommandCodes.OpenInNewPaneFromHome];
 		public IRichCommand OpenInNewPaneFromSidebarAction => commands[CommandCodes.OpenInNewPaneFromSidebar];
@@ -237,6 +254,7 @@ namespace Files.App.Data.Commands
 			[CommandCodes.Redo] = new RedoAction(),
 			[CommandCodes.Undo] = new UndoAction(),
 			[CommandCodes.ToggleShowHiddenItems] = new ToggleShowHiddenItemsAction(),
+			[CommandCodes.ToggleDotFilesSetting] = new ToggleDotFilesSettingAction(),
 			[CommandCodes.ToggleShowFileExtensions] = new ToggleShowFileExtensionsAction(),
 			[CommandCodes.TogglePreviewPane] = new TogglePreviewPaneAction(),
 			[CommandCodes.ToggleDetailsPane] = new ToggleDetailsPaneAction(),
@@ -252,6 +270,7 @@ namespace Files.App.Data.Commands
 			[CommandCodes.RestoreAllRecycleBin] = new RestoreAllRecycleBinAction(),
 			[CommandCodes.RefreshItems] = new RefreshItemsAction(),
 			[CommandCodes.Rename] = new RenameAction(),
+			[CommandCodes.CreateAlternateDataStream] = new CreateAlternateDataStreamAction(),
 			[CommandCodes.CreateShortcut] = new CreateShortcutAction(),
 			[CommandCodes.CreateShortcutFromDialog] = new CreateShortcutFromDialogAction(),
 			[CommandCodes.CreateFolder] = new CreateFolderAction(),
@@ -266,10 +285,13 @@ namespace Files.App.Data.Commands
 			[CommandCodes.SetAsLockscreenBackground] = new SetAsLockscreenBackgroundAction(),
 			[CommandCodes.SetAsAppBackground] = new SetAsAppBackgroundAction(),
 			[CommandCodes.CopyItem] = new CopyItemAction(),
+			[CommandCodes.CopyItemPath] = new CopyItemPathAction(),
 			[CommandCodes.CopyPath] = new CopyPathAction(),
+			[CommandCodes.CopyItemPathWithQuotes] = new CopyItemPathWithQuotesAction(),
 			[CommandCodes.CopyPathWithQuotes] = new CopyPathWithQuotesAction(),
 			[CommandCodes.CutItem] = new CutItemAction(),
 			[CommandCodes.PasteItem] = new PasteItemAction(),
+			[CommandCodes.PasteItemAsShortcut] = new PasteItemAsShortcutAction(),
 			[CommandCodes.PasteItemToSelection] = new PasteItemToSelectionAction(),
 			[CommandCodes.DeleteItem] = new DeleteItemAction(),
 			[CommandCodes.DeleteItemPermanently] = new DeleteItemPermanentlyAction(),
@@ -287,6 +309,7 @@ namespace Files.App.Data.Commands
 			[CommandCodes.DecompressArchiveHere] = new DecompressArchiveHere(),
 			[CommandCodes.DecompressArchiveHereSmart] = new DecompressArchiveHereSmart(),
 			[CommandCodes.DecompressArchiveToChildFolder] = new DecompressArchiveToChildFolderAction(),
+			[CommandCodes.FlattenFolder] = new FlattenFolderAction(),
 			[CommandCodes.RotateLeft] = new RotateLeftAction(),
 			[CommandCodes.RotateRight] = new RotateRightAction(),
 			[CommandCodes.OpenItem] = new OpenItemAction(),
@@ -295,9 +318,16 @@ namespace Files.App.Data.Commands
 			[CommandCodes.OpenInVSCode] = new OpenInVSCodeAction(),
 			[CommandCodes.OpenRepoInVSCode] = new OpenRepoInVSCodeAction(),
 			[CommandCodes.OpenProperties] = new OpenPropertiesAction(),
+			[CommandCodes.OpenReleaseNotes] = new OpenReleaseNotesAction(),
+			[CommandCodes.OpenClassicProperties] = new OpenClassicPropertiesAction(),
+			[CommandCodes.OpenStorageSense] = new OpenStorageSenseAction(),
+			[CommandCodes.OpenStorageSenseFromHome] = new OpenStorageSenseFromHomeAction(),
+			[CommandCodes.OpenStorageSenseFromSidebar] = new OpenStorageSenseFromSidebarAction(),
 			[CommandCodes.OpenSettings] = new OpenSettingsAction(),
 			[CommandCodes.OpenTerminal] = new OpenTerminalAction(),
 			[CommandCodes.OpenTerminalAsAdmin] = new OpenTerminalAsAdminAction(),
+			[CommandCodes.OpenTerminalFromSidebar] = new OpenTerminalFromSidebarAction(),
+			[CommandCodes.OpenTerminalFromHome] = new OpenTerminalFromHomeAction(),
 			[CommandCodes.OpenCommandPalette] = new OpenCommandPaletteAction(),
 			[CommandCodes.EditInNotepad] = new EditInNotepadAction(),
 			[CommandCodes.LayoutDecreaseSize] = new LayoutDecreaseSizeAction(),
@@ -353,9 +383,12 @@ namespace Files.App.Data.Commands
 			[CommandCodes.NewWindow] = new NewWindowAction(),
 			[CommandCodes.NewTab] = new NewTabAction(),
 			[CommandCodes.FormatDrive] = new FormatDriveAction(),
+			[CommandCodes.FormatDriveFromHome] = new FormatDriveFromHomeAction(),
+			[CommandCodes.FormatDriveFromSidebar] = new FormatDriveFromSidebarAction(),
 			[CommandCodes.NavigateBack] = new NavigateBackAction(),
 			[CommandCodes.NavigateForward] = new NavigateForwardAction(),
 			[CommandCodes.NavigateUp] = new NavigateUpAction(),
+			[CommandCodes.NavigateHome] = new NavigateHomeAction(),
 			[CommandCodes.DuplicateCurrentTab] = new DuplicateCurrentTabAction(),
 			[CommandCodes.DuplicateSelectedTab] = new DuplicateSelectedTabAction(),
 			[CommandCodes.CloseTabsToTheLeftCurrent] = new CloseTabsToTheLeftCurrentAction(),
@@ -364,6 +397,7 @@ namespace Files.App.Data.Commands
 			[CommandCodes.CloseTabsToTheRightSelected] = new CloseTabsToTheRightSelectedAction(),
 			[CommandCodes.CloseOtherTabsCurrent] = new CloseOtherTabsCurrentAction(),
 			[CommandCodes.CloseOtherTabsSelected] = new CloseOtherTabsSelectedAction(),
+			[CommandCodes.CloseAllTabs] = new CloseAllTabsAction(),
 			[CommandCodes.OpenInNewPane] = new OpenInNewPaneAction(),
 			[CommandCodes.OpenInNewPaneFromHome] = new OpenInNewPaneFromHomeAction(),
 			[CommandCodes.OpenInNewPaneFromSidebar] = new OpenInNewPaneFromSidebarAction(),
@@ -471,7 +505,7 @@ namespace Files.App.Data.Commands
 					.SelectMany(command => command.HotKeys, (command, hotKey) => (Command: command, HotKey: hotKey))
 					.ToImmutableDictionary(item => item.HotKey, item => item.Command);
 
-				App.Logger.LogWarning(ex, "The app found some keys in different commands are duplicated and are using default key bindings for those commands.");
+				App.Logger.LogInformation(ex, "The app found some keys in different commands are duplicated and are using default key bindings for those commands.");
 			}
 			catch (Exception ex)
 			{

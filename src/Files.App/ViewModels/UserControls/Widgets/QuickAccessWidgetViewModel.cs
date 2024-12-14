@@ -28,10 +28,6 @@ namespace Files.App.ViewModels.UserControls.Widgets
 		public bool ShowMenuFlyout => false;
 		public MenuFlyoutItem? MenuFlyoutItem => null;
 
-		// Commands
-
-		public ICommand OpenInNewPaneCommand { get; set; } = null!;
-
 		// Constructor
 
 		public QuickAccessWidgetViewModel()
@@ -40,9 +36,6 @@ namespace Files.App.ViewModels.UserControls.Widgets
 
 			Items.CollectionChanged += Items_CollectionChanged;
 
-			OpenInNewTabCommand = new AsyncRelayCommand<WidgetFolderCardItem>(ExecuteOpenInNewTabCommand);
-			OpenInNewWindowCommand = new AsyncRelayCommand<WidgetFolderCardItem>(ExecuteOpenInNewWindowCommand);
-			OpenInNewPaneCommand = new RelayCommand<WidgetFolderCardItem>(ExecuteOpenInNewPaneCommand);
 			OpenPropertiesCommand = new RelayCommand<WidgetFolderCardItem>(ExecuteOpenPropertiesCommand);
 			PinToSidebarCommand = new AsyncRelayCommand<WidgetFolderCardItem>(ExecutePinToSidebarCommand);
 			UnpinFromSidebarCommand = new AsyncRelayCommand<WidgetFolderCardItem>(ExecuteUnpinFromSidebarCommand);
@@ -67,13 +60,22 @@ namespace Files.App.ViewModels.UserControls.Widgets
 		{
 			return new List<ContextMenuFlyoutItemViewModel>()
 			{
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewTabFromHomeAction).Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewWindowFromHomeAction).Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewPaneFromHomeAction).Build(),
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewTabFromHomeAction)
+				{
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewTab
+				}.Build(),
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewWindowFromHomeAction)
+				{
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewWindow
+				}.Build(),
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewPaneFromHomeAction)
+				{
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewPane
+				}.Build(),
 				new()
 				{
 					Text = "PinFolderToSidebar".GetLocalizedResource(),
-					OpacityIcon = new() { OpacityIconStyle = "Icons.Pin.16x16" },
+					ThemedIconModel = new() { ThemedIconStyle = "App.ThemedIcons.FavoritePin" },
 					Command = PinToSidebarCommand,
 					CommandParameter = item,
 					ShowItem = !isPinned
@@ -81,7 +83,7 @@ namespace Files.App.ViewModels.UserControls.Widgets
 				new()
 				{
 					Text = "UnpinFolderFromSidebar".GetLocalizedResource(),
-					OpacityIcon = new() { OpacityIconStyle = "Icons.Unpin.16x16" },
+					ThemedIconModel = new() { ThemedIconStyle = "App.ThemedIcons.FavoritePinRemove" },
 					Command = UnpinFromSidebarCommand,
 					CommandParameter = item,
 					ShowItem = isPinned
@@ -91,14 +93,20 @@ namespace Files.App.ViewModels.UserControls.Widgets
 					Text = "SendTo".GetLocalizedResource(),
 					Tag = "SendToPlaceholder",
 					ShowItem = UserSettingsService.GeneralSettingsService.ShowSendToMenu
-				},              
+				},
 				new()
 				{
 					Text = "Properties".GetLocalizedResource(),
-					OpacityIcon = new() { OpacityIconStyle = "ColorIconProperties" },
+					ThemedIconModel = new() { ThemedIconStyle = "App.ThemedIcons.Properties" },
 					Command = OpenPropertiesCommand,
 					CommandParameter = item
 				},
+				new ContextMenuFlyoutItemViewModel()
+				{
+					ItemType = ContextMenuFlyoutItemType.Separator,
+					ShowItem = CommandManager.OpenTerminalFromHome.IsExecutable
+				},
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenTerminalFromHome).Build(),
 				new()
 				{
 					ItemType = ContextMenuFlyoutItemType.Separator,
@@ -250,14 +258,6 @@ namespace Files.App.ViewModels.UserControls.Widgets
 			await QuickAccessService.UnpinFromSidebarAsync(item.Path);
 
 			ModifyItemAsync(this, new(new[] { item.Path }, false));
-		}
-
-		private void ExecuteOpenInNewPaneCommand(WidgetFolderCardItem? item)
-		{
-			if (item is null || item.Path is null)
-				return;
-
-			ContentPageContext.ShellPage!.PaneHolder?.OpenSecondaryPane(item.Path);
 		}
 
 		private void ExecuteOpenPropertiesCommand(WidgetFolderCardItem? item)

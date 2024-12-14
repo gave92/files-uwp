@@ -3,15 +3,19 @@
 
 using Files.Shared.Helpers;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Windows.Storage;
 using Windows.Storage.Search;
+using Microsoft.UI.Xaml.Media;
+using Windows.Storage;
 using Windows.System;
+using System.IO;
 
 namespace Files.App.Helpers
 {
 	public static class NavigationHelpers
 	{
+		private static readonly IWindowsRecentItemsService WindowsRecentItemsService = Ioc.Default.GetRequiredService<IWindowsRecentItemsService>();
 		private static MainPageViewModel MainPageViewModel { get; } = Ioc.Default.GetRequiredService<MainPageViewModel>();
 		private static DrivesViewModel DrivesViewModel { get; } = Ioc.Default.GetRequiredService<DrivesViewModel>();
 		private static INetworkService NetworkService { get; } = Ioc.Default.GetRequiredService<INetworkService>();
@@ -125,9 +129,38 @@ namespace Files.App.Helpers
 				var a1 = navigationParameter is PaneNavigationArguments pna1 ? pna1 : new PaneNavigationArguments() { LeftPaneNavPathParam = navigationParameter as string };
 				var a2 = navigationArg is PaneNavigationArguments pna2 ? pna2 : new PaneNavigationArguments() { LeftPaneNavPathParam = navigationArg as string };
 
-				if (a1 == a2)
+				if (a1.LeftPaneNavPathParam == a2.LeftPaneNavPathParam && a1.RightPaneNavPathParam == a2.RightPaneNavPathParam)
 					(tabItem.Header, tabItem.IconSource, tabItem.ToolTipText) = result;
 			}
+		}
+
+		public static async Task<ImageSource?> GetIconForPathAsync(string path)
+		{
+			ImageSource? imageSource;
+			if (string.IsNullOrEmpty(path) || path == "Home")
+				imageSource = new BitmapImage(new Uri(Constants.FluentIconsPaths.HomeIcon));
+			else if (WSLDistroManager.TryGetDistro(path, out WslDistroItem? wslDistro) && path.Equals(wslDistro.Path))
+				imageSource = new BitmapImage(wslDistro.Icon);
+			else
+			{
+				var normalizedPath = PathNormalization.NormalizePath(path);
+				var matchingCloudDrive = CloudDrivesManager.Drives.FirstOrDefault(x => normalizedPath.Equals(PathNormalization.NormalizePath(x.Path), StringComparison.OrdinalIgnoreCase));
+				imageSource = matchingCloudDrive?.Icon;
+
+				if (imageSource is null)
+				{
+					var result = await FileThumbnailHelper.GetIconAsync(
+						path,
+						Constants.ShellIconSizes.Small,
+						true,
+						IconOptions.ReturnIconOnly | IconOptions.UseCurrentScale);
+
+					if (result is not null)
+						imageSource = await result.ToBitmapAsync();
+				}
+			}
+
+			return imageSource;
 		}
 
 		public static async Task<(string tabLocationHeader, IconSource tabIcon, string toolTipText)> GetSelectedTabInfoAsync(string currentPath)
@@ -220,17 +253,10 @@ namespace Files.App.Helpers
 						windowTitle = $"{leftTabInfo.tabLocationHeader} | {rightTabInfo.tabLocationHeader}";
 					}
 					else
-					{
 						(windowTitle, _, _) = await GetSelectedTabInfoAsync(paneArgs.LeftPaneNavPathParam);
-					}
 				}
 				else if (navigationArg is string pathArgs)
-				{
 					(windowTitle, _, _) = await GetSelectedTabInfoAsync(pathArgs);
-				}
-
-				if (MainPageViewModel.AppInstances.Count > 1)
-					windowTitle = $"{windowTitle} ({MainPageViewModel.AppInstances.Count})";
 
 				if (navigationArg == MainPageViewModel.SelectedTabItem?.NavigationParameter?.NavigationParameter)
 					MainWindow.Instance.AppWindow.Title = $"{windowTitle} - Files";
@@ -254,14 +280,14 @@ namespace Files.App.Helpers
 			if (string.IsNullOrWhiteSpace(path))
 				return Task.FromResult(false);
 
-			var folderUri = new Uri($"files-uwp:?folder={Uri.EscapeDataString(path)}");
+			var folderUri = new Uri($"files-dev:?folder={Uri.EscapeDataString(path)}");
 
 			return Launcher.LaunchUriAsync(folderUri).AsTask();
 		}
 
 		public static Task<bool> OpenTabInNewWindowAsync(string tabArgs)
 		{
-			var folderUri = new Uri($"files-uwp:?tab={Uri.EscapeDataString(tabArgs)}");
+			var folderUri = new Uri($"files-dev:?tab={Uri.EscapeDataString(tabArgs)}");
 			return Launcher.LaunchUriAsync(folderUri).AsTask();
 		}
 
@@ -275,8 +301,7 @@ namespace Files.App.Helpers
 
 		public static Task LaunchNewWindowAsync()
 		{
-			var filesUWPUri = new Uri("files-uwp:?window=");
-			return Launcher.LaunchUriAsync(filesUWPUri).AsTask();
+			return Launcher.LaunchUriAsync(new Uri("files-dev:?window=")).AsTask();
 		}
 
 		public static async Task OpenSelectedItemsAsync(IShellPage associatedInstance, bool openViaApplicationPicker = false)
@@ -495,7 +520,7 @@ namespace Files.App.Helpers
 					{
 						// Add location to Recent Items List
 						if (childFolder.Item is SystemStorageFolder)
-							App.RecentItemsManager.AddToRecentItems(childFolder.Path);
+							WindowsRecentItemsService.Add(childFolder.Path);
 					});
 				if (!opened)
 					opened = (FilesystemResult)FolderHelpers.CheckFolderAccessWithWin32(path);
@@ -527,7 +552,7 @@ namespace Files.App.Helpers
 						StorageFileWithPath childFile = await associatedInstance.ShellViewModel.GetFileWithPathFromPathAsync(shortcutInfo.TargetPath);
 						// Add location to Recent Items List
 						if (childFile?.Item is SystemStorageFile)
-							App.RecentItemsManager.AddToRecentItems(childFile.Path);
+							WindowsRecentItemsService.Add(childFile.Path);
 					}
 					await Win32Helper.InvokeWin32ComponentAsync(shortcutInfo.TargetPath, associatedInstance, $"{args} {shortcutInfo.Arguments}", shortcutInfo.RunAsAdmin, shortcutInfo.WorkingDirectory);
 				}
@@ -544,7 +569,7 @@ namespace Files.App.Helpers
 					{
 						// Add location to Recent Items List
 						if (childFile.Item is SystemStorageFile)
-							App.RecentItemsManager.AddToRecentItems(childFile.Path);
+							WindowsRecentItemsService.Add(childFile.Path);
 
 						if (openViaApplicationPicker)
 						{
@@ -557,85 +582,79 @@ namespace Files.App.Helpers
 						}
 						else
 						{
-							//try using launcher first
-							bool launchSuccess = false;
+							var fileExtension = Path.GetExtension(path);
 
-							BaseStorageFileQueryResult? fileQueryResult = null;
-
-							//Get folder to create a file query (to pass to apps like Photos, Movies & TV..., needed to scroll through the folder like what Windows Explorer does)
-							BaseStorageFolder currentFolder = await associatedInstance.ShellViewModel.GetFolderFromPathAsync(PathNormalization.GetParentDir(path));
-
-							if (currentFolder is not null)
+							// Use NeighboringFilesQuery to launch photos
+							// The query options no longer work with the Windows 11 Photo App but they still work for Windows 10
+							if (FileExtensionHelpers.IsImageFile(fileExtension))
 							{
-								QueryOptions queryOptions = new(CommonFileQuery.DefaultQuery, null);
-
-								//We can have many sort entries
-								SortEntry sortEntry = new()
+								//try using launcher first
+								bool launchSuccess = false;
+								BaseStorageFileQueryResult? fileQueryResult = null;
+								//Get folder to create a file query (to pass to apps like Photos, Movies & TV..., needed to scroll through the folder like what Windows Explorer does)
+								BaseStorageFolder currentFolder = await associatedInstance.ShellViewModel.GetFolderFromPathAsync(PathNormalization.GetParentDir(path));
+								if (currentFolder is not null)
 								{
-									AscendingOrder = associatedInstance.InstanceViewModel.FolderSettings.DirectorySortDirection == SortDirection.Ascending
-								};
-
-								//Basically we tell to the launched app to follow how we sorted the files in the directory.
-								var sortOption = associatedInstance.InstanceViewModel.FolderSettings.DirectorySortOption;
-
-								switch (sortOption)
-								{
-									case SortOption.Name:
-										sortEntry.PropertyName = "System.ItemNameDisplay";
-										queryOptions.SortOrder.Clear();
-										queryOptions.SortOrder.Add(sortEntry);
-										break;
-
-									case SortOption.DateModified:
-										sortEntry.PropertyName = "System.DateModified";
-										queryOptions.SortOrder.Clear();
-										queryOptions.SortOrder.Add(sortEntry);
-										break;
-
-									case SortOption.DateCreated:
-										sortEntry.PropertyName = "System.DateCreated";
-										queryOptions.SortOrder.Clear();
-										queryOptions.SortOrder.Add(sortEntry);
-										break;
-
-									//Unfortunately this is unsupported | Remarks: https://learn.microsoft.com/uwp/api/windows.storage.search.queryoptions.sortorder?view=winrt-19041
-									//case Enums.SortOption.Size:
-
-									//sortEntry.PropertyName = "System.TotalFileSize";
-									//queryOptions.SortOrder.Clear();
-									//queryOptions.SortOrder.Add(sortEntry);
-									//break;
-
-									//Unfortunately this is unsupported | Remarks: https://learn.microsoft.com/uwp/api/windows.storage.search.queryoptions.sortorder?view=winrt-19041
-									//case Enums.SortOption.FileType:
-
-									//sortEntry.PropertyName = "System.FileExtension";
-									//queryOptions.SortOrder.Clear();
-									//queryOptions.SortOrder.Add(sortEntry);
-									//break;
-
-									//Handle unsupported
-									default:
-										//keep the default one in SortOrder IList
-										break;
+									QueryOptions queryOptions = new(CommonFileQuery.DefaultQuery, null);
+									//We can have many sort entries
+									SortEntry sortEntry = new()
+									{
+										AscendingOrder = associatedInstance.InstanceViewModel.FolderSettings.DirectorySortDirection == SortDirection.Ascending
+									};
+									//Basically we tell to the launched app to follow how we sorted the files in the directory.
+									var sortOption = associatedInstance.InstanceViewModel.FolderSettings.DirectorySortOption;
+									switch (sortOption)
+									{
+										case SortOption.Name:
+											sortEntry.PropertyName = "System.ItemNameDisplay";
+											queryOptions.SortOrder.Clear();
+											queryOptions.SortOrder.Add(sortEntry);
+											break;
+										case SortOption.DateModified:
+											sortEntry.PropertyName = "System.DateModified";
+											queryOptions.SortOrder.Clear();
+											queryOptions.SortOrder.Add(sortEntry);
+											break;
+										case SortOption.DateCreated:
+											sortEntry.PropertyName = "System.DateCreated";
+											queryOptions.SortOrder.Clear();
+											queryOptions.SortOrder.Add(sortEntry);
+											break;
+										//Unfortunately this is unsupported | Remarks: https://learn.microsoft.com/uwp/api/windows.storage.search.queryoptions.sortorder?view=winrt-19041
+										//case Enums.SortOption.Size:
+										//sortEntry.PropertyName = "System.TotalFileSize";
+										//queryOptions.SortOrder.Clear();
+										//queryOptions.SortOrder.Add(sortEntry);
+										//break;
+										//Unfortunately this is unsupported | Remarks: https://learn.microsoft.com/uwp/api/windows.storage.search.queryoptions.sortorder?view=winrt-19041
+										//case Enums.SortOption.FileType:
+										//sortEntry.PropertyName = "System.FileExtension";
+										//queryOptions.SortOrder.Clear();
+										//queryOptions.SortOrder.Add(sortEntry);
+										//break;
+										//Handle unsupported
+										default:
+											//keep the default one in SortOrder IList
+											break;
+									}
+									var options = InitializeWithWindow(new LauncherOptions());
+									if (currentFolder.AreQueryOptionsSupported(queryOptions))
+									{
+										fileQueryResult = currentFolder.CreateFileQueryWithOptions(queryOptions);
+										options.NeighboringFilesQuery = fileQueryResult.ToStorageFileQueryResult();
+									}
+									// Now launch file with options.
+									var storageItem = (StorageFile)await FilesystemTasks.Wrap(() => childFile.Item.ToStorageFileAsync().AsTask());
+									if (storageItem is not null)
+										launchSuccess = await Launcher.LaunchFileAsync(storageItem, options);
 								}
-
-								var options = InitializeWithWindow(new LauncherOptions());
-								if (currentFolder.AreQueryOptionsSupported(queryOptions))
-								{
-									fileQueryResult = currentFolder.CreateFileQueryWithOptions(queryOptions);
-									options.NeighboringFilesQuery = fileQueryResult.ToStorageFileQueryResult();
-								}
-
-								// Now launch file with options.
-								var storageItem = (StorageFile)await FilesystemTasks.Wrap(() => childFile.Item.ToStorageFileAsync().AsTask());
-
-								if (storageItem is not null)
-									launchSuccess = await Launcher.LaunchFileAsync(storageItem, options);
+								if (!launchSuccess)
+									await Win32Helper.InvokeWin32ComponentAsync(path, associatedInstance, args);
 							}
-
-							if (!launchSuccess)
+							else
+							{
 								await Win32Helper.InvokeWin32ComponentAsync(path, associatedInstance, args);
+							}
 						}
 					});
 			}

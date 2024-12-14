@@ -55,6 +55,8 @@ namespace Files.App.ViewModels
 		private readonly IFileTagsSettingsService fileTagsSettingsService = Ioc.Default.GetRequiredService<IFileTagsSettingsService>();
 		private readonly ISizeProvider folderSizeProvider = Ioc.Default.GetRequiredService<ISizeProvider>();
 		private readonly IStorageCacheService fileListCache = Ioc.Default.GetRequiredService<IStorageCacheService>();
+		private readonly IWindowsSecurityService WindowsSecurityService = Ioc.Default.GetRequiredService<IWindowsSecurityService>();
+		private readonly IStorageTrashBinService StorageTrashBinService = Ioc.Default.GetRequiredService<IStorageTrashBinService>();
 
 		// Only used for Binding and ApplyFilesAndFoldersChangesAsync, don't manipulate on this!
 		public BulkConcurrentObservableCollection<ListedItem> FilesAndFolders { get; }
@@ -535,9 +537,9 @@ namespace Files.App.ViewModels
 			fileTagsSettingsService.OnTagsUpdated += FileTagsSettingsService_OnSettingUpdated;
 			folderSizeProvider.SizeChanged += FolderSizeProvider_SizeChanged;
 			folderSettings.LayoutModeChangeRequested += LayoutModeChangeRequested;
-			RecycleBinManager.Default.RecycleBinItemCreated += RecycleBinItemCreatedAsync;
-			RecycleBinManager.Default.RecycleBinItemDeleted += RecycleBinItemDeletedAsync;
-			RecycleBinManager.Default.RecycleBinRefreshRequested += RecycleBinRefreshRequestedAsync;
+			StorageTrashBinService.Watcher.ItemAdded += RecycleBinItemCreatedAsync;
+			StorageTrashBinService.Watcher.ItemDeleted += RecycleBinItemDeletedAsync;
+			StorageTrashBinService.Watcher.RefreshRequested += RecycleBinRefreshRequestedAsync;
 		}
 
 		private async void LayoutModeChangeRequested(object? sender, LayoutModeEventArgs e)
@@ -601,7 +603,7 @@ namespace Files.App.ViewModels
 			try
 			{
 				var matchingItem = filesAndFolders.ToList().FirstOrDefault(x => x.ItemPath == e.Path);
-				if (matchingItem is not null)
+				if (matchingItem is not null && (e.ValueState is not SizeChangedValueState.Intermediate || (long)e.NewSize > matchingItem.FileSizeBytes))
 				{
 					await dispatcherQueue.EnqueueOrInvokeAsync(() =>
 					{
@@ -1268,9 +1270,7 @@ namespace Files.App.ViewModels
 			if (item.SyncStatusUI.LoadSyncStatus)
 				return false;
 
-			return item.IsShortcut
-				? ElevationHelpers.IsElevationRequired(((ShortcutItem)item).TargetPath)
-				: ElevationHelpers.IsElevationRequired(item.ItemPath);
+			return WindowsSecurityService.IsElevationRequired(item.IsShortcut ? ((ShortcutItem)item).TargetPath : item.ItemPath);
 		}
 
 		public async Task LoadGitPropertiesAsync(GitItem gitItem)
@@ -1310,10 +1310,10 @@ namespace Files.App.ViewModels
 								{
 									gitItem.UnmergedGitStatusIcon = gitItemModel.Status switch
 									{
-										ChangeKind.Added => (Microsoft.UI.Xaml.Style)Microsoft.UI.Xaml.Application.Current.Resources["ColorIconGitAdded"],
-										ChangeKind.Deleted => (Microsoft.UI.Xaml.Style)Microsoft.UI.Xaml.Application.Current.Resources["ColorIconGitDeleted"],
-										ChangeKind.Modified => (Microsoft.UI.Xaml.Style)Microsoft.UI.Xaml.Application.Current.Resources["ColorIconGitModified"],
-										ChangeKind.Untracked => (Microsoft.UI.Xaml.Style)Microsoft.UI.Xaml.Application.Current.Resources["ColorIconGitUntracked"],
+										ChangeKind.Added => (Microsoft.UI.Xaml.Style)Microsoft.UI.Xaml.Application.Current.Resources["App.ThemedIcons.Status.Added"],
+										ChangeKind.Deleted => (Microsoft.UI.Xaml.Style)Microsoft.UI.Xaml.Application.Current.Resources["App.ThemedIcons.Status.Removed"],
+										ChangeKind.Modified => (Microsoft.UI.Xaml.Style)Microsoft.UI.Xaml.Application.Current.Resources["App.ThemedIcons.Status.Modified"],
+										ChangeKind.Untracked => (Microsoft.UI.Xaml.Style)Microsoft.UI.Xaml.Application.Current.Resources["App.ThemedIcons.Status.Removed"],
 										_ => null,
 									};
 									gitItem.UnmergedGitStatusName = gitItemModel.StatusHumanized;
@@ -1729,7 +1729,6 @@ namespace Files.App.ViewModels
 						List<ListedItem> fileList = await Win32StorageEnumerator.ListEntries(path, hFile, findData, cancellationToken, -1, intermediateAction: async (intermediateList) =>
 						{
 							filesAndFolders.AddRange(intermediateList);
-							await OrderFilesAndFoldersAsync();
 							await ApplyFilesAndFoldersChangesAsync();
 						});
 
@@ -1813,6 +1812,12 @@ namespace Files.App.ViewModels
 
 		public void CheckForBackgroundImage()
 		{
+			if (WorkingDirectory == "Home")
+			{
+				FolderBackgroundImageSource = null;
+				return;
+			}
+
 			var filesAppSection = DesktopIni?.FirstOrDefault(x => x.SectionName == "FilesApp");
 			if (filesAppSection is null || folderSettings.LayoutMode is FolderLayoutModes.ColumnView)
 			{
@@ -1829,11 +1834,19 @@ namespace Files.App.ViewModels
 			}
 			else
 			{
-				FolderBackgroundImageSource = new BitmapImage
+				try
 				{
-					UriSource = new Uri(backgroundImage, UriKind.RelativeOrAbsolute),
-					CreateOptions = BitmapCreateOptions.IgnoreImageCache
-				};
+					FolderBackgroundImageSource = new BitmapImage
+					{
+						UriSource = new Uri(backgroundImage, UriKind.RelativeOrAbsolute),
+						CreateOptions = BitmapCreateOptions.IgnoreImageCache
+					};
+				}
+				catch (Exception ex)
+				{
+					// Handle errors with setting the URI
+					App.Logger.LogWarning(ex, ex.Message);
+				}
 			}
 
 			// Opacity
@@ -1930,7 +1943,11 @@ namespace Files.App.ViewModels
 
 		private void WatchForWin32FolderChanges(string? folderPath)
 		{
-			if (Directory.Exists(folderPath))
+			if (!Directory.Exists(folderPath))
+				return;
+
+			// NOTE: Suppressed NullReferenceException caused by EnableRaisingEvents
+			SafetyExtensions.IgnoreExceptions(() =>
 			{
 				watcher = new FileSystemWatcher
 				{
@@ -1943,7 +1960,7 @@ namespace Files.App.ViewModels
 				watcher.Deleted += DirectoryWatcher_Changed;
 				watcher.Renamed += DirectoryWatcher_Changed;
 				watcher.EnableRaisingEvents = true;
-			}
+			}, App.Logger);
 		}
 
 		private async void DirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -2578,9 +2595,9 @@ namespace Files.App.ViewModels
 		public void Dispose()
 		{
 			CancelLoadAndClearFiles();
-			RecycleBinManager.Default.RecycleBinItemCreated -= RecycleBinItemCreatedAsync;
-			RecycleBinManager.Default.RecycleBinItemDeleted -= RecycleBinItemDeletedAsync;
-			RecycleBinManager.Default.RecycleBinRefreshRequested -= RecycleBinRefreshRequestedAsync;
+			StorageTrashBinService.Watcher.ItemAdded -= RecycleBinItemCreatedAsync;
+			StorageTrashBinService.Watcher.ItemDeleted -= RecycleBinItemDeletedAsync;
+			StorageTrashBinService.Watcher.RefreshRequested -= RecycleBinRefreshRequestedAsync;
 			UserSettingsService.OnSettingChangedEvent -= UserSettingsService_OnSettingChangedEvent;
 			fileTagsSettingsService.OnSettingImportedEvent -= FileTagsSettingsService_OnSettingUpdated;
 			fileTagsSettingsService.OnTagsUpdated -= FileTagsSettingsService_OnSettingUpdated;

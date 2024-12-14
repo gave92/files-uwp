@@ -114,6 +114,11 @@ namespace Files.App.Data.Contracts
 		/// Gets or sets a value indicating if the favorites section should be visible.
 		/// </summary>
 		bool ShowPinnedSection { get; set; }
+		
+		/// <summary>
+		/// Gets or sets a value indicating if the favorites section should be expanded.
+		/// </summary>
+		bool IsPinnedSectionExpanded { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating if the library section should be visible.
@@ -121,9 +126,19 @@ namespace Files.App.Data.Contracts
 		bool ShowLibrarySection { get; set; }
 
 		/// <summary>
+		/// Gets or sets a value indicating if the library section should be expanded.
+		/// </summary>
+		bool IsLibrarySectionExpanded { get; set; }
+
+		/// <summary>
 		/// Gets or sets a value indicating if the drive section should be visible.
 		/// </summary>
 		bool ShowDrivesSection { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating if the drive section should be expanded.
+		/// </summary>
+		bool IsDriveSectionExpanded { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating if the cloud drive section should be visible.
@@ -131,9 +146,19 @@ namespace Files.App.Data.Contracts
 		bool ShowCloudDrivesSection { get; set; }
 
 		/// <summary>
+		/// Gets or sets a value indicating if the cloud drive section should be expanded.
+		/// </summary>
+		bool IsCloudDriveSectionExpanded { get; set; }
+
+		/// <summary>
 		/// Gets or sets a value indicating if the network section should be visible.
 		/// </summary>
 		bool ShowNetworkSection { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating if the network section should be expanded.
+		/// </summary>
+		bool IsNetworkSectionExpanded { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating if the wsl section should be visible.
@@ -141,9 +166,19 @@ namespace Files.App.Data.Contracts
 		bool ShowWslSection { get; set; }
 
 		/// <summary>
+		/// Gets or sets a value indicating if the wsl section should be expanded.
+		/// </summary>
+		bool IsWslSectionExpanded { get; set; }
+
+		/// <summary>
 		/// Gets or sets a value indicating if the tags section should be visible.
 		/// </summary>
 		bool ShowFileTagsSection { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating if the file tags section should be expanded.
+		/// </summary>
+		bool IsFileTagsSectionExpanded { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether or not to move shell extensions into a sub menu.
@@ -176,6 +211,11 @@ namespace Files.App.Data.Contracts
 		bool ShowCopyPath { get; set; }
 
 		/// <summary>
+		/// Gets or sets a value indicating whether or not to show the option to create alternate data stream.
+		/// </summary>
+		bool ShowCreateAlternateDataStream { get; set; }
+
+		/// <summary>
 		/// Gets or sets a value indicating whether or not to show the option to create a shortcut.
 		/// </summary>
 		bool ShowCreateShortcut { get; set; }
@@ -191,6 +231,11 @@ namespace Files.App.Data.Contracts
 		bool ShowCompressionOptions { get; set; }
 
 		/// <summary>
+		/// Gets or sets a value indicating whether or not to show the flatten options e.g. single, recursive.
+		/// </summary>
+		bool ShowFlattenOptions { get; set; }
+
+		/// <summary>
 		/// Gets or sets a value indicating whether or not to show the Send To menu.
 		/// </summary>
 		bool ShowSendToMenu { get; set; }
@@ -199,6 +244,11 @@ namespace Files.App.Data.Contracts
 		/// Gets or sets a value indicating whether or not to leave app running in the background.
 		/// </summary>
 		bool LeaveAppRunning { get; set; }
+		
+		/// <summary>
+		/// Gets or sets a value indicating whether or not to show Files in the system tray.
+		/// </summary>
+		bool ShowSystemTrayIcon { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether to enable terminal integration.
@@ -209,6 +259,21 @@ namespace Files.App.Data.Contracts
 		/// Gets or sets a value indicating the default option to resolve conflicts.
 		/// </summary>
 		FileNameConflictResolveOptionType ConflictsResolveOption { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating the default archive format.
+		/// </summary>
+		ArchiveFormats ArchiveFormatsOption { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating the default archive compression level.
+		/// </summary>
+		ArchiveCompressionLevels ArchiveCompressionLevelsOption { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating the default archive splitting size.
+		/// </summary>
+		ArchiveSplittingSizes ArchiveSplittingSizesOption { get; set; }
 
 		/// <summary>
 		/// A dictionary to determine which hashes should be shown.

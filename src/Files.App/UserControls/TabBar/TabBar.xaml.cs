@@ -18,6 +18,7 @@ namespace Files.App.UserControls.TabBar
 
 		private readonly ICommandManager Commands = Ioc.Default.GetRequiredService<ICommandManager>();
 		private readonly IAppearanceSettingsService AppearanceSettingsService = Ioc.Default.GetRequiredService<IAppearanceSettingsService>();
+		private readonly IWindowContext WindowContext = Ioc.Default.GetRequiredService<IWindowContext>();
 
 		// Fields
 
@@ -44,12 +45,8 @@ namespace Files.App.UserControls.TabBar
 		public bool ShowTabActionsButton
 			=> AppearanceSettingsService.ShowTabActions;
 
-		// Dragging makes the app crash when run as admin.
-		// For more information:
-		// - https://github.com/files-community/Files/issues/12390
-		// - https://github.com/microsoft/terminal/issues/12017#issuecomment-1004129669
 		public bool AllowTabsDrag
-			=> !ElevationHelpers.IsAppRunAsAdmin();
+			=> WindowContext.CanDragAndDrop;
 
 		public Rectangle DragArea
 			=> DragAreaRectangle;
@@ -64,17 +61,8 @@ namespace Files.App.UserControls.TabBar
 		{
 			InitializeComponent();
 
-			tabHoverTimer.Interval = TimeSpan.FromMilliseconds(1000);
+			tabHoverTimer.Interval = TimeSpan.FromMilliseconds(Constants.DragAndDrop.HoverToOpenTimespan);
 			tabHoverTimer.Tick += TabHoverSelected;
-
-			var appWindow = MainWindow.Instance.AppWindow;
-
-			double rightPaddingColumnWidth =
-				FilePropertiesHelpers.FlowDirectionSettingIsRightToLeft
-					? appWindow.TitleBar.LeftInset
-					: appWindow.TitleBar.RightInset;
-
-			RightPaddingColumn.Width = new(rightPaddingColumnWidth >= 0 ? rightPaddingColumnWidth : 0);
 
 			AppearanceSettingsService.PropertyChanged += (s, e) =>
 			{
@@ -172,7 +160,7 @@ namespace Files.App.UserControls.TabBar
 		{
 			if (e.DataView.Properties.ContainsKey(TabPathIdentifier))
 			{
-				HorizontalTabView.CanReorderTabs = true && !ElevationHelpers.IsAppRunAsAdmin();
+				HorizontalTabView.CanReorderTabs = WindowContext.CanDragAndDrop;
 
 				e.AcceptedOperation = DataPackageOperation.Move;
 				e.DragUIOverride.Caption = "TabStripDragAndDropUIOverrideCaption".GetLocalizedResource();
@@ -187,12 +175,12 @@ namespace Files.App.UserControls.TabBar
 
 		private void TabView_DragLeave(object sender, DragEventArgs e)
 		{
-			HorizontalTabView.CanReorderTabs = true && !ElevationHelpers.IsAppRunAsAdmin();
+			HorizontalTabView.CanReorderTabs = WindowContext.CanDragAndDrop;
 		}
 
 		private async void TabView_TabStripDrop(object sender, DragEventArgs e)
 		{
-			HorizontalTabView.CanReorderTabs = true && !ElevationHelpers.IsAppRunAsAdmin();
+			HorizontalTabView.CanReorderTabs = WindowContext.CanDragAndDrop;
 
 			if (!(sender is TabView tabStrip))
 				return;
@@ -207,7 +195,7 @@ namespace Files.App.UserControls.TabBar
 			{
 				var item = tabStrip.ContainerFromIndex(i) as TabViewItem;
 
-				if (e.GetPosition(item).Y - item.ActualHeight < 0)
+				if (e.GetPosition(item).X - item.ActualWidth < 0)
 				{
 					index = i;
 					break;
@@ -368,6 +356,21 @@ namespace Files.App.UserControls.TabBar
 						iconControl.Content = (tabViewItem.IconSource as ImageIconSource)?.CreateIconElement();
 				});
 			}
+		}
+
+		private async void DragAreaRectangle_Loaded(object sender, RoutedEventArgs e)
+		{
+			if (HorizontalTabView.ActualWidth <= 0 && TabBarAddNewTabButton.Width <= 0)
+				await Task.Delay(100);
+
+			var titleBarInset = ((FilePropertiesHelpers.FlowDirectionSettingIsRightToLeft
+				? MainWindow.Instance.AppWindow.TitleBar.LeftInset
+				: MainWindow.Instance.AppWindow.TitleBar.RightInset) / DragAreaRectangle.XamlRoot.RasterizationScale) + 40;
+
+			RightPaddingColumn.Width = new(titleBarInset > 40 ? titleBarInset : 138);
+			HorizontalTabView.Measure(new(
+				HorizontalTabView.ActualWidth - TabBarAddNewTabButton.Width - titleBarInset,
+				HorizontalTabView.ActualHeight));
 		}
 	}
 }

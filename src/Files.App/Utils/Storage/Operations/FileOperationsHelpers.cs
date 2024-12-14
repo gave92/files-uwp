@@ -127,8 +127,7 @@ namespace Files.App.Utils.Storage
 					{
 						using var shi = new ShellItem(fileToDeletePath[i]);
 						using var file = SafetyExtensions.IgnoreExceptions(() => GetFirstFile(shi)) ?? shi;
-						var status = file.Properties.TryGetValue(PKEY_FilePlaceholderStatus, out var value) ? (uint?)value : null;
-						if (status == PS_CLOUDFILE_PLACEHOLDER)
+						if ((uint?)file.Properties.GetValueOrDefault(PKEY_FilePlaceholderStatus) == PS_CLOUDFILE_PLACEHOLDER)
 						{
 							// Online only files cannot be tried for deletion, so they are treated as to be permanently deleted.
 							shellOperationResult.Items.Add(new ShellOperationItemResult()
@@ -741,7 +740,11 @@ namespace Files.App.Utils.Storage
 				if (FileExtensionHelpers.IsShortcutFile(linkSavePath))
 				{
 					using var newLink = new ShellLink(targetPath, arguments, workingDirectory);
-					newLink.RunAsAdministrator = runAsAdmin;
+
+					// Check if the target is a file
+					if (File.Exists(targetPath))
+						newLink.RunAsAdministrator = runAsAdmin;
+
 					newLink.SaveAs(linkSavePath); // Overwrite if exists
 					return Task.FromResult(true);
 				}
@@ -755,6 +758,11 @@ namespace Files.App.Utils.Storage
 						return true;
 					});
 				}
+			}
+			catch (UnauthorizedAccessException ex)
+			{
+				// Could not create shortcut
+				App.Logger.LogInformation(ex, "Failed to create shortcut");
 			}
 			catch (Exception ex)
 			{

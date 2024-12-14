@@ -4,7 +4,6 @@
 using CommunityToolkit.WinUI.Helpers;
 using Files.App.Helpers.Application;
 using Files.App.Services.SizeProvider;
-using Files.App.Storage.Storables;
 using Files.App.Utils.Logger;
 using Files.App.ViewModels.Settings;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Sentry;
 using Sentry.Protocol;
 using System.IO;
+using System.Security;
 using System.Text;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -29,16 +29,11 @@ namespace Files.App.Helpers
 		/// <summary>
 		/// Gets the value that provides application environment or branch name.
 		/// </summary>
-		public static AppEnvironment AppEnvironment { get; } =
-#if STORE
-			AppEnvironment.Store;
-#elif PREVIEW
-			AppEnvironment.Preview;
-#elif STABLE
-			AppEnvironment.Stable;
-#else
-			AppEnvironment.Dev;
-#endif
+		public static AppEnvironment AppEnvironment =>
+			Enum.TryParse("cd_app_env_placeholder", true, out AppEnvironment appEnvironment)
+				? appEnvironment
+				: AppEnvironment.Dev;
+
 
 		/// <summary>
 		/// Gets application package version.
@@ -53,7 +48,7 @@ namespace Files.App.Helpers
 			SystemIO.Path.Combine(Package.Current.InstalledLocation.Path, AppEnvironment switch
 			{
 				AppEnvironment.Dev => Constants.AssetPaths.DevLogo,
-				AppEnvironment.Preview => Constants.AssetPaths.PreviewLogo,
+				AppEnvironment.SideloadPreview or AppEnvironment.StorePreview => Constants.AssetPaths.PreviewLogo,
 				_ => Constants.AssetPaths.StableLogo
 			});
 
@@ -93,6 +88,8 @@ namespace Files.App.Helpers
 
 				return Task.CompletedTask;
 			}
+
+			generalSettingsService.PropertyChanged += GeneralSettingsService_PropertyChanged;
 		}
 
 		/// <summary>
@@ -105,7 +102,7 @@ namespace Files.App.Helpers
 			await updateService.CheckForUpdatesAsync();
 			await updateService.DownloadMandatoryUpdatesAsync();
 			await updateService.CheckAndUpdateFilesLauncherAsync();
-			await updateService.CheckLatestReleaseNotesAsync();
+			await updateService.CheckForReleaseNotesAsync();
 		}
 
 		/// <summary>
@@ -120,7 +117,7 @@ namespace Files.App.Helpers
 				options.Release = $"{SystemInformation.Instance.ApplicationVersion.Major}.{SystemInformation.Instance.ApplicationVersion.Minor}.{SystemInformation.Instance.ApplicationVersion.Build}";
 				options.TracesSampleRate = 0.80;
 				options.ProfilesSampleRate = 0.40;
-				options.Environment = AppEnvironment == AppEnvironment.Preview ? "preview" : "production";
+				options.Environment = AppEnvironment == AppEnvironment.StorePreview || AppEnvironment == AppEnvironment.SideloadPreview ? "preview" : "production";
 				options.ExperimentalMetrics = new ExperimentalMetricsOptions
 				{
 					EnableCodeLocations = true
@@ -135,9 +132,12 @@ namespace Files.App.Helpers
 		/// </summary>
 		public static IHost ConfigureHost()
 		{
-			return Host.CreateDefaultBuilder()
+			var builder = Host.CreateDefaultBuilder()
 				.UseEnvironment(AppLifecycleHelper.AppEnvironment.ToString())
 				.ConfigureLogging(builder => builder
+					.ClearProviders()
+					.AddConsole()
+					.AddDebug()
 					.AddProvider(new FileLoggerProvider(Path.Combine(ApplicationData.Current.LocalFolder.Path, "debug.log")))
 					.AddProvider(new SentryLoggerProvider())
 					.SetMinimumLevel(LogLevel.Information))
@@ -164,7 +164,10 @@ namespace Files.App.Helpers
 					.AddSingleton<ITagsContext, TagsContext>()
 					.AddSingleton<ISidebarContext, SidebarContext>()
 					// Services
+					.AddSingleton<IWindowsRecentItemsService, WindowsRecentItemsService>()
 					.AddSingleton<IWindowsIniService, WindowsIniService>()
+					.AddSingleton<IWindowsWallpaperService, WindowsWallpaperService>()
+					.AddSingleton<IWindowsSecurityService, WindowsSecurityService>()
 					.AddSingleton<IAppThemeModeService, AppThemeModeService>()
 					.AddSingleton<IDialogService, DialogService>()
 					.AddSingleton<ICommonDialogService, CommonDialogService>()
@@ -175,16 +178,9 @@ namespace Files.App.Helpers
 					.AddSingleton<IFileTagsService, FileTagsService>()
 					.AddSingleton<ICommandManager, CommandManager>()
 					.AddSingleton<IModifiableCommandManager, ModifiableCommandManager>()
-					.AddSingleton<IStorageService, NativeStorageService>()
+					.AddSingleton<IStorageService, NativeStorageLegacyService>()
 					.AddSingleton<IFtpStorageService, FtpStorageService>()
 					.AddSingleton<IAddItemService, AddItemService>()
-#if STABLE || PREVIEW
-					.AddSingleton<IUpdateService, SideloadUpdateService>()
-#elif STORE
-					.AddSingleton<IUpdateService, StoreUpdateService>()
-#else
-					.AddSingleton<IUpdateService, DummyUpdateService>()
-#endif
 					.AddSingleton<IPreviewPopupService, PreviewPopupService>()
 					.AddSingleton<IDateTimeFormatterFactory, DateTimeFormatterFactory>()
 					.AddSingleton<IDateTimeFormatter, UserDateTimeFormatter>()
@@ -192,6 +188,7 @@ namespace Files.App.Helpers
 					.AddSingleton<IQuickAccessService, QuickAccessService>()
 					.AddSingleton<IResourcesService, ResourcesService>()
 					.AddSingleton<IWindowsJumpListService, WindowsJumpListService>()
+					.AddSingleton<IStorageTrashBinService, StorageTrashBinService>()
 					.AddSingleton<IRemovableDrivesService, RemovableDrivesService>()
 					.AddSingleton<INetworkService, NetworkService>()
 					.AddSingleton<IStartMenuService, StartMenuService>()
@@ -203,7 +200,6 @@ namespace Files.App.Helpers
 					.AddSingleton<MainPageViewModel>()
 					.AddSingleton<InfoPaneViewModel>()
 					.AddSingleton<SidebarViewModel>()
-					.AddSingleton<SettingsViewModel>()
 					.AddSingleton<DrivesViewModel>()
 					.AddSingleton<StatusCenterViewModel>()
 					.AddSingleton<AppearanceViewModel>()
@@ -217,10 +213,19 @@ namespace Files.App.Helpers
 					.AddSingleton<QuickAccessManager>()
 					.AddSingleton<StorageHistoryWrapper>()
 					.AddSingleton<FileTagsManager>()
-					.AddSingleton<RecentItems>()
 					.AddSingleton<LibraryManager>()
 					.AddSingleton<AppModel>()
-				).Build();
+				);
+
+			// Conditional DI
+			if (AppEnvironment is AppEnvironment.SideloadPreview or AppEnvironment.SideloadStable)
+				builder.ConfigureServices(s => s.AddSingleton<IUpdateService, SideloadUpdateService>());
+			else if (AppEnvironment is AppEnvironment.StorePreview or AppEnvironment.StoreStable)
+				builder.ConfigureServices(s => s.AddSingleton<IUpdateService, StoreUpdateService>());
+			else
+				builder.ConfigureServices(s => s.AddSingleton<IUpdateService, DummyUpdateService>());
+
+			return builder.Build();
 		}
 
 		/// <summary>
@@ -238,13 +243,7 @@ namespace Files.App.Helpers
 				}
 				else
 				{
-					var defaultArg = new TabBarItemParameter()
-					{
-						InitialPageType = typeof(ShellPanesPage),
-						NavigationParameter = "Home"
-					};
-
-					return defaultArg.Serialize();
+					return "";
 				}
 			})
 			.ToList();
@@ -339,7 +338,7 @@ namespace Files.App.Helpers
 				// Try to re-launch and start over
 				MainWindow.Instance.DispatcherQueue.EnqueueOrInvokeAsync(async () =>
 				{
-					await Launcher.LaunchUriAsync(new Uri("files-uwp:"));
+					await Launcher.LaunchUriAsync(new Uri("files-dev:"));
 				})
 				.Wait(100);
 			}
@@ -351,15 +350,40 @@ namespace Files.App.Helpers
 		/// </summary>
 		public static bool IsAutoHideTaskbarEnabled()
 		{
-			const string registryKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3";
-			const string valueName = "Settings";
+			try
+			{
+				const string registryKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3";
+				const string valueName = "Settings";
 
-			using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(registryKey);
+				using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(registryKey);
 
-			var value = key?.GetValue(valueName) as byte[];
+				var value = key?.GetValue(valueName) as byte[];
 
-			// The least significant bit of the 9th byte controls the auto-hide setting																		
-			return value != null && ((value[8] & 0x01) == 1);
+				// The least significant bit of the 9th byte controls the auto-hide setting																		
+				return value != null && ((value[8] & 0x01) == 1);
+			}
+			catch (SecurityException)
+			{
+				// Handle edge case where OpenSubKey results in SecurityException
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Updates the visibility of the system tray icon
+		/// </summary>
+		private static void GeneralSettingsService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			if (sender is not IGeneralSettingsService generalSettingsService)
+				return;
+
+			if (e.PropertyName == nameof(IGeneralSettingsService.ShowSystemTrayIcon))
+			{
+				if (generalSettingsService.ShowSystemTrayIcon)
+					App.SystemTrayIcon?.Show();
+				else
+					App.SystemTrayIcon?.Hide();
+			}
 		}
 	}
 }

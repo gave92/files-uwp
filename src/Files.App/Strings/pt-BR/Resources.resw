@@ -126,6 +126,9 @@
   <data name="CopyPathWithQuotes" xml:space="preserve">
     <value>Copiar caminho entre aspas</value>
   </data>
+  <data name="CopyItemPathWithQuotes" xml:space="preserve">
+    <value>Copiar caminho do item selecionado com aspas</value>
+  </data>
   <data name="Browse" xml:space="preserve">
     <value>Navegar</value>
   </data>
@@ -249,6 +252,9 @@
   <data name="Paste" xml:space="preserve">
     <value>Colar</value>
   </data>
+  <data name="PasteShortcut" xml:space="preserve">
+    <value>Colar atalho</value>
+  </data>
   <data name="BaseLayoutContextFlyoutNew.Label" xml:space="preserve">
     <value>Novo</value>
   </data>
@@ -291,8 +297,8 @@
   <data name="EnterAnItemName" xml:space="preserve">
     <value>Insira o nome do item</value>
   </data>
-  <data name="RenameDialog.PrimaryButtonText" xml:space="preserve">
-    <value>Defina um nome</value>
+  <data name="CreateNewItemTitle" xml:space="preserve">
+    <value>Criar novo {0}</value>
   </data>
   <data name="LightTheme" xml:space="preserve">
     <value>Claro</value>
@@ -376,7 +382,7 @@
     <value>O arquivo que você está tentando acessar está sendo usado por outro aplicativo</value>
   </data>
   <data name="FileInUseDialog.Title" xml:space="preserve">
-    <value>O arquivo está em uso</value>
+    <value>Arquivo em uso</value>
   </data>
   <data name="Layout" xml:space="preserve">
     <value>Layout</value>
@@ -1008,7 +1014,7 @@
     <value>Mostrar arquivos de sistema protegido</value>
   </data>
   <data name="SyncFolderPreferencesAcrossDirectories" xml:space="preserve">
-    <value>Sincronizar o layout e a ordenação entre diretórios</value>
+    <value>Sincronizar preferências de layout e classificação entre diretórios</value>
   </data>
   <data name="SettingsContextMenu.Text" xml:space="preserve">
     <value>Personalize o menu de contexto (Botão Direito)</value>
@@ -1236,7 +1242,13 @@
     <value>Já existe uma biblioteca com o mesmo nome!</value>
   </data>
   <data name="OpenStorageSense" xml:space="preserve">
-    <value>Abrir Sensor de Armanezamento</value>
+    <value>Abrir Sensor de armazenamento</value>
+  </data>
+  <data name="OpenStorageSenseDescription" xml:space="preserve">
+    <value>Abrir página do Sensor de Armazenamento nas Configurações do Windows</value>
+  </data>
+  <data name="Cleanup" xml:space="preserve">
+    <value>Limpeza</value>
   </data>
   <data name="Copy" xml:space="preserve">
     <value>Copiar</value>
@@ -1314,7 +1326,7 @@
     <value>Coluna de data de exclusão</value>
   </data>
   <data name="Sort" xml:space="preserve">
-    <value>Ordenar</value>
+    <value>Classificar</value>
   </data>
   <data name="DateModifiedLowerCase" xml:space="preserve">
     <value>Data de modificação</value>
@@ -1853,6 +1865,9 @@
   <data name="SettingsSetAsDefaultFileManagerDescription" xml:space="preserve">
     <value>Esta opção modifica o registro do sistema e pode causar efeitos colaterais inesperados no seu dispositivo. Continue por sua conta e risco.</value>
   </data>
+  <data name="ShowFlattenOptionsDescription" xml:space="preserve">
+    <value>As operações de nivelamento são permanentes e não recomendadas. Continue por sua conta e risco.</value>
+  </data>
   <data name="FolderWidgetCreateNewLibraryDialogTitleText" xml:space="preserve">
     <value>Criar Biblioteca</value>
   </data>
@@ -1930,6 +1945,9 @@
   </data>
   <data name="CloseOtherTabs" xml:space="preserve">
     <value>Fechar demais guias</value>
+  </data>
+  <data name="CloseAllTabs" xml:space="preserve">
+    <value>Fechar todas as abas</value>
   </data>
   <data name="Music" xml:space="preserve">
     <value>Música</value>
@@ -2027,6 +2045,21 @@
   <data name="Compress" xml:space="preserve">
     <value>Comprimir</value>
   </data>
+  <data name="FlattenFolderDescription" xml:space="preserve">
+    <value>Mover todo o conteúdo das subpastas para o local selecionado</value>
+  </data>
+  <data name="FlattenFolder" xml:space="preserve">
+    <value>Nivelar pasta</value>
+  </data>
+  <data name="Flatten" xml:space="preserve">
+    <value>Nivelar</value>
+  </data>
+  <data name="FlattenFolderDialogContent" xml:space="preserve">
+    <value>Nivelar uma pasta moverá todo o conteúdo de suas subpastas para o local selecionado. Esta operação é permanente e não pode ser desfeita. Ao usar este recurso experimental, você reconhece o risco e concorda em não responsabilizar a equipe de Arquivos por qualquer perda de dados.</value>
+  </data>
+  <data name="ShowFlattenOptions" xml:space="preserve">
+    <value>Mostrar opções de nivelamento</value>
+  </data>
   <data name="SelectFilesAndFoldersOnHover" xml:space="preserve">
     <value>Selecionar arquivos e pastas ao passar o mouse sobre elas</value>
   </data>
@@ -2064,7 +2097,7 @@
     <value>Caminho</value>
   </data>
   <data name="SortingAndGrouping" xml:space="preserve">
-    <value>Ordenação e agrupamento</value>
+    <value>Classificar e Agrupar</value>
   </data>
   <data name="CreateArchive" xml:space="preserve">
     <value>Criar arquivo</value>
@@ -2139,7 +2172,7 @@
     <value>Agrupar em ordem decrescente</value>
   </data>
   <data name="SortInDescendingOrder" xml:space="preserve">
-    <value>Ordenar em ordem decrescente</value>
+    <value>Classificar em ordem decrescente</value>
   </data>
   <data name="NewShortcutDialogTitle" xml:space="preserve">
     <value>Criar um novo atalho</value>
@@ -2247,7 +2280,7 @@
     <value>Mostrar itens ocultos</value>
   </data>
   <data name="FormatDriveText" xml:space="preserve">
-    <value>Formatar...</value>
+    <value>Formato</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Ajuda</value>
@@ -2325,7 +2358,7 @@
     <value>Nome inválido</value>
   </data>
   <data name="TagNameRules" xml:space="preserve">
-    <value>O nome não pode ser vazio, começar, ou terminar com um período.</value>
+    <value>O nome não pode estar em branco nem começar ou terminar com um ponto final.</value>
   </data>
   <data name="Videos" xml:space="preserve">
     <value>Vídeos</value>
@@ -2337,7 +2370,7 @@
     <value>Alternar janela para sobreposição compacta</value>
   </data>
   <data name="OpenHelpDescription" xml:space="preserve">
-    <value>Abrir a página de ajuda online no navegador</value>
+    <value>Abrir página de ajuda online no navegador</value>
   </data>
   <data name="ToggleFullScreenDescription" xml:space="preserve">
     <value>Alternar para o modo tela cheia</value>
@@ -2352,16 +2385,19 @@
     <value>Alternar janela para sobreposição compacta</value>
   </data>
   <data name="SearchDescription" xml:space="preserve">
-    <value>Ir para o campo de pesquisa</value>
+    <value>Ir para a caixa de pesquisa</value>
   </data>
   <data name="ToggleShowHiddenItemsDescription" xml:space="preserve">
-    <value>Alternar se deseja mostrar itens ocultos</value>
+    <value>Mostrar/Ocultar Pastas e arquivos ocultos</value>
+  </data>
+  <data name="ToggleDotFilesSettingDescription" xml:space="preserve">
+    <value>Mostrar/Ocultar Arquivos ocultos (iniciados com ponto)</value>
   </data>
   <data name="ToggleShowFileExtensionsDescription" xml:space="preserve">
     <value>Alternar entre mostrar extensões de arquivos</value>
   </data>
   <data name="TogglePreviewPaneDescription" xml:space="preserve">
-    <value>Alternar o painel de pré-visualização para visualizar os arquivos</value>
+    <value>Mostrar ou ocultar o painel de visualização</value>
   </data>
   <data name="ToggleSidebarDescription" xml:space="preserve">
     <value>Alternar se deseja mostrar a barra lateral</value>
@@ -2372,6 +2408,12 @@
   <data name="CopyPathDescription" xml:space="preserve">
     <value>Copiar o caminho dos itens selecionados para a área de transferência</value>
   </data>
+  <data name="CopyItemPathDescription" xml:space="preserve">
+    <value>Copiar caminho dos itens selecionados para a área de transferência</value>
+  </data>
+  <data name="CopyItemPathWithQuotesDescription" xml:space="preserve">
+    <value>Copiar caminho dos itens selecionados com aspas para a área de transferência</value>
+  </data>
   <data name="CopyPathWithQuotesDescription" xml:space="preserve">
     <value>Copiar o caminho dos itens selecionados com cotas para a área de transferência</value>
   </data>
@@ -2380,6 +2422,9 @@
   </data>
   <data name="PasteItemDescription" xml:space="preserve">
     <value>Colar item(s) da área de transferência para a pasta atual</value>
+  </data>
+  <data name="PasteShortcutDescription" xml:space="preserve">
+    <value>Colar itens da área de transferência na pasta atual como atalhos</value>
   </data>
   <data name="PasteItemToSelectionDescription" xml:space="preserve">
     <value>Colar item(s) da área de transferência para a pasta selecionada</value>
@@ -2547,19 +2592,19 @@
     <value>Alternar visualizações adaptadamente</value>
   </data>
   <data name="SortByNameDescription" xml:space="preserve">
-    <value>Ordenar itens por nome</value>
+    <value>Classificar por nome</value>
   </data>
   <data name="SortByDateModifiedDescription" xml:space="preserve">
-    <value>Ordenar itens por data de alteração</value>
+    <value>Classificar por data de modificação</value>
   </data>
   <data name="SortByDateCreatedDescription" xml:space="preserve">
-    <value>Ordenar itens por data de criação</value>
+    <value>Classificar por data da criação</value>
   </data>
   <data name="SortBySizeDescription" xml:space="preserve">
-    <value>Ordenar itens por tamanho</value>
+    <value>Classificar por tamanho</value>
   </data>
   <data name="SortByTypeDescription" xml:space="preserve">
-    <value>Ordenar itens por tipo</value>
+    <value>Classificar por tipo</value>
   </data>
   <data name="SortBySyncStatusDescription" xml:space="preserve">
     <value>Ordena os itens por status de sincronização</value>
@@ -2571,13 +2616,13 @@
     <value>Ordenar itens por pasta original</value>
   </data>
   <data name="SortByDateDeletedDescription" xml:space="preserve">
-    <value>Ordenar itens por data de exclusão</value>
+    <value>Classificar por data de exclusão</value>
   </data>
   <data name="SortAscendingDescription" xml:space="preserve">
     <value>Ordenar itens em ordem crescente</value>
   </data>
   <data name="SortDescendingDescription" xml:space="preserve">
-    <value>Ordenar itens em ordem decrescente</value>
+    <value>Classificar em ordem decrescente</value>
   </data>
   <data name="ToggleSortDirectionDescription" xml:space="preserve">
     <value>Alternar direção da ordem dos itens</value>
@@ -2659,6 +2704,9 @@
   </data>
   <data name="CloseOtherTabsSelectedDescription" xml:space="preserve">
     <value>Fechar abas diferentes da aba selecionada</value>
+  </data>
+  <data name="CloseAllTabsDescription" xml:space="preserve">
+    <value>Fechar todas as abas, incluindo a aba atual</value>
   </data>
   <data name="ReopenClosedTabDescription" xml:space="preserve">
     <value>Reabrir última aba fechada</value>
@@ -3060,8 +3108,14 @@
   <data name="OpenProperties" xml:space="preserve">
     <value>Abrir propriedades</value>
   </data>
+  <data name="OpenClassicProperties" xml:space="preserve">
+    <value>Abrir propriedades do Explorador de Arquivos</value>
+  </data>
   <data name="OpenPropertiesDescription" xml:space="preserve">
     <value>Abrir janela de propriedades</value>
+  </data>
+  <data name="OpenClassicPropertiesDescription" xml:space="preserve">
+    <value>Abrir janela de propriedades do Explorador de Arquivos</value>
   </data>
   <data name="Locals" xml:space="preserve">
     <value>Locais</value>
@@ -3076,7 +3130,7 @@
     <value>Buscar</value>
   </data>
   <data name="GitPull" xml:space="preserve">
-    <value>Puxar</value>
+    <value>Obter</value>
   </data>
   <data name="GitFetchDescription" xml:space="preserve">
     <value>Executar busca no git</value>
@@ -3125,7 +3179,7 @@
     <value>Mica Alt</value>
   </data>
   <data name="BackdropMaterial" xml:space="preserve">
-    <value>Material de plano de fundo</value>
+    <value>Fundo</value>
   </data>
   <data name="Solid" xml:space="preserve">
     <value>Sólido</value>
@@ -3134,7 +3188,7 @@
     <value>Gerenciar filiais</value>
   </data>
   <data name="Push" xml:space="preserve">
-    <value>Empurrar</value>
+    <value>Enviar</value>
   </data>
   <data name="GitPushDescription" xml:space="preserve">
     <value>Executar push do git</value>
@@ -3206,7 +3260,7 @@
     <value>Coluna de caminho</value>
   </data>
   <data name="SortByPathDescription" xml:space="preserve">
-    <value>Ordenar itens por caminho</value>
+    <value>Classificar por caminho</value>
   </data>
   <data name="OpenDirectoryInNewPaneDescription" xml:space="preserve">
     <value>Abrir pasta em um novo painel</value>
@@ -3598,10 +3652,10 @@
     <value>Extraia aqui (Inteligente)</value>
   </data>
   <data name="SortFilesAndFoldersTogether" xml:space="preserve">
-    <value>Ordenar arquivos e pastas juntos</value>
+    <value>Classificar arquivos e pastas juntos</value>
   </data>
   <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
-    <value>Ordenar arquivos e pastas juntos</value>
+    <value>Classificar arquivos e pastas juntos</value>
   </data>
   <data name="SortFilesFirst" xml:space="preserve">
     <value>Ordene arquivos primeiro</value>
@@ -3796,7 +3850,7 @@
     <value>Alinhamento vertical</value>
   </data>
   <data name="ThinAcrylic" xml:space="preserve">
-    <value>acrílico fino</value>
+    <value>Acrílico Fino</value>
     <comment>This is a type of backdrop for the application background</comment>
   </data>
   <data name="AllLocations" xml:space="preserve">
@@ -3854,8 +3908,8 @@
     <value>Status:</value>
   </data>
   <data name="ShowToolbar" xml:space="preserve">
-    <value>Mostrar Barra de Ferramentas</value>
-    <comment>Setting that controls if the Toolbar is shown in the main view</comment>
+    <value>Mostrar barra de ferramentas</value>
+    <comment>Setting that controls if the toolbar is shown in the main view</comment>
   </data>
   <data name="TabActions" xml:space="preserve">
     <value>Menu de ações de aba</value>
@@ -3901,5 +3955,53 @@
   </data>
   <data name="Vertical" xml:space="preserve">
     <value>Vertical</value>
+  </data>
+  <data name="ShowSystemTrayIcon" xml:space="preserve">
+    <value>Mostrar ícone do Files na bandeja do sistema</value>
+  </data>
+  <data name="CPUThreads" xml:space="preserve">
+    <value>Núcleos da CPU</value>
+  </data>
+  <data name="NavigateHomeDescription" xml:space="preserve">
+    <value>Navegar para a página inicial</value>
+  </data>
+  <data name="ShowHomeButton" xml:space="preserve">
+    <value>Mostrar tela inicial na barra de endereços</value>
+  </data>
+  <data name="Toolbars" xml:space="preserve">
+    <value>Barras de ferramentas</value>
+  </data>
+  <data name="UserID" xml:space="preserve">
+    <value>ID do usuário</value>
+  </data>
+  <data name="BulkRename" xml:space="preserve">
+    <value>Renomear em massa</value>
+  </data>
+  <data name="ShowCreateAlternateDataStream" xml:space="preserve">
+    <value>Mostrar opção para criar fluxo de dados alternativo</value>
+  </data>
+  <data name="CreateAlternateDataStream" xml:space="preserve">
+    <value>Criar fluxo de dados alternativo</value>
+  </data>
+  <data name="CreateAlternateDataStreamDescription" xml:space="preserve">
+    <value>Criar fluxo de dados alternativo para o(s) item(ns) selecionado(s)</value>
+  </data>
+  <data name="EnterDataStreamName" xml:space="preserve">
+    <value>Digite o nome do fluxo de dados</value>
+  </data>
+  <data name="ErrorCreatingDataStreamTitle" xml:space="preserve">
+    <value>Ocorreu um erro ao criar o fluxo de dados alternativo</value>
+  </data>
+  <data name="ErrorCreatingDataStreamDescription" xml:space="preserve">
+    <value>Observe que fluxos de dados alternativos só funcionam em unidades formatadas como NTFS.</value>
+  </data>
+  <data name="DataStreamsAreHiddenTitle" xml:space="preserve">
+    <value>Fluxos de dados alternativos estão ocultos no momento</value>
+  </data>
+  <data name="DataStreamsAreHiddenDescription" xml:space="preserve">
+    <value>Você gostaria de exibir fluxos de dados alternativos? Você pode modificar essa configuração a qualquer momento a partir das configurações de pastas e arquivos.</value>
+  </data>
+  <data name="ManageTags" xml:space="preserve">
+    <value>Gerenciar tags</value>
   </data>
 </root>

@@ -3,7 +3,6 @@
 
 using Microsoft.UI.Xaml.Controls;
 using System.IO;
-using System.Windows.Input;
 using Windows.Storage;
 
 namespace Files.App.ViewModels.UserControls.Widgets
@@ -28,9 +27,6 @@ namespace Files.App.ViewModels.UserControls.Widgets
 
 		public static event EventHandler<IEnumerable<WidgetFileTagCardItem>>? SelectedTaggedItemsChanged;
 
-		// Commands
-
-		private ICommand OpenInNewPaneCommand { get; set; } = null!;
 
 		// Constructor
 
@@ -38,12 +34,9 @@ namespace Files.App.ViewModels.UserControls.Widgets
 		{
 			_ = InitializeWidget();
 
-			OpenInNewTabCommand = new AsyncRelayCommand<WidgetCardItem>(ExecuteOpenInNewTabCommand);
-			OpenInNewWindowCommand = new AsyncRelayCommand<WidgetCardItem>(ExecuteOpenInNewWindowCommand);
 			PinToSidebarCommand = new AsyncRelayCommand<WidgetCardItem>(ExecutePinToSidebarCommand);
 			UnpinFromSidebarCommand = new AsyncRelayCommand<WidgetCardItem>(ExecuteUnpinFromSidebarCommand);
 			OpenFileLocationCommand = new RelayCommand<WidgetCardItem>(ExecuteOpenFileLocationCommand);
-			OpenInNewPaneCommand = new RelayCommand<WidgetCardItem>(ExecuteOpenInNewPaneCommand);
 			OpenPropertiesCommand = new RelayCommand<WidgetCardItem>(ExecuteOpenPropertiesCommand);
 		}
 
@@ -73,13 +66,22 @@ namespace Files.App.ViewModels.UserControls.Widgets
 		{
 			return new List<ContextMenuFlyoutItemViewModel>()
 			{
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewTabFromHomeAction).Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewWindowFromHomeAction).Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewPaneFromHomeAction).Build(),
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewTabFromHomeAction)
+				{
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewTab
+				}.Build(),
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewWindowFromHomeAction)
+				{
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewWindow
+				}.Build(),
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewPaneFromHomeAction)
+				{
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewPane
+				}.Build(),
 				new()
 				{
 					Text = "OpenWith".GetLocalizedResource(),
-					OpacityIcon = new() { OpacityIconStyle = "ColorIconOpenWith" },
+					ThemedIconModel = new() { ThemedIconStyle = "App.ThemedIcons.OpenWith" },
 					Tag = "OpenWithPlaceholder",
 					ShowItem = !isFolder
 				},
@@ -94,7 +96,7 @@ namespace Files.App.ViewModels.UserControls.Widgets
 				new()
 				{
 					Text = "PinFolderToSidebar".GetLocalizedResource(),
-					OpacityIcon = new() { OpacityIconStyle = "Icons.Pin.16x16" },
+					ThemedIconModel = new() { ThemedIconStyle = "App.ThemedIcons.FavoritePin" },
 					Command = PinToSidebarCommand,
 					CommandParameter = item,
 					ShowItem = !isPinned && isFolder
@@ -102,7 +104,7 @@ namespace Files.App.ViewModels.UserControls.Widgets
 				new()
 				{
 					Text = "UnpinFolderFromSidebar".GetLocalizedResource(),
-					OpacityIcon = new() { OpacityIconStyle = "Icons.Unpin.16x16" },
+					ThemedIconModel = new() { ThemedIconStyle = "App.ThemedIcons.FavoritePinRemove" },
 					Command = UnpinFromSidebarCommand,
 					CommandParameter = item,
 					ShowItem = isPinned && isFolder
@@ -116,11 +118,17 @@ namespace Files.App.ViewModels.UserControls.Widgets
 				new()
 				{
 					Text = "Properties".GetLocalizedResource(),
-					OpacityIcon = new() { OpacityIconStyle = "ColorIconProperties" },
+					ThemedIconModel = new() { ThemedIconStyle = "App.ThemedIcons.Properties" },
 					Command = OpenPropertiesCommand,
 					CommandParameter = item,
 					ShowItem = isFolder
 				},
+				new ContextMenuFlyoutItemViewModel()
+				{
+					ItemType = ContextMenuFlyoutItemType.Separator,
+					ShowItem = CommandManager.OpenTerminalFromHome.IsExecutable
+				},
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenTerminalFromHome).Build(),
 				new()
 				{
 					ItemType = ContextMenuFlyoutItemType.Separator,
@@ -164,11 +172,6 @@ namespace Files.App.ViewModels.UserControls.Widgets
 			};
 
 			flyout!.Closed += flyoutClosed;
-		}
-
-		private void ExecuteOpenInNewPaneCommand(WidgetCardItem? item)
-		{
-			ContentPageContext.ShellPage!.PaneHolder?.OpenSecondaryPane(item?.Path ?? string.Empty);
 		}
 
 		private void ExecuteOpenFileLocationCommand(WidgetCardItem? item)

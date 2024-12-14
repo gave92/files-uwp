@@ -5,7 +5,6 @@ using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using System.Runtime.CompilerServices;
@@ -62,11 +61,15 @@ namespace Files.App.Views.Shells
 
 		protected abstract Frame ItemDisplay { get; }
 
-		public abstract bool CanNavigateForward { get; }
+		public virtual bool CanNavigateForward => ItemDisplay.CanGoForward;
 
-		public abstract bool CanNavigateBackward { get; }
+		public virtual bool CanNavigateBackward => ItemDisplay.CanGoBack;
 
 		public bool IsColumnView => SlimContentPage is ColumnsLayoutPage;
+
+		public virtual IList<PageStackEntry> ForwardStack => ItemDisplay.ForwardStack;
+
+		public virtual IList<PageStackEntry> BackwardStack => ItemDisplay.BackStack;
 
 		public ShellViewModel ShellViewModel { get; protected set; }
 
@@ -567,9 +570,7 @@ namespace Files.App.Views.Shells
 			var previousPageContent = ItemDisplay.BackStack[ItemDisplay.BackStack.Count - 1];
 			HandleBackForwardRequest(previousPageContent);
 
-			if (previousPageContent.SourcePageType == typeof(HomePage))
-				ItemDisplay.GoBack(new EntranceNavigationTransitionInfo());
-			else
+			if (ItemDisplay.CanGoBack)
 				ItemDisplay.GoBack();
 		}
 
@@ -578,7 +579,8 @@ namespace Files.App.Views.Shells
 			var incomingPageContent = ItemDisplay.ForwardStack[ItemDisplay.ForwardStack.Count - 1];
 			HandleBackForwardRequest(incomingPageContent);
 
-			ItemDisplay.GoForward();
+			if (ItemDisplay.CanGoForward)
+				ItemDisplay.GoForward();
 		}
 
 		public void ResetNavigationStackLayoutMode()
@@ -697,8 +699,14 @@ namespace Files.App.Views.Shells
 			}
 		}
 
-		protected virtual void FolderSettings_LayoutPreferencesUpdateRequired(object sender, LayoutPreferenceEventArgs e)
+		private void FolderSettings_LayoutPreferencesUpdateRequired(object sender, LayoutPreferenceEventArgs e)
 		{
+			if (ShellViewModel is null)
+				return;
+
+			LayoutPreferencesManager.SetLayoutPreferencesForPath(ShellViewModel.WorkingDirectory, e.LayoutPreference);
+			if (e.IsAdaptiveLayoutUpdateRequired)
+				AdaptiveLayoutHelpers.ApplyAdaptativeLayout(InstanceViewModel.FolderSettings, ShellViewModel.FilesAndFolders.ToList());
 		}
 
 		protected virtual void ViewModel_WorkingDirectoryModified(object sender, WorkingDirectoryModifiedEventArgs e)

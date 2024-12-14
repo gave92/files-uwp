@@ -1,7 +1,6 @@
 // Copyright (c) 2024 Files Community
 // Licensed under the MIT License. See the LICENSE.
 
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
@@ -13,12 +12,6 @@ namespace Files.App.Views.Shells
 {
 	public sealed partial class ModernShellPage : BaseShellPage
 	{
-		public override bool CanNavigateBackward
-			=> ItemDisplayFrame.CanGoBack;
-
-		public override bool CanNavigateForward
-			=> ItemDisplayFrame.CanGoForward;
-
 		protected override Frame ItemDisplay
 			=> ItemDisplayFrame;
 
@@ -63,16 +56,6 @@ namespace Files.App.Views.Shells
 		{
 			if (ItemDisplayFrame?.Content is HomePage currentPage)
 				currentPage.ViewModel.RefreshWidgetList();
-		}
-
-		protected override void FolderSettings_LayoutPreferencesUpdateRequired(object sender, LayoutPreferenceEventArgs e)
-		{
-			if (ShellViewModel is null)
-				return;
-
-			LayoutPreferencesManager.SetLayoutPreferencesForPath(ShellViewModel.WorkingDirectory, e.LayoutPreference);
-			if (e.IsAdaptiveLayoutUpdateRequired)
-				AdaptiveLayoutHelpers.ApplyAdaptativeLayout(InstanceViewModel.FolderSettings, ShellViewModel.FilesAndFolders.ToList());
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs eventArgs)
@@ -319,15 +302,6 @@ namespace Files.App.Views.Shells
 				if (string.IsNullOrEmpty(navigationPath))
 					return;
 
-				NavigationTransitionInfo transition = new SuppressNavigationTransitionInfo();
-
-				if (sourcePageType == typeof(HomePage) ||
-					ItemDisplayFrame.Content.GetType() == typeof(HomePage) &&
-					(sourcePageType == typeof(DetailsLayoutPage) || sourcePageType == typeof(GridLayoutPage)))
-				{
-					transition = new SuppressNavigationTransitionInfo();
-				}
-
 				ItemDisplayFrame.Navigate(
 					sourcePageType,
 					new NavigationArguments()
@@ -335,7 +309,7 @@ namespace Files.App.Views.Shells
 						NavPathParam = navigationPath,
 						AssociatedTabInstance = this
 					},
-					transition);
+					new SuppressNavigationTransitionInfo());
 			}
 
 			ToolbarViewModel.PathControlDisplayText = ShellViewModel.WorkingDirectory;
