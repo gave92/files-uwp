@@ -198,3 +198,8 @@ DeleteProcThreadAttributeList
 UpdateProcThreadAttribute
 InitializeProcThreadAttributeList
 CreateProcess
+IDesktopWallpaper
+DesktopWallpaper
+SHCreateShellItemArrayFromIDLists
+ILCreateFromPath
+CLSIDFromString
