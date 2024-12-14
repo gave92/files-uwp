@@ -32,7 +32,6 @@ LPARAM
 WM_LBUTTONUP
 WM_RBUTTONUP
 WM_DESTROY
-SetForegroundWindow
 GetForegroundWindow
 GetCurrentThreadId
 GetWindowThreadProcessId
@@ -100,7 +99,6 @@ SendMessage
 IsWindowVisible
 COPYDATASTRUCT
 SetWindowLongPtr
-GetDpiForWindow
 CallWindowProc
 MINMAXINFO
 SUBCLASSPROC
@@ -121,7 +119,6 @@ WindowsCreateString
 WindowsDeleteString
 IPreviewHandler
 AssocQueryString
-GetModuleHandle
 SHEmptyRecycleBin
 SHFileOperation
 SHGetFolderPath
@@ -144,15 +141,12 @@ COMPRESSION_FORMAT
 FILE_ACCESS_RIGHTS
 FindFirstFileEx
 FindNextFile
-CreateFile
 GetFileSizeEx
 WIN32_FIND_DATAW
-FILE_ACCESS_RIGHTS
 SHAddToRecentDocs
 SHARD
 BHID_EnumItems
 FOLDERID_RecycleBinFolder
-CoTaskMemFree
 SHGetIDListFromObject
 SHCreateItemFromIDList
 BHID_SFUIObject
@@ -167,15 +161,12 @@ IApplicationDocumentLists
 ApplicationDocumentLists
 IApplicationActivationManager
 MENU_ITEM_TYPE
-COMPRESSION_FORMAT
 FSCTL_SET_COMPRESSION
 FSCTL_DISMOUNT_VOLUME
 FSCTL_LOCK_VOLUME
 FILE_FILE_COMPRESSION
 WM_WINDOWPOSCHANGING
 WINDOWPOS
-CreateDirectoryFromApp
-CreateFile
 // Console api
 AllocConsole
 GetConsoleWindow
@@ -198,8 +189,3 @@ DeleteProcThreadAttributeList
 UpdateProcThreadAttribute
 InitializeProcThreadAttributeList
 CreateProcess
-IDesktopWallpaper
-DesktopWallpaper
-SHCreateShellItemArrayFromIDLists
-ILCreateFromPath
-CLSIDFromString
