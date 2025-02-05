@@ -1297,7 +1297,8 @@ namespace Files.App.ViewModels
 								Microsoft.UI.Dispatching.DispatcherQueuePriority.Low);
 
 								// For MTP devices load thumbnail using Storage API (#15084)
-								wasThumbnailLoaded |= await LoadThumbnailAsync(item, matchingStorageFile, cts.Token);
+								if (!wasThumbnailLoaded)
+									await LoadThumbnailAsync(item, matchingStorageFile, cts.Token);
 
 								SetFileTag(item);
 								wasSyncStatusLoaded = true;
@@ -1370,7 +1371,8 @@ namespace Files.App.ViewModels
 								Microsoft.UI.Dispatching.DispatcherQueuePriority.Low);
 
 								// For MTP devices load thumbnail using Storage API (#15084)
-								wasThumbnailLoaded |= await LoadThumbnailAsync(item, matchingStorageFolder, cts.Token);
+								if (!wasThumbnailLoaded)
+									await LoadThumbnailAsync(item, matchingStorageFolder, cts.Token);
 
 								SetFileTag(item);
 								wasSyncStatusLoaded = true;
