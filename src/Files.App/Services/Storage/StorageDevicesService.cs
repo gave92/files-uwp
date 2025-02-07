@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using OwlCore.Storage.System.IO;
 using System.IO;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
 
 namespace Files.App.Services
 {
@@ -41,7 +42,7 @@ namespace Files.App.Services
 					continue;
 				}
 
-				using var thumbnail = await DriveHelpers.GetThumbnailAsync(res.Result);
+				var thumbnail = await FileThumbnailHelper.GetIconAsync(res.Result, 40, ThumbnailMode.SingleItem, ThumbnailOptions.UseCurrentScale);
 				var type = DriveHelpers.GetDriveType(drive);
 				var label = DriveHelpers.GetExtendedDriveLabel(drive);
 				var driveItem = await DriveItem.CreateFromPropertiesAsync(res.Result, drive.Name.TrimEnd('\\'), label, type, thumbnail);
