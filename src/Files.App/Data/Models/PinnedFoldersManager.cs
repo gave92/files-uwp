@@ -104,7 +104,7 @@ namespace Files.App.Data.Models
 			{
 				locationItem.IsInvalid = false;
 				if (res.Result is not null)
-					await LoadIconForLocationItemAsync(locationItem, res.Result.Path);
+					await LoadIconForLocationItemAsync(locationItem, res.Result);
 			}
 			else
 			{
@@ -116,13 +116,14 @@ namespace Files.App.Data.Models
 			return locationItem;
 		}
 
-		private async Task LoadIconForLocationItemAsync(LocationItem locationItem, string path)
+		private async Task LoadIconForLocationItemAsync(LocationItem locationItem, BaseStorageFolder folder)
 		{
 			try
 			{
 				var result = await FileThumbnailHelper.GetIconAsync(
-					path,
-					Constants.ShellIconSizes.Small,
+                    folder.Path,
+                    folder,
+                    Constants.ShellIconSizes.Small,
 					true,
 					IconOptions.ReturnIconOnly | IconOptions.UseCurrentScale);
 

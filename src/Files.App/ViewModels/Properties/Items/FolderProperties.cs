@@ -78,8 +78,13 @@ namespace Files.App.ViewModels.Properties
 			ViewModel.CanCompressContent = Win32Helper.CanCompressContent(Item.ItemPath);
 			ViewModel.IsContentCompressed = Win32Helper.HasFileAttribute(Item.ItemPath, System.IO.FileAttributes.Compressed);
 
+			string folderPath = (Item as ShortcutItem)?.TargetPath ?? Item.ItemPath;
+			BaseStorageFolder? storageFolder = !string.IsNullOrWhiteSpace(folderPath) ? 
+				await AppInstance.ShellViewModel.GetFolderFromPathAsync(folderPath) : null!;
+
 			var result = await FileThumbnailHelper.GetIconAsync(
 				Item.ItemPath,
+				storageFolder,
 				Constants.ShellIconSizes.ExtraLarge,
 				true,
 				IconOptions.UseCurrentScale);
@@ -109,9 +114,6 @@ namespace Files.App.ViewModels.Properties
 					return;
 				}
 			}
-
-			string folderPath = (Item as IShortcutItem)?.TargetPath ?? Item.ItemPath;
-			BaseStorageFolder storageFolder = await AppInstance.ShellViewModel.GetFolderFromPathAsync(folderPath);
 
 			if (storageFolder is not null)
 			{
