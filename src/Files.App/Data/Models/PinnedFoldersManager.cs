@@ -135,7 +135,7 @@ namespace Files.App.Data.Models
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Error loading icon for {path}: {ex.Message}");
+				Debug.WriteLine($"Error loading icon for {folder.Path}: {ex.Message}");
 			}
 		}
 
