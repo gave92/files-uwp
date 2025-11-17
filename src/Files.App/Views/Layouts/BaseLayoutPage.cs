@@ -1194,34 +1194,32 @@ namespace Files.App.Views.Layouts
 			{
 				_ = e.Data.Properties;
 				var exists = e.Data.Properties.TryGetValue("Files_ActionBinder", out var val);
-				_ = val;			
-
-				// Reset dragged over item
-				dragOverItem = null;
-
-				var item = GetItemFromElement(sender);
-				if (item is not null)
-				{
-					e.DataView.As<Shell32.IDataObjectProvider>().GetDataObject().TryGetData<bool>(User32.RegisterClipboardFormat("dragRightButton"), out var isRightButtonDrag);
-
-					if (isRightButtonDrag)
-					{
-						SafetyExtensions.IgnoreExceptions(() => ShellContextFlyoutFactory.InvokeRightButtonDropMenu(item.ItemPath, e.DataView, e.AcceptedOperation));
-					}
-					else
-					{
-						await ParentShellPageInstance!.FilesystemHelpers.PerformOperationTypeAsync(e.AcceptedOperation, e.DataView, (item as ShortcutItem)?.TargetPath ?? item.ItemPath, false, true, item.IsExecutable, item.IsScriptFile);
-					}
-				}
+				_ = val;
 			}
 			catch (NullReferenceException)
 			{
 				// e.Data or e.Data.Properties is null, continue without the property check
 			}
-			finally
+
+			// Reset dragged over item
+			dragOverItem = null;
+
+			var item = GetItemFromElement(sender);
+			if (item is not null)
 			{
-				deferral.Complete();
+				e.DataView.As<Shell32.IDataObjectProvider>().GetDataObject().TryGetData<bool>(User32.RegisterClipboardFormat("dragRightButton"), out var isRightButtonDrag);
+
+				if (isRightButtonDrag)
+				{
+					SafetyExtensions.IgnoreExceptions(() => ShellContextFlyoutFactory.InvokeRightButtonDropMenu(item.ItemPath, e.DataView, e.AcceptedOperation));
+				}
+				else
+				{
+					await ParentShellPageInstance!.FilesystemHelpers.PerformOperationTypeAsync(e.AcceptedOperation, e.DataView, (item as ShortcutItem)?.TargetPath ?? item.ItemPath, false, true, item.IsExecutable, item.IsScriptFile);
+				}
 			}
+
+			deferral.Complete();
 		}
 
 		protected void FileList_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
