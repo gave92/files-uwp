@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Files.App.UserControls.FilePreviews;
 using Files.App.ViewModels.Previews;
@@ -11,7 +11,7 @@ using Windows.Storage;
 
 namespace Files.App.ViewModels.UserControls
 {
-	public sealed class InfoPaneViewModel : ObservableObject, IDisposable
+	public sealed partial class InfoPaneViewModel : ObservableObject, IDisposable
 	{
 		private IInfoPaneSettingsService infoPaneSettingsService { get; } = Ioc.Default.GetRequiredService<IInfoPaneSettingsService>();
 		private IContentPageContext contentPageContext { get; } = Ioc.Default.GetRequiredService<IContentPageContext>();
@@ -485,7 +485,23 @@ namespace Files.App.ViewModels.UserControls
 
 			SelectedItem?.FileTagsUI?.ForEach(tag => Items.Add(new TagItem(tag)));
 
-			Items.Add(new FlyoutItem(new Files.App.UserControls.Menus.FileTagsContextMenu(new List<ListedItem>() { SelectedItem })));
+			var contextMenu = new Files.App.UserControls.Menus.FileTagsContextMenu(new List<ListedItem>() { SelectedItem });
+			contextMenu.Closed += HandleClosed;
+			contextMenu.TagsChanged += RequireTagGroupsUpdate;
+
+			Items.Add(new FlyoutItem(contextMenu));
+
+			async void RequireTagGroupsUpdate(object? sender, EventArgs e)
+			{
+				if (contentPageContext.ShellPage is not null)
+					await contentPageContext.ShellPage.ShellViewModel.RefreshTagGroups();
+			}
+
+			void HandleClosed(object? sender, object e)
+			{
+				contextMenu.TagsChanged -= RequireTagGroupsUpdate;
+				contextMenu.Closed -= HandleClosed;
+			}
 		}
 
 		private void SetDriveItem()
@@ -496,7 +512,7 @@ namespace Files.App.ViewModels.UserControls
 				return;
 			}
 
-			SelectedDriveItem = drivesViewModel.Drives.FirstOrDefault(drive => drive.Path == selectedItem.ItemPath) as DriveItem;
+			SelectedDriveItem = drivesViewModel.Drives.FirstOrDefault(drive => drive.Id == selectedItem.ItemPath) as DriveItem;
 		}
 
 		public void Dispose()

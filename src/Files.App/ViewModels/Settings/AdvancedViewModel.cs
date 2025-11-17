@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
@@ -15,10 +15,11 @@ using Windows.Win32.Storage.FileSystem;
 
 namespace Files.App.ViewModels.Settings
 {
-	public sealed class AdvancedViewModel : ObservableObject
+	public sealed partial class AdvancedViewModel : ObservableObject
 	{
 		private IUserSettingsService UserSettingsService { get; } = Ioc.Default.GetRequiredService<IUserSettingsService>();
 		private ICommonDialogService CommonDialogService { get; } = Ioc.Default.GetRequiredService<ICommonDialogService>();
+		public ICommandManager Commands { get; } = Ioc.Default.GetRequiredService<ICommandManager>();
 
 		private readonly IFileTagsSettingsService fileTagsSettingsService = Ioc.Default.GetRequiredService<IFileTagsSettingsService>();
 
@@ -26,7 +27,6 @@ namespace Files.App.ViewModels.Settings
 		public ICommand SetAsOpenFileDialogCommand { get; }
 		public ICommand ExportSettingsCommand { get; }
 		public ICommand ImportSettingsCommand { get; }
-		public ICommand OpenSettingsJsonCommand { get; }
 		public AsyncRelayCommand OpenFilesOnWindowsStartupCommand { get; }
 
 
@@ -39,20 +39,9 @@ namespace Files.App.ViewModels.Settings
 			SetAsOpenFileDialogCommand = new AsyncRelayCommand(SetAsOpenFileDialogAsync);
 			ExportSettingsCommand = new AsyncRelayCommand(ExportSettingsAsync);
 			ImportSettingsCommand = new AsyncRelayCommand(ImportSettingsAsync);
-			OpenSettingsJsonCommand = new AsyncRelayCommand(OpenSettingsJsonAsync);
 			OpenFilesOnWindowsStartupCommand = new AsyncRelayCommand(OpenFilesOnWindowsStartupAsync);
 
 			_ = DetectOpenFilesAtStartupAsync();
-		}
-
-		private async Task OpenSettingsJsonAsync()
-		{
-			await SafetyExtensions.IgnoreExceptions(async () =>
-			{
-				var settingsJsonFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appdata:///local/settings/user_settings.json"));
-				if (!await Launcher.LaunchFileAsync(settingsJsonFile))
-					await ContextMenu.InvokeVerb("open", settingsJsonFile.Path);
-			});
 		}
 
 		private async Task SetAsDefaultExplorerAsync()
@@ -160,7 +149,7 @@ namespace Files.App.ViewModels.Settings
 
 		private async Task ImportSettingsAsync()
 		{
-			string[] extensions = ["ZipFileCapitalized".GetLocalizedResource(), "*.zip"];
+			string[] extensions = [Strings.ZipFileCapitalized.GetLocalizedResource(), "*.zip"];
 			bool result = CommonDialogService.Open_FileOpenDialog(MainWindow.Instance.WindowHandle, false, extensions, Environment.SpecialFolder.Desktop, out var filePath);
 			if (!result)
 				return;
@@ -200,13 +189,13 @@ namespace Files.App.ViewModels.Settings
 			{
 				App.Logger.LogWarning(ex, "Error importing settings");
 				UIHelpers.CloseAllDialogs();
-				await DialogDisplayHelper.ShowDialogAsync("SettingsImportErrorTitle".GetLocalizedResource(), "SettingsImportErrorDescription".GetLocalizedResource());
+				await DialogDisplayHelper.ShowDialogAsync(Strings.SettingsImportErrorTitle.GetLocalizedResource(), Strings.SettingsImportErrorDescription.GetLocalizedResource());
 			}
 		}
 
 		private async Task ExportSettingsAsync()
 		{
-			string[] extensions = ["ZipFileCapitalized".GetLocalizedResource(), "*.zip" ];
+			string[] extensions = [Strings.ZipFileCapitalized.GetLocalizedResource(), "*.zip" ];
 			bool result = CommonDialogService.Open_FileSaveDialog(MainWindow.Instance.WindowHandle, false, extensions, Environment.SpecialFolder.Desktop, out var filePath);
 			if (!result)
 				return;
@@ -292,7 +281,7 @@ namespace Files.App.ViewModels.Settings
 			set => SetProperty(ref isSetAsOpenFileDialog, value);
 		}
 
-		public bool CanShowSetAsOpenFileDialog
+		public bool IsAppEnvironmentDev
 		{
 			get => AppLifecycleHelper.AppEnvironment is AppEnvironment.Dev;
 		}
@@ -363,6 +352,20 @@ namespace Files.App.ViewModels.Settings
 					return;
 
 				UserSettingsService.GeneralSettingsService.ShowFlattenOptions = value;
+				OnPropertyChanged();
+			}
+		}
+		
+		// TODO remove when feature is marked as stable
+		public bool EnableOmnibar
+		{
+			get => UserSettingsService.GeneralSettingsService.EnableOmnibar;
+			set
+			{
+				if (value == UserSettingsService.GeneralSettingsService.EnableOmnibar)
+					return;
+
+				UserSettingsService.GeneralSettingsService.EnableOmnibar = value;
 				OnPropertyChanged();
 			}
 		}

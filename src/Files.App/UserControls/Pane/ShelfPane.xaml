@@ -1,0 +1,162 @@
+﻿<!--  Copyright (c) Files Community. Licensed under the MIT License.  -->
+<UserControl
+	x:Class="Files.App.UserControls.ShelfPane"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:converters="using:Files.App.Converters"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:data="using:Files.App.Data.Items"
+	xmlns:helpers="using:Files.App.Helpers"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d">
+
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<converters:EmptyListToVisibilityConverter x:Key="EmptyListToVisibilityConverter" />
+			<converters:PopulatedListToVisibilityConverter x:Key="PopulatedListToVisibilityConverter" />
+			<converters:ImageModelToImageConverter x:Key="ImageModelToImageConverter" />
+
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key="Light">
+					<ImageSource x:Key="EmptyShelf.48">ms-appx:///Assets/Shelf/EmptyShelf_48_ThemeLight.svg</ImageSource>
+					<ImageSource x:Key="EmptyShelf.100">ms-appx:///Assets/Shelf/EmptyShelf_100_ThemeLight.svg</ImageSource>
+					<ImageSource x:Key="EmptyShelf.200">ms-appx:///Assets/Shelf/EmptyShelf_200_ThemeLight.svg</ImageSource>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key="Dark">
+					<ImageSource x:Key="EmptyShelf.48">ms-appx:///Assets/Shelf/EmptyShelf_48_ThemeDark.svg</ImageSource>
+					<ImageSource x:Key="EmptyShelf.100">ms-appx:///Assets/Shelf/EmptyShelf_100_ThemeDark.svg</ImageSource>
+					<ImageSource x:Key="EmptyShelf.200">ms-appx:///Assets/Shelf/EmptyShelf_200_ThemeDark.svg</ImageSource>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key="HighContrast">
+					<ImageSource x:Key="EmptyShelf.48">ms-appx:///Assets/Shelf/EmptyShelf_48_ThemeDark.svg</ImageSource>
+					<ImageSource x:Key="EmptyShelf.100">ms-appx:///Assets/Shelf/EmptyShelf_100_ThemeDark.svg</ImageSource>
+					<ImageSource x:Key="EmptyShelf.200">ms-appx:///Assets/Shelf/EmptyShelf_200_ThemeDark.svg</ImageSource>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid
+		Width="240"
+		AllowDrop="True"
+		Background="{ThemeResource App.Theme.InfoPane.BackgroundBrush}"
+		BackgroundSizing="InnerBorderEdge"
+		BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+		BorderThickness="1"
+		CornerRadius="8"
+		DragOver="Shelf_DragOver"
+		Drop="Shelf_Drop">
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<!--  Shelf Header  -->
+		<StackPanel
+			Grid.Row="0"
+			Padding="12,12,12,4"
+			Spacing="8">
+
+			<!--  Title  -->
+			<TextBlock
+				HorizontalAlignment="Center"
+				Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+				Style="{StaticResource App.Theme.BodyTextBlockStyle}"
+				Text="{helpers:ResourceString Name=Shelf}" />
+
+			<!--  (Divider)  -->
+			<Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+		</StackPanel>
+
+		<!--  Empty Shelf Content  -->
+		<StackPanel
+			x:Name="EmptyShelfContent"
+			Grid.Row="1"
+			Padding="16,0,16,0"
+			VerticalAlignment="Center"
+			Orientation="Vertical"
+			Spacing="16"
+			Visibility="{x:Bind ItemsSource.Count, Converter={StaticResource EmptyListToVisibilityConverter}, Mode=OneWay}">
+
+			<Image
+				x:Name="EmptyShelfImage"
+				MaxHeight="48"
+				Source="{ThemeResource EmptyShelf.48}" />
+
+			<TextBlock
+				MaxWidth="240"
+				Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+				Style="{StaticResource App.Theme.CaptionTextBlockStyle}"
+				Text="{helpers:ResourceString Name=EmptyShelfText}"
+				TextAlignment="Center" />
+
+		</StackPanel>
+
+		<!--  Items List  -->
+		<ListView
+			x:Name="ShelfItemsList"
+			Grid.Row="1"
+			Padding="8,4,8,4"
+			CanDragItems="True"
+			DragItemsStarting="ListView_DragItemsStarting"
+			GotFocus="ShelfItemsList_GotFocus"
+			ItemContainerTransitions="{x:Null}"
+			ItemsSource="{x:Bind ItemsSource, Mode=OneWay}"
+			RightTapped="ShelfItemsList_RightTapped"
+			ScrollViewer.VerticalScrollBarVisibility="Auto"
+			ScrollViewer.VerticalScrollMode="Auto"
+			SelectionMode="Extended">
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="data:ShelfItem">
+					<Grid ColumnSpacing="8">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<Image
+							Grid.Column="0"
+							Width="16"
+							Height="16"
+							Source="{x:Bind Icon, Mode=OneWay, Converter={StaticResource ImageModelToImageConverter}}" />
+						<TextBlock
+							Grid.Column="1"
+							Text="{x:Bind Name, Mode=OneWay}"
+							TextTrimming="CharacterEllipsis"
+							TextWrapping="NoWrap"
+							ToolTipService.ToolTip="{x:Bind Path, Mode=OneWay}" />
+					</Grid>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+
+			<ListView.ItemContainerStyle>
+				<Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+					<Setter Property="Margin" Value="-4,0,-4,0" />
+					<Setter Property="MinHeight" Value="36" />
+				</Style>
+			</ListView.ItemContainerStyle>
+		</ListView>
+
+
+		<!--  Shelf Footer  -->
+		<StackPanel
+			Grid.Row="2"
+			Padding="12,12,12,4"
+			Spacing="4"
+			Visibility="{x:Bind ItemsSource.Count, Converter={StaticResource PopulatedListToVisibilityConverter}, Mode=OneWay}">
+
+			<!--  (Divider)  -->
+			<Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+			<!--  Bottom Actions  -->
+			<HyperlinkButton
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Command="{x:Bind ClearCommand, Mode=OneWay}"
+				Content="{helpers:ResourceString Name=ClearItems}" />
+		</StackPanel>
+	</Grid>
+</UserControl>

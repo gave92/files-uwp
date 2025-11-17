@@ -1,7 +1,7 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
-using CommunityToolkit.WinUI.UI;
+using CommunityToolkit.WinUI;
 using Files.App.ViewModels.Settings;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -157,6 +157,12 @@ namespace Files.App.Views.Settings
 
 			// Focus the editor TextBox
 			KeyBindingEditorTextBox.Focus(FocusState.Programmatic);
+		}
+
+		private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			var query = ((TextBox)sender).Text;
+			ViewModel.FilterItems(query);
 		}
 	}
 }

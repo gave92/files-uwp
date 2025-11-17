@@ -1,11 +1,12 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Files.Shared.Helpers;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using System.IO;
+using System.Text;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 using static Files.App.Helpers.Win32PInvoke;
@@ -55,6 +56,7 @@ namespace Files.App
 		[STAThread]
 		private static void Main()
 		{
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 			WinRT.ComWrappersSupport.InitializeComWrappers();
 
 			// We are about to do the first WinRT server call, in case the WinRT server is hanging

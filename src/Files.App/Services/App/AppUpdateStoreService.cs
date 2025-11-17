@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.Extensions.Logging;
@@ -13,7 +13,7 @@ using WinRT.Interop;
 
 namespace Files.App.Services
 {
-	internal sealed class StoreUpdateService : ObservableObject, IUpdateService
+	internal sealed partial class StoreUpdateService : ObservableObject, IUpdateService
 	{
 		private StoreContext? _storeContext;
 		private List<StorePackageUpdate>? _updatePackages;
@@ -36,7 +36,7 @@ namespace Files.App.Services
 
 		public bool IsAppUpdated
 		{
-			get => SystemInformation.Instance.IsAppUpdated;
+			get => AppLifecycleHelper.IsAppUpdated;
 		}
 
 		private bool _areReleaseNotesAvailable = false;
@@ -159,10 +159,10 @@ namespace Files.App.Services
 			//TODO: Use IDialogService in future.
 			ContentDialog dialog = new()
 			{
-				Title = "ConsentDialogTitle".GetLocalizedResource(),
-				Content = "ConsentDialogContent".GetLocalizedResource(),
-				CloseButtonText = "Close".GetLocalizedResource(),
-				PrimaryButtonText = "ConsentDialogPrimaryButtonText".GetLocalizedResource()
+				Title = Strings.ConsentDialogTitle.GetLocalizedResource(),
+				Content = Strings.ConsentDialogContent.GetLocalizedResource(),
+				CloseButtonText = Strings.Close.GetLocalizedResource(),
+				PrimaryButtonText = Strings.ConsentDialogPrimaryButtonText.GetLocalizedResource()
 			};
 
 			if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
@@ -186,8 +186,8 @@ namespace Files.App.Services
 
 				if (Path.Exists(destHashFilePath))
 				{
-					using var srcStream = (await srcHashFile.OpenReadAsync()).AsStream();
-					using var destStream = File.OpenRead(destHashFilePath);
+					await using var srcStream = (await srcHashFile.OpenReadAsync()).AsStream();
+					await using var destStream = File.OpenRead(destHashFilePath);
 
 					hashEqual = HashEqual(srcStream, destStream);
 				}

@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Windows.ApplicationModel.DataTransfer;
 
@@ -10,7 +10,7 @@ namespace Files.App.Actions
 		private readonly IContentPageContext context;
 
 		public string Label
-			=> Strings.CopyPath.GetLocalizedResource();
+			=> Strings.CopyItemPath.GetLocalizedResource();
 
 		public string Description
 			=> Strings.CopyItemPathDescription.GetLocalizedResource();

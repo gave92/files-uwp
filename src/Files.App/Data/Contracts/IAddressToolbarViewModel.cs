@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 namespace Files.App.Data.Contracts
 {
@@ -40,11 +40,9 @@ namespace Files.App.Data.Contracts
 
 		public event ItemDraggedOverPathItemEventHandler ItemDraggedOverPathItem;
 
-		public event EventHandler RefreshRequested;
-
 		public event EventHandler RefreshWidgetsRequested;
 
-		public void SwitchSearchBoxVisibility();
+		public void SwitchToSearchMode();
 
 		public ISearchBoxViewModel SearchBox { get; }
 	}

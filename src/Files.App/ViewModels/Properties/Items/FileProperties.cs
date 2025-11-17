@@ -1,5 +1,5 @@
-// Copyright(c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright(c) Files Community
+// Licensed under the MIT License.
 
 using Files.Shared.Helpers;
 using Microsoft.UI.Dispatching;
@@ -52,20 +52,22 @@ namespace Files.App.ViewModels.Properties
 			if (!Item.IsShortcut)
 				return;
 
-			var shortcutItem = (ShortcutItem)Item;
+			var shortcutItem = (IShortcutItem)Item;
 
 			var isApplication =
 				FileExtensionHelpers.IsExecutableFile(shortcutItem.TargetPath) ||
 				FileExtensionHelpers.IsMsiFile(shortcutItem.TargetPath);
 
-			ViewModel.ShortcutItemType = isApplication ? "Application".GetLocalizedResource() :
-				Item.IsLinkItem ? "PropertiesShortcutTypeLink".GetLocalizedResource() : "File".GetLocalizedResource();
+			ViewModel.ShortcutItemType = isApplication ? Strings.Application.GetLocalizedResource() :
+				Item.IsLinkItem ? Strings.PropertiesShortcutTypeLink.GetLocalizedResource() : Strings.File.GetLocalizedResource();
 			ViewModel.ShortcutItemPath = shortcutItem.TargetPath;
 			ViewModel.IsShortcutItemPathReadOnly = shortcutItem.IsSymLink;
 			ViewModel.ShortcutItemWorkingDir = shortcutItem.WorkingDirectory;
 			ViewModel.ShortcutItemWorkingDirVisibility = Item.IsLinkItem || shortcutItem.IsSymLink ? false : true;
 			ViewModel.ShortcutItemArguments = shortcutItem.Arguments;
+			ViewModel.ShowWindowCommand = shortcutItem.ShowWindowCommand;
 			ViewModel.ShortcutItemArgumentsVisibility = Item.IsLinkItem || shortcutItem.IsSymLink ? false : true;
+			ViewModel.ShortcutItemWindowArgsVisibility = Item.IsLinkItem || shortcutItem.IsSymLink ? false : true;
 
 			if (isApplication)
 				ViewModel.RunAsAdmin = shortcutItem.RunAsAdmin;
@@ -76,7 +78,6 @@ namespace Files.App.ViewModels.Properties
 			{
 				if (Item.IsLinkItem)
 				{
-					var tmpItem = (ShortcutItem)Item;
 					await Win32Helper.InvokeWin32ComponentAsync(ViewModel.ShortcutItemPath, AppInstance, ViewModel.ShortcutItemArguments, ViewModel.RunAsAdmin, ViewModel.ShortcutItemWorkingDir);
 				}
 				else
@@ -123,14 +124,14 @@ namespace Files.App.ViewModels.Properties
 			{
 				ViewModel.ItemCreatedTimestampReal = Item.ItemDateCreatedReal;
 				ViewModel.ItemAccessedTimestampReal = Item.ItemDateAccessedReal;
-				if (Item.IsLinkItem || string.IsNullOrWhiteSpace(((ShortcutItem)Item).TargetPath))
+				if (Item.IsLinkItem || string.IsNullOrWhiteSpace(((IShortcutItem)Item).TargetPath))
 				{
 					// Can't show any other property
 					return;
 				}
 			}
 
-			string filePath = (Item as ShortcutItem)?.TargetPath ?? Item.ItemPath;
+			string filePath = (Item as IShortcutItem)?.TargetPath ?? Item.ItemPath;
 			BaseStorageFile file = await AppInstance.ShellViewModel.GetFileFromPathAsync(filePath);
 
 			// Couldn't access the file and can't load any other properties
@@ -293,11 +294,12 @@ namespace Files.App.ViewModels.Properties
 				case nameof(ViewModel.RunAsAdmin):
 				case nameof(ViewModel.ShortcutItemPath):
 				case nameof(ViewModel.ShortcutItemWorkingDir):
+				case nameof(ViewModel.ShowWindowCommand):
 				case nameof(ViewModel.ShortcutItemArguments):
 					if (string.IsNullOrWhiteSpace(ViewModel.ShortcutItemPath))
 						return;
 
-					await FileOperationsHelpers.CreateOrUpdateLinkAsync(Item.ItemPath, ViewModel.ShortcutItemPath, ViewModel.ShortcutItemArguments, ViewModel.ShortcutItemWorkingDir, ViewModel.RunAsAdmin);
+					await FileOperationsHelpers.CreateOrUpdateLinkAsync(Item.ItemPath, ViewModel.ShortcutItemPath, ViewModel.ShortcutItemArguments, ViewModel.ShortcutItemWorkingDir, ViewModel.RunAsAdmin, ViewModel.ShowWindowCommand);
 
 					break;
 			}

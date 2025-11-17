@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using System.Windows.Input;
 
@@ -8,7 +8,7 @@ namespace Files.App.ViewModels.Settings
 	/// <summary>
 	/// Represents view model of <see cref="Views.Settings.ActionsPage"/>.
 	/// </summary>
-	public sealed class ActionsViewModel : ObservableObject
+	public sealed partial class ActionsViewModel : ObservableObject
 	{
 		// Dependency injections
 
@@ -19,6 +19,13 @@ namespace Files.App.ViewModels.Settings
 
 		public ObservableCollection<ModifiableActionItem> ValidActionItems { get; } = [];
 		public ObservableCollection<ModifiableActionItem> AllActionItems { get; } = [];
+
+		private ObservableCollection<ModifiableActionItem> _FilteredActionItems;
+		public ObservableCollection<ModifiableActionItem> FilteredActionItems
+		{
+			get { return _FilteredActionItems; }
+			set { SetProperty(ref _FilteredActionItems, value); }
+		}
 
 		private bool _IsResetAllConfirmationTeachingTipOpened;
 		public bool IsResetAllConfirmationTeachingTipOpened
@@ -148,6 +155,8 @@ namespace Files.App.ViewModels.Settings
 					}
 				}
 			});
+
+			FilteredActionItems = new ObservableCollection<ModifiableActionItem>(ValidActionItems);
 		}
 
 		private void ExecuteShowAddNewKeyBindingBlockCommand()
@@ -431,6 +440,22 @@ namespace Files.App.ViewModels.Settings
 			// Exit edit mode
 			item.IsInEditMode = false;
 			ValidActionItems.Remove(item);
+		}
+
+		public void FilterItems(string query)
+		{
+			if (string.IsNullOrEmpty(query))
+			{
+				FilteredActionItems = new ObservableCollection<ModifiableActionItem>(ValidActionItems);
+			}
+			else
+			{
+				FilteredActionItems = new ObservableCollection<ModifiableActionItem>(
+					ValidActionItems.Where(item =>
+						item.CommandLabel.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+						item.CommandDescription.Contains(query, StringComparison.OrdinalIgnoreCase))
+				);
+			}
 		}
 	}
 }

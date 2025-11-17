@@ -1,5 +1,5 @@
-# Copyright (c) 2024 Files Community
-# Licensed under the MIT License. See the LICENSE.
+# Copyright (c) Files Community
+# Licensed under the MIT License.
 
 param(
     [string]$Branch = "", # This has to correspond with one of the AppEnvironment enum values
@@ -60,7 +60,7 @@ elseif ($Branch -eq "StorePreview")
     $xmlDoc.Package.Identity.Name="49306atecsolution.FilesPreview"
     $xmlDoc.Package.Properties.DisplayName="Files - Preview"
     $xmlDoc.Package.Applications.Application.VisualElements.DisplayName="Files - Preview"
-    $xmlDoc.Package.Applications.Application.VisualElements.DefaultTile.ShortName="49306atecsolution.FilesPreview"
+    $xmlDoc.Package.Applications.Application.VisualElements.DefaultTile.ShortName="Files - Preview"
 
     # Remove capability that is only used for the sideload package
     $nsmgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)

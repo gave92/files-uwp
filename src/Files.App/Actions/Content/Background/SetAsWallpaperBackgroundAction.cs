@@ -1,17 +1,17 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Microsoft.Extensions.Logging;
 
 namespace Files.App.Actions
 {
-	internal sealed class SetAsWallpaperBackgroundAction : BaseSetAsAction
+	internal sealed partial class SetAsWallpaperBackgroundAction : BaseSetAsAction
 	{
 		public override string Label
-			=> "SetAsBackground".GetLocalizedResource();
+			=> Strings.SetAsBackground.GetLocalizedResource();
 
 		public override string Description
-			=> "SetAsWallpaperBackgroundDescription".GetLocalizedResource();
+			=> Strings.SetAsWallpaperBackgroundDescription.GetLocalizedResource();
 
 		public override RichGlyph Glyph
 			=> new("\uE91B");

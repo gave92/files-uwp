@@ -1,13 +1,14 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using System.IO;
+using System.Text;
 using System.Windows.Input;
 using Windows.Storage;
 
 namespace Files.App.ViewModels.Dialogs
 {
-	public sealed class DecompressArchiveDialogViewModel : ObservableObject
+	public sealed partial class DecompressArchiveDialogViewModel : ObservableObject
 	{
 		private ICommonDialogService CommonDialogService { get; } = Ioc.Default.GetRequiredService<ICommonDialogService>();
 
@@ -36,6 +37,23 @@ namespace Files.App.ViewModels.Dialogs
 			set => SetProperty(ref isArchiveEncrypted, value);
 		}
 
+		private bool isArchiveEncodingUndetermined;
+		public bool IsArchiveEncodingUndetermined
+		{
+			get => isArchiveEncodingUndetermined;
+			set => SetProperty(ref isArchiveEncodingUndetermined, value);
+		}
+
+		private Encoding? detectedEncoding;
+		public Encoding? DetectedEncoding
+		{
+			get => detectedEncoding;
+			set { 
+				SetProperty(ref detectedEncoding, value);
+				RefreshEncodingOptions();
+			}
+		}
+
 		private bool showPathSelection;
 		public bool ShowPathSelection
 		{
@@ -45,6 +63,28 @@ namespace Files.App.ViewModels.Dialogs
 
 		public DisposableArray? Password { get; private set; }
 
+		public EncodingItem[] EncodingOptions { get; set; } = EncodingItem.Defaults;
+		public EncodingItem SelectedEncoding { get; set; }
+		void RefreshEncodingOptions()
+		{
+			if (detectedEncoding != null)
+			{
+				EncodingOptions = EncodingItem.Defaults
+				.Prepend(new EncodingItem(
+					detectedEncoding, 
+					string.Format(Strings.EncodingDetected.GetLocalizedResource(), detectedEncoding.EncodingName)
+				))
+				.ToArray();
+			}
+			else
+			{
+				EncodingOptions = EncodingItem.Defaults;
+			}
+			SelectedEncoding = EncodingOptions.FirstOrDefault();
+		}
+
+		
+
 		public IRelayCommand PrimaryButtonClickCommand { get; private set; }
 
 		public ICommand SelectDestinationCommand { get; private set; }
@@ -53,6 +93,7 @@ namespace Files.App.ViewModels.Dialogs
 		{
 			this.archive = archive;
 			destinationFolderPath = DefaultDestinationFolderPath();
+			SelectedEncoding = EncodingOptions[0];
 
 			// Create commands
 			SelectDestinationCommand = new AsyncRelayCommand(SelectDestinationAsync);

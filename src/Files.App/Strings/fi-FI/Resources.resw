@@ -123,11 +123,14 @@
   <data name="CopyPath" xml:space="preserve">
     <value>Kopioi polku</value>
   </data>
+  <data name="CopyItemPath" xml:space="preserve">
+    <value>Copy item path</value>
+  </data>
   <data name="CopyPathWithQuotes" xml:space="preserve">
     <value>Kopioi polku lainausmerkeillä</value>
   </data>
   <data name="CopyItemPathWithQuotes" xml:space="preserve">
-    <value>Copy selected item path with quotes</value>
+    <value>Kopioi valittu kohdepolku lainausmerkein</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>Selaa</value>
@@ -163,7 +166,7 @@
     <value>Ohita</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
-    <value>Valitse kaikki</value>
+    <value>Select all</value>
   </data>
   <data name="InvertSelection" xml:space="preserve">
     <value>Käännä valinta</value>
@@ -214,7 +217,7 @@
     <value>Näytä piilotetut tiedostot ja kansiot</value>
   </data>
   <data name="ShowDotFiles" xml:space="preserve">
-    <value>Näytä pistetiedostot</value>
+    <value>Dot files</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>Ulkoasu</value>
@@ -253,7 +256,7 @@
     <value>Liitä</value>
   </data>
   <data name="PasteShortcut" xml:space="preserve">
-    <value>Paste shortcut</value>
+    <value>Liitä pikakuvake</value>
   </data>
   <data name="BaseLayoutContextFlyoutNew.Label" xml:space="preserve">
     <value>Uusi</value>
@@ -298,7 +301,7 @@
     <value>Syötä kohteen nimi</value>
   </data>
   <data name="CreateNewItemTitle" xml:space="preserve">
-    <value>Create new {0}</value>
+    <value>Luo uusi {0}</value>
   </data>
   <data name="LightTheme" xml:space="preserve">
     <value>Vaalea</value>
@@ -391,40 +394,40 @@
     <value>Vain luku</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>{0, plural, one {# day ago} other {# days ago}}</value>
+    <value>{0, plural, one {# päivä sitten} other {# päivää sitten}}</value>
   </data>
   <data name="DaysAgo_Singular" xml:space="preserve">
-    <value>1 day ago</value>
+    <value>päivä sitten</value>
   </data>
   <data name="DaysAgo_Plural" xml:space="preserve">
-    <value>{0} days ago</value>
+    <value>{0} päivää sitten</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>{0, plural, one {# hour ago} other {# hours ago}}</value>
+    <value>{0, plural, one {# tunti sitten} other {# tuntia sitten}}</value>
   </data>
   <data name="HoursAgo_Singular" xml:space="preserve">
-    <value>1 hour ago</value>
+    <value>tunti sitten</value>
   </data>
   <data name="HoursAgo_Plural" xml:space="preserve">
-    <value>{0} hours ago</value>
+    <value>{0} tuntia sitten</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
-    <value>{0, plural, one {# minute ago} other {# minutes ago}}</value>
+    <value>{0, plural, one {# minuutti sitten} other {# minuuttia sitten}}</value>
   </data>
   <data name="MinutesAgo_Singular" xml:space="preserve">
-    <value>1 minute ago</value>
+    <value>minuutti sitten</value>
   </data>
   <data name="MinutesAgo_Plural" xml:space="preserve">
-    <value>{0} minutes ago</value>
+    <value>{0} minuuttia sitten</value>
   </data>
   <data name="SecondsAgo" xml:space="preserve">
-    <value>{0, plural, one {# second ago} other {# seconds ago}}</value>
+    <value>{0, plural, one {# sekunti sitten} other {# sekuntia sitten}}</value>
   </data>
   <data name="SecondsAgo_Singular" xml:space="preserve">
-    <value>1 second ago</value>
+    <value>sekunti sitten</value>
   </data>
   <data name="SecondsAgo_Plural" xml:space="preserve">
-    <value>{0} seconds ago</value>
+    <value>{0} sekuntia sitten</value>
   </data>
   <data name="Now" xml:space="preserve">
     <value>Nyt</value>
@@ -483,10 +486,10 @@
     <value>t</value>
   </data>
   <data name="PropertiesFilesAndFoldersCountString" xml:space="preserve">
-    <value>{0, number} {0, plural, one {file} other {files}}, {1, number} {1, plural, one {folder} other {folders}}</value>
+    <value>{0, number} {0, plural, one {tiedosto} other {tiedostoa}}, {1, number} {1, plural, one {kansio} other {kansiota}}</value>
   </data>
   <data name="PropertiesFilesAndFoldersAndLocationsCount" xml:space="preserve">
-    <value>{0, number} {0, plural, one {file} other {files}}, {1, number} {1, plural, one {folder} other {folders}} from {2, number} {2, plural, one {location} other {locations}}</value>
+    <value>{0, number} {0, plural, one {tiedosto} other {tiedostoa}}, {1, number} {1, plural, one {kansio} other {kansiota}} {2, number} {2, plural, one {sijainnista} other {sijainneista}}</value>
   </data>
   <data name="BaseLayoutContextFlyoutRunAsAnotherUser.Text" xml:space="preserve">
     <value>Suorita toisena käyttäjänä</value>
@@ -519,7 +522,7 @@
     <value>Siirrä välilehti tähän</value>
   </data>
   <data name="Status" xml:space="preserve">
-    <value>Status</value>
+    <value>Tila</value>
   </data>
   <data name="SettingsPreferencesSystemDefaultLanguageOption" xml:space="preserve">
     <value>Windowsin oletusarvo</value>
@@ -535,6 +538,9 @@
   </data>
   <data name="CopyToFolderCaptionText" xml:space="preserve">
     <value>Kopioi kansioon {0}</value>
+  </data>
+  <data name="CloneToFolderCaptionText" xml:space="preserve">
+    <value>Kloonaa kohteeseen {0}</value>
   </data>
   <data name="CreateShortcut" xml:space="preserve">
     <value>Luo pikakuvake</value>
@@ -1058,9 +1064,6 @@
   <data name="NavToolbarDetails.ToolTipService.ToolTip" xml:space="preserve">
     <value>Tiedot (Ctrl+Shift+1)</value>
   </data>
-  <data name="NavToolbarTiles.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Laatat (Ctrl+Shift+2)</value>
-  </data>
   <data name="DateDeleted" xml:space="preserve">
     <value>Poistopäivämäärä</value>
   </data>
@@ -1089,7 +1092,10 @@
     <value>Vaihda tietoruutu näyttämään tiedot- tai esikatseluruutu</value>
   </data>
   <data name="ToggleToolbar" xml:space="preserve">
-    <value>Toggle the Toolbar</value>
+    <value>Toggle toolbar</value>
+  </data>
+  <data name="ToggleToolbarDescription" xml:space="preserve">
+    <value>Toggle visibility of the toolbar</value>
   </data>
   <data name="DetailsPanePreviewNotAvaliableText" xml:space="preserve">
     <value>Esikatselua ei ole saatavilla</value>
@@ -1245,46 +1251,46 @@
     <value>Avaa tallennusseuranta</value>
   </data>
   <data name="OpenStorageSenseDescription" xml:space="preserve">
-    <value>Open the Storage Sense page in Windows Settings</value>
+    <value>Avaa Tallennusseurannan sivu Windowsin asetuksissa</value>
   </data>
   <data name="Cleanup" xml:space="preserve">
-    <value>Cleanup</value>
+    <value>Siivoa</value>
   </data>
   <data name="Copy" xml:space="preserve">
     <value>Kopioi</value>
   </data>
   <data name="CopyItemsDialogTitle" xml:space="preserve">
-    <value>Copy {0, plural, one {item} other {items}}</value>
+    <value>Kopioi {0, plural, one {kohde} other {kohdetta}}</value>
   </data>
   <data name="DeleteItemsDialogTitle" xml:space="preserve">
-    <value>Delete {0, plural, one {item} other {items}}</value>
+    <value>Poista {0, plural, one {kohde} other {kohdetta}}</value>
   </data>
   <data name="MoveItemsDialogPrimaryButtonText" xml:space="preserve">
     <value>Siirrä</value>
   </data>
   <data name="MoveItemsDialogSubtitle" xml:space="preserve">
-    <value>{0, plural, one {One item will be moved} other {# items will be moved}}</value>
+    <value>{0, plural, one {Yksi kohde siirretään} other {# kohdetta siirretään}}</value>
   </data>
   <data name="MoveItemsDialogTitle" xml:space="preserve">
-    <value>Move {0, plural, one {item} other {items}}</value>
+    <value>Siirrä {0, plural, one {kohde} other {kohdetta}}</value>
   </data>
   <data name="DeleteItemsDialogSubtitle" xml:space="preserve">
-    <value>{0, plural, one {One item will be deleted} other {# items will be deleted}}</value>
+    <value>{0, plural, one {Yksi kohde poistetaan} other {# kohdetta poistetaan}}</value>
   </data>
   <data name="ConflictingItemsDialogPrimaryButtonText" xml:space="preserve">
     <value>Jatka</value>
   </data>
   <data name="ConflictingItemsDialogSubtitleConflicts" xml:space="preserve">
-    <value>{0, plural, one {There is one conflicting file name} other {There are # conflicting file names}}</value>
+    <value>{0, plural, one {Yksi ristiriitainen tiedostonimi} other {# ristiriitaista tiedostonimeä}}</value>
   </data>
   <data name="ConflictingItemsDialogSubtitleConflictsNonConflicts" xml:space="preserve">
-    <value>{0, plural, one {There is one conflicting file name} other {There are # conflicting file names}}, and {1, plural, one {one outgoing item} other {# outgoing items}}</value>
+    <value>{0, plural, one {Yksi ristiriitainen tiedostonimi} other {# ristiriitaista tiedostonimeä}} ja {1, plural, one {yksi lähtevä kohde} other {# lähtevää kohdetta}}</value>
   </data>
   <data name="ConflictingItemsDialogTitle" xml:space="preserve">
-    <value>Conflicting {0, plural, one {file name} other {file names}}</value>
+    <value>{0, plural, one {ristiriitainen tiedostonimi} other {ristiriitaista tiedostonimeä}}</value>
   </data>
   <data name="CopyItemsDialogSubtitle" xml:space="preserve">
-    <value>{0, plural, one {One item will be copied} other {# items will be copied}}</value>
+    <value>{0, plural, one {Yksi kohde kopioidaan} other {# kohdetta kopioidaan}}</value>
   </data>
   <data name="DeleteItemsDialogPermanentlyDeleteCheckBox.Content" xml:space="preserve">
     <value>Poista pysyvästi</value>
@@ -1392,7 +1398,7 @@
     <value>{0} kohdetta</value>
   </data>
   <data name="ReopenClosedTab" xml:space="preserve">
-    <value>Avaa suljettu välilehti uudelleen</value>
+    <value>Reopen tab</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Nimeä uudelleen</value>
@@ -1599,7 +1605,7 @@
     <value>Korvaa kaikki aliobjektin käyttöoikeusmerkinnät tämän objektin periytyvillä käyttöoikeusmerkinnöillä</value>
   </data>
   <data name="CloseActivePane" xml:space="preserve">
-    <value>Close active pane</value>
+    <value>Close pane</value>
   </data>
   <data name="EnterCompactOverlay" xml:space="preserve">
     <value>Siirry suppeaan asetteluun</value>
@@ -1629,7 +1635,7 @@
     <value>Lataa kohteen pilvestä ja lataa esikatselun</value>
   </data>
   <data name="DetailsArchiveItems" xml:space="preserve">
-    <value>{0, plural, one {# item} other {# items}} ({1, plural, one {# file} other {# files}}, {2, plural, one {# folder} other {# folders}})</value>
+    <value>{0, plural, one {# kohde} other {# kohdetta}} ({1, plural, one {# tiedosto} other {# tiedostoa}}, {2, plural, one {# kansio} other {# kansiota}})</value>
   </data>
   <data name="PropertyUncompressedSize" xml:space="preserve">
     <value>Pakkaamaton koko</value>
@@ -1657,15 +1663,6 @@
   </data>
   <data name="Home" xml:space="preserve">
     <value>Koti</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutDetails.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Vaihto+1</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutTiles.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Vaihto+2</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutColumn.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Vaihto+6</value>
   </data>
   <data name="ArchiveExtractionCompletedSuccessfullyText" xml:space="preserve">
     <value>Arkiston purkaminen onnistui.</value>
@@ -1724,8 +1721,8 @@
   <data name="Columns" xml:space="preserve">
     <value>Sarakkeet</value>
   </data>
-  <data name="Tiles" xml:space="preserve">
-    <value>Laatat</value>
+  <data name="Cards" xml:space="preserve">
+    <value>Kortit</value>
   </data>
   <data name="OpenFoldersInNewTab" xml:space="preserve">
     <value>Avaa kansiot uudessa välilehdessä</value>
@@ -1838,6 +1835,18 @@
   <data name="CompatibilityRegisterThisProgramForRestart" xml:space="preserve">
     <value>Rekisteröi tämä ohjelma käynnistääksesi uudelleen</value>
   </data>
+  <data name="StartWindow" xml:space="preserve">
+    <value>Aloitusikkuna</value>
+  </data>
+  <data name="NormalWindow" xml:space="preserve">
+    <value>Normaali ikkuna</value>
+  </data>
+  <data name="Minimized" xml:space="preserve">
+    <value>Pienennetty</value>
+  </data>
+  <data name="Maximized" xml:space="preserve">
+    <value>Suurennettu</value>
+  </data>
   <data name="RunAsAdministrator" xml:space="preserve">
     <value>Suorita järjestelmänvalvojana</value>
   </data>
@@ -1860,13 +1869,13 @@
     <value>Ei väriä</value>
   </data>
   <data name="ThirdPartyLibraries" xml:space="preserve">
-    <value>Third party libraries</value>
+    <value>Kolmannen osapuolen kirjastot</value>
   </data>
   <data name="SettingsSetAsDefaultFileManagerDescription" xml:space="preserve">
     <value>Tämä vaihtoehto muuttaa järjestelmän rekisteriä ja sillä voi olla odottamattomia sivuvaikutuksia laitteeseen. Jatka omalla vastuullasi.</value>
   </data>
   <data name="ShowFlattenOptionsDescription" xml:space="preserve">
-    <value>The flatten operations are permanent and not recommended. Continue at your own risk.</value>
+    <value>Kansiorakenteen tasoittaminen on pysyvää eikä sitä suositella. Jatka omalla vastuullasi.</value>
   </data>
   <data name="FolderWidgetCreateNewLibraryDialogTitleText" xml:space="preserve">
     <value>Luo kirjasto</value>
@@ -1947,7 +1956,7 @@
     <value>Sulje muut välilehdet</value>
   </data>
   <data name="CloseAllTabs" xml:space="preserve">
-    <value>Close all tabs</value>
+    <value>Sulje kaikki välilehdet</value>
   </data>
   <data name="Music" xml:space="preserve">
     <value>Musiikki</value>
@@ -2046,19 +2055,19 @@
     <value>Pakkaa</value>
   </data>
   <data name="FlattenFolderDescription" xml:space="preserve">
-    <value>Move all contents from subfolders into the selected location</value>
+    <value>Siirrä kaikkien alikansioiden sisältö valittuun sijaintiin</value>
   </data>
   <data name="FlattenFolder" xml:space="preserve">
-    <value>Flatten folder</value>
+    <value>Tasoitettu kansio</value>
   </data>
   <data name="Flatten" xml:space="preserve">
-    <value>Flatten</value>
+    <value>Tasoitettu</value>
   </data>
   <data name="FlattenFolderDialogContent" xml:space="preserve">
-    <value>Flattening a folder will move all contents from its subfolders to the selected location. This operation is permanent and cannot be undone. By using this experimental feature, you acknowledge the risk and agree not to hold the Files team responsible for any data loss.</value>
+    <value>Kansion tasoittaminen siirtää kaikki alikansioiden sisällöt valittuun sijaintiin. Tämä toimenpide on pysyvä eikä sitä voi perua. Käyttämällä tätä kokeellista ominaisuutta hyväksyt riskin ja sitoudut olemaan vaatimatta Files-tiimiltä korvauksia mahdollisesta tietojen menetyksestä.</value>
   </data>
   <data name="ShowFlattenOptions" xml:space="preserve">
-    <value>Show flatten options</value>
+    <value>Näytä tasoitusasetukset</value>
   </data>
   <data name="SelectFilesAndFoldersOnHover" xml:space="preserve">
     <value>Valitse tiedostot ja kansiot viemällä hiiren osoitin niiden päälle</value>
@@ -2070,7 +2079,7 @@
     <value>Palauta kaikki kohteet</value>
   </data>
   <data name="ConfirmRestoreSelectionBinDialogContent" xml:space="preserve">
-    <value>Haluatko palauttaa {0} valittua kohdetta?</value>
+    <value>Haluatko palauttaa {0, plural, one {valitun kohteen} other {{0} valittua kohdetta}}?</value>
   </data>
   <data name="ConfirmRestoreSelectionBinDialogTitle" xml:space="preserve">
     <value>Palauta valinta</value>
@@ -2092,6 +2101,12 @@
   </data>
   <data name="ArchivePassword" xml:space="preserve">
     <value>Arkiston salasana</value>
+  </data>
+  <data name="Encoding" xml:space="preserve">
+    <value>Merkistökoodaus</value>
+  </data>
+  <data name="EncodingDetected" xml:space="preserve">
+    <value>{0} (havaittu)</value>
   </data>
   <data name="ExtractToPath" xml:space="preserve">
     <value>Polku</value>
@@ -2135,7 +2150,7 @@
   <data name="SplittingSize" xml:space="preserve">
     <value>Jakokoko</value>
   </data>
-  <data name="Do not split" xml:space="preserve">
+  <data name="DoNotSplit" xml:space="preserve">
     <value>Älä jaa</value>
   </data>
   <data name="CD" xml:space="preserve">
@@ -2192,8 +2207,14 @@
   <data name="EditSettingsFile" xml:space="preserve">
     <value>Muokkaa asetustiedostoa</value>
   </data>
-  <data name="WhatsNew" xml:space="preserve">
-    <value>Uudet ominaisuudet</value>
+  <data name="EditSettingsFileDescription" xml:space="preserve">
+    <value>Avaa asetustiedosto oletuseditorissa</value>
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value>Julkaisutiedot</value>
+  </data>
+  <data name="ReleaseNotesDescription" xml:space="preserve">
+    <value>Avaa julkaisutiedot</value>
   </data>
   <data name="CannotCreateShortcutDialogTitle" xml:space="preserve">
     <value>Pikakuvakkeen luominen tähän sijaintiin vaatii järjestelmänvalvojan oikeudet</value>
@@ -2274,10 +2295,7 @@
     <value>Kontekstivalikon asetukset</value>
   </data>
   <data name="ShowFileExtensions" xml:space="preserve">
-    <value>Näytä tiedostopäätteet</value>
-  </data>
-  <data name="ShowHiddenItems" xml:space="preserve">
-    <value>Näytä piilotetut kohteet</value>
+    <value>File extensions</value>
   </data>
   <data name="FormatDriveText" xml:space="preserve">
     <value>Muoto</value>
@@ -2286,13 +2304,13 @@
     <value>Tuki</value>
   </data>
   <data name="FullScreen" xml:space="preserve">
-    <value>Vaihda koko näytön tilaan</value>
+    <value>Full screen</value>
   </data>
   <data name="ConfirmDeleteTag" xml:space="preserve">
     <value>Haluatko varmasti poistaa tämän tunnisteen?</value>
   </data>
   <data name="PlayAll" xml:space="preserve">
-    <value>Toista kaikki</value>
+    <value>Play</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>Korkeus</value>
@@ -2352,7 +2370,7 @@
     <value>Suurenna kokoa</value>
   </data>
   <data name="ToggleSortDirection" xml:space="preserve">
-    <value>Vaihda lajittelusuuntaa</value>
+    <value>Sort direction</value>
   </data>
   <data name="InvalidTagNameWarning" xml:space="preserve">
     <value>Virheellinen nimi</value>
@@ -2364,37 +2382,37 @@
     <value>Videot</value>
   </data>
   <data name="LaunchPreviewPopup" xml:space="preserve">
-    <value>Käynnistä esikatseluikkuna</value>
+    <value>Preview popup</value>
   </data>
   <data name="ToggleCompactOverlay" xml:space="preserve">
     <value>Kytke suppea asettelu päälle/pois</value>
   </data>
   <data name="OpenHelpDescription" xml:space="preserve">
-    <value>Avaa online-ohjesivu selaimessa</value>
+    <value>Open the online help page in your browser</value>
   </data>
   <data name="ToggleFullScreenDescription" xml:space="preserve">
-    <value>Vaihda koko näytön tilaan</value>
+    <value>Toggle full screen mode</value>
   </data>
   <data name="EnterCompactOverlayDescription" xml:space="preserve">
-    <value>Siirry suppeaan asetteluun</value>
+    <value>Enter compact overlay mode</value>
   </data>
   <data name="ExitCompactOverlayDescription" xml:space="preserve">
-    <value>Poistu suppeasta asettelusta</value>
+    <value>Exit compact overlay mode</value>
   </data>
   <data name="ToggleCompactOverlayDescription" xml:space="preserve">
-    <value>Kytke suppea asettelu päälle/pois</value>
+    <value>Toggle compact overlay mode</value>
   </data>
   <data name="SearchDescription" xml:space="preserve">
-    <value>Siirry hakukenttään</value>
+    <value>Start search in the OmniBar</value>
   </data>
   <data name="ToggleShowHiddenItemsDescription" xml:space="preserve">
-    <value>Valitse, näytetäänkö piilotetut kohteet</value>
+    <value>Toggle visibility of hidden items</value>
   </data>
   <data name="ToggleDotFilesSettingDescription" xml:space="preserve">
-    <value>Toggle whether to show dot files</value>
+    <value>Toggle visibility of dot files</value>
   </data>
   <data name="ToggleShowFileExtensionsDescription" xml:space="preserve">
-    <value>Valitse, näytetäänkö tiedostotunnisteet</value>
+    <value>Toggle visibility of file extensions</value>
   </data>
   <data name="TogglePreviewPaneDescription" xml:space="preserve">
     <value>Vaihda esikatseluruutu näyttämään tiedostojen esikatselut</value>
@@ -2403,61 +2421,64 @@
     <value>Valitse, näytetäänkö sivupalkki</value>
   </data>
   <data name="CopyItemDescription" xml:space="preserve">
-    <value>Kopioi kohteet leikepöydälle</value>
+    <value>Copy selected {0, plural, one {item} other {items}} to clipboard</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
     <value>Kopioi valittujen kohteiden polut leikepöydälle</value>
   </data>
   <data name="CopyItemPathDescription" xml:space="preserve">
-    <value>Copy path of selected items to the clipboard</value>
+    <value>Kopioi valittujen kohteiden polut leikepöydälle</value>
   </data>
   <data name="CopyItemPathWithQuotesDescription" xml:space="preserve">
-    <value>Copy path of selected items with quotes to the clipboard</value>
+    <value>Kopioi valittujen kohteiden polut lainausmerkein leikepöydälle</value>
   </data>
   <data name="CopyPathWithQuotesDescription" xml:space="preserve">
     <value>Kopioi valittujen kohteiden polut lainausmerkeillä leikepöydälle</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
-    <value>Leikkaa kohteet leikepöydälle</value>
+    <value>Cut selected {0, plural, one {item} other {items}} to clipboard</value>
   </data>
   <data name="PasteItemDescription" xml:space="preserve">
-    <value>Liitä kohteet leikepöydältä nykyiseen kansioon</value>
+    <value>Paste clipboard items to the current folder</value>
   </data>
   <data name="PasteShortcutDescription" xml:space="preserve">
-    <value>Paste item(s) from clipboard to current folder as shortcuts</value>
+    <value>Paste clipboard items to the current folder as shortcuts</value>
   </data>
   <data name="PasteItemToSelectionDescription" xml:space="preserve">
-    <value>Liitä kohteet leikepöydältä valittuun kansioon</value>
+    <value>Paste clipboard items to the selected folder</value>
+  </data>
+  <data name="PasteToSelectedFolder" xml:space="preserve">
+    <value>Paste to selected folder</value>
   </data>
   <data name="DeleteItemDescription" xml:space="preserve">
-    <value>Poista kohteet</value>
+    <value>Poista {0, plural, one {kohde} other {kohdetta}}</value>
   </data>
   <data name="CreateFolderDescription" xml:space="preserve">
     <value>Luo uusi kansio</value>
   </data>
   <data name="CreateShortcutDescription" xml:space="preserve">
-    <value>Luo uudet pikakuvakkeet valittuihin kohteisiin</value>
+    <value>Luo {0, plural, one {uusi pikakuvake} other {uutta pikakuvaketta}} {0, plural, one {valittuun kohteeseen} other {valittuihin kohteisiin}}</value>
   </data>
   <data name="CreateShortcutFromDialogDescription" xml:space="preserve">
     <value>Luo uusi pikakuvake mihin tahansa kohteeseen</value>
   </data>
   <data name="EmptyRecycleBinDescription" xml:space="preserve">
-    <value>Tyhjennä roskakori</value>
+    <value>Empty the contents of Recycle Bin</value>
   </data>
   <data name="FormatDriveDescription" xml:space="preserve">
     <value>Avaa valitun kohteen "Alusta asema" -valikko</value>
   </data>
   <data name="RestoreRecycleBinDescription" xml:space="preserve">
-    <value>Palauta valitut kohteet roskakorista</value>
+    <value>Palauta {0, plural, one {valittu kohde} other {valitut kohteet}} roskakorista</value>
   </data>
   <data name="RestoreAllRecycleBinDescription" xml:space="preserve">
     <value>Palauta kaikki kohteet roskakorista</value>
   </data>
   <data name="OpenItemDescription" xml:space="preserve">
-    <value>Avaa kohteet</value>
+    <value>Avaa {0, plural, one {kohde} other {kohteet}}</value>
   </data>
   <data name="OpenItemWithApplicationPickerDescription" xml:space="preserve">
-    <value>Avaa kohteet valitussa sovelluksessa</value>
+    <value>Avaa {0, plural, one {kohde} other {kohteet}} valitussa sovelluksessa</value>
   </data>
   <data name="OpenParentFolderDescription" xml:space="preserve">
     <value>Avaa haetun kohteen yläkansio</value>
@@ -2472,28 +2493,28 @@
     <value>Valitse kaikki kohteet</value>
   </data>
   <data name="InvertSelectionDescription" xml:space="preserve">
-    <value>Käänteinen kohteen valinta</value>
+    <value>Invert selected items</value>
   </data>
   <data name="ClearSelectionDescription" xml:space="preserve">
-    <value>Tyhjennä kohteen valinta</value>
+    <value>Clear selected items</value>
   </data>
   <data name="ToggleSelectDescription" xml:space="preserve">
     <value>Vaihda kohteen valinta</value>
   </data>
   <data name="ShareItemDescription" xml:space="preserve">
-    <value>Jaa valitut tiedostot muiden kanssa</value>
+    <value>Jaa {0, plural, one {valittu tiedosto} other {valitut tiedostot}} muille käyttäjille</value>
   </data>
   <data name="PinToStartDescription" xml:space="preserve">
-    <value>Kiinnitä kohteet Käynnistä-valikkoon</value>
+    <value>Kiinnitä {0, plural, one {kohde} other {kohteet}} Käynnistä-valikkoon</value>
   </data>
   <data name="UnpinFromStartDescription" xml:space="preserve">
-    <value>Irrota kohteet Käynnistä-valikosta</value>
+    <value>Irrota {0, plural, one {kohde} other {kohteet}} Käynnistä-valikosta</value>
   </data>
   <data name="PinFolderToSidebarDescription" xml:space="preserve">
-    <value>Kiinnitä kansio(t) sivupalkkiin</value>
+    <value>Kiinnitä {0, plural, one {kansio} other {kansiot}} sivupalkkiin</value>
   </data>
   <data name="UnpinFolderFromSidebarDescription" xml:space="preserve">
-    <value>Poista kansioiden kiinnitys sivupalkista</value>
+    <value>Irrota {0, plural, one {kansio} other {kansiot}} sivupalkista</value>
   </data>
   <data name="SetAsWallpaperBackgroundDescription" xml:space="preserve">
     <value>Aseta valittu kuva työpöydän taustaksi</value>
@@ -2507,14 +2528,23 @@
   <data name="SetAsAppBackgroundDescription" xml:space="preserve">
     <value>Aseta valittu kuva sovelluksen taustaksi</value>
   </data>
+  <data name="InstallFont" xml:space="preserve">
+    <value>Install font</value>
+  </data>
+  <data name="InstallDriver" xml:space="preserve">
+    <value>Install driver</value>
+  </data>
+  <data name="InstallCertificate" xml:space="preserve">
+    <value>Install certificate</value>
+  </data>
   <data name="InstallFontDescription" xml:space="preserve">
-    <value>Asenna valitut kirjasimet</value>
+    <value>Asenna {0, plural, one {valittu fontti} other {valitut fontit}}</value>
   </data>
   <data name="InstallInfDriverDescription" xml:space="preserve">
-    <value>Asenna ajurit käyttämällä valittuja inf-tiedostoja</value>
+    <value>Asenna {0, plural, one {ohjain} other {ohjaimet}} {0, plural, one {valittua inf-tiedostoa} other {valittuja inf-tiedostoja}} käyttäen</value>
   </data>
   <data name="InstallCertificateDescription" xml:space="preserve">
-    <value>Asenna valitut varmenteet</value>
+    <value>Asenna {0, plural, one {valittu varmenne} other {valitut varmenteet}}</value>
   </data>
   <data name="RunAsAdminDescription" xml:space="preserve">
     <value>Suorita valittu sovellus järjestelmänvalvojana</value>
@@ -2529,28 +2559,28 @@
     <value>Käynnistä esikatselu ponnahdusikkunassa</value>
   </data>
   <data name="CompressIntoArchiveDescription" xml:space="preserve">
-    <value>Luo arkisto valituista kohteista</value>
+    <value>Luo arkisto {0, plural, one {valitusta kohteesta} other {valituista kohteista}}</value>
   </data>
   <data name="CompressIntoSevenZipDescription" xml:space="preserve">
-    <value>Luo 7z-arkisto välittömästi valituilla kohteilla</value>
+    <value>Luo 7z-arkisto {0, plural, one {valitusta kohteesta} other {valituista kohteista}}</value>
   </data>
   <data name="CompressIntoZipDescription" xml:space="preserve">
-    <value>Luo zip-arkisto välittömästi valituilla kohteilla</value>
+    <value>Luo zip-arkisto {0, plural, one {valitusta kohteesta} other {valituista kohteista}}</value>
   </data>
   <data name="DecompressArchiveDescription" xml:space="preserve">
-    <value>Pura kohteet valituista arkistoista mihin tahansa kansioon</value>
+    <value>Pura kohteet {0, plural, one {valitusta arkistosta} other {valituista arkistoista}} kansioon</value>
   </data>
   <data name="DecompressArchiveHereDescription" xml:space="preserve">
-    <value>Pura kohteet valituista arkistoista nykyiseen kansioon</value>
+    <value>Pura kohteet {0, plural, one {valitusta arkistosta} other {valituista arkistoista}} nykyiseen kansioon</value>
   </data>
   <data name="DecompressArchiveToChildFolderDescription" xml:space="preserve">
-    <value>Pura kohteet valituista arkistoista uuteen kansioon</value>
+    <value>Pura kohteet {0, plural, one {valitusta arkistosta} other {valituista arkistoista}} uuteen kansioon</value>
   </data>
   <data name="RotateLeftDescription" xml:space="preserve">
-    <value>Kierrä valittuja kuvia vasemmalle</value>
+    <value>Käännä {0, plural, one {valittua kuvaa} other {valittuja kuvia}} vasemmalle</value>
   </data>
   <data name="RotateRightDescription" xml:space="preserve">
-    <value>Kierrä valittuja kuvia oikealle</value>
+    <value>Käännä {0, plural, one {valittua kuvaa} other {valittuja kuvia}} oikealle</value>
   </data>
   <data name="OpenSettingsDescription" xml:space="preserve">
     <value>Avaa asetussivu</value>
@@ -2570,8 +2600,8 @@
   <data name="LayoutDetailsDescription" xml:space="preserve">
     <value>Vaihda tietonäkymään</value>
   </data>
-  <data name="LayoutTilesDescription" xml:space="preserve">
-    <value>Vaihda laattanäkymään</value>
+  <data name="LayoutCardsDescription" xml:space="preserve">
+    <value>Vaihda kortit-näkymään</value>
   </data>
   <data name="LayoutListDescription" xml:space="preserve">
     <value>Vaihda luettelonäkymään</value>
@@ -2673,10 +2703,10 @@
     <value>Avaa uusi välilehti</value>
   </data>
   <data name="NavigateBackDescription" xml:space="preserve">
-    <value>Navigoi taaksepäin navigointihistoriassa</value>
+    <value>Navigate backward</value>
   </data>
   <data name="NavigateForwardDescription" xml:space="preserve">
-    <value>Navigoi eteenpäin navigointihistoriassa</value>
+    <value>Navigate forward</value>
   </data>
   <data name="NavigateUpDescription" xml:space="preserve">
     <value>Navigoi yksi hakemisto ylöspäin</value>
@@ -2706,10 +2736,10 @@
     <value>Sulje muut kuin valittu välilehti</value>
   </data>
   <data name="CloseAllTabsDescription" xml:space="preserve">
-    <value>Close all tabs including the current tab</value>
+    <value>Sulje kaikki välilehdet (myös nykyinen)</value>
   </data>
   <data name="ReopenClosedTabDescription" xml:space="preserve">
-    <value>Avaa viimeksi suljettu välilehti uudelleen</value>
+    <value>Reopen recently closed tab</value>
   </data>
   <data name="PreviousTabDescription" xml:space="preserve">
     <value>Siirry edelliseen välilehteen</value>
@@ -2721,13 +2751,13 @@
     <value>Sulje nykyinen välilehti</value>
   </data>
   <data name="CloseActivePaneDescription" xml:space="preserve">
-    <value>Close active pane</value>
+    <value>Sulje aktiivinen ruutu</value>
   </data>
   <data name="FocusOtherPane" xml:space="preserve">
-    <value>Focus other pane</value>
+    <value>Siirrä kohdistus toiseen ruutuun</value>
   </data>
   <data name="FocusOtherPaneDescription" xml:space="preserve">
-    <value>Switch focus to the non active pane</value>
+    <value>Switch focus to the other pane</value>
   </data>
   <data name="ToggleSidebar" xml:space="preserve">
     <value>Vaihda sivupalkkia</value>
@@ -2935,13 +2965,13 @@
     <value>Merkitsemätön</value>
   </data>
   <data name="PreviousTab" xml:space="preserve">
-    <value>Siirtyy edelliseen välilehteen</value>
+    <value>Previous tab</value>
   </data>
   <data name="NextTab" xml:space="preserve">
-    <value>Siirtyy seuraavaan välilehteen</value>
+    <value>Next tab</value>
   </data>
   <data name="CloseTab" xml:space="preserve">
-    <value>Sulkee nykyisen välilehden</value>
+    <value>Close tab</value>
   </data>
   <data name="EditPath" xml:space="preserve">
     <value>Muokkaa polkua</value>
@@ -2971,7 +3001,7 @@
     <value>Näytä valintaruudut kohteita valittaessa</value>
   </data>
   <data name="EditPathDescription" xml:space="preserve">
-    <value>Kohdista polkupalkkiin</value>
+    <value>Edit path in the OmniBar</value>
   </data>
   <data name="AddItemDescription" xml:space="preserve">
     <value>Luo uusi kohde</value>
@@ -2986,7 +3016,7 @@
     <value>Poista pysyvästi</value>
   </data>
   <data name="DeleteItemPermanentlyDescription" xml:space="preserve">
-    <value>Poista kohteet pysyvästi</value>
+    <value>Delete selected {0, plural, one {item} other {items}} permanently</value>
   </data>
   <data name="PlayAllDescription" xml:space="preserve">
     <value>Toista valitut mediatiedostot</value>
@@ -3103,19 +3133,19 @@
     <value>Siirry uuteen haaraan</value>
   </data>
   <data name="CreateFolderWithSelectionDescription" xml:space="preserve">
-    <value>Luo kansio tällä hetkellä valituilla kohteilla</value>
+    <value>Luo kansio {0, plural, one {valitusta kohteesta} other {valituista kohteista}}</value>
   </data>
   <data name="OpenProperties" xml:space="preserve">
-    <value>Avaa ominaisuudet</value>
+    <value>Ominaisuudet</value>
   </data>
   <data name="OpenClassicProperties" xml:space="preserve">
-    <value>Open File Explorer properties</value>
+    <value>Avaa Resurssienhallinnan ominaisuudet</value>
   </data>
   <data name="OpenPropertiesDescription" xml:space="preserve">
     <value>Avaa ominaisuudet-ikkuna</value>
   </data>
   <data name="OpenClassicPropertiesDescription" xml:space="preserve">
-    <value>Open File Explorer properties window</value>
+    <value>Avaa Resurssienhallinnan ominaisuusikkuna</value>
   </data>
   <data name="Locals" xml:space="preserve">
     <value>Paikalliset</value>
@@ -3134,6 +3164,9 @@
   </data>
   <data name="GitFetchDescription" xml:space="preserve">
     <value>Suorita git fetch</value>
+  </data>
+  <data name="GitCloneDescription" xml:space="preserve">
+    <value>Kloonaa git-repo</value>
   </data>
   <data name="GitPullDescription" xml:space="preserve">
     <value>Suorita git pull</value>
@@ -3179,7 +3212,7 @@
     <value>Mica Alt</value>
   </data>
   <data name="BackdropMaterial" xml:space="preserve">
-    <value>Backdrop</value>
+    <value>Sumennettu tausta</value>
   </data>
   <data name="Solid" xml:space="preserve">
     <value>Yhtenäinen</value>
@@ -3211,17 +3244,17 @@
   <data name="CannotReachGitHubError" xml:space="preserve">
     <value>Files ei voi käyttää GitHubia juuri nyt.</value>
   </data>
-  <data name="OpenInVSCode" xml:space="preserve">
-    <value>Avaa kansio VS Codessa</value>
+  <data name="OpenInIDE" xml:space="preserve">
+    <value>Avaa kansio sovelluksessa {0}</value>
   </data>
-  <data name="OpenInVSCodeDescription" xml:space="preserve">
-    <value>Avaa nykyinen hakemisto Visual Studio Codessa</value>
+  <data name="OpenInIDEDescription" xml:space="preserve">
+    <value>Avaa nykyinen hakemisto {0}-sovelluksessa</value>
   </data>
-  <data name="OpenRepoInVSCode" xml:space="preserve">
-    <value>Avaa repositorio VS Codessa</value>
+  <data name="OpenRepoInIDE" xml:space="preserve">
+    <value>Avaa repo sovelluksessa {0}</value>
   </data>
-  <data name="OpenRepoInVSCodeDescription" xml:space="preserve">
-    <value>Avaa Git-repositorion juuri Visual Studio Codessa</value>
+  <data name="OpenRepoInIDEDescription" xml:space="preserve">
+    <value>Avaa Git-repon juurihakemisto {0}-sovelluksessa</value>
   </data>
   <data name="CopyCode" xml:space="preserve">
     <value>Kopioi koodi</value>
@@ -3248,7 +3281,7 @@
     <value>Alusta repositorio</value>
   </data>
   <data name="InitRepoDescription" xml:space="preserve">
-    <value>Alusta Git-repositorio</value>
+    <value>Initialize current folder as a git repository</value>
   </data>
   <data name="GitOriginRepositoryName" xml:space="preserve">
     <value>Etärepositorion nimi</value>
@@ -3263,13 +3296,13 @@
     <value>Järjestä kohteet polun mukaan</value>
   </data>
   <data name="OpenDirectoryInNewPaneDescription" xml:space="preserve">
-    <value>Avaa hakemisto uudessa ruudussa</value>
+    <value>Open selected directory in a new pane</value>
   </data>
   <data name="OpenDirectoryInNewTabDescription" xml:space="preserve">
-    <value>Avaa hakemisto uudessa välilehdessä</value>
+    <value>Open selected directory in a new tab</value>
   </data>
   <data name="OpenInNewWindowDescription" xml:space="preserve">
-    <value>Avaa hakemisto uudessa ikkunassa</value>
+    <value>Open selected directory in a new window</value>
   </data>
   <data name="OpenAllTaggedItems" xml:space="preserve">
     <value>Avaa kaikki</value>
@@ -3294,10 +3327,10 @@
     <value>Komento '{0}' ei ole valmis suoritettavaksi.</value>
   </data>
   <data name="CommandPalette" xml:space="preserve">
-    <value>Komentopaletti</value>
+    <value>Command Palette</value>
   </data>
   <data name="OpenCommandPaletteDescription" xml:space="preserve">
-    <value>Avaa komentopaletti</value>
+    <value>Open Command Palette in the OmniBar</value>
   </data>
   <data name="ShortcutItemWorkingDir" xml:space="preserve">
     <value>Aloitussijainti:</value>
@@ -3462,6 +3495,70 @@
     <value>Pakataan {0} kohdetta kansiosta "{1}" kansioon "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
+  <data name="StatusCenter_GitCloneCanceled_Header" xml:space="preserve">
+    <value>Repon {0} kloonaus peruutettu kansioon "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneCanceled_SubHeader" xml:space="preserve">
+    <value>Repon {0} kloonaus peruutettu kansiosta "{1}" kansioon "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneComplete_Header" xml:space="preserve">
+    <value>Repo "{0}" kloonattu kansioon "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneComplete_SubHeader" xml:space="preserve">
+    <value>Repo {0} kloonattu kansiosta "{1}" kansioon "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneFailed_Header" xml:space="preserve">
+    <value>Virhe kloonattaessa Git-repoa "{0}" kansioon "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneFailed_SubHeader" xml:space="preserve">
+    <value>Repon {0} kloonaus epäonnistui kansiosta "{1}" kansioon "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneInProgress_Header" xml:space="preserve">
+    <value>Kloonataan repo "{0}" kansioon "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneInProgress_SubHeader" xml:space="preserve">
+    <value>Kloonataan repo {0} kansiosta "{1}" kansioon "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontCanceled_Header" xml:space="preserve">
+    <value>{0} fontin asennus peruutettu</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontCanceled_SubHeader" xml:space="preserve">
+    <value>{0} fontin asennus peruutettu kohteesta "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontComplete_Header" xml:space="preserve">
+    <value>{0} fontti(a) asennettu</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontComplete_SubHeader" xml:space="preserve">
+    <value>Asennettu {0} fontti(a) kohteesta "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontFailed_Header" xml:space="preserve">
+    <value>Virhe asennettaessa {0} fonttia</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontFailed_SubHeader" xml:space="preserve">
+    <value>{0} fontin asennus epäonnistui kohteesta "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontInProgress_Header" xml:space="preserve">
+    <value>Asennetaan {0} fontti(a)</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontInProgress_SubHeader" xml:space="preserve">
+    <value>Asennetaan {0} fontti(a) kohteesta "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
   <data name="StatusCenter_CopyCanceled_Header" xml:space="preserve">
     <value>{0} kohteen kopiointi peruutettu kansioon "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
@@ -3603,7 +3700,7 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_ProcessedItems_Header" xml:space="preserve">
-    <value>{0}/{1} kohdetta käsitelty</value>
+    <value>{0}/{1} {0, plural, one {kohde} other {kohdetta}} käsitelty</value>
     <comment>Shown in a StatusCenter card. Used as "8/20 items processed"</comment>
   </data>
   <data name="UnblockDownloadedFile" xml:space="preserve">
@@ -3620,6 +3717,9 @@
   </data>
   <data name="FailedToSetBackground" xml:space="preserve">
     <value>Taustakuvan määrittäminen epäonnistui</value>
+  </data>
+  <data name="FailedToOpenSettingsFile" xml:space="preserve">
+    <value>Asetustiedoston avaus epäonnistui</value>
   </data>
   <data name="GitDeleteBranch" xml:space="preserve">
     <value>Poista Git-haara</value>
@@ -3646,7 +3746,7 @@
     <value>Virhe otettaessa käyttöön tätä tunnistetta</value>
   </data>
   <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
-    <value>Pura kohteet valitu(i)sta yhden kohteen paket(e)ista nykyiseen kansioon tai usean kohteen paketti uuteen kansioon</value>
+    <value>Pura kohteet {0, plural, one {valitusta arkistosta} other {valituista arkistoista}} nykyiseen kansioon, jos arkisto sisältää vain yhden kohteen tai uuteen kansioon, jos kohteita on useita</value>
   </data>
   <data name="ExtractHereSmart" xml:space="preserve">
     <value>Pura tänne (älykäs)</value>
@@ -3655,7 +3755,7 @@
     <value>Lajittele tiedostot ja kansiot yhdessä</value>
   </data>
   <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
-    <value>Lajittele tiedostot ja kansiot yhdessä</value>
+    <value>Sort files and folders in the same list</value>
   </data>
   <data name="SortFilesFirst" xml:space="preserve">
     <value>Lajittele ensin tiedostot</value>
@@ -3710,9 +3810,6 @@
   </data>
   <data name="QuestionsAndDiscussions" xml:space="preserve">
     <value>Kysymykset ja keskustelut</value>
-  </data>
-  <data name="TilesViewSizeInfo" xml:space="preserve">
-    <value>Lisäkokoja ei ole vielä saatavilla laatat View:lle.</value>
   </data>
   <data name="Compact" xml:space="preserve">
     <value>Kompakti</value>
@@ -3794,7 +3891,7 @@
     <value>Tämä avainsitovuus on jo käytössä, valitse toinen sitova avain jatkaaksesi.</value>
   </data>
   <data name="KeybindingInvalidKeyNotification" xml:space="preserve">
-    <value>The key binding you choose cannot be used, please try again using a different key binding.</value>
+    <value>Valitsemaasi pikanäppäintä ei voi käyttää. Yritä uudelleen toista pikanäppäintä käyttäen.</value>
   </data>
   <data name="Customized" xml:space="preserve">
     <value>Mukautettu</value>
@@ -3875,6 +3972,10 @@
     <value>Iso Tiedosto</value>
     <comment>This is the friendly name for ICO files.</comment>
   </data>
+  <data name="IclFileCapitalized" xml:space="preserve">
+    <value>ICL-tiedosto</value>
+    <comment>This is the friendly name for ICL files.</comment>
+  </data>
   <data name="ZipFileCapitalized" xml:space="preserve">
     <value>Zip Tiedosto</value>
     <comment>This is the friendly name for ZIP files.</comment>
@@ -3884,7 +3985,7 @@
     <comment>This is the friendly name for bitmap files.</comment>
   </data>
   <data name="NumPadTypeName" xml:space="preserve">
-    <value>Num</value>
+    <value>Las</value>
   </data>
   <data name="NetworkLocations" xml:space="preserve">
     <value>Verkon sijainnit</value>
@@ -3902,95 +4003,98 @@
     <value>Muokkaa valittua tiedostoa Muistiinpanossa</value>
   </data>
   <data name="PropertyDimensionsColon" xml:space="preserve">
-    <value>Dimensions:</value>
+    <value>Mitat:</value>
   </data>
   <data name="StatusWithColon" xml:space="preserve">
-    <value>Status:</value>
+    <value>Tila:</value>
   </data>
   <data name="ShowToolbar" xml:space="preserve">
-    <value>Show toolbar</value>
+    <value>Näytä työkalupalkki</value>
     <comment>Setting that controls if the toolbar is shown in the main view</comment>
   </data>
   <data name="TabActions" xml:space="preserve">
-    <value>Tab actions menu</value>
+    <value>Välilehden toimintovalikko</value>
   </data>
   <data name="AddVerticalPane" xml:space="preserve">
-    <value>Add vertical pane</value>
+    <value>Vertical pane</value>
   </data>
   <data name="AddVerticalPaneDescription" xml:space="preserve">
-    <value>Add a vertical pane</value>
+    <value>Add vertical pane</value>
   </data>
   <data name="AddHorizontalPane" xml:space="preserve">
-    <value>Add horizontal pane</value>
+    <value>Horizontal pane</value>
   </data>
   <data name="AddHorizontalPaneDescription" xml:space="preserve">
-    <value>Add a horizontal pane</value>
+    <value>Add horizontal pane</value>
   </data>
   <data name="ArrangePanesVertically" xml:space="preserve">
-    <value>Arrange vertically</value>
+    <value>Järjestä pystysuunnassa</value>
   </data>
   <data name="ArrangePanesVerticallyDescription" xml:space="preserve">
-    <value>Arrange panes vertically</value>
+    <value>Järjestä ruudut pystysuunnassa</value>
   </data>
   <data name="ArrangePanesHorizontally" xml:space="preserve">
-    <value>Arrange horizontally</value>
+    <value>Järjestä vaakasuunnassa</value>
   </data>
   <data name="ArrangePanesHorizontallyDescription" xml:space="preserve">
-    <value>Arrange panes horizontally</value>
+    <value>Järjestä ruudut vaakasuoraan</value>
   </data>
   <data name="AddPane" xml:space="preserve">
-    <value>Add pane</value>
+    <value>Lisää ruutu</value>
   </data>
   <data name="ShowTabActions" xml:space="preserve">
-    <value>Show tab actions button in the title bar</value>
+    <value>Näytä välilehden toimintopainike otsikkopalkissa</value>
   </data>
   <data name="ArrangePanes" xml:space="preserve">
-    <value>Arrange panes</value>
+    <value>Järjestä ruudut</value>
   </data>
   <data name="DefaultPaneArrangement" xml:space="preserve">
-    <value>Default pane arrangement</value>
+    <value>Ruutujen oletusjärjestys</value>
   </data>
   <data name="Horizontal" xml:space="preserve">
-    <value>Horizontal</value>
+    <value>Vaakasuora</value>
   </data>
   <data name="Vertical" xml:space="preserve">
-    <value>Vertical</value>
+    <value>Pystysuora</value>
   </data>
   <data name="ShowSystemTrayIcon" xml:space="preserve">
-    <value>Show Files icon in the System Tray</value>
+    <value>Näytä Files-kuvake ilmaisinalueella</value>
   </data>
   <data name="CPUThreads" xml:space="preserve">
-    <value>CPU threads</value>
+    <value>Suorittimen säikeet</value>
   </data>
   <data name="NavigateHomeDescription" xml:space="preserve">
-    <value>Navigate to the home page</value>
+    <value>Siirry kotisivulle</value>
   </data>
   <data name="ShowHomeButton" xml:space="preserve">
-    <value>Show Home in address bar</value>
+    <value>Näytä kotipainike osoitepalkissa</value>
   </data>
   <data name="Toolbars" xml:space="preserve">
-    <value>Toolbars</value>
+    <value>Työkalupalkit</value>
   </data>
   <data name="UserID" xml:space="preserve">
-    <value>User ID</value>
+    <value>Käyttäjätunnus</value>
   </data>
   <data name="BulkRename" xml:space="preserve">
-    <value>Bulk rename</value>
+    <value>Usean kohteen uudelleennimeäminen</value>
+  </data>
+  <data name="CompressContents" xml:space="preserve">
+    <value>Pakkaa sisältö</value>
   </data>
   <data name="ShowCreateAlternateDataStream" xml:space="preserve">
-    <value>Show option to create alternate data stream</value>
+    <value>Näytä vaihtoehtoisen tietovirran luomisen vaihtoehto</value>
   </data>
   <data name="CreateAlternateDataStream" xml:space="preserve">
-    <value>Create alternate data stream</value>
+    <value>Luo vaihtoehtoinen tietovirta</value>
   </data>
   <data name="CreateAlternateDataStreamDescription" xml:space="preserve">
-    <value>Create alternate data stream for the selected item(s)</value>
+    <value>Luo vaihtoehtoinen tietovirta {0, plural, one {valitulle kohteelle} other {valituille kohteille}}</value>
   </data>
   <data name="EnterDataStreamName" xml:space="preserve">
-    <value>Enter data stream name</value>
+    <value>Syötä tietovirran nimi</value>
   </data>
   <data name="ErrorCreatingDataStreamTitle" xml:space="preserve">
-    <value>There was an error creating the alternate data stream</value>
+    <value>Virhe luotaessa vaihtoehtoista tietovirtaa</value>
   </data>
   <data name="ErrorCreatingDataStreamDescription" xml:space="preserve">
     <value>Please note that alternate data streams only work on drives formatted as NTFS.</value>
@@ -4003,5 +4107,123 @@
   </data>
   <data name="ManageTags" xml:space="preserve">
     <value>Manage tags</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="AlwaysSwitchToNewlyOpenedTab" xml:space="preserve">
+    <value>Always switch focus to newly created tab</value>
+  </data>
+  <data name="ToggleShelfPane" xml:space="preserve">
+    <value>Toggle shelf pane</value>
+  </data>
+  <data name="ToggleShelfPaneDescription" xml:space="preserve">
+    <value>Toggle the visibility of the shelf pane</value>
+  </data>
+  <data name="ShowShelfPaneButtonInAddressBar" xml:space="preserve">
+    <value>Show shelf pane toggle in address bar</value>
+  </data>
+  <data name="Shelf" xml:space="preserve">
+    <value>Shelf</value>
+    <comment>'Shelf' refers to the Shelf Pane feature, where users can conveniently drag and drop files for quick access and perform bulk actions with ease.</comment>
+  </data>
+  <data name="ClearItems" xml:space="preserve">
+    <value>Clear items</value>
+  </data>
+  <data name="RemoveFromShelf" xml:space="preserve">
+    <value>Remove from shelf</value>
+  </data>
+  <data name="AddToShelf" xml:space="preserve">
+    <value>Add to shelf</value>
+    <comment>Tooltip that displays when dragging items to the Shelf Pane</comment>
+  </data>
+  <data name="EnterHashToCompare" xml:space="preserve">
+    <value>Enter a hash to compare</value>
+    <comment>Placeholder that appears in the compare hash text box</comment>
+  </data>
+  <data name="HashesMatch" xml:space="preserve">
+    <value>Matches {0}</value>
+    <comment>Appears when two compared hashes match, e.g. "Matches SHA256"</comment>
+  </data>
+  <data name="HashesDoNotMatch" xml:space="preserve">
+    <value>No matches found</value>
+    <comment>Appears when two compared hashes don't match</comment>
+  </data>
+  <data name="PathOrAlias" xml:space="preserve">
+    <value>Path or alias</value>
+  </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>Invalid path</value>
+  </data>
+  <data name="TestIntegration" xml:space="preserve">
+    <value>Test integration</value>
+  </data>
+  <data name="IDENotLocatedContent" xml:space="preserve">
+    <value>{0} could not be located. Please check your settings and try again.</value>
+  </data>
+  <data name="IDENotLocatedTitle" xml:space="preserve">
+    <value>The configured IDE could not be located</value>
+  </data>
+  <data name="OpenSettings" xml:space="preserve">
+    <value>Open settings</value>
+  </data>
+  <data name="VisualStudioCode" xml:space="preserve">
+    <value>Visual Studio Code</value>
+  </data>
+  <data name="IDEPathPlaceholder" xml:space="preserve">
+    <value>Enter a path or launch alias</value>
+  </data>
+  <data name="InvalidIDENameError" xml:space="preserve">
+    <value>Please enter a name for the IDE</value>
+  </data>
+  <data name="CloneRepo" xml:space="preserve">
+    <value>Clone repo</value>
+    <comment>Clone repo dialog title</comment>
+  </data>
+  <data name="Clone" xml:space="preserve">
+    <value>Clone</value>
+    <comment>Primary action button in the clone repo dialog</comment>
+  </data>
+  <data name="RepositoryURL" xml:space="preserve">
+    <value>Repository URL</value>
+    <comment>URL textbox header in the clone repo dialog</comment>
+  </data>
+  <data name="CannotCloneRepoTitle" xml:space="preserve">
+    <value>Cannot clone repo</value>
+    <comment>Cannot clone repo dialog title</comment>
+  </data>
+  <data name="CompareFile" xml:space="preserve">
+    <value>Compare a file</value>
+    <comment>Button that appears in file hash properties that allows the user to compare two files</comment>
+  </data>
+  <data name="SizeFormat" xml:space="preserve">
+    <value>Size format</value>
+  </data>
+  <data name="Binary" xml:space="preserve">
+    <value>Binary</value>
+  </data>
+  <data name="Decimal" xml:space="preserve">
+    <value>Decimal</value>
+  </data>
+  <data name="EnableOmnibar" xml:space="preserve">
+    <value>Enable Omnibar</value>
+  </data>
+  <data name="SectionsHiddenMessage" xml:space="preserve">
+    <value>Voit lisätä osioita sivupalkkiin napsauttamalla hiiren oikealla painikkeella ja valitsemalla ne</value>
+  </data>
+  <data name="EmptyShelfText" xml:space="preserve">
+    <value>Vedä tiedostoja tai kansioita tähän, jotta voit käyttää niitä eri välilehtien välillä</value>
+  </data>
+  <data name="OmnibarPathModeTextPlaceholder" xml:space="preserve">
+    <value>Enter a path to navigate to...</value>
+  </data>
+  <data name="OmnibarCommandPaletteModeTextPlaceholder" xml:space="preserve">
+    <value>Find features and commands...</value>
+  </data>
+  <data name="OmnibarSearchModeTextPlaceholder" xml:space="preserve">
+    <value>Search for files and folders...</value>
   </data>
 </root>

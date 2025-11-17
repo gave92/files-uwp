@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 WNDPROC
 WNDCLASSEXW
@@ -28,9 +28,7 @@ HWND
 LRESULT
 WPARAM
 LPARAM
-WM_LBUTTONUP
-WM_RBUTTONUP
-WM_DESTROY
+WM_*
 SetForegroundWindow
 GetForegroundWindow
 GetCurrentThreadId
@@ -47,7 +45,6 @@ RemoveDirectoryFromApp
 GetKeyState
 CreateDirectoryFromApp
 WNetCancelConnection2
-NET_USE_CONNECT_FLAGS
 NETRESOURCEW
 WNetAddConnection3
 CREDENTIALW
@@ -80,7 +77,6 @@ GetAce
 SetEntriesInAcl
 ACL_SIZE_INFORMATION
 DeleteAce
-EXPLICIT_ACCESS
 ACCESS_ALLOWED_ACE
 LookupAccountSid
 GetComputerName
@@ -98,8 +94,7 @@ FindWindow
 SendMessage
 IsWindowVisible
 COPYDATASTRUCT
-SetWindowLongPtr
-GetDpiForWindow
+WINDOW_LONG_PTR_INDEX
 CallWindowProc
 MINMAXINFO
 SUBCLASSPROC
@@ -136,7 +131,6 @@ ShellExecuteEx
 CoTaskMemFree
 QueryDosDevice
 DeviceIoControl
-GetLastError
 CreateFile
 GetVolumeInformation
 COMPRESSION_FORMAT
@@ -173,3 +167,61 @@ FSCTL_LOCK_VOLUME
 FILE_FILE_COMPRESSION
 WM_WINDOWPOSCHANGING
 WINDOWPOS
+UnregisterClass
+E_POINTER
+E_NOINTERFACE
+E_FAIL
+IShellFolder
+FILE_FLAGS_AND_ATTRIBUTES
+GetLogicalDrives
+IShellItemImageFactory
+GdipCreateBitmapFromHBITMAP
+GdipGetImageEncodersSize
+GdipGetImageEncoders
+ImageFormatPNG
+ImageFormatJPEG
+IStream
+CreateStreamOnHGlobal
+STATFLAG
+STREAM_SEEK
+GdipSaveImageToStream
+GdipGetImageRawFormat
+_TRANSFER_SOURCE_FLAGS
+E_NOTIMPL
+DeleteObject
+GdipDisposeImage
+DeleteObject
+OleInitialize
+OleUninitialize
+IShellIconOverlayManager
+SHGetFileInfo
+GetFileAttributes
+SetFileAttributes
+INVALID_FILE_ATTRIBUTES
+SHDefExtractIconW
+GdipCreateBitmapFromHICON
+SHGetSetFolderCustomSettings
+FCSM_ICONFILE
+FCS_FORCEWRITE
+IShellLinkW
+SHFormatDrive
+ITaskbarList
+ITaskbarList2
+ITaskbarList3
+ITaskbarList4
+TaskbarList
+ICustomDestinationList
+DestinationList
+IObjectArray
+GetCurrentProcessExplicitAppUserModelID
+SetCurrentProcessExplicitAppUserModelID
+GdipCreateBitmapFromScan0
+BITMAP
+GetObject
+_SICHINTF
+RoGetAgileReference
+IQueryInfo
+QITIPF_FLAGS
+GetKeyboardState
+MapVirtualKey
+GetKeyboardLayout

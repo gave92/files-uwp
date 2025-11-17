@@ -1,7 +1,6 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
-using CommunityToolkit.WinUI.Helpers;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Net.Http;
@@ -12,7 +11,7 @@ using Windows.Storage;
 
 namespace Files.App.Services
 {
-	public sealed class SideloadUpdateService : ObservableObject, IUpdateService, IDisposable
+	public sealed partial class SideloadUpdateService : ObservableObject, IUpdateService, IDisposable
 	{
 		private const string SIDELOAD_STABLE = "https://cdn.files.community/files/stable/Files.Package.appinstaller";
 		private const string SIDELOAD_PREVIEW = "https://cdn.files.community/files/preview/Files.Package.appinstaller";
@@ -55,7 +54,7 @@ namespace Files.App.Services
 
 		public bool IsAppUpdated
 		{
-			get => SystemInformation.Instance.IsAppUpdated;
+			get => AppLifecycleHelper.IsAppUpdated;
 		}
 
 		private bool _areReleaseNotesAvailable = false;
@@ -123,33 +122,44 @@ namespace Files.App.Services
 
 		public async Task CheckAndUpdateFilesLauncherAsync()
 		{
-			var destFolderPath = Path.Combine(UserDataPaths.GetDefault().LocalAppData, "Files");
-			var destExeFilePath = Path.Combine(destFolderPath, "Files.App.Launcher.exe");
-
-			if (File.Exists(destExeFilePath))
+			try
 			{
+				var destFolderPath = Path.Combine(UserDataPaths.GetDefault().LocalAppData, "Files");
+				var destExeFilePath = Path.Combine(destFolderPath, "Files.App.Launcher.exe");
+
+				if (!File.Exists(destExeFilePath))
+					return;
+
 				var hashEqual = false;
-				var srcHashFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/FilesOpenDialog/Files.App.Launcher.exe.sha256"));
+				var srcHashFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/FilesOpenDialog/Files.App.Launcher.exe.sha256"))
+					.AsTask().ConfigureAwait(false);
 				var destHashFilePath = Path.Combine(destFolderPath, "Files.App.Launcher.exe.sha256");
 
 				if (File.Exists(destHashFilePath))
 				{
-					using var srcStream = (await srcHashFile.OpenReadAsync()).AsStream();
-					using var destStream = File.OpenRead(destHashFilePath);
-
+					await using var srcStream = (await srcHashFile.OpenReadAsync().AsTask().ConfigureAwait(false)).AsStream();
+					await using var destStream = File.OpenRead(destHashFilePath);
 					hashEqual = HashEqual(srcStream, destStream);
 				}
 
 				if (!hashEqual)
 				{
-					var srcExeFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/FilesOpenDialog/Files.App.Launcher.exe"));
-					var destFolder = await StorageFolder.GetFolderFromPathAsync(destFolderPath);
+					var srcExeFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/FilesOpenDialog/Files.App.Launcher.exe"))
+						.AsTask().ConfigureAwait(false);
+					var destFolder = await StorageFolder.GetFolderFromPathAsync(destFolderPath).AsTask().ConfigureAwait(false);
 
-					await srcExeFile.CopyAsync(destFolder, "Files.App.Launcher.exe", NameCollisionOption.ReplaceExisting);
-					await srcHashFile.CopyAsync(destFolder, "Files.App.Launcher.exe.sha256", NameCollisionOption.ReplaceExisting);
+					await srcExeFile.CopyAsync(destFolder, "Files.App.Launcher.exe", NameCollisionOption.ReplaceExisting)
+						.AsTask().ConfigureAwait(false);
+					await srcHashFile.CopyAsync(destFolder, "Files.App.Launcher.exe.sha256", NameCollisionOption.ReplaceExisting)
+						.AsTask().ConfigureAwait(false);
 
 					Logger?.LogInformation("Files.App.Launcher updated.");
 				}
+			}
+			catch (Exception ex)
+			{
+				Logger?.LogError(ex, ex.Message);
+				return;
 			}
 
 			bool HashEqual(Stream a, Stream b)

@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -43,6 +43,7 @@ namespace Files.App.Controls
 
 			OnIconTypeChanged();
 			OnIconColorTypeChanged();
+			OnIconSizeChanged();
 		}
 
 		private void GetTemplateParts()
@@ -248,6 +249,11 @@ namespace Files.App.Controls
 
 			if (GetTemplateChild(FilledIconPath) is Path fillPath)
 				fillPath.Fill = (Brush)this.GetValue(ColorProperty);
+		}
+
+		private void OnIconSizeChanged()
+		{
+			Height = Width = IconSize;
 		}
 	}
 }

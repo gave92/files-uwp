@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Files.App.Utils.Storage.Operations;
 using Microsoft.Extensions.Logging;
@@ -158,6 +158,10 @@ namespace Files.App.Data.Models
 			};
 
 			compressor.CustomParameters.Add("mt", CPUThreads.ToString());
+			//Use UTF-8 encoding. 
+			//References: 7-zip chm --> Command Line Version --> Switches
+			//--> -m --> cu=[off | on].
+			compressor.CustomParameters.Add("cu", "on");
 
 			compressor.Compressing += Compressor_Compressing;
 			compressor.FileCompressionStarted += Compressor_FileCompressionStarted;

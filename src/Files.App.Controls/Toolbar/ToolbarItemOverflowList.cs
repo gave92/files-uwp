@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 namespace Files.App.Controls
 {
@@ -7,7 +7,7 @@ namespace Files.App.Controls
 	/// A collection of Toolbar Items which are presented in the Overflow Menu,
 	/// that are included in the IToolbarItemSet interface
 	/// </summary>
-	internal class ToolbarItemOverflowList : List<IToolbarOverflowItemSet>
+	internal partial class ToolbarItemOverflowList : List<IToolbarOverflowItemSet>
 	{
 	}
 }

@@ -1,9 +1,9 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 namespace Files.App.ViewModels.UserControls
 {
-	public sealed class StatusCenterViewModel : ObservableObject
+	public sealed partial class StatusCenterViewModel : ObservableObject
 	{
 		public ObservableCollection<StatusCenterItem> StatusCenterItems { get; } = [];
 
@@ -31,10 +31,27 @@ namespace Files.App.ViewModels.UserControls
 		}
 
 		public bool HasAnyItemInProgress
-			=> InProgressItemCount > 0;
+		{
+			get
+			{
+				if (InProgressItemCount > 0)
+					ShowProgressRing = true;
+
+				return InProgressItemCount > 0;
+			}
+		}
 
 		public bool HasAnyItem
 			=> StatusCenterItems.Any();
+
+
+		private bool _ShowProgressRing = false;
+		public bool ShowProgressRing
+		{
+			get => _ShowProgressRing;
+			private set => SetProperty(ref _ShowProgressRing, value);
+
+		}
 
 		public int InfoBadgeState
 		{
@@ -62,6 +79,11 @@ namespace Files.App.ViewModels.UserControls
 		public StatusCenterViewModel()
 		{
 			StatusCenterItems.CollectionChanged += (s, e) => OnPropertyChanged(nameof(HasAnyItem));
+		}
+
+		public void OnStatusCenterFlyoutOpened()
+		{
+			ShowProgressRing = HasAnyItemInProgress || InfoBadgeState == 3;
 		}
 
 		public StatusCenterItem AddItem(

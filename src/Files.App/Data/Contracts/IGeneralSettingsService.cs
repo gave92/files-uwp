@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 namespace Files.App.Data.Contracts
 {
@@ -289,5 +289,15 @@ namespace Files.App.Data.Contracts
 		/// Gets or sets a value indicating the default arrangement for Dual Pane.
 		/// </summary>
 		ShellPaneArrangement ShellPaneArrangementOption { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether or not to show the shelf pane.
+		/// </summary>
+		bool ShowShelfPane { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether or not to enable the Omnibar.
+		/// </summary>
+		bool EnableOmnibar { get; set; }
 	}
 }

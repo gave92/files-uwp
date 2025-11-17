@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using DiscUtils.Udf;
 using Microsoft.Management.Infrastructure;
@@ -42,10 +42,10 @@ namespace Files.App.Utils.Storage
 				return false;
 
 			var ejectButton = await DialogDisplayHelper.ShowDialogAsync(
-				"InsertDiscDialog/Title".GetLocalizedResource(),
-				string.Format("InsertDiscDialog/Text".GetLocalizedResource(), matchingDrive.Path),
-				"InsertDiscDialog/OpenDriveButton".GetLocalizedResource(),
-				"Close".GetLocalizedResource());
+				Strings.InsertDiscDialog_Title.GetLocalizedResource(),
+				string.Format(Strings.InsertDiscDialog_Text.GetLocalizedResource(), matchingDrive.Path),
+				Strings.InsertDiscDialog_OpenDriveButton.GetLocalizedResource(),
+				Strings.Close.GetLocalizedResource());
 			if (ejectButton)
 				EjectDeviceAsync(matchingDrive.Path);
 			return true;
@@ -92,8 +92,11 @@ namespace Files.App.Utils.Storage
 				}
 			}
 			// Network share
-			else if (devicePath.StartsWith(@"\\", StringComparison.Ordinal) &&
-				!devicePath.StartsWith(@"\\SHELL\", StringComparison.Ordinal))
+			else if (
+						  (  devicePath.StartsWith(@"\\", StringComparison.Ordinal) ||
+							 GetDriveType(new SystemIO.DriveInfo(devicePath)) is DriveType.Network  ) &&
+						  !devicePath.StartsWith(@"\\SHELL\", StringComparison.Ordinal)
+					)
 			{
 				int lastSepIndex = rootPath.LastIndexOf(@"\", StringComparison.Ordinal);
 				rootPath = lastSepIndex > 1 ? rootPath.Substring(0, lastSepIndex) : rootPath; // Remove share name

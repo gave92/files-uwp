@@ -1,4 +1,4 @@
-<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+<!--  Copyright (c) Files Community. Licensed under the MIT License.  -->
 <Page
 	x:Class="Files.App.UITests.Views.MainPage"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,44 +9,13 @@
 	mc:Ignorable="d">
 
 	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
 
 		<TextBlock
 			Grid.Row="0"
 			Margin="24"
 			HorizontalAlignment="Center"
 			VerticalAlignment="Center"
-			Text="All Samples here to test UI accessibility." />
-
-		<GridView
-			Grid.Row="1"
-			HorizontalAlignment="Center"
-			VerticalAlignment="Center">
-			<GridViewItem Margin="12">
-				<Button Padding="24">
-					<Button.Content>
-						<StackPanel Orientation="Vertical" Spacing="12">
-							<FontIcon Glyph="&#xE76E;" />
-							<TextBlock Text="ThemedIcon" />
-						</StackPanel>
-					</Button.Content>
-				</Button>
-			</GridViewItem>
-
-			<GridViewItem Margin="12">
-				<Button Padding="24">
-					<Button.Content>
-						<StackPanel Orientation="Vertical" Spacing="12">
-							<FontIcon Glyph="&#xF16A;" />
-							<TextBlock Text="Storage Controls" />
-						</StackPanel>
-					</Button.Content>
-				</Button>
-			</GridViewItem>
-		</GridView>
+			Text="All Samples here to test UI accessibility.&#10;Select a page from the sidebar to test it." />
 
 	</Grid>
 </Page>

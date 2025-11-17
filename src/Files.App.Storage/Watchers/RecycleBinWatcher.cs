@@ -1,11 +1,12 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Files.Shared.Extensions;
 using System.Security.Principal;
 
 namespace Files.App.Storage.Watchers
 {
+	[Obsolete]
 	public class RecycleBinWatcher : ITrashWatcher
 	{
 		private readonly List<SystemIO.FileSystemWatcher> _watchers = [];

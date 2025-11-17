@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Microsoft.UI.Xaml.Controls;
 
@@ -26,5 +26,10 @@ namespace Files.App.Data.Contexts
 		/// Tells whether any item has been right clicked
 		/// </summary>
 		bool IsAnyItemRightClicked { get; }
+
+		/// <summary>
+		/// Gets the instance of <see cref="IHomeFolder"/>.
+		/// </summary>
+		IHomeFolder HomeFolder { get; }
 	}
 }

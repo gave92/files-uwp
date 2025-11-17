@@ -1,12 +1,12 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Microsoft.UI.Xaml;
 using System.Windows.Input;
 
 namespace Files.App.ViewModels
 {
-	public sealed class HomeViewModel : ObservableObject, IDisposable
+	public sealed partial class HomeViewModel : ObservableObject, IDisposable
 	{
 		// Dependency injections
 
@@ -18,13 +18,13 @@ namespace Files.App.ViewModels
 
 		// Commands
 
-		public ICommand HomePageLoadedCommand { get; }
+		public ICommand ReloadWidgetsCommand { get; }
 
 		// Constructor
 
 		public HomeViewModel()
 		{
-			HomePageLoadedCommand = new RelayCommand<RoutedEventArgs>(ExecuteHomePageLoadedCommand);
+			ReloadWidgetsCommand = new AsyncRelayCommand(ExecuteReloadWidgetsCommand);
 		}
 
 		// Methods
@@ -115,6 +115,12 @@ namespace Files.App.ViewModels
 			ReloadWidgets();
 		}
 
+		public async Task RefreshWidgetProperties()
+		{
+			foreach (var viewModel in WidgetItems.Select(x => x.WidgetItemModel))
+				await viewModel.RefreshWidgetAsync();
+		}
+
 		private bool InsertWidget(WidgetContainerItem widgetModel, int atIndex)
 		{
 			// The widget must not be null and must implement IWidgetItemModel
@@ -176,9 +182,10 @@ namespace Files.App.ViewModels
 
 		// Command methods
 
-		private void ExecuteHomePageLoadedCommand(RoutedEventArgs? e)
+		private async Task ExecuteReloadWidgetsCommand()
 		{
 			ReloadWidgets();
+			await RefreshWidgetProperties();
 		}
 
 		// Disposer

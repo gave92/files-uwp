@@ -1,7 +1,6 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
-using CommunityToolkit.WinUI.Helpers;
 using Files.App.Helpers.Application;
 using Files.App.Services.SizeProvider;
 using Files.App.Utils.Logger;
@@ -9,10 +8,10 @@ using Files.App.ViewModels.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using Sentry;
 using Sentry.Protocol;
 using System.IO;
-using System.Security;
 using System.Text;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -26,6 +25,47 @@ namespace Files.App.Helpers
 	/// </summary>
 	public static class AppLifecycleHelper
 	{
+		private readonly static string AppInformationKey = @$"Software\Files Community\{Package.Current.Id.Name}\v1\AppInformation";
+
+		/// <summary>
+		/// Gets the value that indicates whether the app is updated.
+		/// </summary>
+		public static bool IsAppUpdated { get; }
+
+		/// <summary>
+		/// Gets the value that indicates whether the app is running for the first time.
+		/// </summary>
+		public static bool IsFirstRun { get; }
+
+		/// <summary>
+		/// Gets the value that indicates the total launch count of the app.
+		/// </summary>
+		public static long TotalLaunchCount { get; }
+
+		/// <summary>
+		/// Gets the value that indicates if the release notes tab was automatically opened.
+		/// </summary>
+		private static bool ViewedReleaseNotes { get; set; } = false;
+
+		static AppLifecycleHelper()
+		{
+			using var infoKey = Registry.CurrentUser.CreateSubKey(AppInformationKey);
+			var version = infoKey.GetValue("LastLaunchVersion");
+			var launchCount = infoKey.GetValue("TotalLaunchCount");
+			if (version is null)
+			{
+				IsAppUpdated = true;
+				IsFirstRun = true;
+			}
+			else
+			{
+				IsAppUpdated = version.ToString() != AppVersion.ToString();
+			}
+			TotalLaunchCount = launchCount is long l ? l + 1 : 1;
+			infoKey.SetValue("LastLaunchVersion", AppVersion.ToString());
+			infoKey.SetValue("TotalLaunchCount", TotalLaunchCount);
+		}
+
 		/// <summary>
 		/// Gets the value that provides application environment or branch name.
 		/// </summary>
@@ -99,10 +139,21 @@ namespace Files.App.Helpers
 		{
 			var updateService = Ioc.Default.GetRequiredService<IUpdateService>();
 
+			await updateService.CheckForReleaseNotesAsync();
+
+			// Check for release notes before checking for new updates
+			if (AppEnvironment != AppEnvironment.Dev &&
+				IsAppUpdated &&
+				updateService.AreReleaseNotesAvailable &&
+				!ViewedReleaseNotes)
+			{
+				await Ioc.Default.GetRequiredService<ICommandManager>().OpenReleaseNotes.ExecuteAsync();
+				ViewedReleaseNotes = true;
+			}
+
 			await updateService.CheckForUpdatesAsync();
 			await updateService.DownloadMandatoryUpdatesAsync();
 			await updateService.CheckAndUpdateFilesLauncherAsync();
-			await updateService.CheckForReleaseNotesAsync();
 		}
 
 		/// <summary>
@@ -114,14 +165,11 @@ namespace Files.App.Helpers
 			{
 				options.Dsn = Constants.AutomatedWorkflowInjectionKeys.SentrySecret;
 				options.AutoSessionTracking = true;
-				options.Release = $"{SystemInformation.Instance.ApplicationVersion.Major}.{SystemInformation.Instance.ApplicationVersion.Minor}.{SystemInformation.Instance.ApplicationVersion.Build}";
+				var packageVersion = Package.Current.Id.Version;
+				options.Release = $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}";
 				options.TracesSampleRate = 0.80;
 				options.ProfilesSampleRate = 0.40;
 				options.Environment = AppEnvironment == AppEnvironment.StorePreview || AppEnvironment == AppEnvironment.SideloadPreview ? "preview" : "production";
-				options.ExperimentalMetrics = new ExperimentalMetricsOptions
-				{
-					EnableCodeLocations = true
-				};
 
 				options.DisableWinUiUnhandledExceptionIntegration();
 			});
@@ -202,6 +250,7 @@ namespace Files.App.Helpers
 					.AddSingleton<InfoPaneViewModel>()
 					.AddSingleton<SidebarViewModel>()
 					.AddSingleton<DrivesViewModel>()
+					.AddSingleton<ShelfViewModel>()
 					.AddSingleton<StatusCenterViewModel>()
 					.AddSingleton<AppearanceViewModel>()
 					.AddTransient<HomeViewModel>()
@@ -210,6 +259,7 @@ namespace Files.App.Helpers
 					.AddSingleton<NetworkLocationsWidgetViewModel>()
 					.AddSingleton<FileTagsWidgetViewModel>()
 					.AddSingleton<RecentFilesWidgetViewModel>()
+					.AddSingleton<ReleaseNotesViewModel>()
 					// Utilities
 					.AddSingleton<QuickAccessManager>()
 					.AddSingleton<StorageHistoryWrapper>()
@@ -344,30 +394,6 @@ namespace Files.App.Helpers
 				.Wait(100);
 			}
 			Process.GetCurrentProcess().Kill();
-		}
-
-		/// <summary>
-		///	Checks if the taskbar is set to auto-hide.
-		/// </summary>
-		public static bool IsAutoHideTaskbarEnabled()
-		{
-			try
-			{
-				const string registryKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3";
-				const string valueName = "Settings";
-
-				using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(registryKey);
-
-				var value = key?.GetValue(valueName) as byte[];
-
-				// The least significant bit of the 9th byte controls the auto-hide setting																		
-				return value != null && ((value[8] & 0x01) == 1);
-			}
-			catch (SecurityException)
-			{
-				// Handle edge case where OpenSubKey results in SecurityException
-				return false;
-			}
 		}
 
 		/// <summary>

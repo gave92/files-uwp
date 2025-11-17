@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Microsoft.Win32;
 using System.IO;
@@ -90,6 +90,9 @@ namespace Files.App.Utils.Cloud
 						"ownCloud" => CloudProviders.ownCloud,
 						"ProtonDrive" => CloudProviders.ProtonDrive,
 						"kDrive" => CloudProviders.kDrive,
+						"Lucid" => CloudProviders.LucidLink,
+						"SyncCom" => CloudProviders.SyncDrive,
+						"MagentaCLOUD" => CloudProviders.MagentaCloud,
 						_ => null,
 					};
 
@@ -97,8 +100,7 @@ namespace Files.App.Utils.Cloud
 						continue;
 
 					var nextCloudValue = (string?)namespaceSubKey?.GetValue(string.Empty);
-					var ownCloudValue = (string?)clsidSubKey?.GetValue(string.Empty);
-					var kDriveValue = (string?)clsidSubKey?.GetValue(string.Empty);
+					var clsidDefaultValue = (string?)clsidSubKey?.GetValue(string.Empty);
 
 					using var defaultIconKey = clsidSubKey?.OpenSubKey(@"DefaultIcon");
 					var iconPath = (string?)defaultIconKey?.GetValue(string.Empty);
@@ -113,22 +115,32 @@ namespace Files.App.Utils.Cloud
 							CloudProviders.AppleCloudDrive => $"iCloud Drive",
 							CloudProviders.AppleCloudPhotos => $"iCloud Photos",
 							CloudProviders.AdobeCreativeCloud => $"Creative Cloud Files",
-							CloudProviders.ownCloud => !string.IsNullOrEmpty(ownCloudValue) ? ownCloudValue : "ownCloud",
+							CloudProviders.ownCloud => !string.IsNullOrEmpty(clsidDefaultValue) ? clsidDefaultValue : "ownCloud",
 							CloudProviders.ProtonDrive => $"Proton Drive",
-							CloudProviders.kDrive => !string.IsNullOrEmpty(kDriveValue) ? kDriveValue : "kDrive",
+							CloudProviders.kDrive => !string.IsNullOrEmpty(clsidDefaultValue) ? clsidDefaultValue : "kDrive",
+							CloudProviders.LucidLink => !string.IsNullOrEmpty(clsidDefaultValue) ? clsidDefaultValue : "lucidLink",
+							CloudProviders.SyncDrive => !string.IsNullOrEmpty(clsidDefaultValue) ? clsidDefaultValue : "Sync",
+							CloudProviders.MagentaCloud => !string.IsNullOrEmpty(clsidDefaultValue) ? clsidDefaultValue : "MagentaCLOUD",
 							_ => null
 						},
 						SyncFolder = syncedFolder,
-						IconData = cloudProvider switch
-						{
-							CloudProviders.ProtonDrive => Win32Helper.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 32512 }).FirstOrDefault()?.IconData,
-							_ => null
-						}
+						IconData = GetIconData(iconPath)
 					});
 				}
 			}
 
 			return Task.FromResult<IEnumerable<ICloudProvider>>(results);
+		}
+
+		private static byte[]? GetIconData(string iconPath)
+		{
+			if (string.IsNullOrEmpty(iconPath) || !File.Exists(iconPath))
+				return null;
+
+			if (iconPath.EndsWith(".dll") || iconPath.EndsWith(".exe"))
+				return Win32Helper.ExtractSelectedIconsFromDLL(iconPath, new List<int>() { 32512 }).FirstOrDefault()?.IconData;
+
+			return File.ReadAllBytes(iconPath);
 		}
 
 		private static Task<IEnumerable<ICloudProvider>> DetectOneDrive()
@@ -339,6 +351,8 @@ namespace Files.App.Utils.Cloud
 				return "ownCloud";
 			if (driveIdentifier.StartsWith("ProtonDrive"))
 				return "ProtonDrive";
+			if (driveIdentifier.StartsWith("SyncCom"))
+				return "SyncCom";
 
 			// Nextcloud specific
 			var appNameFromNamespace = (string?)namespaceSubKey?.GetValue("ApplicationName");

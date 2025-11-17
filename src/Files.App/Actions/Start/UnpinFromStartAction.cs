@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 namespace Files.App.Actions
 {
@@ -12,10 +12,10 @@ namespace Files.App.Actions
 		public IContentPageContext context;
 
 		public string Label
-			=> "UnpinItemFromStart/Text".GetLocalizedResource();
+			=> Strings.UnpinItemFromStart_Text.GetLocalizedResource();
 
 		public string Description
-			=> "UnpinFromStartDescription".GetLocalizedResource();
+			=> Strings.UnpinFromStartDescription.GetLocalizedFormatResource(context.HasSelection ? context.SelectedItems.Count : 1);
 
 		public RichGlyph Glyph
 			=> new(themedIconStyle: "App.ThemedIcons.FavoritePinRemove");
@@ -36,7 +36,7 @@ namespace Files.App.Actions
 						IStorable storable = listedItem.IsFolder switch
 						{
 							true => await StorageService.GetFolderAsync(listedItem.ItemPath),
-							_ => await StorageService.GetFileAsync((listedItem as ShortcutItem)?.TargetPath ?? listedItem.ItemPath)
+							_ => await StorageService.GetFileAsync((listedItem as IShortcutItem)?.TargetPath ?? listedItem.ItemPath)
 						};
 						await StartMenuService.UnpinAsync(storable);
 					});

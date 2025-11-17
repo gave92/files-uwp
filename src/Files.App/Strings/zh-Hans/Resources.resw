@@ -123,6 +123,9 @@
   <data name="CopyPath" xml:space="preserve">
     <value>复制路径</value>
   </data>
+  <data name="CopyItemPath" xml:space="preserve">
+    <value>Copy item path</value>
+  </data>
   <data name="CopyPathWithQuotes" xml:space="preserve">
     <value>复制路径（带引号）</value>
   </data>
@@ -163,7 +166,7 @@
     <value>跳过</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
-    <value>全选</value>
+    <value>Select all</value>
   </data>
   <data name="InvertSelection" xml:space="preserve">
     <value>反选</value>
@@ -214,7 +217,7 @@
     <value>显示隐藏的文件(夹)</value>
   </data>
   <data name="ShowDotFiles" xml:space="preserve">
-    <value>显示仅有扩展名的项</value>
+    <value>Dot files</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>外观</value>
@@ -522,7 +525,7 @@
     <value>状态</value>
   </data>
   <data name="SettingsPreferencesSystemDefaultLanguageOption" xml:space="preserve">
-    <value>Windows 默认</value>
+    <value>跟随系统</value>
   </data>
   <data name="NavigationToolbarVisiblePathNoResults" xml:space="preserve">
     <value>无结果</value>
@@ -535,6 +538,9 @@
   </data>
   <data name="CopyToFolderCaptionText" xml:space="preserve">
     <value>复制到 {0}</value>
+  </data>
+  <data name="CloneToFolderCaptionText" xml:space="preserve">
+    <value>克隆到 {0}</value>
   </data>
   <data name="CreateShortcut" xml:space="preserve">
     <value>创建快捷方式</value>
@@ -1032,7 +1038,7 @@
     <value>移除</value>
   </data>
   <data name="SettingsMultitaskingAlwaysOpenDualPane" xml:space="preserve">
-    <value>以双面板模式打开标签页</value>
+    <value>以双窗格模式打开标签页</value>
   </data>
   <data name="ShowOpenInNewPane" xml:space="preserve">
     <value>显示“在新面板中打开”</value>
@@ -1057,9 +1063,6 @@
   </data>
   <data name="NavToolbarDetails.ToolTipService.ToolTip" xml:space="preserve">
     <value>详细信息 (Ctrl+Shift+1)</value>
-  </data>
-  <data name="NavToolbarTiles.ToolTipService.ToolTip" xml:space="preserve">
-    <value>平铺 (Ctrl+Shift+2)</value>
   </data>
   <data name="DateDeleted" xml:space="preserve">
     <value>删除日期</value>
@@ -1089,7 +1092,10 @@
     <value>打开信息窗格以查看详细信息/预览窗格</value>
   </data>
   <data name="ToggleToolbar" xml:space="preserve">
-    <value>打开/关闭工具栏</value>
+    <value>Toggle toolbar</value>
+  </data>
+  <data name="ToggleToolbarDescription" xml:space="preserve">
+    <value>Toggle visibility of the toolbar</value>
   </data>
   <data name="DetailsPanePreviewNotAvaliableText" xml:space="preserve">
     <value>没有预览</value>
@@ -1392,7 +1398,7 @@
     <value>{0} 个项目</value>
   </data>
   <data name="ReopenClosedTab" xml:space="preserve">
-    <value>重新打开关闭的标签页</value>
+    <value>Reopen tab</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>重命名</value>
@@ -1599,7 +1605,7 @@
     <value>用来自该对象的可继承权限条目替换所有子对象权限条目</value>
   </data>
   <data name="CloseActivePane" xml:space="preserve">
-    <value>关闭活动窗格</value>
+    <value>Close pane</value>
   </data>
   <data name="EnterCompactOverlay" xml:space="preserve">
     <value>进入精简模式</value>
@@ -1658,15 +1664,6 @@
   <data name="Home" xml:space="preserve">
     <value>主页</value>
   </data>
-  <data name="BaseLayoutContextFlyoutDetails.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+1</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutTiles.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+2</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutColumn.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+6</value>
-  </data>
   <data name="ArchiveExtractionCompletedSuccessfullyText" xml:space="preserve">
     <value>压缩文件解压完成。</value>
   </data>
@@ -1724,8 +1721,8 @@
   <data name="Columns" xml:space="preserve">
     <value>列视图</value>
   </data>
-  <data name="Tiles" xml:space="preserve">
-    <value>平铺</value>
+  <data name="Cards" xml:space="preserve">
+    <value>卡片</value>
   </data>
   <data name="OpenFoldersInNewTab" xml:space="preserve">
     <value>在新标签页中打开文件夹</value>
@@ -1838,6 +1835,18 @@
   <data name="CompatibilityRegisterThisProgramForRestart" xml:space="preserve">
     <value>注册此程序以重新启动</value>
   </data>
+  <data name="StartWindow" xml:space="preserve">
+    <value>启动时的窗口状态</value>
+  </data>
+  <data name="NormalWindow" xml:space="preserve">
+    <value>正常窗口</value>
+  </data>
+  <data name="Minimized" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="Maximized" xml:space="preserve">
+    <value>最大化</value>
+  </data>
   <data name="RunAsAdministrator" xml:space="preserve">
     <value>以管理员身份运行</value>
   </data>
@@ -1881,7 +1890,7 @@
     <value>最近使用的文件</value>
   </data>
   <data name="SettingsOpenInLogin" xml:space="preserve">
-    <value>在 Windows 启动时打开 Files</value>
+    <value>开机自启动</value>
   </data>
   <data name="Attributes" xml:space="preserve">
     <value>属性</value>
@@ -1977,7 +1986,7 @@
     <value>当前无法执行移动操作。要复制此项目吗？</value>
   </data>
   <data name="HiddenItems" xml:space="preserve">
-    <value>隐藏项目</value>
+    <value>隐藏的项目</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>自定义</value>
@@ -2070,7 +2079,7 @@
     <value>还原所有项目</value>
   </data>
   <data name="ConfirmRestoreSelectionBinDialogContent" xml:space="preserve">
-    <value>是否还原选中的 {0} 个项目？</value>
+    <value>是否还原选中的 {0,plural,other{{0} 个项目}}？</value>
   </data>
   <data name="ConfirmRestoreSelectionBinDialogTitle" xml:space="preserve">
     <value>还原选定的项目</value>
@@ -2092,6 +2101,12 @@
   </data>
   <data name="ArchivePassword" xml:space="preserve">
     <value>压缩文件密码</value>
+  </data>
+  <data name="Encoding" xml:space="preserve">
+    <value>编码</value>
+  </data>
+  <data name="EncodingDetected" xml:space="preserve">
+    <value>{0} (检测到)</value>
   </data>
   <data name="ExtractToPath" xml:space="preserve">
     <value>路径</value>
@@ -2135,7 +2150,7 @@
   <data name="SplittingSize" xml:space="preserve">
     <value>分卷大小</value>
   </data>
-  <data name="Do not split" xml:space="preserve">
+  <data name="DoNotSplit" xml:space="preserve">
     <value>不分卷</value>
   </data>
   <data name="CD" xml:space="preserve">
@@ -2190,10 +2205,16 @@
     <value>“最近使用的文件”已在 Windows 文件管理器中停用。</value>
   </data>
   <data name="EditSettingsFile" xml:space="preserve">
-    <value>编辑设置文件</value>
+    <value>编辑配置文件</value>
   </data>
-  <data name="WhatsNew" xml:space="preserve">
-    <value>新功能</value>
+  <data name="EditSettingsFileDescription" xml:space="preserve">
+    <value>在你的默认编辑器中打开配置文件</value>
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value>发行说明</value>
+  </data>
+  <data name="ReleaseNotesDescription" xml:space="preserve">
+    <value>打开发行说明</value>
   </data>
   <data name="CannotCreateShortcutDialogTitle" xml:space="preserve">
     <value>在此位置创建快捷方式需要管理员权限</value>
@@ -2274,10 +2295,7 @@
     <value>右键菜单选项</value>
   </data>
   <data name="ShowFileExtensions" xml:space="preserve">
-    <value>显示文件扩展名</value>
-  </data>
-  <data name="ShowHiddenItems" xml:space="preserve">
-    <value>显示隐藏的项目</value>
+    <value>File extensions</value>
   </data>
   <data name="FormatDriveText" xml:space="preserve">
     <value>格式化</value>
@@ -2286,13 +2304,13 @@
     <value>帮助</value>
   </data>
   <data name="FullScreen" xml:space="preserve">
-    <value>切换全屏</value>
+    <value>Full screen</value>
   </data>
   <data name="ConfirmDeleteTag" xml:space="preserve">
     <value>确定要删除此标签吗？</value>
   </data>
   <data name="PlayAll" xml:space="preserve">
-    <value>播放全部</value>
+    <value>Play</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>高度</value>
@@ -2352,7 +2370,7 @@
     <value>增加大小</value>
   </data>
   <data name="ToggleSortDirection" xml:space="preserve">
-    <value>切换排序方向</value>
+    <value>Sort direction</value>
   </data>
   <data name="InvalidTagNameWarning" xml:space="preserve">
     <value>无效名称</value>
@@ -2364,37 +2382,37 @@
     <value>视频</value>
   </data>
   <data name="LaunchPreviewPopup" xml:space="preserve">
-    <value>打开预览弹窗</value>
+    <value>Preview popup</value>
   </data>
   <data name="ToggleCompactOverlay" xml:space="preserve">
     <value>开关精简模式</value>
   </data>
   <data name="OpenHelpDescription" xml:space="preserve">
-    <value>在浏览器中打开在线帮助页面</value>
+    <value>Open the online help page in your browser</value>
   </data>
   <data name="ToggleFullScreenDescription" xml:space="preserve">
-    <value>切换全屏显示</value>
+    <value>Toggle full screen mode</value>
   </data>
   <data name="EnterCompactOverlayDescription" xml:space="preserve">
-    <value>进入精简模式</value>
+    <value>Enter compact overlay mode</value>
   </data>
   <data name="ExitCompactOverlayDescription" xml:space="preserve">
-    <value>退出精简模式</value>
+    <value>Exit compact overlay mode</value>
   </data>
   <data name="ToggleCompactOverlayDescription" xml:space="preserve">
-    <value>开关精简模式</value>
+    <value>Toggle compact overlay mode</value>
   </data>
   <data name="SearchDescription" xml:space="preserve">
-    <value>转到搜索框</value>
+    <value>Start search in the OmniBar</value>
   </data>
   <data name="ToggleShowHiddenItemsDescription" xml:space="preserve">
-    <value>切换隐藏项目显示</value>
+    <value>Toggle visibility of hidden items</value>
   </data>
   <data name="ToggleDotFilesSettingDescription" xml:space="preserve">
-    <value>切换是否显示以英文句点 (.) 开头的项目</value>
+    <value>Toggle visibility of dot files</value>
   </data>
   <data name="ToggleShowFileExtensionsDescription" xml:space="preserve">
-    <value>切换文件扩展名显示</value>
+    <value>Toggle visibility of file extensions</value>
   </data>
   <data name="TogglePreviewPaneDescription" xml:space="preserve">
     <value>切换到预览窗格以预览文件</value>
@@ -2403,7 +2421,7 @@
     <value>切换侧边栏显示</value>
   </data>
   <data name="CopyItemDescription" xml:space="preserve">
-    <value>复制项目到剪贴板</value>
+    <value>Copy selected {0, plural, one {item} other {items}} to clipboard</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
     <value>复制当前目录的路径到剪贴板</value>
@@ -2418,46 +2436,49 @@
     <value>复制当前目录的路径（带引号）到剪贴板</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
-    <value>剪切项目到剪贴板</value>
+    <value>Cut selected {0, plural, one {item} other {items}} to clipboard</value>
   </data>
   <data name="PasteItemDescription" xml:space="preserve">
-    <value>将剪贴板中的项目粘贴到当前文件夹</value>
+    <value>Paste clipboard items to the current folder</value>
   </data>
   <data name="PasteShortcutDescription" xml:space="preserve">
-    <value>将剪贴板中的项目以快捷方式的形式粘贴到当前文件夹</value>
+    <value>Paste clipboard items to the current folder as shortcuts</value>
   </data>
   <data name="PasteItemToSelectionDescription" xml:space="preserve">
-    <value>将剪贴板中的项目粘贴到所选文件夹</value>
+    <value>Paste clipboard items to the selected folder</value>
+  </data>
+  <data name="PasteToSelectedFolder" xml:space="preserve">
+    <value>Paste to selected folder</value>
   </data>
   <data name="DeleteItemDescription" xml:space="preserve">
-    <value>删除项目</value>
+    <value>Delete selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CreateFolderDescription" xml:space="preserve">
     <value>创建新文件夹</value>
   </data>
   <data name="CreateShortcutDescription" xml:space="preserve">
-    <value>创建所选项目的快捷方式</value>
+    <value>创建新的指向选中{0, plural, other {项目}}的{0, plural, other {快捷方式}}</value>
   </data>
   <data name="CreateShortcutFromDialogDescription" xml:space="preserve">
     <value>创建指向项目的快捷方式</value>
   </data>
   <data name="EmptyRecycleBinDescription" xml:space="preserve">
-    <value>清空回收站</value>
+    <value>Empty the contents of Recycle Bin</value>
   </data>
   <data name="FormatDriveDescription" xml:space="preserve">
     <value>打开所选项目的“格式化驱动器”菜单</value>
   </data>
   <data name="RestoreRecycleBinDescription" xml:space="preserve">
-    <value>从回收站中还原所选项目</value>
+    <value>从回收站还原选中的{0, plural, other {项目}}</value>
   </data>
   <data name="RestoreAllRecycleBinDescription" xml:space="preserve">
     <value>从回收站中还原所有项目</value>
   </data>
   <data name="OpenItemDescription" xml:space="preserve">
-    <value>打开项目</value>
+    <value>打开{0, plural, other {项目}}</value>
   </data>
   <data name="OpenItemWithApplicationPickerDescription" xml:space="preserve">
-    <value>用所选程序打开项目</value>
+    <value>用选定的应用程序打开{0, plural, other {项目}}</value>
   </data>
   <data name="OpenParentFolderDescription" xml:space="preserve">
     <value>打开搜索项所在的文件夹</value>
@@ -2472,28 +2493,28 @@
     <value>选择所有项目</value>
   </data>
   <data name="InvertSelectionDescription" xml:space="preserve">
-    <value>反选项目</value>
+    <value>Invert selected items</value>
   </data>
   <data name="ClearSelectionDescription" xml:space="preserve">
-    <value>清除项目选择</value>
+    <value>Clear selected items</value>
   </data>
   <data name="ToggleSelectDescription" xml:space="preserve">
     <value>切换项目选择</value>
   </data>
   <data name="ShareItemDescription" xml:space="preserve">
-    <value>共享所选文件</value>
+    <value>与其他人共享选中的{0, plural, other {文件}}</value>
   </data>
   <data name="PinToStartDescription" xml:space="preserve">
-    <value>固定项目到开始菜单</value>
+    <value>固定{0, plural, other {项目}}到“开始”菜单</value>
   </data>
   <data name="UnpinFromStartDescription" xml:space="preserve">
-    <value>从开始菜单取消固定</value>
+    <value>从“开始”菜单取消固定{0, plural, other {项目}}</value>
   </data>
   <data name="PinFolderToSidebarDescription" xml:space="preserve">
-    <value>固定文件夹到侧边栏</value>
+    <value>固定{0, plural, other {文件夹}}到侧边栏</value>
   </data>
   <data name="UnpinFolderFromSidebarDescription" xml:space="preserve">
-    <value>从侧边栏取消固定文件夹</value>
+    <value>从侧边栏取消固定{0, plural, other {文件夹}}</value>
   </data>
   <data name="SetAsWallpaperBackgroundDescription" xml:space="preserve">
     <value>设置所选图片为桌面背景</value>
@@ -2507,14 +2528,23 @@
   <data name="SetAsAppBackgroundDescription" xml:space="preserve">
     <value>设置所选图片为此应用程序的背景</value>
   </data>
+  <data name="InstallFont" xml:space="preserve">
+    <value>Install font</value>
+  </data>
+  <data name="InstallDriver" xml:space="preserve">
+    <value>Install driver</value>
+  </data>
+  <data name="InstallCertificate" xml:space="preserve">
+    <value>Install certificate</value>
+  </data>
   <data name="InstallFontDescription" xml:space="preserve">
-    <value>安装所选字体</value>
+    <value>安装选中的{0, plural, other {字体}}</value>
   </data>
   <data name="InstallInfDriverDescription" xml:space="preserve">
-    <value>使用所选的 .inf 文件安装驱动程序</value>
+    <value>从选中的 inf {0, plural, other {文件}}安装{0, plural, other {驱动程序}} </value>
   </data>
   <data name="InstallCertificateDescription" xml:space="preserve">
-    <value>安装所选证书</value>
+    <value>安装选中的{0, plural, other {证书}}</value>
   </data>
   <data name="RunAsAdminDescription" xml:space="preserve">
     <value>以管理员身份运行所选程序</value>
@@ -2529,28 +2559,28 @@
     <value>在弹出窗口中打开预览</value>
   </data>
   <data name="CompressIntoArchiveDescription" xml:space="preserve">
-    <value>创建包含所选项目的压缩文件</value>
+    <value>创建一个压缩文件并放入当前选中的{0, plural, other {项目}}</value>
   </data>
   <data name="CompressIntoSevenZipDescription" xml:space="preserve">
-    <value>创建包含所选项目的 7z 压缩文件</value>
+    <value>创建一个 7z 压缩文件并放入当前选中的{0, plural, other {项目}}</value>
   </data>
   <data name="CompressIntoZipDescription" xml:space="preserve">
-    <value>创建包含所选项目的 zip 压缩文件</value>
+    <value>创建一个 zip 压缩文件并放入当前选中的{0, plural, other {项目}}</value>
   </data>
   <data name="DecompressArchiveDescription" xml:space="preserve">
-    <value>将所选压缩文件解压到文件夹</value>
+    <value>解压缩选中的{0, plural, other {压缩文件}}到任意文件夹</value>
   </data>
   <data name="DecompressArchiveHereDescription" xml:space="preserve">
-    <value>将所选压缩文件解压到当前文件夹</value>
+    <value>解压缩选中的{0, plural, other {压缩文件}}到当前文件夹</value>
   </data>
   <data name="DecompressArchiveToChildFolderDescription" xml:space="preserve">
-    <value>将所选压缩文件解压到新文件夹</value>
+    <value>解压缩选中的{0, plural, other {压缩文件}}到新文件夹</value>
   </data>
   <data name="RotateLeftDescription" xml:space="preserve">
-    <value>向左旋转所选图像</value>
+    <value>向左旋转选中的{0, plural, other {图像}}</value>
   </data>
   <data name="RotateRightDescription" xml:space="preserve">
-    <value>向右旋转所选图像</value>
+    <value>向右旋转选中的{0, plural, other {图像}}</value>
   </data>
   <data name="OpenSettingsDescription" xml:space="preserve">
     <value>打开设置页</value>
@@ -2568,10 +2598,10 @@
     <value>增加当前视图中项目的大小</value>
   </data>
   <data name="LayoutDetailsDescription" xml:space="preserve">
-    <value>切换至详细信息视图</value>
+    <value>切换到详细信息视图</value>
   </data>
-  <data name="LayoutTilesDescription" xml:space="preserve">
-    <value>切换至平铺视图</value>
+  <data name="LayoutCardsDescription" xml:space="preserve">
+    <value>切换到卡片视图</value>
   </data>
   <data name="LayoutListDescription" xml:space="preserve">
     <value>切换到列表视图</value>
@@ -2586,7 +2616,7 @@
     <value>切换到网格视图</value>
   </data>
   <data name="LayoutColumnsDescription" xml:space="preserve">
-    <value>切换至列视图</value>
+    <value>切换到列视图</value>
   </data>
   <data name="LayoutAdaptiveDescription" xml:space="preserve">
     <value>自适应切换视图</value>
@@ -2673,10 +2703,10 @@
     <value>打开新标签页</value>
   </data>
   <data name="NavigateBackDescription" xml:space="preserve">
-    <value>在导航历史中向后导航</value>
+    <value>Navigate backward</value>
   </data>
   <data name="NavigateForwardDescription" xml:space="preserve">
-    <value>在导航历史中向前导航</value>
+    <value>Navigate forward</value>
   </data>
   <data name="NavigateUpDescription" xml:space="preserve">
     <value>导航至上一级目录</value>
@@ -2709,7 +2739,7 @@
     <value>关闭所有标签页（包括当前标签页）</value>
   </data>
   <data name="ReopenClosedTabDescription" xml:space="preserve">
-    <value>打开上一个关闭的标签页</value>
+    <value>Reopen recently closed tab</value>
   </data>
   <data name="PreviousTabDescription" xml:space="preserve">
     <value>移到上一标签页</value>
@@ -2721,13 +2751,13 @@
     <value>关闭当前标签页</value>
   </data>
   <data name="CloseActivePaneDescription" xml:space="preserve">
-    <value>关闭活动窗格</value>
+    <value>Close the active pane</value>
   </data>
   <data name="FocusOtherPane" xml:space="preserve">
     <value>切换焦点到其他窗格</value>
   </data>
   <data name="FocusOtherPaneDescription" xml:space="preserve">
-    <value>切换焦点到非活动窗格</value>
+    <value>Switch focus to the other pane</value>
   </data>
   <data name="ToggleSidebar" xml:space="preserve">
     <value>打开/关闭侧边栏</value>
@@ -2935,13 +2965,13 @@
     <value>无标签</value>
   </data>
   <data name="PreviousTab" xml:space="preserve">
-    <value>移到上一标签页</value>
+    <value>Previous tab</value>
   </data>
   <data name="NextTab" xml:space="preserve">
-    <value>移到下一标签页</value>
+    <value>Next tab</value>
   </data>
   <data name="CloseTab" xml:space="preserve">
-    <value>关闭当前标签页</value>
+    <value>Close tab</value>
   </data>
   <data name="EditPath" xml:space="preserve">
     <value>编辑路径</value>
@@ -2971,7 +3001,7 @@
     <value>选择项目时显示复选框</value>
   </data>
   <data name="EditPathDescription" xml:space="preserve">
-    <value>移动焦点到路径栏</value>
+    <value>Edit path in the OmniBar</value>
   </data>
   <data name="AddItemDescription" xml:space="preserve">
     <value>创建新项目</value>
@@ -2986,7 +3016,7 @@
     <value>永久删除</value>
   </data>
   <data name="DeleteItemPermanentlyDescription" xml:space="preserve">
-    <value>永久删除项目</value>
+    <value>Delete selected {0, plural, one {item} other {items}} permanently</value>
   </data>
   <data name="PlayAllDescription" xml:space="preserve">
     <value>播放选中的媒体文件</value>
@@ -3022,7 +3052,7 @@
     <value>年</value>
   </data>
   <data name="GroupByDateUnit" xml:space="preserve">
-    <value>按日期单位分组</value>
+    <value>按日期分组时的单位</value>
   </data>
   <data name="GroupByDateCreatedDayDescription" xml:space="preserve">
     <value>按创建日期分组</value>
@@ -3103,10 +3133,10 @@
     <value>切换到新分支</value>
   </data>
   <data name="CreateFolderWithSelectionDescription" xml:space="preserve">
-    <value>用当前选中的项创建文件夹</value>
+    <value>创建一个文件夹并放入当前选中的{0, plural, other {项目}}</value>
   </data>
   <data name="OpenProperties" xml:space="preserve">
-    <value>查看属性</value>
+    <value>属性</value>
   </data>
   <data name="OpenClassicProperties" xml:space="preserve">
     <value>打开文件资源管理器属性</value>
@@ -3134,6 +3164,9 @@
   </data>
   <data name="GitFetchDescription" xml:space="preserve">
     <value>运行 git fetch</value>
+  </data>
+  <data name="GitCloneDescription" xml:space="preserve">
+    <value>克隆一个 git 存储库</value>
   </data>
   <data name="GitPullDescription" xml:space="preserve">
     <value>运行 git pull</value>
@@ -3167,7 +3200,7 @@
     <value>提交 SHA</value>
   </data>
   <data name="Git" xml:space="preserve">
-    <value>Github</value>
+    <value>Git</value>
   </data>
   <data name="Acrylic" xml:space="preserve">
     <value>亚克力</value>
@@ -3211,17 +3244,17 @@
   <data name="CannotReachGitHubError" xml:space="preserve">
     <value>Files 目前无法访问 GitHub。</value>
   </data>
-  <data name="OpenInVSCode" xml:space="preserve">
-    <value>在 VS Code 中打开文件夹</value>
+  <data name="OpenInIDE" xml:space="preserve">
+    <value>在 {0} 中打开文件夹</value>
   </data>
-  <data name="OpenInVSCodeDescription" xml:space="preserve">
-    <value>在 Visual Studio Code 中打开当前目录</value>
+  <data name="OpenInIDEDescription" xml:space="preserve">
+    <value>在 {0} 中打开当前目录</value>
   </data>
-  <data name="OpenRepoInVSCode" xml:space="preserve">
-    <value>在 VS Code 中打开仓库</value>
+  <data name="OpenRepoInIDE" xml:space="preserve">
+    <value>在 {0} 中打开存储库</value>
   </data>
-  <data name="OpenRepoInVSCodeDescription" xml:space="preserve">
-    <value>在 Visual Studio Code 中打开 Git 仓库的根目录</value>
+  <data name="OpenRepoInIDEDescription" xml:space="preserve">
+    <value>在 {0} 中打开Git repo 的根目录</value>
   </data>
   <data name="CopyCode" xml:space="preserve">
     <value>复制代码</value>
@@ -3248,7 +3281,7 @@
     <value>初始化存储库</value>
   </data>
   <data name="InitRepoDescription" xml:space="preserve">
-    <value>初始化 Git 存储库</value>
+    <value>Initialize current folder as a git repository</value>
   </data>
   <data name="GitOriginRepositoryName" xml:space="preserve">
     <value>远程仓库名称</value>
@@ -3263,13 +3296,13 @@
     <value>按路径排序</value>
   </data>
   <data name="OpenDirectoryInNewPaneDescription" xml:space="preserve">
-    <value>在新面板中打开目录</value>
+    <value>Open selected directory in a new pane</value>
   </data>
   <data name="OpenDirectoryInNewTabDescription" xml:space="preserve">
-    <value>在新标签页中打开目录</value>
+    <value>Open selected directory in a new tab</value>
   </data>
   <data name="OpenInNewWindowDescription" xml:space="preserve">
-    <value>在新窗口中打开目录</value>
+    <value>Open selected directory in a new window</value>
   </data>
   <data name="OpenAllTaggedItems" xml:space="preserve">
     <value>全部打开</value>
@@ -3294,10 +3327,10 @@
     <value>命令“{0}”尚未准备好执行。</value>
   </data>
   <data name="CommandPalette" xml:space="preserve">
-    <value>命令面板</value>
+    <value>Command Palette</value>
   </data>
   <data name="OpenCommandPaletteDescription" xml:space="preserve">
-    <value>打开命令面板</value>
+    <value>Open Command Palette in the OmniBar</value>
   </data>
   <data name="ShortcutItemWorkingDir" xml:space="preserve">
     <value>起始位置:</value>
@@ -3462,6 +3495,70 @@
     <value>正在将 {0} 个项目从“{1}”压缩到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
+  <data name="StatusCenter_GitCloneCanceled_Header" xml:space="preserve">
+    <value>已取消将 {0} 克隆到“{1}”</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneCanceled_SubHeader" xml:space="preserve">
+    <value>已取消将 {0} 从“{1}”克隆到“{2}”</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneComplete_Header" xml:space="preserve">
+    <value>已将“{0}”克隆到“{1}”</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneComplete_SubHeader" xml:space="preserve">
+    <value>已将“{0}”从“{1}”克隆到“{2}”</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneFailed_Header" xml:space="preserve">
+    <value>将“{0}”克隆到“{1}”时出错</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneFailed_SubHeader" xml:space="preserve">
+    <value>无法将 {0} 从“{1}”克隆到“{2}”</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneInProgress_Header" xml:space="preserve">
+    <value>正在将“{0}”克隆到“{1}”</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneInProgress_SubHeader" xml:space="preserve">
+    <value>正在将“{0}”从“{1}”克隆到“{2}”</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontCanceled_Header" xml:space="preserve">
+    <value>已取消安装 {0} 个字体</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontCanceled_SubHeader" xml:space="preserve">
+    <value>已取消从“{1}”中安装 {0} 个字体</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontComplete_Header" xml:space="preserve">
+    <value>已安装 {0} 个字体</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontComplete_SubHeader" xml:space="preserve">
+    <value>已从“{1}”中安装 {0} 个字体</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontFailed_Header" xml:space="preserve">
+    <value>安装 {0} 个字体时出错</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontFailed_SubHeader" xml:space="preserve">
+    <value>无法从“{1}”中安装 {0} 个字体</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontInProgress_Header" xml:space="preserve">
+    <value>正在安装 {0} 个字体</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontInProgress_SubHeader" xml:space="preserve">
+    <value>正在从“{1}”中安装 {0} 个字体</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
   <data name="StatusCenter_CopyCanceled_Header" xml:space="preserve">
     <value>已取消将 {0} 个项目复制到“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
@@ -3603,7 +3700,7 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_ProcessedItems_Header" xml:space="preserve">
-    <value>已处理 {0}/{1} 个项目</value>
+    <value>已处理 {0}/{1} {0, plural, other {个项目}}</value>
     <comment>Shown in a StatusCenter card. Used as "8/20 items processed"</comment>
   </data>
   <data name="UnblockDownloadedFile" xml:space="preserve">
@@ -3620,6 +3717,9 @@
   </data>
   <data name="FailedToSetBackground" xml:space="preserve">
     <value>设置背景壁纸失败</value>
+  </data>
+  <data name="FailedToOpenSettingsFile" xml:space="preserve">
+    <value>无法打开配置文件</value>
   </data>
   <data name="GitDeleteBranch" xml:space="preserve">
     <value>删除 Git 分支</value>
@@ -3646,7 +3746,7 @@
     <value>应用此标签时发生错误</value>
   </data>
   <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
-    <value>解压缩选中的压缩文件：若其中仅有一个项目，则解压缩到当前目录下；否则，解压缩到当前目录下的新文件夹</value>
+    <value>解压缩选中的{0, plural, other {压缩文件}}：若其中仅有一个项目，解压缩到当前目录下；否则，解压缩到当前目录下与压缩文件同名的新文件夹中</value>
   </data>
   <data name="ExtractHereSmart" xml:space="preserve">
     <value>智能解压</value>
@@ -3655,7 +3755,7 @@
     <value>将文件和文件夹一同排序</value>
   </data>
   <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
-    <value>将文件和文件夹一同排序</value>
+    <value>Sort files and folders in the same list</value>
   </data>
   <data name="SortFilesFirst" xml:space="preserve">
     <value>先排序文件</value>
@@ -3711,11 +3811,8 @@
   <data name="QuestionsAndDiscussions" xml:space="preserve">
     <value>问题和讨论</value>
   </data>
-  <data name="TilesViewSizeInfo" xml:space="preserve">
-    <value>平铺视图尚未支持更多项目尺寸。</value>
-  </data>
   <data name="Compact" xml:space="preserve">
-    <value>极小</value>
+    <value>紧凑</value>
     <comment>Used to describe layout sizes</comment>
   </data>
   <data name="Small" xml:space="preserve">
@@ -3875,6 +3972,10 @@
     <value>ICO 图标文件</value>
     <comment>This is the friendly name for ICO files.</comment>
   </data>
+  <data name="IclFileCapitalized" xml:space="preserve">
+    <value>ICL 文件</value>
+    <comment>This is the friendly name for ICL files.</comment>
+  </data>
   <data name="ZipFileCapitalized" xml:space="preserve">
     <value>Zip 压缩文件</value>
     <comment>This is the friendly name for ZIP files.</comment>
@@ -3915,16 +4016,16 @@
     <value>标签操作菜单</value>
   </data>
   <data name="AddVerticalPane" xml:space="preserve">
-    <value>添加垂直窗格</value>
+    <value>Vertical pane</value>
   </data>
   <data name="AddVerticalPaneDescription" xml:space="preserve">
-    <value>添加一个垂直窗格</value>
+    <value>Add vertical pane</value>
   </data>
   <data name="AddHorizontalPane" xml:space="preserve">
-    <value>添加水平窗格</value>
+    <value>Horizontal pane</value>
   </data>
   <data name="AddHorizontalPaneDescription" xml:space="preserve">
-    <value>添加一个水平窗格</value>
+    <value>Add horizontal pane</value>
   </data>
   <data name="ArrangePanesVertically" xml:space="preserve">
     <value>垂直排列</value>
@@ -3966,7 +4067,7 @@
     <value>返回主页</value>
   </data>
   <data name="ShowHomeButton" xml:space="preserve">
-    <value>在地址栏中显示“主页”按钮</value>
+    <value>在地址栏中显示主页按钮</value>
   </data>
   <data name="Toolbars" xml:space="preserve">
     <value>工具栏</value>
@@ -3977,6 +4078,9 @@
   <data name="BulkRename" xml:space="preserve">
     <value>批量重命名</value>
   </data>
+  <data name="CompressContents" xml:space="preserve">
+    <value>压缩内容</value>
+  </data>
   <data name="ShowCreateAlternateDataStream" xml:space="preserve">
     <value>显示创建备用数据流 (Alternate Data Stream) 的选项</value>
   </data>
@@ -3984,7 +4088,7 @@
     <value>创建备用数据流</value>
   </data>
   <data name="CreateAlternateDataStreamDescription" xml:space="preserve">
-    <value>为选中项创建备用数据流 (Alternate Data Stream)</value>
+    <value>为选中的{0, plural, other {项目}}创建备用数据流</value>
   </data>
   <data name="EnterDataStreamName" xml:space="preserve">
     <value>输入数据流名称</value>
@@ -4003,5 +4107,123 @@
   </data>
   <data name="ManageTags" xml:space="preserve">
     <value>管理标签</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>可用</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>总计</value>
+  </data>
+  <data name="AlwaysSwitchToNewlyOpenedTab" xml:space="preserve">
+    <value>总是切换到新创建的标签页</value>
+  </data>
+  <data name="ToggleShelfPane" xml:space="preserve">
+    <value>Toggle shelf pane</value>
+  </data>
+  <data name="ToggleShelfPaneDescription" xml:space="preserve">
+    <value>Toggle the visibility of the shelf pane</value>
+  </data>
+  <data name="ShowShelfPaneButtonInAddressBar" xml:space="preserve">
+    <value>在地址栏中显示中转站窗格开关</value>
+  </data>
+  <data name="Shelf" xml:space="preserve">
+    <value>中转站</value>
+    <comment>'Shelf' refers to the Shelf Pane feature, where users can conveniently drag and drop files for quick access and perform bulk actions with ease.</comment>
+  </data>
+  <data name="ClearItems" xml:space="preserve">
+    <value>清除所有项目</value>
+  </data>
+  <data name="RemoveFromShelf" xml:space="preserve">
+    <value>从中转站移除</value>
+  </data>
+  <data name="AddToShelf" xml:space="preserve">
+    <value>添加到中转站</value>
+    <comment>Tooltip that displays when dragging items to the Shelf Pane</comment>
+  </data>
+  <data name="EnterHashToCompare" xml:space="preserve">
+    <value>输入哈希值进行比较</value>
+    <comment>Placeholder that appears in the compare hash text box</comment>
+  </data>
+  <data name="HashesMatch" xml:space="preserve">
+    <value>与 {0} 匹配</value>
+    <comment>Appears when two compared hashes match, e.g. "Matches SHA256"</comment>
+  </data>
+  <data name="HashesDoNotMatch" xml:space="preserve">
+    <value>未找到任何匹配项</value>
+    <comment>Appears when two compared hashes don't match</comment>
+  </data>
+  <data name="PathOrAlias" xml:space="preserve">
+    <value>路径或别名</value>
+  </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>路径无效</value>
+  </data>
+  <data name="TestIntegration" xml:space="preserve">
+    <value>测试集成</value>
+  </data>
+  <data name="IDENotLocatedContent" xml:space="preserve">
+    <value>找不到 {0}。请检查你的设置并重试。</value>
+  </data>
+  <data name="IDENotLocatedTitle" xml:space="preserve">
+    <value>找不到设置的 IDE</value>
+  </data>
+  <data name="OpenSettings" xml:space="preserve">
+    <value>打开设置</value>
+  </data>
+  <data name="VisualStudioCode" xml:space="preserve">
+    <value>Visual Studio Code</value>
+  </data>
+  <data name="IDEPathPlaceholder" xml:space="preserve">
+    <value>输入路径或启动别名</value>
+  </data>
+  <data name="InvalidIDENameError" xml:space="preserve">
+    <value>请为此 IDE 配置命名</value>
+  </data>
+  <data name="CloneRepo" xml:space="preserve">
+    <value>克隆存储库</value>
+    <comment>Clone repo dialog title</comment>
+  </data>
+  <data name="Clone" xml:space="preserve">
+    <value>克隆</value>
+    <comment>Primary action button in the clone repo dialog</comment>
+  </data>
+  <data name="RepositoryURL" xml:space="preserve">
+    <value>存储库 URL</value>
+    <comment>URL textbox header in the clone repo dialog</comment>
+  </data>
+  <data name="CannotCloneRepoTitle" xml:space="preserve">
+    <value>无法克隆存储库</value>
+    <comment>Cannot clone repo dialog title</comment>
+  </data>
+  <data name="CompareFile" xml:space="preserve">
+    <value>与另一文件比较</value>
+    <comment>Button that appears in file hash properties that allows the user to compare two files</comment>
+  </data>
+  <data name="SizeFormat" xml:space="preserve">
+    <value>大小格式</value>
+  </data>
+  <data name="Binary" xml:space="preserve">
+    <value>二进制</value>
+  </data>
+  <data name="Decimal" xml:space="preserve">
+    <value>十进制</value>
+  </data>
+  <data name="EnableOmnibar" xml:space="preserve">
+    <value>启用 Omnibar</value>
+  </data>
+  <data name="SectionsHiddenMessage" xml:space="preserve">
+    <value>可以通过右击并选择需要的部分将其添加至侧边栏</value>
+  </data>
+  <data name="EmptyShelfText" xml:space="preserve">
+    <value>将文件或文件夹拖动到此处以在不同标签页间交互操作</value>
+  </data>
+  <data name="OmnibarPathModeTextPlaceholder" xml:space="preserve">
+    <value>输入导航到的路径...</value>
+  </data>
+  <data name="OmnibarCommandPaletteModeTextPlaceholder" xml:space="preserve">
+    <value>查找功能和命令...</value>
+  </data>
+  <data name="OmnibarSearchModeTextPlaceholder" xml:space="preserve">
+    <value>搜索文件和文件夹...</value>
   </data>
 </root>

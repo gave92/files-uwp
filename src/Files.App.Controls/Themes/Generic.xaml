@@ -1,4 +1,4 @@
-<!--  Copyright (c) 2024 Files Community. Licensed under the MIT License. See the LICENSE.  -->
+<!--  Copyright (c) Files Community. Licensed under the MIT License.  -->
 <ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -14,6 +14,11 @@
 		<ResourceDictionary Source="ms-appx:///Files.App.Controls/Toolbar/ToolbarSeparator/ToolbarSeparator.ThemeResources.xaml" />
 		<ResourceDictionary Source="ms-appx:///Files.App.Controls/Toolbar/ToolbarButton/ToolbarButton.ThemeResources.xaml" />
 		<ResourceDictionary Source="ms-appx:///Files.App.Controls/Toolbar/ToolbarToggleButton/ToolbarToggleButton.ThemeResources.xaml" />
+		<!--#endregion-->
+
+		<!--#region StorageControls-->
+		<ResourceDictionary Source="ms-appx:///Files.App.Controls/Storage/StorageRing/StorageRing.xaml" />
+		<ResourceDictionary Source="ms-appx:///Files.App.Controls/Storage/StorageBar/StorageBar.xaml" />
 		<!--#endregion-->
 
 		<!--#region ThemedIcon-->
@@ -44,6 +49,30 @@
 		<ResourceDictionary Source="ms-appx:///Files.App.Controls/ThemedIcon/Styles/Icons.Settings.Sidebar.xaml" />
 		<ResourceDictionary Source="ms-appx:///Files.App.Controls/ThemedIcon/Styles/Icons.Settings.xaml" />
 		<ResourceDictionary Source="ms-appx:///Files.App.Controls/ThemedIcon/Styles/Icons.SizeLayout28.xaml" />
+		<!--#endregion-->
+
+		<!--#region BladeView-->
+		<ResourceDictionary Source="ms-appx:///Files.App.Controls/BladeView/BladeView.xaml" />
+		<!--#endregion-->
+
+		<!--#region GridSplitter-->
+		<ResourceDictionary Source="ms-appx:///Files.App.Controls/GridSplitter/GridSplitter.xaml" />
+		<!--#endregion-->
+
+		<!--#region SidebarView-->
+		<ResourceDictionary Source="ms-appx:///Files.App.Controls/Sidebar/SidebarStyles.xaml" />
+		<!--#endregion-->
+
+		<!--#region Omnibar-->
+		<ResourceDictionary Source="ms-appx:///Files.App.Controls/Omnibar/Omnibar.xaml" />
+		<!--#endregion-->
+
+		<!--#region SamplePanel-->
+		<ResourceDictionary Source="ms-appx:///Files.App.Controls/SamplePanel/SamplePanel.xaml" />
+		<!--#endregion-->
+
+		<!--#region Breadcrumb-->
+		<ResourceDictionary Source="ms-appx:///Files.App.Controls/BreadcrumbBar/BreadcrumbBar.xaml" />
 		<!--#endregion-->
 
 	</ResourceDictionary.MergedDictionaries>

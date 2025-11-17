@@ -1,17 +1,18 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 namespace Files.App.Actions
 {
 	internal sealed class EditPathAction : IAction
 	{
-		private readonly IContentPageContext context;
+		private readonly IContentPageContext context = Ioc.Default.GetRequiredService<IContentPageContext>();
+		private readonly IGeneralSettingsService GeneralSettingsService = Ioc.Default.GetRequiredService<IGeneralSettingsService>();
 
 		public string Label
-			=> "EditPath".GetLocalizedResource();
+			=> Strings.EditPath.GetLocalizedResource();
 
 		public string Description
-			=> "EditPathDescription".GetLocalizedResource();
+			=> Strings.EditPathDescription.GetLocalizedResource();
 
 		public HotKey HotKey
 			=> new(Keys.L, KeyModifiers.Ctrl);
@@ -21,13 +22,18 @@ namespace Files.App.Actions
 
 		public EditPathAction()
 		{
-			context = Ioc.Default.GetRequiredService<IContentPageContext>();
+
 		}
 
 		public Task ExecuteAsync(object? parameter = null)
 		{
 			if (context.ShellPage is not null)
-				context.ShellPage.ToolbarViewModel.IsEditModeEnabled = true;
+			{
+				if (GeneralSettingsService.EnableOmnibar)
+					context.ShellPage!.ToolbarViewModel.SwitchToPathMode();
+				else
+					context.ShellPage.ToolbarViewModel.IsEditModeEnabled = true;
+			}
 
 			return Task.CompletedTask;
 		}

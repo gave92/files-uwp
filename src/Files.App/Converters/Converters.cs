@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
@@ -119,7 +119,7 @@ namespace Files.App.Converters
 	/// <summary>
 	/// Converts a boolean to and from a visibility value.
 	/// </summary>
-	internal sealed class InverseBooleanConverter : ValueConverter<bool, bool>
+	internal sealed partial class InverseBooleanConverter : ValueConverter<bool, bool>
 	{
 		/// <summary>
 		/// Converts a source value to the target type.
@@ -146,7 +146,7 @@ namespace Files.App.Converters
 		}
 	}
 
-	internal sealed class NullToTrueConverter : ValueConverter<object?, bool>
+	internal sealed partial class NullToTrueConverter : ValueConverter<object?, bool>
 	{
 		/// <summary>
 		/// Determines whether an inverse conversion should take place.
@@ -179,7 +179,7 @@ namespace Files.App.Converters
 		}
 	}
 
-	internal sealed class StringNullOrWhiteSpaceToTrueConverter : ValueConverter<string, bool>
+	internal sealed partial class StringNullOrWhiteSpaceToTrueConverter : ValueConverter<string, bool>
 	{
 		/// <summary>
 		/// Determines whether an inverse conversion should take place.
@@ -212,7 +212,7 @@ namespace Files.App.Converters
 		}
 	}
 
-	internal sealed class NullToVisibilityCollapsedConverter : ValueConverter<object?, Visibility>
+	internal sealed partial class NullToVisibilityCollapsedConverter : ValueConverter<object?, Visibility>
 	{
 		/// <summary>
 		/// Converts a source value to the target type.
@@ -238,4 +238,31 @@ namespace Files.App.Converters
 			return new NotSupportedException();
 		}
 	}
+
+	internal sealed partial class EmptyListToVisibilityConverter : ValueConverter<object?, Visibility>
+	{
+		protected override Visibility Convert(object? value, object? parameter, string? language)
+		{
+			return (value is int count && count == 0) ? Visibility.Visible : Visibility.Collapsed;
+		}
+
+		protected override object? ConvertBack(Visibility value, object? parameter, string? language)
+		{
+			return new NotSupportedException();
+		}
+	}
+
+	internal sealed partial class PopulatedListToVisibilityConverter : ValueConverter<object?, Visibility>
+	{
+		protected override Visibility Convert(object? value, object? parameter, string? language)
+		{
+			return (value is int count && count > 0) ? Visibility.Visible : Visibility.Collapsed;
+		}
+
+		protected override object? ConvertBack(Visibility value, object? parameter, string? language)
+		{
+			return new NotSupportedException();
+		}
+	}
 }
+

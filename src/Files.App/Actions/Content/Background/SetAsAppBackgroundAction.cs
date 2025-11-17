@@ -1,17 +1,17 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 namespace Files.App.Actions
 {
-	internal sealed class SetAsAppBackgroundAction : BaseSetAsAction
+	internal sealed partial class SetAsAppBackgroundAction : BaseSetAsAction
 	{
 		private readonly IAppearanceSettingsService AppearanceSettingsService = Ioc.Default.GetRequiredService<IAppearanceSettingsService>();
 
 		public override string Label
-			=> "SetAsAppBackground".GetLocalizedResource();
+			=> Strings.SetAsAppBackground.GetLocalizedResource();
 
 		public override string Description
-			=> "SetAsAppBackgroundDescription".GetLocalizedResource();
+			=> Strings.SetAsAppBackgroundDescription.GetLocalizedResource();
 
 		public override RichGlyph Glyph
 			=> new("\uE91B");

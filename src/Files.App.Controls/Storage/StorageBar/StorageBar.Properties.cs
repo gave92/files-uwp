@@ -1,71 +1,82 @@
-﻿// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+﻿// Copyright (c) Files Community
+// Licensed under the MIT License.
 
-using Microsoft.UI.Xaml;
+using CommunityToolkit.WinUI;
 
 namespace Files.App.Controls
 {
-	[DependencyProperty<double>("ValueBarHeight", nameof(OnValueBarHeightChanged), DefaultValue = "(double)4.0")]
-	[DependencyProperty<double>("TrackBarHeight", nameof(OnTrackBarHeightChanged), DefaultValue = "(double)2.0")]
-	[DependencyProperty<BarShapes>("BarShape", nameof(OnBarShapeChanged), DefaultValue = "BarShapes.Round")]
-	[DependencyProperty<double>("Percent", nameof(OnPercentChanged), DefaultValue = "(double)0.0")]
-	[DependencyProperty<double>("PercentCaution", nameof(OnPercentCautionChanged), DefaultValue = "(double)75.1")]
-	[DependencyProperty<double>("PercentCritical", nameof(OnPercentCriticalChanged), DefaultValue = "(double)89.9")]
 	public partial class StorageBar
 	{
-		private void OnValueBarHeightChanged(double oldValue, double newValue)
+		[GeneratedDependencyProperty(DefaultValue = 6.0d)]
+		public partial double ValueBarHeight { get; set; }
+
+		[GeneratedDependencyProperty(DefaultValue = 3.0d)]
+		public partial double TrackBarHeight { get; set; }
+
+		[GeneratedDependencyProperty(DefaultValue = BarShapes.Round)]
+		public partial BarShapes BarShape { get; set; }
+
+		[GeneratedDependencyProperty(DefaultValue = 0.0d)]
+		public partial double Percent { get; set; }
+
+		[GeneratedDependencyProperty(DefaultValue = 75.1d)]
+		public partial double PercentCaution { get; set; }
+
+		[GeneratedDependencyProperty(DefaultValue = 89.9d)]
+		public partial double PercentCritical { get; set; }
+
+		partial void OnValueBarHeightChanged(double newValue)
 		{
-			UpdateControl(this);
+			UpdateControl();
 		}
 
-		private void OnTrackBarHeightChanged(double oldValue, double newValue)
+		partial void OnTrackBarHeightChanged(double newValue)
 		{
-			UpdateControl(this);
+			UpdateControl();
 		}
 
-		private void OnBarShapeChanged(BarShapes oldValue, BarShapes newValue)
+		partial void OnBarShapeChanged(BarShapes newValue)
 		{
-			UpdateControl(this);
+			UpdateControl();
 		}
 
-		private void OnPercentChanged(double oldValue, double newValue)
+		partial void OnPercentChanged(double newValue)
 		{
 			return; //Read-only
-
-			DoubleToPercentage(Value, Minimum, Maximum);
-			UpdateControl(this);
 		}
 
-		private void OnPercentCautionChanged(double oldValue, double newValue)
+		partial void OnPercentCautionChanged(double newValue)
 		{
-			UpdateControl(this);
+			UpdateControl();
 		}
 
-		private void OnPercentCriticalChanged(double oldValue, double newValue)
+		partial void OnPercentCriticalChanged(double newValue)
 		{
-			UpdateControl(this);
+			UpdateControl();
 		}
 
 		/// <inheritdoc/>
 		protected override void OnValueChanged(double oldValue, double newValue)
 		{
-			_oldValue = oldValue;
 			base.OnValueChanged(oldValue, newValue);
-			UpdateValue(this, Value, _oldValue, false, -1.0);
+
+			UpdateValue(Value, _oldValue, false, -1.0);
 		}
 
 		/// <inheritdoc/>
 		protected override void OnMaximumChanged(double oldValue, double newValue)
 		{
 			base.OnMaximumChanged(oldValue, newValue);
-			UpdateValue(this, oldValue, newValue, false, -1.0);
+
+			UpdateValue(oldValue, newValue, false, -1.0);
 		}
 
 		/// <inheritdoc/>
 		protected override void OnMinimumChanged(double oldValue, double newValue)
 		{
 			base.OnMinimumChanged(oldValue, newValue);
-			UpdateValue(this, oldValue, newValue, false, -1.0);
+
+			UpdateValue(oldValue, newValue, false, -1.0);
 		}
 	}
 }

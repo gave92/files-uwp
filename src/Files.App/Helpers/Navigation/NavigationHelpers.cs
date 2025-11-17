@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Files.Shared.Helpers;
 using Microsoft.UI.Xaml.Controls;
@@ -157,6 +157,11 @@ namespace Files.App.Helpers
 			ImageSource? imageSource;
 			if (string.IsNullOrEmpty(path) || path == "Home")
 				imageSource = new BitmapImage(new Uri(Constants.FluentIconsPaths.HomeIcon));
+			else if (path == "ReleaseNotes")
+				imageSource = new BitmapImage(new Uri(AppLifecycleHelper.AppIconPath));
+			// TODO add settings page
+			//else if (path == "Settings")
+			//	imageSource = new BitmapImage(new Uri(AppLifecycleHelper.AppIconPath));
 			else if (WSLDistroManager.TryGetDistro(path, out WslDistroItem? wslDistro) && path.Equals(wslDistro.Path))
 				imageSource = new BitmapImage(wslDistro.Icon);
 			else
@@ -189,19 +194,30 @@ namespace Files.App.Helpers
 
 			if (string.IsNullOrEmpty(currentPath) || currentPath == "Home")
 			{
-				tabLocationHeader = "Home".GetLocalizedResource();
+				tabLocationHeader = Strings.Home.GetLocalizedResource();
 				iconSource.ImageSource = new BitmapImage(new Uri(Constants.FluentIconsPaths.HomeIcon));
 			}
+			else if (currentPath == "ReleaseNotes")
+			{ 
+				tabLocationHeader = Strings.ReleaseNotes.GetLocalizedResource();
+				iconSource.ImageSource = new BitmapImage(new Uri(AppLifecycleHelper.AppIconPath));
+			}
+			// TODO add settings page
+			//else if (currentPath == "Settings")
+			//{ 
+			//	tabLocationHeader = Strings.Settings.GetLocalizedResource();
+			//	iconSource.ImageSource = new BitmapImage(new Uri(AppLifecycleHelper.AppIconPath));
+			//}
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.DesktopPath, StringComparison.OrdinalIgnoreCase))
-				tabLocationHeader = "Desktop".GetLocalizedResource();
+				tabLocationHeader = Strings.Desktop.GetLocalizedResource();
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.DownloadsPath, StringComparison.OrdinalIgnoreCase))
-				tabLocationHeader = "Downloads".GetLocalizedResource();
+				tabLocationHeader = Strings.Downloads.GetLocalizedResource();
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.RecycleBinPath, StringComparison.OrdinalIgnoreCase))
-				tabLocationHeader = "RecycleBin".GetLocalizedResource();
+				tabLocationHeader = Strings.RecycleBin.GetLocalizedResource();
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.MyComputerPath, StringComparison.OrdinalIgnoreCase))
-				tabLocationHeader = "ThisPC".GetLocalizedResource();
+				tabLocationHeader = Strings.ThisPC.GetLocalizedResource();
 			else if (currentPath.Equals(Constants.UserEnvironmentPaths.NetworkFolderPath, StringComparison.OrdinalIgnoreCase))
-				tabLocationHeader = "Network".GetLocalizedResource();
+				tabLocationHeader = Strings.Network.GetLocalizedResource();
 			else if (App.LibraryManager.TryGetLibrary(currentPath, out LibraryLocationItem library))
 			{
 				var libName = System.IO.Path.GetFileNameWithoutExtension(library.Path).GetLocalizedResource();
@@ -314,7 +330,7 @@ namespace Files.App.Helpers
 			if (associatedInstance is null || listedItem is null)
 				return;
 
-			associatedInstance.PaneHolder?.OpenSecondaryPane((listedItem as ShortcutItem)?.TargetPath ?? listedItem.ItemPath);
+			associatedInstance.PaneHolder?.OpenSecondaryPane((listedItem as IShortcutItem)?.TargetPath ?? listedItem.ItemPath);
 		}
 
 		public static Task LaunchNewWindowAsync()
@@ -477,7 +493,7 @@ namespace Files.App.Helpers
 
 			if (opened.ErrorCode == FileSystemStatusCode.NotFound && !openSilent)
 			{
-				await DialogDisplayHelper.ShowDialogAsync("FileNotFoundDialog/Title".GetLocalizedResource(), "FileNotFoundDialog/Text".GetLocalizedResource());
+				await DialogDisplayHelper.ShowDialogAsync(Strings.FileNotFoundDialog_Title.GetLocalizedResource(), Strings.FileNotFoundDialog_Text.GetLocalizedResource());
 				associatedInstance.ToolbarViewModel.CanRefresh = false;
 				associatedInstance.ShellViewModel?.RefreshItems(previousDir);
 			}

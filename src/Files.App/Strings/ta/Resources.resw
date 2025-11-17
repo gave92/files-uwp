@@ -123,6 +123,9 @@
   <data name="CopyPath" xml:space="preserve">
     <value>பாதய நகலெடு</value>
   </data>
+  <data name="CopyItemPath" xml:space="preserve">
+    <value>Copy item path</value>
+  </data>
   <data name="CopyPathWithQuotes" xml:space="preserve">
     <value>Copy path with quotes</value>
   </data>
@@ -163,7 +166,7 @@
     <value>விட்டு விடு</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
-    <value>Select All</value>
+    <value>Select all</value>
   </data>
   <data name="InvertSelection" xml:space="preserve">
     <value>Invert selection</value>
@@ -214,7 +217,7 @@
     <value>Show hidden files and folders</value>
   </data>
   <data name="ShowDotFiles" xml:space="preserve">
-    <value>Show dot files</value>
+    <value>Dot files</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>தோற்றம்</value>
@@ -229,7 +232,7 @@
     <value>Continue where you left off</value>
   </data>
   <data name="SettingsOnStartupOpenANewTab.Content" xml:space="preserve">
-    <value>புது தாவல திற</value>
+    <value>ஒரு புது ^டேபை திற</value>
   </data>
   <data name="SettingsOnStartupOpenASpecificPage.Content" xml:space="preserve">
     <value>ஒரு குறிப்பிட்ட பக்கத்தயோ பக்கங்களயோ திற</value>
@@ -265,10 +268,10 @@
     <value>தெற</value>
   </data>
   <data name="OpenInNewTab" xml:space="preserve">
-    <value>புது தாவல்'ல தெற</value>
+    <value>புது ^டேபுல திற</value>
   </data>
   <data name="OpenInNewWindow" xml:space="preserve">
-    <value>புது சாளரத்துல தெற</value>
+    <value>புது ஃவிண்டோல திற</value>
   </data>
   <data name="Share" xml:space="preserve">
     <value>பகிர்</value>
@@ -289,7 +292,7 @@
     <value>அனுமதி வழங்கு</value>
   </data>
   <data name="WelcomeDialogTextBlock.Text" xml:space="preserve">
-    <value>தொடங்க, உங்க கோப்புகள காட்ட எங்களுக்கு நீங்கள் அனுமதி வழங்க வேண்டும்; அத செய்ய ஒரு அமய்ப்பு பக்கம் தெறக்கும். முடித்த பின், செயலிய மீண்டும் தெறக்க வேண்டும். </value>
+    <value>தொடங்க, உங்க கோப்புகள காட்ட எங்களுக்கு நீங்க அனுமதி வழங்க'ணும்; இதுக்காக ஒரு ஸெட்டிங்ஸ் பக்கம் திறக்கும். முடிச்ச பிறகு, செயலிய மூடி, திரும்பவும் திறக்க'ணும்.</value>
   </data>
   <data name="Display" xml:space="preserve">
     <value>காட்சி</value>
@@ -516,7 +519,7 @@
     <value>Recent</value>
   </data>
   <data name="TabStripDragAndDropUIOverrideCaption" xml:space="preserve">
-    <value>தாவல இங்கு நகர்த்து</value>
+    <value>^டேபை இங்கு நகர்த்து</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>நிலய்</value>
@@ -535,6 +538,9 @@
   </data>
   <data name="CopyToFolderCaptionText" xml:space="preserve">
     <value>{0}'கு நகலெடு</value>
+  </data>
+  <data name="CloneToFolderCaptionText" xml:space="preserve">
+    <value>Clone to {0}</value>
   </data>
   <data name="CreateShortcut" xml:space="preserve">
     <value>குறுக்குவழி உருவாக்கு</value>
@@ -636,7 +642,7 @@
     <value>Set as</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>ரத்து</value>
   </data>
   <data name="AddDialog.Title" xml:space="preserve">
     <value>Create a new item</value>
@@ -660,7 +666,7 @@
     <value>Refresh the directory</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Language</value>
+    <value>மொழி</value>
   </data>
   <data name="SettingsContextMenuOverflow" xml:space="preserve">
     <value>Move shell extensions into a sub menu</value>
@@ -924,7 +930,7 @@
     <value>Image</value>
   </data>
   <data name="PropertySectionPhoto" xml:space="preserve">
-    <value>Photo</value>
+    <value>Pho:to</value>
   </data>
   <data name="PropertySectionGPS" xml:space="preserve">
     <value>GPS</value>
@@ -951,7 +957,7 @@
     <value>தேர்வு ஆப்ஷனுங்க</value>
   </data>
   <data name="NavToolbarSelectionOptions.Label" xml:space="preserve">
-    <value>Select</value>
+    <value>Select'u</value>
   </data>
   <data name="RecycleBinItemAutomation" xml:space="preserve">
     <value>Recycle bin item</value>
@@ -960,7 +966,7 @@
     <value>குறுக்குவழி பொருள்</value>
   </data>
   <data name="Drives" xml:space="preserve">
-    <value>ட்ரய்வுங்க</value>
+    <value>Drives</value>
   </data>
   <data name="PinToSidebarByDraggingCaptionText" xml:space="preserve">
     <value>இங்கு நகர்த்து</value>
@@ -984,10 +990,10 @@
     <value>Duplicate tab</value>
   </data>
   <data name="HorizontalMultitaskingControlMoveTabToNewWindow.Text" xml:space="preserve">
-    <value>புது சாளரத்துக்கு தாவல நகர்த்து</value>
+    <value>புது ஃவிண்டோக்கு டæபை நகர்த்து</value>
   </data>
   <data name="NewTab" xml:space="preserve">
-    <value>New tab</value>
+    <value>புது டæபு</value>
   </data>
   <data name="ClearPropertiesFlyoutText.Text" xml:space="preserve">
     <value>Some properties may contain personal information.</value>
@@ -1008,7 +1014,7 @@
     <value>Details</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>Illy</value>
   </data>
   <data name="ShowProtectedSystemFiles" xml:space="preserve">
     <value>பாதுகாக்கப்பட்ட ஸிஸ்டம் கோப்புங்கள காட்டு</value>
@@ -1023,7 +1029,7 @@
     <value>Original path</value>
   </data>
   <data name="Add" xml:space="preserve">
-    <value>Add</value>
+    <value>Ce:ru</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
@@ -1058,20 +1064,17 @@
   <data name="NavToolbarDetails.ToolTipService.ToolTip" xml:space="preserve">
     <value>தகவலுங்க (Ctrl+Shift+1)</value>
   </data>
-  <data name="NavToolbarTiles.ToolTipService.ToolTip" xml:space="preserve">
-    <value>டய்லுங்க (Ctrl+Shift+2)</value>
-  </data>
   <data name="DateDeleted" xml:space="preserve">
     <value>Date deleted</value>
   </data>
   <data name="SidebarCloudDrives" xml:space="preserve">
-    <value>க்லவ்டு ட்ரய்வுங்க</value>
+    <value>Cloud Drives</value>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
   <data name="DesiredName" xml:space="preserve">
-    <value>Desired name</value>
+    <value>Virumbu'na pe:ru</value>
   </data>
   <data name="TogglePreviewPane" xml:space="preserve">
     <value>Toggle the preview pane</value>
@@ -1089,7 +1092,10 @@
     <value>Toggle the info pane to view the detail/preview panes</value>
   </data>
   <data name="ToggleToolbar" xml:space="preserve">
-    <value>Toggle the Toolbar</value>
+    <value>Toggle toolbar</value>
+  </data>
+  <data name="ToggleToolbarDescription" xml:space="preserve">
+    <value>Toggle visibility of the toolbar</value>
   </data>
   <data name="DetailsPanePreviewNotAvaliableText" xml:space="preserve">
     <value>No preview available</value>
@@ -1122,7 +1128,7 @@
     <value>Documentation</value>
   </data>
   <data name="CloudDriveSyncStatus_Offline" xml:space="preserve">
-    <value>ஆஃப்லய்ன்'ல கிடய்க்கும்</value>
+    <value>Offline'la kadýku</value>
   </data>
   <data name="CloudDriveSyncStatus_PartialOffline" xml:space="preserve">
     <value>ஆஃப்லய்ன்'ல கொஞ்சம் கிடய்க்கும்</value>
@@ -1392,7 +1398,7 @@
     <value>{0} items</value>
   </data>
   <data name="ReopenClosedTab" xml:space="preserve">
-    <value>Reopen closed tab</value>
+    <value>Reopen tab</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Rename</value>
@@ -1599,7 +1605,7 @@
     <value>Replace all child object permissions entries with inheritable permission entries from this object</value>
   </data>
   <data name="CloseActivePane" xml:space="preserve">
-    <value>Close active pane</value>
+    <value>Close pane</value>
   </data>
   <data name="EnterCompactOverlay" xml:space="preserve">
     <value>Enter compact overlay</value>
@@ -1658,15 +1664,6 @@
   <data name="Home" xml:space="preserve">
     <value>முகப்பு</value>
   </data>
-  <data name="BaseLayoutContextFlyoutDetails.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+1</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutTiles.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+2</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutColumn.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+6</value>
-  </data>
   <data name="ArchiveExtractionCompletedSuccessfullyText" xml:space="preserve">
     <value>The archive extraction completed successfully.</value>
   </data>
@@ -1724,11 +1721,11 @@
   <data name="Columns" xml:space="preserve">
     <value>Columns</value>
   </data>
-  <data name="Tiles" xml:space="preserve">
-    <value>டைலுங்க</value>
+  <data name="Cards" xml:space="preserve">
+    <value>Cards</value>
   </data>
   <data name="OpenFoldersInNewTab" xml:space="preserve">
-    <value>புது தாவல்'ல கோப்புறய்ங்கள தெற</value>
+    <value>ஃபோல்டர்களை புது டæபுல திற</value>
   </data>
   <data name="StatusCenter" xml:space="preserve">
     <value>நிலய் மய்யம்</value>
@@ -1838,6 +1835,18 @@
   <data name="CompatibilityRegisterThisProgramForRestart" xml:space="preserve">
     <value>Register this program for restart</value>
   </data>
+  <data name="StartWindow" xml:space="preserve">
+    <value>Start window</value>
+  </data>
+  <data name="NormalWindow" xml:space="preserve">
+    <value>சாதா விண்டோ</value>
+  </data>
+  <data name="Minimized" xml:space="preserve">
+    <value>Minimized</value>
+  </data>
+  <data name="Maximized" xml:space="preserve">
+    <value>Maximized</value>
+  </data>
   <data name="RunAsAdministrator" xml:space="preserve">
     <value>Run as administrator</value>
   </data>
@@ -1938,16 +1947,16 @@
     <value>நிறுவு</value>
   </data>
   <data name="CloseTabsToTheLeft" xml:space="preserve">
-    <value>Close tabs to the left</value>
+    <value>இடதுல இருக்குற டæபுகளை மூடு</value>
   </data>
   <data name="CloseTabsToTheRight" xml:space="preserve">
-    <value>Close tabs to the right</value>
+    <value>வலதுல இருக்குற டæபுகளை மூடு</value>
   </data>
   <data name="CloseOtherTabs" xml:space="preserve">
-    <value>Close other tabs</value>
+    <value>மற்ற டæபை மூடு</value>
   </data>
   <data name="CloseAllTabs" xml:space="preserve">
-    <value>Close all tabs</value>
+    <value>டæபு எல்லாம் மூடு</value>
   </data>
   <data name="Music" xml:space="preserve">
     <value>இசய்</value>
@@ -2070,7 +2079,7 @@
     <value>எல்லா பொருளயும் மீட்டெடு</value>
   </data>
   <data name="ConfirmRestoreSelectionBinDialogContent" xml:space="preserve">
-    <value>தேர்ந்தெடுத்த {0} பொருள மீட்டெடுக்க வேண்டுமா?</value>
+    <value>Do you want to restore the {0, plural, one {selected item} other {{0} selected items}}?</value>
   </data>
   <data name="ConfirmRestoreSelectionBinDialogTitle" xml:space="preserve">
     <value>தேர்வ மீட்டெடு</value>
@@ -2092,6 +2101,12 @@
   </data>
   <data name="ArchivePassword" xml:space="preserve">
     <value>Archive password</value>
+  </data>
+  <data name="Encoding" xml:space="preserve">
+    <value>Encoding</value>
+  </data>
+  <data name="EncodingDetected" xml:space="preserve">
+    <value>{0} (detected)</value>
   </data>
   <data name="ExtractToPath" xml:space="preserve">
     <value>பாத</value>
@@ -2135,8 +2150,8 @@
   <data name="SplittingSize" xml:space="preserve">
     <value>பிரிப்பு அளவு</value>
   </data>
-  <data name="Do not split" xml:space="preserve">
-    <value>பிரிக்காத</value>
+  <data name="DoNotSplit" xml:space="preserve">
+    <value>Do not split</value>
   </data>
   <data name="CD" xml:space="preserve">
     <value>CD</value>
@@ -2192,8 +2207,14 @@
   <data name="EditSettingsFile" xml:space="preserve">
     <value>அமய்ப்புங்க கோப்ப திருத்து</value>
   </data>
-  <data name="WhatsNew" xml:space="preserve">
-    <value>புதுசு என்ன</value>
+  <data name="EditSettingsFileDescription" xml:space="preserve">
+    <value>Open settings file in your default editor</value>
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value>Release Notes</value>
+  </data>
+  <data name="ReleaseNotesDescription" xml:space="preserve">
+    <value>Open Release Notes</value>
   </data>
   <data name="CannotCreateShortcutDialogTitle" xml:space="preserve">
     <value>Creating a shortcut in this location requires administrator privileges</value>
@@ -2223,7 +2244,7 @@
     <value>Show send to menu</value>
   </data>
   <data name="ShowOpenInNewTab" xml:space="preserve">
-    <value>Show option to open folders in a new tab</value>
+    <value>ஃபோல்டர்களை ஒரு புது டæபுல திறக்க ɔப்ஷன் காட்டு</value>
   </data>
   <data name="ShowOpenInNewWindow" xml:space="preserve">
     <value>Show option to open folders in a new window</value>
@@ -2274,10 +2295,7 @@
     <value>Context menu options</value>
   </data>
   <data name="ShowFileExtensions" xml:space="preserve">
-    <value>கோப்பு நீட்டிப்புகள காட்டு</value>
-  </data>
-  <data name="ShowHiddenItems" xml:space="preserve">
-    <value>மறைக்கப்பட்ட பொருளுங்கள காட்டு</value>
+    <value>File extensions</value>
   </data>
   <data name="FormatDriveText" xml:space="preserve">
     <value>Format</value>
@@ -2286,13 +2304,13 @@
     <value>உதவி</value>
   </data>
   <data name="FullScreen" xml:space="preserve">
-    <value>Toggle full screen</value>
+    <value>Full screen</value>
   </data>
   <data name="ConfirmDeleteTag" xml:space="preserve">
     <value>இந்த குறிய நிச்சயமா நீக்க வேண்டுமா?</value>
   </data>
   <data name="PlayAll" xml:space="preserve">
-    <value>எல்லாவற்றயும் போடு</value>
+    <value>Play</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>உயரம்</value>
@@ -2304,10 +2322,10 @@
     <value>Apply this action to all conflicting items</value>
   </data>
   <data name="OpenTerminal" xml:space="preserve">
-    <value>Windows Terminal'ல தெற</value>
+    <value>Windows Terminalல திற</value>
   </data>
   <data name="OpenTerminalAsAdmin" xml:space="preserve">
-    <value>Windows Terminal'ல நிர்வாகிய தெற</value>
+    <value>Windows Terminalல நிர்வாகியா திற</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>சேமி</value>
@@ -2352,7 +2370,7 @@
     <value>அளவ அதிகரி</value>
   </data>
   <data name="ToggleSortDirection" xml:space="preserve">
-    <value>Toggle sort direction</value>
+    <value>Sort direction</value>
   </data>
   <data name="InvalidTagNameWarning" xml:space="preserve">
     <value>செல்லாத பெயர்</value>
@@ -2364,37 +2382,37 @@
     <value>காணொளிங்க</value>
   </data>
   <data name="LaunchPreviewPopup" xml:space="preserve">
-    <value>Launch preview popup</value>
+    <value>Preview popup</value>
   </data>
   <data name="ToggleCompactOverlay" xml:space="preserve">
     <value>Toggle compact overlay</value>
   </data>
   <data name="OpenHelpDescription" xml:space="preserve">
-    <value>இணய உதவி பக்கத்த உலாவி'ல தெற</value>
+    <value>Open the online help page in your browser</value>
   </data>
   <data name="ToggleFullScreenDescription" xml:space="preserve">
-    <value>Toggle full screen</value>
+    <value>Toggle full screen mode</value>
   </data>
   <data name="EnterCompactOverlayDescription" xml:space="preserve">
-    <value>Enter compact overlay</value>
+    <value>Enter compact overlay mode</value>
   </data>
   <data name="ExitCompactOverlayDescription" xml:space="preserve">
-    <value>Exit compact overlay</value>
+    <value>Exit compact overlay mode</value>
   </data>
   <data name="ToggleCompactOverlayDescription" xml:space="preserve">
-    <value>Toggle compact overlay</value>
+    <value>Toggle compact overlay mode</value>
   </data>
   <data name="SearchDescription" xml:space="preserve">
-    <value>தேடல் பெட்டி'கு போ</value>
+    <value>Start search in the OmniBar</value>
   </data>
   <data name="ToggleShowHiddenItemsDescription" xml:space="preserve">
-    <value>Toggle whether to show hidden items</value>
+    <value>Toggle visibility of hidden items</value>
   </data>
   <data name="ToggleDotFilesSettingDescription" xml:space="preserve">
-    <value>Toggle whether to show dot files</value>
+    <value>Toggle visibility of dot files</value>
   </data>
   <data name="ToggleShowFileExtensionsDescription" xml:space="preserve">
-    <value>Toggle whether to show file extensions</value>
+    <value>Toggle visibility of file extensions</value>
   </data>
   <data name="TogglePreviewPaneDescription" xml:space="preserve">
     <value>Toggle the preview pane to view file previews</value>
@@ -2403,7 +2421,7 @@
     <value>Toggle whether to show sidebar</value>
   </data>
   <data name="CopyItemDescription" xml:space="preserve">
-    <value>Copy item(s) to clipboard</value>
+    <value>Copy selected {0, plural, one {item} other {items}} to clipboard</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
     <value>Copy path of selected items to the clipboard</value>
@@ -2418,46 +2436,49 @@
     <value>Copy path of selected items with quotes to the clipboard</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
-    <value>Cut item(s) to clipboard</value>
+    <value>Cut selected {0, plural, one {item} other {items}} to clipboard</value>
   </data>
   <data name="PasteItemDescription" xml:space="preserve">
-    <value>Paste item(s) from clipboard to current folder</value>
+    <value>Paste clipboard items to the current folder</value>
   </data>
   <data name="PasteShortcutDescription" xml:space="preserve">
-    <value>Paste item(s) from clipboard to current folder as shortcuts</value>
+    <value>Paste clipboard items to the current folder as shortcuts</value>
   </data>
   <data name="PasteItemToSelectionDescription" xml:space="preserve">
-    <value>Paste item(s) from clipboard to selected folder</value>
+    <value>Paste clipboard items to the selected folder</value>
+  </data>
+  <data name="PasteToSelectedFolder" xml:space="preserve">
+    <value>Paste to selected folder</value>
   </data>
   <data name="DeleteItemDescription" xml:space="preserve">
-    <value>Delete item(s)</value>
+    <value>Delete selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CreateFolderDescription" xml:space="preserve">
     <value>புது கோப்புறய உருவாக்கு</value>
   </data>
   <data name="CreateShortcutDescription" xml:space="preserve">
-    <value>Create new shortcut(s) to selected item(s)</value>
+    <value>Create new {0, plural, one {shortcut} other {shortcuts}} to selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CreateShortcutFromDialogDescription" xml:space="preserve">
     <value>Create new shortcut to any item</value>
   </data>
   <data name="EmptyRecycleBinDescription" xml:space="preserve">
-    <value>மறுசுழற்சி கூடய வெறுமயா ஆக்கு</value>
+    <value>Empty the contents of Recycle Bin</value>
   </data>
   <data name="FormatDriveDescription" xml:space="preserve">
     <value>Open "Format Drive" menu for selected item</value>
   </data>
   <data name="RestoreRecycleBinDescription" xml:space="preserve">
-    <value>Restore selected item(s) from recycle bin</value>
+    <value>Restore selected {0, plural, one {item} other {items}} from recycle bin</value>
   </data>
   <data name="RestoreAllRecycleBinDescription" xml:space="preserve">
     <value>Restore all items from recycle bin</value>
   </data>
   <data name="OpenItemDescription" xml:space="preserve">
-    <value>Open item(s)</value>
+    <value>Open {0, plural, one {item} other {items}}</value>
   </data>
   <data name="OpenItemWithApplicationPickerDescription" xml:space="preserve">
-    <value>Open item(s) with selected application</value>
+    <value>Open {0, plural, one {item} other {items}} with selected application</value>
   </data>
   <data name="OpenParentFolderDescription" xml:space="preserve">
     <value>Open parent folder of searched item</value>
@@ -2472,28 +2493,28 @@
     <value>எல்லா பொருளுங்களயும் தேர்ந்தெடு</value>
   </data>
   <data name="InvertSelectionDescription" xml:space="preserve">
-    <value>Invert item selection</value>
+    <value>Invert selected items</value>
   </data>
   <data name="ClearSelectionDescription" xml:space="preserve">
-    <value>பொருள் தேர்வ அழி</value>
+    <value>Clear selected items</value>
   </data>
   <data name="ToggleSelectDescription" xml:space="preserve">
     <value>Toggle item selection</value>
   </data>
   <data name="ShareItemDescription" xml:space="preserve">
-    <value>Share selected file(s) with others</value>
+    <value>Share selected {0, plural, one {file} other {files}} with others</value>
   </data>
   <data name="PinToStartDescription" xml:space="preserve">
-    <value>Pin item(s) to the Start Menu</value>
+    <value>Pin {0, plural, one {item} other {items}} to the Start Menu</value>
   </data>
   <data name="UnpinFromStartDescription" xml:space="preserve">
-    <value>Unpin item(s) from the Start Menu</value>
+    <value>Unpin {0, plural, one {item} other {items}} from the Start Menu</value>
   </data>
   <data name="PinFolderToSidebarDescription" xml:space="preserve">
-    <value>Pin folder(s) to Sidebar</value>
+    <value>Pin {0, plural, one {folder} other {folders}} to Sidebar</value>
   </data>
   <data name="UnpinFolderFromSidebarDescription" xml:space="preserve">
-    <value>Unpin folder(s) from Sidebar</value>
+    <value>Unpin {0, plural, one {folder} other {folders}} from Sidebar</value>
   </data>
   <data name="SetAsWallpaperBackgroundDescription" xml:space="preserve">
     <value>Set selected picture as desktop background</value>
@@ -2507,14 +2528,23 @@
   <data name="SetAsAppBackgroundDescription" xml:space="preserve">
     <value>Set selected picture as the app background</value>
   </data>
+  <data name="InstallFont" xml:space="preserve">
+    <value>Install font</value>
+  </data>
+  <data name="InstallDriver" xml:space="preserve">
+    <value>Install driver</value>
+  </data>
+  <data name="InstallCertificate" xml:space="preserve">
+    <value>Install certificate</value>
+  </data>
   <data name="InstallFontDescription" xml:space="preserve">
-    <value>Install selected font(s)</value>
+    <value>Install selected {0, plural, one {font} other {fonts}}</value>
   </data>
   <data name="InstallInfDriverDescription" xml:space="preserve">
-    <value>Install driver(s) using selected inf file(s)</value>
+    <value>Install {0, plural, one {driver} other {drivers}} using selected inf {0, plural, one {file} other {files}}</value>
   </data>
   <data name="InstallCertificateDescription" xml:space="preserve">
-    <value>Install selected certificate(s)</value>
+    <value>Install selected {0, plural, one {certificate} other {certificates}}</value>
   </data>
   <data name="RunAsAdminDescription" xml:space="preserve">
     <value>Run selected application as administrator</value>
@@ -2529,37 +2559,37 @@
     <value>Launch preview in popup window</value>
   </data>
   <data name="CompressIntoArchiveDescription" xml:space="preserve">
-    <value>Create archive with selected item(s)</value>
+    <value>Create archive with selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CompressIntoSevenZipDescription" xml:space="preserve">
-    <value>Create 7z archive instantly with selected item(s)</value>
+    <value>Create 7z archive with selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CompressIntoZipDescription" xml:space="preserve">
-    <value>Create zip archive instantly with selected item(s)</value>
+    <value>Create zip archive with selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="DecompressArchiveDescription" xml:space="preserve">
-    <value>Extract items from selected archive(s) to any folder</value>
+    <value>Extract items from selected {0, plural, one {archive} other {archives}} to any folder</value>
   </data>
   <data name="DecompressArchiveHereDescription" xml:space="preserve">
-    <value>Extract items from selected archive(s) to current folder</value>
+    <value>Extract items from selected {0, plural, one {archive} other {archives}} to current folder</value>
   </data>
   <data name="DecompressArchiveToChildFolderDescription" xml:space="preserve">
-    <value>Extract items from selected archive(s) to new folder</value>
+    <value>Extract items from selected {0, plural, one {archive} other {archives}} to new folder</value>
   </data>
   <data name="RotateLeftDescription" xml:space="preserve">
-    <value>Rotate selected image(s) to the left</value>
+    <value>Rotate selected {0, plural, one {image} other {images}} to the left</value>
   </data>
   <data name="RotateRightDescription" xml:space="preserve">
-    <value>Rotate selected image(s) to the right</value>
+    <value>Rotate selected {0, plural, one {image} other {images}} to the right</value>
   </data>
   <data name="OpenSettingsDescription" xml:space="preserve">
-    <value>அமைப்புங்க பக்கத்த தெற</value>
+    <value>ஸெட்டிங்ஸ் பக்கத்த திற</value>
   </data>
   <data name="OpenTerminalDescription" xml:space="preserve">
-    <value>கோப்புறய முனையத்துல தெற</value>
+    <value>கோப்புறய முனையத்துல திற</value>
   </data>
   <data name="OpenTerminalAsAdminDescription" xml:space="preserve">
-    <value>கோப்புறய முனையத்துல நிர்வாகியா தெற</value>
+    <value>முனையத்துல ஃபோல்டரை நிர்வாகியா திற</value>
   </data>
   <data name="LayoutDecreaseSizeDescription" xml:space="preserve">
     <value>Decrease item size in the current view</value>
@@ -2568,13 +2598,13 @@
     <value>Increase item size in the current view</value>
   </data>
   <data name="LayoutDetailsDescription" xml:space="preserve">
-    <value>தகவல் காட்சி'கு மாறு</value>
+    <value>தகவல் காட்சிக்கு மாறு</value>
   </data>
-  <data name="LayoutTilesDescription" xml:space="preserve">
-    <value>டய்லுங்க காட்சி'கு மாறு</value>
+  <data name="LayoutCardsDescription" xml:space="preserve">
+    <value>Switch to cards view</value>
   </data>
   <data name="LayoutListDescription" xml:space="preserve">
-    <value>பட்டியல் காட்சி'கு மாறு</value>
+    <value>பட்டியல் காட்சிக்கு மாறு</value>
   </data>
   <data name="List" xml:space="preserve">
     <value>பட்டியல்</value>
@@ -2592,7 +2622,7 @@
     <value>Switch views adaptively</value>
   </data>
   <data name="SortByNameDescription" xml:space="preserve">
-    <value>பேரால பொருளுங்கள வரிசப்படுத்து</value>
+    <value>பேரால பொருள்களை வரிசைப்படுத்து</value>
   </data>
   <data name="SortByDateModifiedDescription" xml:space="preserve">
     <value>Sort items by date modified</value>
@@ -2601,28 +2631,28 @@
     <value>Sort items by date created</value>
   </data>
   <data name="SortBySizeDescription" xml:space="preserve">
-    <value>அளவால பொருளுங்கள வரிசப்படுத்து</value>
+    <value>அளவால பொருள்களை வரிசைப்படுத்து</value>
   </data>
   <data name="SortByTypeDescription" xml:space="preserve">
-    <value>வகயால பொருளுங்கள வரிசப்படுத்து</value>
+    <value>வகயால பொருள்களை வரிசைப்படுத்து</value>
   </data>
   <data name="SortBySyncStatusDescription" xml:space="preserve">
     <value>Sort items by sync status</value>
   </data>
   <data name="SortByTagDescription" xml:space="preserve">
-    <value>குறிங்களால பொருளுங்கள வரிசப்படுத்து</value>
+    <value>^டேகுகளால பொருள்களை வரிசைப்படுத்து</value>
   </data>
   <data name="SortByOriginalFolderDescription" xml:space="preserve">
-    <value>அசல் கோப்புறயால பொருளுங்கள வரிசப்படுத்து</value>
+    <value>அசல் ஃபோல்டரால பொருள்களை வரிசைப்படுத்து</value>
   </data>
   <data name="SortByDateDeletedDescription" xml:space="preserve">
     <value>Sort items by date deleted</value>
   </data>
   <data name="SortAscendingDescription" xml:space="preserve">
-    <value>ஏறுவரிசை'ல பொருளுங்கள வரிசப்படுத்து</value>
+    <value>ஏறுவரிசைல பொருள்களை வரிசைப்படுத்து</value>
   </data>
   <data name="SortDescendingDescription" xml:space="preserve">
-    <value>இறங்குவரிசை'ல பொருளுங்கள வரிசப்படுத்து</value>
+    <value>இறங்குவரிசைல பொருள்களை வரிசைப்படுத்து</value>
   </data>
   <data name="ToggleSortDirectionDescription" xml:space="preserve">
     <value>Toggle item sort direction</value>
@@ -2631,7 +2661,7 @@
     <value>List items without grouping</value>
   </data>
   <data name="GroupByNameDescription" xml:space="preserve">
-    <value>பேரால பொருளுங்கள குழுப்படுத்து</value>
+    <value>பேரால பொருள்களை குழுப்படுத்து</value>
   </data>
   <data name="GroupByDateModifiedDescription" xml:space="preserve">
     <value>Group items by date modified</value>
@@ -2640,16 +2670,16 @@
     <value>Group items by date created</value>
   </data>
   <data name="GroupBySizeDescription" xml:space="preserve">
-    <value>அளவால பொருளுங்கள குழுப்படுத்து</value>
+    <value>அளவால பொருள்களை குழுப்படுத்து</value>
   </data>
   <data name="GroupByTypeDescription" xml:space="preserve">
-    <value>வகயால பொருளுங்கள குழுப்படுத்து</value>
+    <value>வகையால பொருள்களை குழுப்படுத்து</value>
   </data>
   <data name="GroupBySyncStatusDescription" xml:space="preserve">
     <value>Group items by sync status</value>
   </data>
   <data name="GroupByTagDescription" xml:space="preserve">
-    <value>குறிங்களால பொருளுங்கள குழுப்படுத்து</value>
+    <value>^டேகுகளால பொருள்களை குழுப்படுத்து</value>
   </data>
   <data name="GroupByOriginalFolderDescription" xml:space="preserve">
     <value>Group items by original folder</value>
@@ -2670,16 +2700,16 @@
     <value>Toggle group sort direction</value>
   </data>
   <data name="NewTabDescription" xml:space="preserve">
-    <value>புது தாவல திற</value>
+    <value>ஒரு புது ^டேபை திற</value>
   </data>
   <data name="NavigateBackDescription" xml:space="preserve">
-    <value>Navigate backward in navigation history</value>
+    <value>Navigate backward</value>
   </data>
   <data name="NavigateForwardDescription" xml:space="preserve">
-    <value>Navigate forward in navigation history</value>
+    <value>Navigate forward</value>
   </data>
   <data name="NavigateUpDescription" xml:space="preserve">
-    <value>ஒரு கோப்புற மேல போ</value>
+    <value>ஒரு ஃபோல்டர் மேல போ</value>
   </data>
   <data name="DuplicateCurrentTabDescription" xml:space="preserve">
     <value>Duplicate current tab</value>
@@ -2709,25 +2739,25 @@
     <value>Close all tabs including the current tab</value>
   </data>
   <data name="ReopenClosedTabDescription" xml:space="preserve">
-    <value>Reopen last closed tab</value>
+    <value>Reopen recently closed tab</value>
   </data>
   <data name="PreviousTabDescription" xml:space="preserve">
     <value>Move to the previous tab</value>
   </data>
   <data name="NextTabDescription" xml:space="preserve">
-    <value>அடுத்த தாவலுக்கு நகர்</value>
+    <value>அடுத்த டæபுக்கு நகரு</value>
   </data>
   <data name="CloseSelectedTabDescription" xml:space="preserve">
-    <value>தற்போதய தாவல மூடு</value>
+    <value>தற்போதைய டæபை மூடு</value>
   </data>
   <data name="CloseActivePaneDescription" xml:space="preserve">
-    <value>Close active pane</value>
+    <value>Close the active pane</value>
   </data>
   <data name="FocusOtherPane" xml:space="preserve">
     <value>Focus other pane</value>
   </data>
   <data name="FocusOtherPaneDescription" xml:space="preserve">
-    <value>Switch focus to the non active pane</value>
+    <value>Switch focus to the other pane</value>
   </data>
   <data name="ToggleSidebar" xml:space="preserve">
     <value>Toggle the sidebar</value>
@@ -2765,7 +2795,7 @@
     <comment>Key name for hotkeys in menus. Use abbreviation if possible.</comment>
   </data>
   <data name="Key.Tab" xml:space="preserve">
-    <value>Tab</value>
+    <value>டæபு</value>
     <comment>Key name for hotkeys in menus. Use abbreviation if possible.</comment>
   </data>
   <data name="Key.Insert" xml:space="preserve">
@@ -2881,7 +2911,7 @@
     <comment>Key name for hotkeys in menus. Use abbreviation if possible.</comment>
   </data>
   <data name="Key.BrowserFavorites" xml:space="preserve">
-    <value>Favourites</value>
+    <value>பிடிச்சது</value>
     <comment>Key name for hotkeys in menus. Use abbreviation if possible.</comment>
   </data>
   <data name="Key.MediaPlayPause" xml:space="preserve">
@@ -2929,22 +2959,22 @@
     <value>இந்த PC</value>
   </data>
   <data name="RecycleBin" xml:space="preserve">
-    <value>மறுசுழற்சி கூடய்</value>
+    <value>மறுசுழற்சி கூடை</value>
   </data>
   <data name="Untagged" xml:space="preserve">
     <value>Untagged</value>
   </data>
   <data name="PreviousTab" xml:space="preserve">
-    <value>Moves to the previous tab</value>
+    <value>Previous tab</value>
   </data>
   <data name="NextTab" xml:space="preserve">
-    <value>Moves to the next tab</value>
+    <value>Next tab</value>
   </data>
   <data name="CloseTab" xml:space="preserve">
-    <value>தற்போதய தாவல மூடும்</value>
+    <value>Close tab</value>
   </data>
   <data name="EditPath" xml:space="preserve">
-    <value>பாதய திருத்து</value>
+    <value>பாதையை திருத்து</value>
   </data>
   <data name="Redo" xml:space="preserve">
     <value>Redo</value>
@@ -2971,22 +3001,22 @@
     <value>Show checkboxes when selecting items</value>
   </data>
   <data name="EditPathDescription" xml:space="preserve">
-    <value>Focus path bar</value>
+    <value>Edit path in the OmniBar</value>
   </data>
   <data name="AddItemDescription" xml:space="preserve">
-    <value>புது பொருள உருவாக்கு</value>
+    <value>புது பொருள் உருவாக்கு</value>
   </data>
   <data name="SecurityNoAccessControlEntriesText" xml:space="preserve">
     <value>No groups or users have permission to access this object. However, the owner of this object can assign permissions.</value>
   </data>
   <data name="OpenFileLocationDescription" xml:space="preserve">
-    <value>பொருள்'ஓட இருப்பிடத்த தெற</value>
+    <value>பொருள் இடத்தை திற</value>
   </data>
   <data name="DeletePermanently" xml:space="preserve">
     <value>நிரந்தரமா நீக்கு</value>
   </data>
   <data name="DeleteItemPermanentlyDescription" xml:space="preserve">
-    <value>Delete item(s) permanently</value>
+    <value>Delete selected {0, plural, one {item} other {items}} permanently</value>
   </data>
   <data name="PlayAllDescription" xml:space="preserve">
     <value>Play the selected media files</value>
@@ -2998,7 +3028,7 @@
     <value>Redo the last file operation</value>
   </data>
   <data name="Location" xml:space="preserve">
-    <value>இருப்பிடம்:</value>
+    <value>இடம்:</value>
   </data>
   <data name="GroupByMonthDescription" xml:space="preserve">
     <value>Group items by month</value>
@@ -3007,7 +3037,7 @@
     <value>Group items by year</value>
   </data>
   <data name="Month" xml:space="preserve">
-    <value>மாஸம்</value>
+    <value>மாசம்</value>
   </data>
   <data name="Day" xml:space="preserve">
     <value>நாள்</value>
@@ -3064,58 +3094,58 @@
     <value>Unable to display permissions.</value>
   </data>
   <data name="StashChanges" xml:space="preserve">
-    <value>என் மாற்றங்கள '{0}'ல விடு</value>
+    <value>என் மாற்றங்களை '{0}'ல விடு</value>
   </data>
   <data name="DiscardChanges" xml:space="preserve">
     <value>Discard my changes</value>
   </data>
   <data name="BringChanges" xml:space="preserve">
-    <value>என் மாற்றங்கள '{0}'கு கொண்டு வா</value>
+    <value>என் மாற்றங்களை '{0}'கு கொண்டு வா</value>
   </data>
   <data name="UncommittedChanges" xml:space="preserve">
-    <value>இந்த கிளய்'க கமிட்டு பண்ணாத மாற்றங்கள வச்சு இருக்கீங்க. அதுங்கள என்ன செய்ய விரும்புறீங்க?</value>
+    <value>இந்த கிளைல கமிட்டு-பண்ணாத மாற்றங்கள் வச்சிருக்கீங்க. அதை எல்லாம் என்ன செய்ய விரும்புறீங்கள்?</value>
   </data>
   <data name="SwitchBranch" xml:space="preserve">
     <value>Switch branch</value>
   </data>
   <data name="Branches" xml:space="preserve">
-    <value>கிளய்ங்க</value>
+    <value>கிளைகள்</value>
   </data>
   <data name="Switch" xml:space="preserve">
     <value>மாறு</value>
   </data>
   <data name="NewBranch" xml:space="preserve">
-    <value>புது கிளய்</value>
+    <value>புது கிளை</value>
   </data>
   <data name="InvalidBranchName" xml:space="preserve">
     <value>Invalid branch name</value>
   </data>
   <data name="CreateBranch" xml:space="preserve">
-    <value>கிளய உருவாக்கு</value>
+    <value>கிளையை உருவாக்கு</value>
   </data>
   <data name="CreateNewBranch" xml:space="preserve">
-    <value>கிளய உருவாக்கு</value>
+    <value>கிளையை உருவாக்கு</value>
   </data>
   <data name="BasedOn" xml:space="preserve">
     <value>Based on</value>
   </data>
   <data name="SwitchToNewBranch" xml:space="preserve">
-    <value>ஒரு புது கிளய்'கு மாறு</value>
+    <value>புது கிளைக்கு மாறு</value>
   </data>
   <data name="CreateFolderWithSelectionDescription" xml:space="preserve">
-    <value>Create a folder with the currently selected item(s)</value>
+    <value>Create a folder with the currently selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="OpenProperties" xml:space="preserve">
-    <value>பண்புங்கள தெற</value>
+    <value>பண்புங்க</value>
   </data>
   <data name="OpenClassicProperties" xml:space="preserve">
-    <value>கோப்பு உலவி பண்புங்கள தெற</value>
+    <value>கோப்பு-உலவி பண்புங்கள திற</value>
   </data>
   <data name="OpenPropertiesDescription" xml:space="preserve">
-    <value>பண்புங்க சாளரத்த தெற</value>
+    <value>பண்புகள் ஃவிண்டோவை திற</value>
   </data>
   <data name="OpenClassicPropertiesDescription" xml:space="preserve">
-    <value>கோப்பு உலவி பண்புங்க சாளரத்த தெற</value>
+    <value>கோப்பு-உலவி பண்புகள் ஃவிண்டோ திற</value>
   </data>
   <data name="Locals" xml:space="preserve">
     <value>Locals</value>
@@ -3124,7 +3154,7 @@
     <value>Remotes</value>
   </data>
   <data name="ImproveTranslation" xml:space="preserve">
-    <value>Crowdin'ல மொழிபெயர்</value>
+    <value>Translate on Crowdin</value>
   </data>
   <data name="GitFetch" xml:space="preserve">
     <value>Fetch</value>
@@ -3135,6 +3165,9 @@
   <data name="GitFetchDescription" xml:space="preserve">
     <value>git fetch ஓட்டு</value>
   </data>
+  <data name="GitCloneDescription" xml:space="preserve">
+    <value>Clone a git repo</value>
+  </data>
   <data name="GitPullDescription" xml:space="preserve">
     <value>git pull ஓட்டு</value>
   </data>
@@ -3142,10 +3175,10 @@
     <value>Preview</value>
   </data>
   <data name="GitStatus" xml:space="preserve">
-    <value>Git நிலய்</value>
+    <value>Git நிலை</value>
   </data>
   <data name="GitError" xml:space="preserve">
-    <value>Git பிழை</value>
+    <value>Git பிழ</value>
   </data>
   <data name="PullTimeoutError" xml:space="preserve">
     <value>git pull failed due to a timeout error</value>
@@ -3158,13 +3191,13 @@
     <value>Author</value>
   </data>
   <data name="DateCommitted" xml:space="preserve">
-    <value>கமிட்டு பண்ண தேதி</value>
+    <value>Comít'na the:dhi</value>
   </data>
   <data name="CommitMessage" xml:space="preserve">
-    <value>கமிட்டு உரய்</value>
+    <value>கமிட் உர</value>
   </data>
   <data name="CommitSha" xml:space="preserve">
-    <value>கமிட்டு SHA</value>
+    <value>கமிட் SHA</value>
   </data>
   <data name="Git" xml:space="preserve">
     <value>Git</value>
@@ -3194,16 +3227,16 @@
     <value>git push ஓட்டு</value>
   </data>
   <data name="GitSync" xml:space="preserve">
-    <value>ஒத்திசய்</value>
+    <value>ஒத்திசை</value>
   </data>
   <data name="GitSyncDescription" xml:space="preserve">
-    <value>git pull ஓட்டு, அப்புறம் git push</value>
+    <value>git pull ஓட்டு, பிறகு git push</value>
   </data>
   <data name="GitSyncStatusExtendedInfo" xml:space="preserve">
     <value>{0} outgoing / {1} incoming commits</value>
   </data>
   <data name="ConnectGitHub" xml:space="preserve">
-    <value>GitHub'ஓடு இணய்</value>
+    <value>GitHub-உடன் இணை</value>
   </data>
   <data name="ConnectGitHubDescription" xml:space="preserve">
     <value>Enter the following code at the link below to start working with GitHub repositories.</value>
@@ -3211,20 +3244,20 @@
   <data name="CannotReachGitHubError" xml:space="preserve">
     <value>Files cannot access GitHub right now.</value>
   </data>
-  <data name="OpenInVSCode" xml:space="preserve">
-    <value>கோப்புறய VS Code'ல தெற</value>
+  <data name="OpenInIDE" xml:space="preserve">
+    <value>Open folder in {0}</value>
   </data>
-  <data name="OpenInVSCodeDescription" xml:space="preserve">
-    <value>தற்போதய கோப்புறய Visual Studio Code'ல தெற</value>
+  <data name="OpenInIDEDescription" xml:space="preserve">
+    <value>Open the current directory in {0}</value>
   </data>
-  <data name="OpenRepoInVSCode" xml:space="preserve">
-    <value>களஞ்சியத்த VS Code'ல தெற</value>
+  <data name="OpenRepoInIDE" xml:space="preserve">
+    <value>Open repo in {0}</value>
   </data>
-  <data name="OpenRepoInVSCodeDescription" xml:space="preserve">
-    <value>Open the root of the Git repo in Visual Studio Code</value>
+  <data name="OpenRepoInIDEDescription" xml:space="preserve">
+    <value>Open the root of the Git repo in {0}</value>
   </data>
   <data name="CopyCode" xml:space="preserve">
-    <value>கோட நகலெடு</value>
+    <value>கோட நகலு</value>
   </data>
   <data name="Added" xml:space="preserve">
     <value>Added</value>
@@ -3239,53 +3272,53 @@
     <value>Untracked</value>
   </data>
   <data name="UnableToDisplayOwner" xml:space="preserve">
-    <value>தற்போதய உரிமயாளர காட்ட முடியவில்ல.</value>
+    <value>இப்பொ-இருக்க உரிமயாளர காட்ட முடியல.</value>
   </data>
   <data name="AuthorizationSucceded" xml:space="preserve">
     <value>Great! You are now authorized.</value>
   </data>
   <data name="InitRepo" xml:space="preserve">
-    <value>களஞ்சியத்த துவங்கு</value>
+    <value>களஞ்சியத்தை துவங்கு</value>
   </data>
   <data name="InitRepoDescription" xml:space="preserve">
-    <value>ஒரு Git களஞ்சியத்த துவங்கு</value>
+    <value>Initialize current folder as a git repository</value>
   </data>
   <data name="GitOriginRepositoryName" xml:space="preserve">
     <value>Remote Repository Name</value>
   </data>
   <data name="GitCurrentBranch" xml:space="preserve">
-    <value>தற்போதய கிளய்</value>
+    <value>தற்போதைய கிளை</value>
   </data>
   <data name="PathColumn" xml:space="preserve">
     <value>Path column</value>
   </data>
   <data name="SortByPathDescription" xml:space="preserve">
-    <value>பாதயால பொருளுங்கள வரிசப்படுத்து</value>
+    <value>பாதயால பொருள்களை வரிசப்படுத்து</value>
   </data>
   <data name="OpenDirectoryInNewPaneDescription" xml:space="preserve">
-    <value>Open directory in new pane</value>
+    <value>Open selected directory in a new pane</value>
   </data>
   <data name="OpenDirectoryInNewTabDescription" xml:space="preserve">
-    <value>கோப்புறய புது தாவல்'ல தெற</value>
+    <value>Open selected directory in a new tab</value>
   </data>
   <data name="OpenInNewWindowDescription" xml:space="preserve">
-    <value>கோப்புறய புது சாளரத்துல தெற</value>
+    <value>Open selected directory in a new window</value>
   </data>
   <data name="OpenAllTaggedItems" xml:space="preserve">
-    <value>எல்லாவற்றயும் தெற</value>
+    <value>எல்லாம் திற</value>
   </data>
   <data name="OpenAllTaggedItemsDescription" xml:space="preserve">
     <value>Open all tagged items</value>
   </data>
   <data name="DriveWithLetter" xml:space="preserve">
-    <value>ட்ரய்வு ({0})</value>
+    <value>({0}) 'ட்ரைவு</value>
     <comment>{0} is the drive letter.</comment>
   </data>
   <data name="InvalidCommand" xml:space="preserve">
     <value>செல்லாத கட்டள</value>
   </data>
   <data name="InvalidCommandContent" xml:space="preserve">
-    <value>'{0}' ஒரு கட்டளயா அறியப்படவில்ல.</value>
+    <value>'{0}' ஒரு கட்டளையா அறியப்படலை.</value>
   </data>
   <data name="CommandNotExecutable" xml:space="preserve">
     <value>Command not executable</value>
@@ -3294,16 +3327,16 @@
     <value>The '{0}' command is not ready to be executed.</value>
   </data>
   <data name="CommandPalette" xml:space="preserve">
-    <value>Command palette</value>
+    <value>Command Palette</value>
   </data>
   <data name="OpenCommandPaletteDescription" xml:space="preserve">
-    <value>Open command palette</value>
+    <value>Open Command Palette in the OmniBar</value>
   </data>
   <data name="ShortcutItemWorkingDir" xml:space="preserve">
     <value>Start in:</value>
   </data>
   <data name="TurnOnBitLocker" xml:space="preserve">
-    <value>BitLocker'அ ஆன் பண்ணு</value>
+    <value>BitLocker 'ஆன் பண்ணு</value>
   </data>
   <data name="ManageBitLocker" xml:space="preserve">
     <value>Manage BitLocker</value>
@@ -3327,7 +3360,7 @@
     <value>Leave app running in the background when the window is closed</value>
   </data>
   <data name="Blue" xml:space="preserve">
-    <value>நீலம்</value>
+    <value>Ni:lam</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="BlueGray" xml:space="preserve">
@@ -3347,7 +3380,7 @@
     <comment>One of the custom color themes</comment>
   </data>
   <data name="Gray" xml:space="preserve">
-    <value>சாம்பல்</value>
+    <value>Sa:mbal</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="GrayDark" xml:space="preserve">
@@ -3355,7 +3388,7 @@
     <comment>One of the custom color themes</comment>
   </data>
   <data name="Green" xml:space="preserve">
-    <value>பச்ச</value>
+    <value>Paccy</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="IrisPastel" xml:space="preserve">
@@ -3379,7 +3412,7 @@
     <comment>One of the custom color themes</comment>
   </data>
   <data name="Red" xml:space="preserve">
-    <value>சிவப்பு</value>
+    <value>Sivapu</value>
     <comment>One of the custom color themes</comment>
   </data>
   <data name="RoseBright" xml:space="preserve">
@@ -3403,17 +3436,17 @@
     <comment>One of the custom color themes</comment>
   </data>
   <data name="ClearCompleted" xml:space="preserve">
-    <value>அழிப்பு முடிந்தது</value>
+    <value>அழிப்பு முடிஞ்சிது</value>
   </data>
   <data name="NameWithColon" xml:space="preserve">
-    <value>பேர்:</value>
+    <value>பேரு:</value>
   </data>
   <data name="StatusCenter_ProcessedSize_Header" xml:space="preserve">
     <value>{0} of {1} processed</value>
     <comment>Shown in a StatusCenter card. Used as "64 MB of 1 GB processed"</comment>
   </data>
   <data name="ItemsLower" xml:space="preserve">
-    <value>பொருள்</value>
+    <value>பொருள்கள்</value>
   </data>
   <data name="CannotInitializeGitRepo" xml:space="preserve">
     <value>Files can't initialize this directory as a Git repository.</value>
@@ -3422,7 +3455,7 @@
     <value>Contributing Artist</value>
   </data>
   <data name="AddPage" xml:space="preserve">
-    <value>பக்கத்த சேர்</value>
+    <value>பக்கம் சேர்</value>
   </data>
   <data name="ProcessingItems" xml:space="preserve">
     <value>Processing items...</value>
@@ -3460,6 +3493,70 @@
   </data>
   <data name="StatusCenter_CompressInProgress_SubHeader" xml:space="preserve">
     <value>Compressing {0} item(s) from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneCanceled_Header" xml:space="preserve">
+    <value>Canceled cloning {0} to "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneCanceled_SubHeader" xml:space="preserve">
+    <value>Canceled cloning {0} from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneComplete_Header" xml:space="preserve">
+    <value>Cloned "{0}" to "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneComplete_SubHeader" xml:space="preserve">
+    <value>Cloned {0} from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneFailed_Header" xml:space="preserve">
+    <value>Error cloning "{0}" to "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneFailed_SubHeader" xml:space="preserve">
+    <value>Failed to clone {0} from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneInProgress_Header" xml:space="preserve">
+    <value>Cloning "{0}" to "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneInProgress_SubHeader" xml:space="preserve">
+    <value>Cloning {0} from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontCanceled_Header" xml:space="preserve">
+    <value>Canceled installing {0} fonts</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontCanceled_SubHeader" xml:space="preserve">
+    <value>Canceled installing {0} font(s) from "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontComplete_Header" xml:space="preserve">
+    <value>Installed {0} font(s)</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontComplete_SubHeader" xml:space="preserve">
+    <value>Installed {0} font(s) from "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontFailed_Header" xml:space="preserve">
+    <value>Error installing {0} font(s)</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontFailed_SubHeader" xml:space="preserve">
+    <value>Failed to install {0} font(s) from "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontInProgress_Header" xml:space="preserve">
+    <value>Installing {0} font(s)</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontInProgress_SubHeader" xml:space="preserve">
+    <value>Installing {0} font(s) from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyCanceled_Header" xml:space="preserve">
@@ -3583,11 +3680,11 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinComplete_Header" xml:space="preserve">
-    <value>மறுசுழற்சி கூடய வெறுமயாக்கி விட்டோம்</value>
+    <value>மறுசுழற்சி கூடையை வெறுமை ஆக்கிட்டோம்</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinInProgress_Header" xml:space="preserve">
-    <value>மறுசுழற்சி கூடய வெறுமயாக்குறோம்</value>
+    <value>மறுசுழற்சி கூடையை வெறுமை ஆக்கிறோம்</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinFailed_Header" xml:space="preserve">
@@ -3603,7 +3700,7 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_ProcessedItems_Header" xml:space="preserve">
-    <value>{0}/{1} item(s) processed</value>
+    <value>{0}/{1} {0, plural, one {item} other {items}} processed</value>
     <comment>Shown in a StatusCenter card. Used as "8/20 items processed"</comment>
   </data>
   <data name="UnblockDownloadedFile" xml:space="preserve">
@@ -3621,20 +3718,23 @@
   <data name="FailedToSetBackground" xml:space="preserve">
     <value>Failed to set the background wallpaper</value>
   </data>
+  <data name="FailedToOpenSettingsFile" xml:space="preserve">
+    <value>Failed to open the settings file</value>
+  </data>
   <data name="GitDeleteBranch" xml:space="preserve">
-    <value>Git கிளய நீக்கு</value>
+    <value>Git கிளயை நீக்கு</value>
   </data>
   <data name="GitDeleteBranchSubtitle" xml:space="preserve">
     <value>Are you sure you want to permanently delete "{0}" branch?</value>
   </data>
   <data name="ConnectedToGitHub" xml:space="preserve">
-    <value>GitHub'ஓடு இணய்க்கப்பட்டு இருக்கீங்க</value>
+    <value>GitHub-உடன் இணைக்கப்பட்டு</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Logout</value>
   </data>
   <data name="ConnectToGitHub" xml:space="preserve">
-    <value>GitHub'ஓடு இணய்</value>
+    <value>GitHub-உடன் இணை</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
@@ -3646,7 +3746,7 @@
     <value>There was an error applying this tag</value>
   </data>
   <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
-    <value>Extract items from selected archive(s) to current folder for single-item archive, or to new folder for multi-item archive</value>
+    <value>Extract items from selected {0, plural, one {archive} other {archives}} to current folder for single-item archive, or to new folder for multi-item archive</value>
   </data>
   <data name="ExtractHereSmart" xml:space="preserve">
     <value>Extract here (Smart)</value>
@@ -3655,7 +3755,7 @@
     <value>Sort files and folders together</value>
   </data>
   <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
-    <value>Sort files and folders together</value>
+    <value>Sort files and folders in the same list</value>
   </data>
   <data name="SortFilesFirst" xml:space="preserve">
     <value>Sort files first</value>
@@ -3688,10 +3788,10 @@
     <value>Scroll to previous folder when navigating up</value>
   </data>
   <data name="NewWindowDescription" xml:space="preserve">
-    <value>புது சாளரத்த தெற</value>
+    <value>புது ஃவிண்டோ திற</value>
   </data>
   <data name="ChangeAlbumCover" xml:space="preserve">
-    <value>ஆல்பக் கவர மாற்று</value>
+    <value>ஐல்பக் கவர மாற்று</value>
   </data>
   <data name="ItemRenameFailed" xml:space="preserve">
     <value>Failed to rename item</value>
@@ -3700,19 +3800,16 @@
     <value>Editing "{0}" requires additional permissions</value>
   </data>
   <data name="EditPermissions" xml:space="preserve">
-    <value>அனுமதிங்கள திருத்து</value>
+    <value>அனுமதிகள திருத்து</value>
   </data>
   <data name="BackgroundRunningNotificationBody" xml:space="preserve">
     <value>Files is still running in the background to improve startup performance.</value>
   </data>
   <data name="BackgroundRunningNotificationHeader" xml:space="preserve">
-    <value>Files எங்கு போச்சு?</value>
+    <value>Files எங்க போச்சு?</value>
   </data>
   <data name="QuestionsAndDiscussions" xml:space="preserve">
-    <value>கேள்விங்க &amp; உரயாடலுங்க</value>
-  </data>
-  <data name="TilesViewSizeInfo" xml:space="preserve">
-    <value>Additional sizes are not yet available for the Tiles View.</value>
+    <value>கேள்விகள் &amp; உரையாடல்கள்</value>
   </data>
   <data name="Compact" xml:space="preserve">
     <value>Compact</value>
@@ -3773,19 +3870,19 @@
     <value>Layout type</value>
   </data>
   <data name="Actions" xml:space="preserve">
-    <value>செயலுங்க</value>
+    <value>செயல்கள்</value>
   </data>
   <data name="Commands" xml:space="preserve">
-    <value>கட்டளய்ங்க</value>
+    <value>கட்டளய்ங்க்</value>
   </data>
   <data name="AddCommand" xml:space="preserve">
-    <value>கட்டளய சேர்</value>
+    <value>கட்டளய சேரு</value>
   </data>
   <data name="RestoreDefaults" xml:space="preserve">
     <value>Restore defaults</value>
   </data>
   <data name="ChooseAnAction" xml:space="preserve">
-    <value>ஒரு செயல தேர்ந்தெடு</value>
+    <value>ஒரு செயல தேர்வு-செய்ங்க</value>
   </data>
   <data name="RestoreDefaultKeybindingsConfirmation" xml:space="preserve">
     <value>Are you sure you want to restore the default key bindings? This action cannot be undone.</value>
@@ -3854,17 +3951,17 @@
     <comment>This is a type of backdrop for the application background</comment>
   </data>
   <data name="AllLocations" xml:space="preserve">
-    <value>எல்லா இருப்பிடங்களுக்கும் காட்டு</value>
+    <value>எல்லா இடத்துக்கும் காட்டு</value>
     <comment>Setting where users can choose to display "Open IDE" button for Git Repos</comment>
   </data>
   <data name="DevTools" xml:space="preserve">
-    <value>மென்பொருள் உருவாக்குநர் கருவிங்க</value>
+    <value>டிவெலப்பர் கருவிகள்</value>
   </data>
   <data name="DisplayOpenIDE" xml:space="preserve">
     <value>Configure the "Open IDE" button on the status bar</value>
   </data>
   <data name="GitRepos" xml:space="preserve">
-    <value>Git களஞ்சியங்களுக்கு காட்டு</value>
+    <value>Git repos'கு காட்டு</value>
     <comment>Setting where users can choose to display "Open IDE" button for all locations.</comment>
   </data>
   <data name="ApplicationExtension" xml:space="preserve">
@@ -3872,22 +3969,26 @@
     <comment>This is the friendly name for DLL files.</comment>
   </data>
   <data name="IcoFileCapitalized" xml:space="preserve">
-    <value>ICO கோப்பு</value>
+    <value>ICO ஃபய்ல்</value>
     <comment>This is the friendly name for ICO files.</comment>
+  </data>
+  <data name="IclFileCapitalized" xml:space="preserve">
+    <value>ICL File</value>
+    <comment>This is the friendly name for ICL files.</comment>
   </data>
   <data name="ZipFileCapitalized" xml:space="preserve">
     <value>Zip File</value>
     <comment>This is the friendly name for ZIP files.</comment>
   </data>
   <data name="BitmapFiles" xml:space="preserve">
-    <value>பிட்மேப் கோப்புங்க</value>
+    <value>'பிட்மைப் ஃபய்ல்ஸ்</value>
     <comment>This is the friendly name for bitmap files.</comment>
   </data>
   <data name="NumPadTypeName" xml:space="preserve">
     <value>Num</value>
   </data>
   <data name="NetworkLocations" xml:space="preserve">
-    <value>பிணய இருப்பிடங்க</value>
+    <value>நெட்ஃவஃர்க் இடங்கள்</value>
   </data>
   <data name="NoNetworkLocationsInfo" xml:space="preserve">
     <value>There are no network locations. If you don't use network locations, you can disable the widget.</value>
@@ -3896,35 +3997,35 @@
     <value>Disable</value>
   </data>
   <data name="EditInNotepad" xml:space="preserve">
-    <value>நோட்பேட்'ல திருத்து</value>
+    <value>நோட்பைடுல திருத்து</value>
   </data>
   <data name="EditInNotepadDescription" xml:space="preserve">
-    <value>தேர்த்தெடுத்த கோப்ப நோட்பேட்'ல திருத்து</value>
+    <value>Select'na file'y Notepad'la edit'u</value>
   </data>
   <data name="PropertyDimensionsColon" xml:space="preserve">
     <value>Dimensions:</value>
   </data>
   <data name="StatusWithColon" xml:space="preserve">
-    <value>நிலய்:</value>
+    <value>நிலை:</value>
   </data>
   <data name="ShowToolbar" xml:space="preserve">
-    <value>கருவிப்பட்டைய காட்டு</value>
+    <value>Show toolbar</value>
     <comment>Setting that controls if the toolbar is shown in the main view</comment>
   </data>
   <data name="TabActions" xml:space="preserve">
-    <value>தாவல் செயலுங்க மெனு</value>
+    <value>டைபு செயல்கள் மெஞு</value>
   </data>
   <data name="AddVerticalPane" xml:space="preserve">
-    <value>Add vertical pane</value>
+    <value>Vertical pane</value>
   </data>
   <data name="AddVerticalPaneDescription" xml:space="preserve">
-    <value>Add a vertical pane</value>
+    <value>Add vertical pane</value>
   </data>
   <data name="AddHorizontalPane" xml:space="preserve">
-    <value>Add horizontal pane</value>
+    <value>Horizontal pane</value>
   </data>
   <data name="AddHorizontalPaneDescription" xml:space="preserve">
-    <value>Add a horizontal pane</value>
+    <value>Add horizontal pane</value>
   </data>
   <data name="ArrangePanesVertically" xml:space="preserve">
     <value>Arrange vertically</value>
@@ -3963,19 +4064,22 @@
     <value>CPU threads</value>
   </data>
   <data name="NavigateHomeDescription" xml:space="preserve">
-    <value>முகப்பு'கு போ</value>
+    <value>ஹோம் பேஜ்கு போ</value>
   </data>
   <data name="ShowHomeButton" xml:space="preserve">
-    <value>முகவரி பட்டய்'ல முகப்ப காட்டு</value>
+    <value>Show home button in address bar</value>
   </data>
   <data name="Toolbars" xml:space="preserve">
-    <value>கருவிப்பட்டைங்க</value>
+    <value>Toolbars</value>
   </data>
   <data name="UserID" xml:space="preserve">
     <value>User ID</value>
   </data>
   <data name="BulkRename" xml:space="preserve">
     <value>Bulk rename</value>
+  </data>
+  <data name="CompressContents" xml:space="preserve">
+    <value>Compress contents</value>
   </data>
   <data name="ShowCreateAlternateDataStream" xml:space="preserve">
     <value>Show option to create alternate data stream</value>
@@ -3984,7 +4088,7 @@
     <value>Create alternate data stream</value>
   </data>
   <data name="CreateAlternateDataStreamDescription" xml:space="preserve">
-    <value>Create alternate data stream for the selected item(s)</value>
+    <value>Create alternate data stream for the selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="EnterDataStreamName" xml:space="preserve">
     <value>Enter data stream name</value>
@@ -4003,5 +4107,123 @@
   </data>
   <data name="ManageTags" xml:space="preserve">
     <value>Manage tags</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="AlwaysSwitchToNewlyOpenedTab" xml:space="preserve">
+    <value>Always switch focus to newly created tab</value>
+  </data>
+  <data name="ToggleShelfPane" xml:space="preserve">
+    <value>Toggle shelf pane</value>
+  </data>
+  <data name="ToggleShelfPaneDescription" xml:space="preserve">
+    <value>Toggle the visibility of the shelf pane</value>
+  </data>
+  <data name="ShowShelfPaneButtonInAddressBar" xml:space="preserve">
+    <value>Show shelf pane toggle in address bar</value>
+  </data>
+  <data name="Shelf" xml:space="preserve">
+    <value>Shelf</value>
+    <comment>'Shelf' refers to the Shelf Pane feature, where users can conveniently drag and drop files for quick access and perform bulk actions with ease.</comment>
+  </data>
+  <data name="ClearItems" xml:space="preserve">
+    <value>Clear items</value>
+  </data>
+  <data name="RemoveFromShelf" xml:space="preserve">
+    <value>Remove from shelf</value>
+  </data>
+  <data name="AddToShelf" xml:space="preserve">
+    <value>Add to shelf</value>
+    <comment>Tooltip that displays when dragging items to the Shelf Pane</comment>
+  </data>
+  <data name="EnterHashToCompare" xml:space="preserve">
+    <value>Enter a hash to compare</value>
+    <comment>Placeholder that appears in the compare hash text box</comment>
+  </data>
+  <data name="HashesMatch" xml:space="preserve">
+    <value>Matches {0}</value>
+    <comment>Appears when two compared hashes match, e.g. "Matches SHA256"</comment>
+  </data>
+  <data name="HashesDoNotMatch" xml:space="preserve">
+    <value>No matches found</value>
+    <comment>Appears when two compared hashes don't match</comment>
+  </data>
+  <data name="PathOrAlias" xml:space="preserve">
+    <value>Path or alias</value>
+  </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>Invalid path</value>
+  </data>
+  <data name="TestIntegration" xml:space="preserve">
+    <value>Test integration</value>
+  </data>
+  <data name="IDENotLocatedContent" xml:space="preserve">
+    <value>{0} could not be located. Please check your settings and try again.</value>
+  </data>
+  <data name="IDENotLocatedTitle" xml:space="preserve">
+    <value>The configured IDE could not be located</value>
+  </data>
+  <data name="OpenSettings" xml:space="preserve">
+    <value>Open settings</value>
+  </data>
+  <data name="VisualStudioCode" xml:space="preserve">
+    <value>Visual Studio Code</value>
+  </data>
+  <data name="IDEPathPlaceholder" xml:space="preserve">
+    <value>Enter a path or launch alias</value>
+  </data>
+  <data name="InvalidIDENameError" xml:space="preserve">
+    <value>Please enter a name for the IDE</value>
+  </data>
+  <data name="CloneRepo" xml:space="preserve">
+    <value>Clone repo</value>
+    <comment>Clone repo dialog title</comment>
+  </data>
+  <data name="Clone" xml:space="preserve">
+    <value>Clone</value>
+    <comment>Primary action button in the clone repo dialog</comment>
+  </data>
+  <data name="RepositoryURL" xml:space="preserve">
+    <value>Repository URL</value>
+    <comment>URL textbox header in the clone repo dialog</comment>
+  </data>
+  <data name="CannotCloneRepoTitle" xml:space="preserve">
+    <value>Cannot clone repo</value>
+    <comment>Cannot clone repo dialog title</comment>
+  </data>
+  <data name="CompareFile" xml:space="preserve">
+    <value>Compare a file</value>
+    <comment>Button that appears in file hash properties that allows the user to compare two files</comment>
+  </data>
+  <data name="SizeFormat" xml:space="preserve">
+    <value>Size format</value>
+  </data>
+  <data name="Binary" xml:space="preserve">
+    <value>Binary</value>
+  </data>
+  <data name="Decimal" xml:space="preserve">
+    <value>Decimal</value>
+  </data>
+  <data name="EnableOmnibar" xml:space="preserve">
+    <value>Enable Omnibar</value>
+  </data>
+  <data name="SectionsHiddenMessage" xml:space="preserve">
+    <value>You can add sections to the sidebar by right-clicking and selecting the sections you want to add</value>
+  </data>
+  <data name="EmptyShelfText" xml:space="preserve">
+    <value>Drag files or folders here to interact with them across different tabs</value>
+  </data>
+  <data name="OmnibarPathModeTextPlaceholder" xml:space="preserve">
+    <value>Enter a path to navigate to...</value>
+  </data>
+  <data name="OmnibarCommandPaletteModeTextPlaceholder" xml:space="preserve">
+    <value>Find features and commands...</value>
+  </data>
+  <data name="OmnibarSearchModeTextPlaceholder" xml:space="preserve">
+    <value>Search for files and folders...</value>
   </data>
 </root>

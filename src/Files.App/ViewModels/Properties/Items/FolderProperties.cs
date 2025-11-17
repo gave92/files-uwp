@@ -1,5 +1,5 @@
-// Copyright (c) 2024 Files Community
-// Licensed under the MIT License. See the LICENSE.
+// Copyright (c) Files Community
+// Licensed under the MIT License.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
@@ -48,16 +48,17 @@ namespace Files.App.ViewModels.Properties
 				ViewModel.LoadFileIcon = Item.LoadFileIcon;
 				ViewModel.ContainsFilesOrFolders = Item.ContainsFilesOrFolders;
 
-				if (Item.IsShortcut)
+				if (Item.IsShortcut && Item is IShortcutItem shortcutItem)
 				{
-					var shortcutItem = (ShortcutItem)Item;
-					ViewModel.ShortcutItemType = "Folder".GetLocalizedResource();
+					ViewModel.ShortcutItemType = Strings.Folder.GetLocalizedResource();
 					ViewModel.ShortcutItemPath = shortcutItem.TargetPath;
 					ViewModel.IsShortcutItemPathReadOnly = false;
 					ViewModel.ShortcutItemWorkingDir = shortcutItem.WorkingDirectory;
+					ViewModel.ShowWindowCommand = shortcutItem.ShowWindowCommand;
 					ViewModel.ShortcutItemWorkingDirVisibility = false;
 					ViewModel.ShortcutItemArguments = shortcutItem.Arguments;
 					ViewModel.ShortcutItemArgumentsVisibility = false;
+					ViewModel.ShortcutItemWindowArgsVisibility = false;
 					ViewModel.ShortcutItemOpenLinkCommand = new RelayCommand(async () =>
 					{
 						await MainWindow.Instance.DispatcherQueue.EnqueueOrInvokeAsync(
@@ -102,14 +103,14 @@ namespace Files.App.ViewModels.Properties
 
 				ViewModel.ItemCreatedTimestampReal = Item.ItemDateCreatedReal;
 				ViewModel.ItemAccessedTimestampReal = Item.ItemDateAccessedReal;
-				if (Item.IsLinkItem || string.IsNullOrWhiteSpace(((ShortcutItem)Item).TargetPath))
+				if (Item.IsLinkItem || string.IsNullOrWhiteSpace(((IShortcutItem)Item).TargetPath))
 				{
 					// Can't show any other property
 					return;
 				}
 			}
 
-			string folderPath = (Item as ShortcutItem)?.TargetPath ?? Item.ItemPath;
+			string folderPath = (Item as IShortcutItem)?.TargetPath ?? Item.ItemPath;
 			BaseStorageFolder storageFolder = await AppInstance.ShellViewModel.GetFolderFromPathAsync(folderPath);
 
 			if (storageFolder is not null)
@@ -202,7 +203,7 @@ namespace Files.App.ViewModels.Properties
 		{
 			switch (e.PropertyName)
 			{
-				case "IsHidden":
+				case nameof(ViewModel.IsHidden):
 					if (ViewModel.IsHidden is not null)
 					{
 						if ((bool)ViewModel.IsHidden)
@@ -212,19 +213,20 @@ namespace Files.App.ViewModels.Properties
 					}
 					break;
 
-				case "IsContentCompressed":
+				case nameof(ViewModel.IsContentCompressed):
 					Win32Helper.SetCompressionAttributeIoctl(Item.ItemPath, ViewModel.IsContentCompressed ?? false);
 					break;
 
-				case "ShortcutItemPath":
-				case "ShortcutItemWorkingDir":
-				case "ShortcutItemArguments":
-					var tmpItem = (ShortcutItem)Item;
+				case nameof(ViewModel.ShortcutItemPath):
+				case nameof(ViewModel.ShortcutItemWorkingDir):
+				case nameof(ViewModel.ShowWindowCommand):
+				case nameof(ViewModel.ShortcutItemArguments):
+					var shortcutItem = (IShortcutItem)Item;
 
 					if (string.IsNullOrWhiteSpace(ViewModel.ShortcutItemPath))
 						return;
 
-					await FileOperationsHelpers.CreateOrUpdateLinkAsync(Item.ItemPath, ViewModel.ShortcutItemPath, ViewModel.ShortcutItemArguments, ViewModel.ShortcutItemWorkingDir, tmpItem.RunAsAdmin);
+					await FileOperationsHelpers.CreateOrUpdateLinkAsync(Item.ItemPath, ViewModel.ShortcutItemPath, ViewModel.ShortcutItemArguments, ViewModel.ShortcutItemWorkingDir, shortcutItem.RunAsAdmin, ViewModel.ShowWindowCommand);
 					break;
 			}
 		}

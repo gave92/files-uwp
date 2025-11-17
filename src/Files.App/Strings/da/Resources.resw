@@ -123,11 +123,14 @@
   <data name="CopyPath" xml:space="preserve">
     <value>Kopiér sti</value>
   </data>
+  <data name="CopyItemPath" xml:space="preserve">
+    <value>Copy item path</value>
+  </data>
   <data name="CopyPathWithQuotes" xml:space="preserve">
     <value>Kopiér sti med anførselstegn</value>
   </data>
   <data name="CopyItemPathWithQuotes" xml:space="preserve">
-    <value>Copy selected item path with quotes</value>
+    <value>Kopiér valgte emnesti med anførselstegn</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>Gennemse</value>
@@ -163,7 +166,7 @@
     <value>Overspring</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
-    <value>Markér alle</value>
+    <value>Select all</value>
   </data>
   <data name="InvertSelection" xml:space="preserve">
     <value>Invertér valg</value>
@@ -214,7 +217,7 @@
     <value>Vis skjulte filer og mapper</value>
   </data>
   <data name="ShowDotFiles" xml:space="preserve">
-    <value>Vis punktumfiler</value>
+    <value>Dot files</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>Udseende</value>
@@ -253,7 +256,7 @@
     <value>Indsæt</value>
   </data>
   <data name="PasteShortcut" xml:space="preserve">
-    <value>Paste shortcut</value>
+    <value>Indsæt genvej</value>
   </data>
   <data name="BaseLayoutContextFlyoutNew.Label" xml:space="preserve">
     <value>Ny</value>
@@ -445,11 +448,11 @@
     <value>Det angivne emnenavn er ugyldigt</value>
   </data>
   <data name="SelectedItems" xml:space="preserve">
-    <value>{0, plural, one {# element valgt} other {# elementer valgt}}</value>
+    <value>{0, plural, one {# emne valgt} other {# emner valgt}}</value>
     <comment>ICU format for plurals, more information here: https://support.crowdin.com/icu-message-syntax/#plural</comment>
   </data>
   <data name="Items" xml:space="preserve">
-    <value>{0, plural, one {element} other {elementer}}</value>
+    <value>{0, plural, one {emne} other {emner}}</value>
     <comment>ICU format for plurals, more information here: https://support.crowdin.com/icu-message-syntax/#plural</comment>
   </data>
   <data name="Yes" xml:space="preserve">
@@ -486,7 +489,7 @@
     <value>{0, number} {0, plural, one {fil} other {filer}}, {1, number} {1, plural, one {mappe} other {mapper}}</value>
   </data>
   <data name="PropertiesFilesAndFoldersAndLocationsCount" xml:space="preserve">
-    <value>{0, number} {0, plural, one {fil} other {filer}}, {1, number} {1, plural, one {mappe} other {mapper}} fra {2, number} {2, plural, one {lokation} other {lokationer}}</value>
+    <value>{0, number} {0, plural, one {fil} other {filer}}, {1, number} {1, plural, one {mappe} other {mapper}} fra {2, number} {2, plural, one {placering} other {placeringer}}</value>
   </data>
   <data name="BaseLayoutContextFlyoutRunAsAnotherUser.Text" xml:space="preserve">
     <value>Kør som anden bruger</value>
@@ -535,6 +538,9 @@
   </data>
   <data name="CopyToFolderCaptionText" xml:space="preserve">
     <value>Kopiér til {0}</value>
+  </data>
+  <data name="CloneToFolderCaptionText" xml:space="preserve">
+    <value>Clone to {0}</value>
   </data>
   <data name="CreateShortcut" xml:space="preserve">
     <value>Opret genvej</value>
@@ -1058,9 +1064,6 @@
   <data name="NavToolbarDetails.ToolTipService.ToolTip" xml:space="preserve">
     <value>Detaljer (Ctrl+Shift+1)</value>
   </data>
-  <data name="NavToolbarTiles.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Fliser (Ctrl+Shift+2)</value>
-  </data>
   <data name="DateDeleted" xml:space="preserve">
     <value>Sletningsdato</value>
   </data>
@@ -1089,7 +1092,10 @@
     <value>Slå infovinduet til/fra for at se detalje-/forhåndsvisningsruderne</value>
   </data>
   <data name="ToggleToolbar" xml:space="preserve">
-    <value>Slå Værktøjslinje Til/Fra</value>
+    <value>Toggle toolbar</value>
+  </data>
+  <data name="ToggleToolbarDescription" xml:space="preserve">
+    <value>Toggle visibility of the toolbar</value>
   </data>
   <data name="DetailsPanePreviewNotAvaliableText" xml:space="preserve">
     <value>Ingen forhåndsvisning tilgængelig</value>
@@ -1245,31 +1251,31 @@
     <value>Åbn Lagerassistent</value>
   </data>
   <data name="OpenStorageSenseDescription" xml:space="preserve">
-    <value>Open the Storage Sense page in Windows Settings</value>
+    <value>Åbn Storage Sense-siden i Windows-indstillinger</value>
   </data>
   <data name="Cleanup" xml:space="preserve">
-    <value>Cleanup</value>
+    <value>Oprydning</value>
   </data>
   <data name="Copy" xml:space="preserve">
     <value>Kopiér</value>
   </data>
   <data name="CopyItemsDialogTitle" xml:space="preserve">
-    <value>Kopiér {0, plural, one {element} other {elementer}}</value>
+    <value>Kopiér {0, plural, one {emne} other {emner}}</value>
   </data>
   <data name="DeleteItemsDialogTitle" xml:space="preserve">
-    <value>Slet {0, plural, one {element} other {elementer}}</value>
+    <value>Slet {0, plural, one {emne} other {emner}}</value>
   </data>
   <data name="MoveItemsDialogPrimaryButtonText" xml:space="preserve">
     <value>Flyt</value>
   </data>
   <data name="MoveItemsDialogSubtitle" xml:space="preserve">
-    <value>{0, plural, one {Ét element flyttes} other {# elementer flyttes}}</value>
+    <value>{0, plural, one {Ét emne flyttes} other {# emner flyttes}}</value>
   </data>
   <data name="MoveItemsDialogTitle" xml:space="preserve">
-    <value>Flyt {0, plural, one {element} other {elementer}}</value>
+    <value>Flyt {0, plural, one {emne} other {emner}}</value>
   </data>
   <data name="DeleteItemsDialogSubtitle" xml:space="preserve">
-    <value>{0, plural, one {Ét element slettes} other {# elementer slettes}}</value>
+    <value>{0, plural, one {Ét enme slettes} other {# enmer slettes}}</value>
   </data>
   <data name="ConflictingItemsDialogPrimaryButtonText" xml:space="preserve">
     <value>Fortsæt</value>
@@ -1278,13 +1284,13 @@
     <value>{0, plural, one {Der er ét filnavn i konflikt} other {Der er # filnavne i konflikt}}</value>
   </data>
   <data name="ConflictingItemsDialogSubtitleConflictsNonConflicts" xml:space="preserve">
-    <value>{0, plural, one {Der er ét filnavn i konflikt} other {Der er # filnavne i konflikt}}, og {1, plural, one {ét udgående element} other {# udgående elementer}}</value>
+    <value>{0, plural, one {Der er ét filnavn i konflikt} other {Der er # filnavne i konflikt}}, og {1, plural, one {ét udgående enme} other {# udgående enmer}}</value>
   </data>
   <data name="ConflictingItemsDialogTitle" xml:space="preserve">
     <value>{0, plural, one {Filnavn} other {Filnavne}} i konflikt</value>
   </data>
   <data name="CopyItemsDialogSubtitle" xml:space="preserve">
-    <value>{0, plural, one {Ét element kopieres} other {# elementer kopieres}}</value>
+    <value>{0, plural, one {Ét enme kopieres} other {# enmer kopieres}}</value>
   </data>
   <data name="DeleteItemsDialogPermanentlyDeleteCheckBox.Content" xml:space="preserve">
     <value>Slet permanent</value>
@@ -1392,7 +1398,7 @@
     <value>{0} emner</value>
   </data>
   <data name="ReopenClosedTab" xml:space="preserve">
-    <value>Genåbn lukket fane</value>
+    <value>Reopen tab</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Omdøb</value>
@@ -1599,7 +1605,7 @@
     <value>Erstat alle underordnede tilladelsesposter med nedarvelige tilladelsesposter fra dette objekt</value>
   </data>
   <data name="CloseActivePane" xml:space="preserve">
-    <value>Luk aktiv rude</value>
+    <value>Close pane</value>
   </data>
   <data name="EnterCompactOverlay" xml:space="preserve">
     <value>Vis kompakt overlejring</value>
@@ -1629,7 +1635,7 @@
     <value>Downloader emner fra cloud og indlæser forhåndsvisningen</value>
   </data>
   <data name="DetailsArchiveItems" xml:space="preserve">
-    <value>{0, plural, one {# element} other {# elementer}} ({1, plural, one {# fil} other {# filer}}, {2, plural, one {# mappe} other {# mapper}})</value>
+    <value>{0, plural, one {# enme} other {# enmer}} ({1, plural, one {# fil} other {# filer}}, {2, plural, one {# mappe} other {# mapper}})</value>
   </data>
   <data name="PropertyUncompressedSize" xml:space="preserve">
     <value>Ukomprimeret størrelse</value>
@@ -1657,15 +1663,6 @@
   </data>
   <data name="Home" xml:space="preserve">
     <value>Startside</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutDetails.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+1</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutTiles.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+2</value>
-  </data>
-  <data name="BaseLayoutContextFlyoutColumn.KeyboardAcceleratorTextOverride" xml:space="preserve">
-    <value>Ctrl+Shift+6</value>
   </data>
   <data name="ArchiveExtractionCompletedSuccessfullyText" xml:space="preserve">
     <value>Arkivudpakning fuldført.</value>
@@ -1724,8 +1721,8 @@
   <data name="Columns" xml:space="preserve">
     <value>Kolonner</value>
   </data>
-  <data name="Tiles" xml:space="preserve">
-    <value>Felter</value>
+  <data name="Cards" xml:space="preserve">
+    <value>Kort</value>
   </data>
   <data name="OpenFoldersInNewTab" xml:space="preserve">
     <value>Åbn mapper i ny fane</value>
@@ -1838,6 +1835,18 @@
   <data name="CompatibilityRegisterThisProgramForRestart" xml:space="preserve">
     <value>Registrér dette program til genstart</value>
   </data>
+  <data name="StartWindow" xml:space="preserve">
+    <value>Startvindue</value>
+  </data>
+  <data name="NormalWindow" xml:space="preserve">
+    <value>Normalt vindue</value>
+  </data>
+  <data name="Minimized" xml:space="preserve">
+    <value>Minimeret</value>
+  </data>
+  <data name="Maximized" xml:space="preserve">
+    <value>Maksimeret</value>
+  </data>
   <data name="RunAsAdministrator" xml:space="preserve">
     <value>Kør som administrator</value>
   </data>
@@ -1866,7 +1875,7 @@
     <value>Denne indstilling ændrer systemregistreringsdatabasen og kan medføre uventet enhedsadfærd. Fortsæt på egen risiko.</value>
   </data>
   <data name="ShowFlattenOptionsDescription" xml:space="preserve">
-    <value>The flatten operations are permanent and not recommended. Continue at your own risk.</value>
+    <value>Flatten-operationerne er permanente og anbefales ikke. Fortsæt på egen risiko.</value>
   </data>
   <data name="FolderWidgetCreateNewLibraryDialogTitleText" xml:space="preserve">
     <value>Opret mappe</value>
@@ -1947,7 +1956,7 @@
     <value>Luk andre faner</value>
   </data>
   <data name="CloseAllTabs" xml:space="preserve">
-    <value>Close all tabs</value>
+    <value>Luk alle faner</value>
   </data>
   <data name="Music" xml:space="preserve">
     <value>Musik</value>
@@ -2049,16 +2058,16 @@
     <value>Flyt alt indhold fra undermapper til den valgte placering</value>
   </data>
   <data name="FlattenFolder" xml:space="preserve">
-    <value>Flatten folder</value>
+    <value>Flatten mappe</value>
   </data>
   <data name="Flatten" xml:space="preserve">
     <value>Flatten</value>
   </data>
   <data name="FlattenFolderDialogContent" xml:space="preserve">
-    <value>Flattening a folder will move all contents from its subfolders to the selected location. This operation is permanent and cannot be undone. By using this experimental feature, you acknowledge the risk and agree not to hold the Files team responsible for any data loss.</value>
+    <value>Flattening en mappe flytter alt indhold fra dens undermapper til den valgte placering. Handlingen er permanent og irreversibel. Ved at bruge denne eksperimentelle funktion anerkender man risikoen og accepterer at friholde Files-teamet for ansvar for evt. tab af data.</value>
   </data>
   <data name="ShowFlattenOptions" xml:space="preserve">
-    <value>Show flatten options</value>
+    <value>Vis flatten-valgmuligheder</value>
   </data>
   <data name="SelectFilesAndFoldersOnHover" xml:space="preserve">
     <value>Vælg filer og mapper, når der svæves over dem</value>
@@ -2070,7 +2079,7 @@
     <value>Gendan alle emner</value>
   </data>
   <data name="ConfirmRestoreSelectionBinDialogContent" xml:space="preserve">
-    <value>Gendan {0} valgt(e) emne(r)?</value>
+    <value>Do you want to restore the {0, plural, one {selected item} other {{0} selected items}}?</value>
   </data>
   <data name="ConfirmRestoreSelectionBinDialogTitle" xml:space="preserve">
     <value>Gendan valgte</value>
@@ -2092,6 +2101,12 @@
   </data>
   <data name="ArchivePassword" xml:space="preserve">
     <value>Arkivadgangskode</value>
+  </data>
+  <data name="Encoding" xml:space="preserve">
+    <value>Encoding</value>
+  </data>
+  <data name="EncodingDetected" xml:space="preserve">
+    <value>{0} (detected)</value>
   </data>
   <data name="ExtractToPath" xml:space="preserve">
     <value>Sti</value>
@@ -2135,8 +2150,8 @@
   <data name="SplittingSize" xml:space="preserve">
     <value>Opdelingsstørrelse</value>
   </data>
-  <data name="Do not split" xml:space="preserve">
-    <value>Opdel ikke</value>
+  <data name="DoNotSplit" xml:space="preserve">
+    <value>Do not split</value>
   </data>
   <data name="CD" xml:space="preserve">
     <value>CD</value>
@@ -2192,8 +2207,14 @@
   <data name="EditSettingsFile" xml:space="preserve">
     <value>Redigere indstillingsfil</value>
   </data>
-  <data name="WhatsNew" xml:space="preserve">
-    <value>Nyheder</value>
+  <data name="EditSettingsFileDescription" xml:space="preserve">
+    <value>Open settings file in your default editor</value>
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value>Release Notes</value>
+  </data>
+  <data name="ReleaseNotesDescription" xml:space="preserve">
+    <value>Open Release Notes</value>
   </data>
   <data name="CannotCreateShortcutDialogTitle" xml:space="preserve">
     <value>Genvejsoprettelse på denne placering kræver administratorprivilegier</value>
@@ -2274,10 +2295,7 @@
     <value>Kontekstmenuvalg</value>
   </data>
   <data name="ShowFileExtensions" xml:space="preserve">
-    <value>Vis filtypenavne</value>
-  </data>
-  <data name="ShowHiddenItems" xml:space="preserve">
-    <value>Vis skjulte emner</value>
+    <value>File extensions</value>
   </data>
   <data name="FormatDriveText" xml:space="preserve">
     <value>Format</value>
@@ -2286,13 +2304,13 @@
     <value>Hjælp</value>
   </data>
   <data name="FullScreen" xml:space="preserve">
-    <value>Slå fuldskærm til/fra</value>
+    <value>Full screen</value>
   </data>
   <data name="ConfirmDeleteTag" xml:space="preserve">
     <value>Sikker på, at dette tag skal slettes?</value>
   </data>
   <data name="PlayAll" xml:space="preserve">
-    <value>Afspil alt</value>
+    <value>Play</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>Højde</value>
@@ -2352,7 +2370,7 @@
     <value>Forøg størrelse</value>
   </data>
   <data name="ToggleSortDirection" xml:space="preserve">
-    <value>Skift sorteringsretning</value>
+    <value>Sort direction</value>
   </data>
   <data name="InvalidTagNameWarning" xml:space="preserve">
     <value>Ugyldigt navn</value>
@@ -2364,37 +2382,37 @@
     <value>Videoer</value>
   </data>
   <data name="LaunchPreviewPopup" xml:space="preserve">
-    <value>Start forhåndsvisnings-pop op</value>
+    <value>Preview popup</value>
   </data>
   <data name="ToggleCompactOverlay" xml:space="preserve">
     <value>Kompakt overlejring til/fra</value>
   </data>
   <data name="OpenHelpDescription" xml:space="preserve">
-    <value>Åbn onlinehjælpeside i webbrowser</value>
+    <value>Open the online help page in your browser</value>
   </data>
   <data name="ToggleFullScreenDescription" xml:space="preserve">
-    <value>Fuldskærm til/fra</value>
+    <value>Toggle full screen mode</value>
   </data>
   <data name="EnterCompactOverlayDescription" xml:space="preserve">
-    <value>Vis kompakt overlejring</value>
+    <value>Enter compact overlay mode</value>
   </data>
   <data name="ExitCompactOverlayDescription" xml:space="preserve">
-    <value>Afslut kompakt overlejring</value>
+    <value>Exit compact overlay mode</value>
   </data>
   <data name="ToggleCompactOverlayDescription" xml:space="preserve">
-    <value>Kompakt overlejring til/fra</value>
+    <value>Toggle compact overlay mode</value>
   </data>
   <data name="SearchDescription" xml:space="preserve">
-    <value>Gå til søgefelt</value>
+    <value>Start search in the OmniBar</value>
   </data>
   <data name="ToggleShowHiddenItemsDescription" xml:space="preserve">
-    <value>Slå visning af skjulte emner til/fra</value>
+    <value>Toggle visibility of hidden items</value>
   </data>
   <data name="ToggleDotFilesSettingDescription" xml:space="preserve">
-    <value>Slå visning af dot-filer til/fra</value>
+    <value>Toggle visibility of dot files</value>
   </data>
   <data name="ToggleShowFileExtensionsDescription" xml:space="preserve">
-    <value>Slå visning af filtyper til/fra</value>
+    <value>Toggle visibility of file extensions</value>
   </data>
   <data name="TogglePreviewPaneDescription" xml:space="preserve">
     <value>Slå forhåndsvisningsruden til/fra for at se forhåndsvisninger</value>
@@ -2403,61 +2421,64 @@
     <value>Vis/Skjul sidebjælke</value>
   </data>
   <data name="CopyItemDescription" xml:space="preserve">
-    <value>Kopiér emne(r) til udklipsholder</value>
+    <value>Copy selected {0, plural, one {item} other {items}} to clipboard</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
-    <value>Kopiér stien til markerede emner til udklipsholderen</value>
+    <value>Kopiér stien til den aktuelle mappe til udklipsholderen</value>
   </data>
   <data name="CopyItemPathDescription" xml:space="preserve">
-    <value>Copy path of selected items to the clipboard</value>
+    <value>Kopiér sti til markerede enmer til udklipsholderen</value>
   </data>
   <data name="CopyItemPathWithQuotesDescription" xml:space="preserve">
-    <value>Copy path of selected items with quotes to the clipboard</value>
+    <value>Kopiér sti til valgte enmer med anførselstegn til udklipsholderen</value>
   </data>
   <data name="CopyPathWithQuotesDescription" xml:space="preserve">
-    <value>Kopiér stien til markerede emner med anførselstegn til udklipsholderen</value>
+    <value>Kopiér stien til den aktuelle mappe med anførselstegn til udklipsholderen</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
-    <value>Klip emne(r) til udklipsholder</value>
+    <value>Cut selected {0, plural, one {item} other {items}} to clipboard</value>
   </data>
   <data name="PasteItemDescription" xml:space="preserve">
-    <value>Indsæt emne(r) fra udklipsholder i den aktuelle mappe</value>
+    <value>Paste clipboard items to the current folder</value>
   </data>
   <data name="PasteShortcutDescription" xml:space="preserve">
-    <value>Paste item(s) from clipboard to current folder as shortcuts</value>
+    <value>Paste clipboard items to the current folder as shortcuts</value>
   </data>
   <data name="PasteItemToSelectionDescription" xml:space="preserve">
-    <value>Indsæt emne(r) fra udklipsholder i den valgte mappe</value>
+    <value>Paste clipboard items to the selected folder</value>
+  </data>
+  <data name="PasteToSelectedFolder" xml:space="preserve">
+    <value>Paste to selected folder</value>
   </data>
   <data name="DeleteItemDescription" xml:space="preserve">
-    <value>Slet emne(r)</value>
+    <value>Delete selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CreateFolderDescription" xml:space="preserve">
     <value>Opret ny mappe</value>
   </data>
   <data name="CreateShortcutDescription" xml:space="preserve">
-    <value>Opret ny(e) genvej(e) til markere(t/de) emne(r)</value>
+    <value>Create new {0, plural, one {shortcut} other {shortcuts}} to selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CreateShortcutFromDialogDescription" xml:space="preserve">
     <value>Opret ny genvej til ethvert emne</value>
   </data>
   <data name="EmptyRecycleBinDescription" xml:space="preserve">
-    <value>Tøm papirkurv</value>
+    <value>Empty the contents of Recycle Bin</value>
   </data>
   <data name="FormatDriveDescription" xml:space="preserve">
     <value>Åbn menuen "Formatér Drev" for det valgte emne</value>
   </data>
   <data name="RestoreRecycleBinDescription" xml:space="preserve">
-    <value>Gendan valgte emne(r) fra papirkurv</value>
+    <value>Restore selected {0, plural, one {item} other {items}} from recycle bin</value>
   </data>
   <data name="RestoreAllRecycleBinDescription" xml:space="preserve">
     <value>Gendan alle emner fra papirkurv</value>
   </data>
   <data name="OpenItemDescription" xml:space="preserve">
-    <value>Åbn emne(r)</value>
+    <value>Open {0, plural, one {item} other {items}}</value>
   </data>
   <data name="OpenItemWithApplicationPickerDescription" xml:space="preserve">
-    <value>Åbn emne(r) med det valgte program</value>
+    <value>Open {0, plural, one {item} other {items}} with selected application</value>
   </data>
   <data name="OpenParentFolderDescription" xml:space="preserve">
     <value>Åbn overordnet mappe for det søgte emne</value>
@@ -2472,28 +2493,28 @@
     <value>Vælg alle emner</value>
   </data>
   <data name="InvertSelectionDescription" xml:space="preserve">
-    <value>Invertér emnevalg</value>
+    <value>Invert selected items</value>
   </data>
   <data name="ClearSelectionDescription" xml:space="preserve">
-    <value>Ryd emnevalg</value>
+    <value>Clear selected items</value>
   </data>
   <data name="ToggleSelectDescription" xml:space="preserve">
     <value>Slå emnevalg til/fra</value>
   </data>
   <data name="ShareItemDescription" xml:space="preserve">
-    <value>Del valgte fil(er) med andre</value>
+    <value>Share selected {0, plural, one {file} other {files}} with others</value>
   </data>
   <data name="PinToStartDescription" xml:space="preserve">
-    <value>Fastgør emne(r) til menuen Start</value>
+    <value>Pin {0, plural, one {item} other {items}} to the Start Menu</value>
   </data>
   <data name="UnpinFromStartDescription" xml:space="preserve">
-    <value>Frigør emne(r) fra menuen Start</value>
+    <value>Unpin {0, plural, one {item} other {items}} from the Start Menu</value>
   </data>
   <data name="PinFolderToSidebarDescription" xml:space="preserve">
-    <value>Fastgør mappe(r) til sidebjælke</value>
+    <value>Pin {0, plural, one {folder} other {folders}} to Sidebar</value>
   </data>
   <data name="UnpinFolderFromSidebarDescription" xml:space="preserve">
-    <value>Frigør mappe(r) fra sidebjælke</value>
+    <value>Unpin {0, plural, one {folder} other {folders}} from Sidebar</value>
   </data>
   <data name="SetAsWallpaperBackgroundDescription" xml:space="preserve">
     <value>Benyt valgte billede som skrivebordsbaggrund</value>
@@ -2507,14 +2528,23 @@
   <data name="SetAsAppBackgroundDescription" xml:space="preserve">
     <value>Benyt valgte billede som app-baggrund</value>
   </data>
+  <data name="InstallFont" xml:space="preserve">
+    <value>Install font</value>
+  </data>
+  <data name="InstallDriver" xml:space="preserve">
+    <value>Install driver</value>
+  </data>
+  <data name="InstallCertificate" xml:space="preserve">
+    <value>Install certificate</value>
+  </data>
   <data name="InstallFontDescription" xml:space="preserve">
-    <value>Installér valgte skrifttype(r)</value>
+    <value>Install selected {0, plural, one {font} other {fonts}}</value>
   </data>
   <data name="InstallInfDriverDescription" xml:space="preserve">
-    <value>Installér driver(e) vha. valgte inf-fil(er)</value>
+    <value>Install {0, plural, one {driver} other {drivers}} using selected inf {0, plural, one {file} other {files}}</value>
   </data>
   <data name="InstallCertificateDescription" xml:space="preserve">
-    <value>Installér valgte certifikat(er)</value>
+    <value>Install selected {0, plural, one {certificate} other {certificates}}</value>
   </data>
   <data name="RunAsAdminDescription" xml:space="preserve">
     <value>Kør valgte program som administrator</value>
@@ -2529,28 +2559,28 @@
     <value>Start forhåndsvisning i pop op-vindue</value>
   </data>
   <data name="CompressIntoArchiveDescription" xml:space="preserve">
-    <value>Opret arkiv med valgte emne(r)</value>
+    <value>Create archive with selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CompressIntoSevenZipDescription" xml:space="preserve">
-    <value>Opret straks 7z-arkiv med valgte emne(r)</value>
+    <value>Create 7z archive with selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CompressIntoZipDescription" xml:space="preserve">
-    <value>Opret straks zip-arkiv med valgte emne(r)</value>
+    <value>Create zip archive with selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="DecompressArchiveDescription" xml:space="preserve">
-    <value>Udpak elementer fra valgte arkiv(er) til enhver mappe</value>
+    <value>Extract items from selected {0, plural, one {archive} other {archives}} to any folder</value>
   </data>
   <data name="DecompressArchiveHereDescription" xml:space="preserve">
-    <value>Udpak emner fra valgte arkiv(er) til aktuel mappe</value>
+    <value>Extract items from selected {0, plural, one {archive} other {archives}} to current folder</value>
   </data>
   <data name="DecompressArchiveToChildFolderDescription" xml:space="preserve">
-    <value>Udpak emner fra valgte arkiv(er) til ny mappe</value>
+    <value>Extract items from selected {0, plural, one {archive} other {archives}} to new folder</value>
   </data>
   <data name="RotateLeftDescription" xml:space="preserve">
-    <value>Rotér markere(t/de) billede(r) til venstre</value>
+    <value>Rotate selected {0, plural, one {image} other {images}} to the left</value>
   </data>
   <data name="RotateRightDescription" xml:space="preserve">
-    <value>Rotér markere(t/de) billede(r) til højre</value>
+    <value>Rotate selected {0, plural, one {image} other {images}} to the right</value>
   </data>
   <data name="OpenSettingsDescription" xml:space="preserve">
     <value>Åbn indstillingssiden</value>
@@ -2570,8 +2600,8 @@
   <data name="LayoutDetailsDescription" xml:space="preserve">
     <value>Skift til detaljeret visning</value>
   </data>
-  <data name="LayoutTilesDescription" xml:space="preserve">
-    <value>Skift til flisevisning</value>
+  <data name="LayoutCardsDescription" xml:space="preserve">
+    <value>Skift til kortvisning</value>
   </data>
   <data name="LayoutListDescription" xml:space="preserve">
     <value>Skift til listevisning</value>
@@ -2670,22 +2700,22 @@
     <value>Skift gruppesorteringsretning</value>
   </data>
   <data name="NewTabDescription" xml:space="preserve">
-    <value>Åbn ny fane</value>
+    <value>Åbn en ny fane</value>
   </data>
   <data name="NavigateBackDescription" xml:space="preserve">
-    <value>Gå baglæns i navigeringshistorik</value>
+    <value>Navigate backward</value>
   </data>
   <data name="NavigateForwardDescription" xml:space="preserve">
-    <value>Gå forlæns i navigeringshistorik</value>
+    <value>Navigate forward</value>
   </data>
   <data name="NavigateUpDescription" xml:space="preserve">
     <value>Gå én mappe op</value>
   </data>
   <data name="DuplicateCurrentTabDescription" xml:space="preserve">
-    <value>Duplikér aktuel fane</value>
+    <value>Dublér aktuel fane</value>
   </data>
   <data name="DuplicateSelectedTabDescription" xml:space="preserve">
-    <value>Duplikér valgt fane</value>
+    <value>Dublér valgt fane</value>
   </data>
   <data name="CloseTabsToTheLeftCurrentDescription" xml:space="preserve">
     <value>Luk faner til venstre for aktuel fane</value>
@@ -2706,10 +2736,10 @@
     <value>Luk faner undtagen valgte fane</value>
   </data>
   <data name="CloseAllTabsDescription" xml:space="preserve">
-    <value>Close all tabs including the current tab</value>
+    <value>Luk alle faner inkl. den aktuelle</value>
   </data>
   <data name="ReopenClosedTabDescription" xml:space="preserve">
-    <value>Gendan senest lukkede fane</value>
+    <value>Reopen recently closed tab</value>
   </data>
   <data name="PreviousTabDescription" xml:space="preserve">
     <value>Flyt til forgående fane</value>
@@ -2721,13 +2751,13 @@
     <value>Luk aktuel fane</value>
   </data>
   <data name="CloseActivePaneDescription" xml:space="preserve">
-    <value>Luk aktiv rude</value>
+    <value>Close the active pane</value>
   </data>
   <data name="FocusOtherPane" xml:space="preserve">
-    <value>Focus other pane</value>
+    <value>Fokusér anden rude</value>
   </data>
   <data name="FocusOtherPaneDescription" xml:space="preserve">
-    <value>Switch focus to the non active pane</value>
+    <value>Switch focus to the other pane</value>
   </data>
   <data name="ToggleSidebar" xml:space="preserve">
     <value>Slå sidebjælken til/fra</value>
@@ -2935,13 +2965,13 @@
     <value>Ikke-tagget</value>
   </data>
   <data name="PreviousTab" xml:space="preserve">
-    <value>Flytter til den foregående fane</value>
+    <value>Previous tab</value>
   </data>
   <data name="NextTab" xml:space="preserve">
-    <value>Flytter til den næste fane</value>
+    <value>Next tab</value>
   </data>
   <data name="CloseTab" xml:space="preserve">
-    <value>Lukker aktuel fane</value>
+    <value>Close tab</value>
   </data>
   <data name="EditPath" xml:space="preserve">
     <value>Redigér sti</value>
@@ -2971,7 +3001,7 @@
     <value>Vis afkrydsningsfelter, når emner vælges</value>
   </data>
   <data name="EditPathDescription" xml:space="preserve">
-    <value>Fokus – stibjælke</value>
+    <value>Edit path in the OmniBar</value>
   </data>
   <data name="AddItemDescription" xml:space="preserve">
     <value>Opret nyt emne</value>
@@ -2986,7 +3016,7 @@
     <value>Slet permanent</value>
   </data>
   <data name="DeleteItemPermanentlyDescription" xml:space="preserve">
-    <value>Slet emne(r) permanent</value>
+    <value>Delete selected {0, plural, one {item} other {items}} permanently</value>
   </data>
   <data name="PlayAllDescription" xml:space="preserve">
     <value>Afspil de valgte mediefiler</value>
@@ -3103,19 +3133,19 @@
     <value>Skift til ny gren</value>
   </data>
   <data name="CreateFolderWithSelectionDescription" xml:space="preserve">
-    <value>Opret en mappe med de(t) valgte emne(r)</value>
+    <value>Create a folder with the currently selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="OpenProperties" xml:space="preserve">
-    <value>Åbn egenskaber</value>
+    <value>Egenskaber</value>
   </data>
   <data name="OpenClassicProperties" xml:space="preserve">
-    <value>Open File Explorer properties</value>
+    <value>Åbn egenskaber for Stifinder</value>
   </data>
   <data name="OpenPropertiesDescription" xml:space="preserve">
     <value>Åbn egenskabsvindue</value>
   </data>
   <data name="OpenClassicPropertiesDescription" xml:space="preserve">
-    <value>Open File Explorer properties window</value>
+    <value>Åbn egenskabsvinduet for Stifinder</value>
   </data>
   <data name="Locals" xml:space="preserve">
     <value>Standarder</value>
@@ -3134,6 +3164,9 @@
   </data>
   <data name="GitFetchDescription" xml:space="preserve">
     <value>Kør git fetch</value>
+  </data>
+  <data name="GitCloneDescription" xml:space="preserve">
+    <value>Clone a git repo</value>
   </data>
   <data name="GitPullDescription" xml:space="preserve">
     <value>Kør git pull</value>
@@ -3211,17 +3244,17 @@
   <data name="CannotReachGitHubError" xml:space="preserve">
     <value>Files kan ikke få adgang til GitHub lige nu.</value>
   </data>
-  <data name="OpenInVSCode" xml:space="preserve">
-    <value>Åbn mappe i VS Code</value>
+  <data name="OpenInIDE" xml:space="preserve">
+    <value>Open folder in {0}</value>
   </data>
-  <data name="OpenInVSCodeDescription" xml:space="preserve">
-    <value>Åbn aktuel mappe i Visual Studio Code</value>
+  <data name="OpenInIDEDescription" xml:space="preserve">
+    <value>Open the current directory in {0}</value>
   </data>
-  <data name="OpenRepoInVSCode" xml:space="preserve">
-    <value>Åbn repo i VS Code</value>
+  <data name="OpenRepoInIDE" xml:space="preserve">
+    <value>Open repo in {0}</value>
   </data>
-  <data name="OpenRepoInVSCodeDescription" xml:space="preserve">
-    <value>Åbn Git-repo roden i Visual Studio Code</value>
+  <data name="OpenRepoInIDEDescription" xml:space="preserve">
+    <value>Open the root of the Git repo in {0}</value>
   </data>
   <data name="CopyCode" xml:space="preserve">
     <value>Kopiér kode</value>
@@ -3248,7 +3281,7 @@
     <value>Repo-initialisering</value>
   </data>
   <data name="InitRepoDescription" xml:space="preserve">
-    <value>Initialisér et Git-repo</value>
+    <value>Initialize current folder as a git repository</value>
   </data>
   <data name="GitOriginRepositoryName" xml:space="preserve">
     <value>Fjern-repo navn</value>
@@ -3263,13 +3296,13 @@
     <value>Sortér emner efter sti</value>
   </data>
   <data name="OpenDirectoryInNewPaneDescription" xml:space="preserve">
-    <value>Åbn mappe i ny rude</value>
+    <value>Open selected directory in a new pane</value>
   </data>
   <data name="OpenDirectoryInNewTabDescription" xml:space="preserve">
-    <value>Åbn mappe på ny fane</value>
+    <value>Open selected directory in a new tab</value>
   </data>
   <data name="OpenInNewWindowDescription" xml:space="preserve">
-    <value>Åbn mappe i nyt vindue</value>
+    <value>Open selected directory in a new window</value>
   </data>
   <data name="OpenAllTaggedItems" xml:space="preserve">
     <value>Åbn alle</value>
@@ -3294,10 +3327,10 @@
     <value>Kommandoen '{0}' er ikke klar til eksekvering.</value>
   </data>
   <data name="CommandPalette" xml:space="preserve">
-    <value>Kommandopalette</value>
+    <value>Command Palette</value>
   </data>
   <data name="OpenCommandPaletteDescription" xml:space="preserve">
-    <value>Åbn kommandopalette</value>
+    <value>Open Command Palette in the OmniBar</value>
   </data>
   <data name="ShortcutItemWorkingDir" xml:space="preserve">
     <value>Start i:</value>
@@ -3462,6 +3495,70 @@
     <value>Komprimerer {0} emne(r) fra "{1}" til "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
+  <data name="StatusCenter_GitCloneCanceled_Header" xml:space="preserve">
+    <value>Canceled cloning {0} to "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneCanceled_SubHeader" xml:space="preserve">
+    <value>Canceled cloning {0} from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneComplete_Header" xml:space="preserve">
+    <value>Cloned "{0}" to "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneComplete_SubHeader" xml:space="preserve">
+    <value>Cloned {0} from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneFailed_Header" xml:space="preserve">
+    <value>Error cloning "{0}" to "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneFailed_SubHeader" xml:space="preserve">
+    <value>Failed to clone {0} from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneInProgress_Header" xml:space="preserve">
+    <value>Cloning "{0}" to "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_GitCloneInProgress_SubHeader" xml:space="preserve">
+    <value>Cloning {0} from "{1}" to "{2}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontCanceled_Header" xml:space="preserve">
+    <value>Canceled installing {0} fonts</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontCanceled_SubHeader" xml:space="preserve">
+    <value>Canceled installing {0} font(s) from "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontComplete_Header" xml:space="preserve">
+    <value>Installed {0} font(s)</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontComplete_SubHeader" xml:space="preserve">
+    <value>Installed {0} font(s) from "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontFailed_Header" xml:space="preserve">
+    <value>Error installing {0} font(s)</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontFailed_SubHeader" xml:space="preserve">
+    <value>Failed to install {0} font(s) from "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontInProgress_Header" xml:space="preserve">
+    <value>Installing {0} font(s)</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_InstallFontInProgress_SubHeader" xml:space="preserve">
+    <value>Installing {0} font(s) from "{1}"</value>
+    <comment>Shown in a StatusCenter card.</comment>
+  </data>
   <data name="StatusCenter_CopyCanceled_Header" xml:space="preserve">
     <value>Annullerede kopieringen af {0} emne(r) til "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
@@ -3603,7 +3700,7 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_ProcessedItems_Header" xml:space="preserve">
-    <value>{0}/{1} emne(r) behandlet</value>
+    <value>{0}/{1} {0, plural, one {item} other {items}} processed</value>
     <comment>Shown in a StatusCenter card. Used as "8/20 items processed"</comment>
   </data>
   <data name="UnblockDownloadedFile" xml:space="preserve">
@@ -3620,6 +3717,9 @@
   </data>
   <data name="FailedToSetBackground" xml:space="preserve">
     <value>Kunne ikke indstille baggrundstapetet</value>
+  </data>
+  <data name="FailedToOpenSettingsFile" xml:space="preserve">
+    <value>Failed to open the settings file</value>
   </data>
   <data name="GitDeleteBranch" xml:space="preserve">
     <value>Slet Git-gren</value>
@@ -3646,7 +3746,7 @@
     <value>En fejl opstod under anvendelsen af dette tag</value>
   </data>
   <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
-    <value>Udpak emner fra valgte arkiv(er) til den aktuelle mappe til enkeltemnearkiv, eller til ny mappe til multiemnearkiv</value>
+    <value>Extract items from selected {0, plural, one {archive} other {archives}} to current folder for single-item archive, or to new folder for multi-item archive</value>
   </data>
   <data name="ExtractHereSmart" xml:space="preserve">
     <value>Udpak her (Smart)</value>
@@ -3655,7 +3755,7 @@
     <value>Sortér filer og mapper sammen</value>
   </data>
   <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
-    <value>Sorter filer og mapper sammen</value>
+    <value>Sort files and folders in the same list</value>
   </data>
   <data name="SortFilesFirst" xml:space="preserve">
     <value>Sortér filer først</value>
@@ -3710,9 +3810,6 @@
   </data>
   <data name="QuestionsAndDiscussions" xml:space="preserve">
     <value>Spørgsmål og debatter</value>
-  </data>
-  <data name="TilesViewSizeInfo" xml:space="preserve">
-    <value>Yderligere størrelser er endnu ikke tilgængelige i Flisevisning.</value>
   </data>
   <data name="Compact" xml:space="preserve">
     <value>Kompakt</value>
@@ -3794,7 +3891,7 @@
     <value>Denne tastetilknytning bruges allerede. Vælg en anden tastetilknytningerne for at fortsætte.</value>
   </data>
   <data name="KeybindingInvalidKeyNotification" xml:space="preserve">
-    <value>Den valgte tastebinding kan ikke bruges. Prøv venligst igen med en anden tastebinding.</value>
+    <value>Den valgte tastaturgenvej er utilgængelig. Prøv med en anden tastaturgenvej.</value>
   </data>
   <data name="Customized" xml:space="preserve">
     <value>Tilpasset</value>
@@ -3875,6 +3972,10 @@
     <value>ICO-fil</value>
     <comment>This is the friendly name for ICO files.</comment>
   </data>
+  <data name="IclFileCapitalized" xml:space="preserve">
+    <value>ICL-fil</value>
+    <comment>This is the friendly name for ICL files.</comment>
+  </data>
   <data name="ZipFileCapitalized" xml:space="preserve">
     <value>Zip-fil</value>
     <comment>This is the friendly name for ZIP files.</comment>
@@ -3890,16 +3991,16 @@
     <value>Netværkslokationer</value>
   </data>
   <data name="NoNetworkLocationsInfo" xml:space="preserve">
-    <value>Der er ingen netværkslokationer. Hvis du ikke bruger netværkslokationer, kan du deaktivere widgetten.</value>
+    <value>Der er ingen netværkslokationer. Bruger man ikke netværkslokationer, kan widget'en deaktiveres.</value>
   </data>
   <data name="Disable" xml:space="preserve">
     <value>Deaktivér</value>
   </data>
   <data name="EditInNotepad" xml:space="preserve">
-    <value>Rediger i Notesblok</value>
+    <value>Redigér i Notesblok</value>
   </data>
   <data name="EditInNotepadDescription" xml:space="preserve">
-    <value>Rediger den valgte fil i Notesblok</value>
+    <value>Redigér den valgte fil i Notesblok</value>
   </data>
   <data name="PropertyDimensionsColon" xml:space="preserve">
     <value>Dimensioner:</value>
@@ -3908,47 +4009,47 @@
     <value>Status:</value>
   </data>
   <data name="ShowToolbar" xml:space="preserve">
-    <value>Vis værktøjslinje</value>
+    <value>Vis værktøjsbjælke</value>
     <comment>Setting that controls if the toolbar is shown in the main view</comment>
   </data>
   <data name="TabActions" xml:space="preserve">
-    <value>Tab actions menu</value>
+    <value>Fanehandlingsmenu</value>
   </data>
   <data name="AddVerticalPane" xml:space="preserve">
-    <value>Add vertical pane</value>
+    <value>Vertical pane</value>
   </data>
   <data name="AddVerticalPaneDescription" xml:space="preserve">
-    <value>Add a vertical pane</value>
+    <value>Add vertical pane</value>
   </data>
   <data name="AddHorizontalPane" xml:space="preserve">
-    <value>Add horizontal pane</value>
+    <value>Horizontal pane</value>
   </data>
   <data name="AddHorizontalPaneDescription" xml:space="preserve">
-    <value>Add a horizontal pane</value>
+    <value>Add horizontal pane</value>
   </data>
   <data name="ArrangePanesVertically" xml:space="preserve">
-    <value>Arranger lodret</value>
+    <value>Arrangér lodret</value>
   </data>
   <data name="ArrangePanesVerticallyDescription" xml:space="preserve">
-    <value>Arrange panes vertically</value>
+    <value>Arrangér ruder lodret</value>
   </data>
   <data name="ArrangePanesHorizontally" xml:space="preserve">
-    <value>Arranger vandret</value>
+    <value>Arrangér vandret</value>
   </data>
   <data name="ArrangePanesHorizontallyDescription" xml:space="preserve">
-    <value>Arrange panes horizontally</value>
+    <value>Arrangér ruderne lodret</value>
   </data>
   <data name="AddPane" xml:space="preserve">
-    <value>Add pane</value>
+    <value>Tilføj rude</value>
   </data>
   <data name="ShowTabActions" xml:space="preserve">
-    <value>Vis knap for fanehandlinger i titellinjen</value>
+    <value>Vis knap for fanehandlinger på titelbjælken</value>
   </data>
   <data name="ArrangePanes" xml:space="preserve">
-    <value>Arrange panes</value>
+    <value>Arrangér ruder</value>
   </data>
   <data name="DefaultPaneArrangement" xml:space="preserve">
-    <value>Default pane arrangement</value>
+    <value>Standardplacering af ruder</value>
   </data>
   <data name="Horizontal" xml:space="preserve">
     <value>Vandret</value>
@@ -3957,7 +4058,7 @@
     <value>Lodret</value>
   </data>
   <data name="ShowSystemTrayIcon" xml:space="preserve">
-    <value>Show Files icon in the System Tray</value>
+    <value>Vis Files-ikon i systembakke</value>
   </data>
   <data name="CPUThreads" xml:space="preserve">
     <value>CPU-tråde</value>
@@ -3966,10 +4067,10 @@
     <value>Gå til startsiden</value>
   </data>
   <data name="ShowHomeButton" xml:space="preserve">
-    <value>Vis Hjem i adresselinje</value>
+    <value>Vis Hjem-knap på adressebjælken</value>
   </data>
   <data name="Toolbars" xml:space="preserve">
-    <value>Værktøjslinjer</value>
+    <value>Værktøjsbjælker</value>
   </data>
   <data name="UserID" xml:space="preserve">
     <value>Bruger-ID</value>
@@ -3977,31 +4078,152 @@
   <data name="BulkRename" xml:space="preserve">
     <value>Masseomdøb</value>
   </data>
+  <data name="CompressContents" xml:space="preserve">
+    <value>Komprimér indhold</value>
+  </data>
   <data name="ShowCreateAlternateDataStream" xml:space="preserve">
-    <value>Show option to create alternate data stream</value>
+    <value>Vis valgmulighed til oprettelse af alternativ datastrøm</value>
   </data>
   <data name="CreateAlternateDataStream" xml:space="preserve">
-    <value>Create alternate data stream</value>
+    <value>Opret alternativ datastrøm</value>
   </data>
   <data name="CreateAlternateDataStreamDescription" xml:space="preserve">
-    <value>Create alternate data stream for the selected item(s)</value>
+    <value>Create alternate data stream for the selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="EnterDataStreamName" xml:space="preserve">
-    <value>Enter data stream name</value>
+    <value>Angiv navn på datastrøm</value>
   </data>
   <data name="ErrorCreatingDataStreamTitle" xml:space="preserve">
-    <value>There was an error creating the alternate data stream</value>
+    <value>En fejl opstod under oprettelse af den alternative datastrøm</value>
   </data>
   <data name="ErrorCreatingDataStreamDescription" xml:space="preserve">
-    <value>Please note that alternate data streams only work on drives formatted as NTFS.</value>
+    <value>Bemærk, at alternative datastrømme kun fungerer på NTFS-formaterede drev.</value>
   </data>
   <data name="DataStreamsAreHiddenTitle" xml:space="preserve">
-    <value>Alternate data streams are currently hidden</value>
+    <value>Alternative datastrømme er p.t. skjult</value>
   </data>
   <data name="DataStreamsAreHiddenDescription" xml:space="preserve">
-    <value>Would you like to display alternate data streams? You can modify this setting anytime from the files and folders settings page.</value>
+    <value>Ønsker at vise alternative datastrømme? Man kan altid ændre denne indstilling fra indstillingssiden for filer og mapper.</value>
   </data>
   <data name="ManageTags" xml:space="preserve">
-    <value>Manage tags</value>
+    <value>Håndtér tags</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Tilgængelig</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>I alt</value>
+  </data>
+  <data name="AlwaysSwitchToNewlyOpenedTab" xml:space="preserve">
+    <value>Skift altid fokus til den nyoprettede fane</value>
+  </data>
+  <data name="ToggleShelfPane" xml:space="preserve">
+    <value>Toggle shelf pane</value>
+  </data>
+  <data name="ToggleShelfPaneDescription" xml:space="preserve">
+    <value>Toggle the visibility of the shelf pane</value>
+  </data>
+  <data name="ShowShelfPaneButtonInAddressBar" xml:space="preserve">
+    <value>Vis hylderudeskifter på adressebjælken</value>
+  </data>
+  <data name="Shelf" xml:space="preserve">
+    <value>Hylde</value>
+    <comment>'Shelf' refers to the Shelf Pane feature, where users can conveniently drag and drop files for quick access and perform bulk actions with ease.</comment>
+  </data>
+  <data name="ClearItems" xml:space="preserve">
+    <value>Ryd emner</value>
+  </data>
+  <data name="RemoveFromShelf" xml:space="preserve">
+    <value>Fjern fra hylde</value>
+  </data>
+  <data name="AddToShelf" xml:space="preserve">
+    <value>Føj til hylde</value>
+    <comment>Tooltip that displays when dragging items to the Shelf Pane</comment>
+  </data>
+  <data name="EnterHashToCompare" xml:space="preserve">
+    <value>Enter a hash to compare</value>
+    <comment>Placeholder that appears in the compare hash text box</comment>
+  </data>
+  <data name="HashesMatch" xml:space="preserve">
+    <value>Matches {0}</value>
+    <comment>Appears when two compared hashes match, e.g. "Matches SHA256"</comment>
+  </data>
+  <data name="HashesDoNotMatch" xml:space="preserve">
+    <value>No matches found</value>
+    <comment>Appears when two compared hashes don't match</comment>
+  </data>
+  <data name="PathOrAlias" xml:space="preserve">
+    <value>Path or alias</value>
+  </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>Invalid path</value>
+  </data>
+  <data name="TestIntegration" xml:space="preserve">
+    <value>Test integration</value>
+  </data>
+  <data name="IDENotLocatedContent" xml:space="preserve">
+    <value>{0} could not be located. Please check your settings and try again.</value>
+  </data>
+  <data name="IDENotLocatedTitle" xml:space="preserve">
+    <value>The configured IDE could not be located</value>
+  </data>
+  <data name="OpenSettings" xml:space="preserve">
+    <value>Open settings</value>
+  </data>
+  <data name="VisualStudioCode" xml:space="preserve">
+    <value>Visual Studio Code</value>
+  </data>
+  <data name="IDEPathPlaceholder" xml:space="preserve">
+    <value>Enter a path or launch alias</value>
+  </data>
+  <data name="InvalidIDENameError" xml:space="preserve">
+    <value>Please enter a name for the IDE</value>
+  </data>
+  <data name="CloneRepo" xml:space="preserve">
+    <value>Clone repo</value>
+    <comment>Clone repo dialog title</comment>
+  </data>
+  <data name="Clone" xml:space="preserve">
+    <value>Clone</value>
+    <comment>Primary action button in the clone repo dialog</comment>
+  </data>
+  <data name="RepositoryURL" xml:space="preserve">
+    <value>Repository URL</value>
+    <comment>URL textbox header in the clone repo dialog</comment>
+  </data>
+  <data name="CannotCloneRepoTitle" xml:space="preserve">
+    <value>Cannot clone repo</value>
+    <comment>Cannot clone repo dialog title</comment>
+  </data>
+  <data name="CompareFile" xml:space="preserve">
+    <value>Compare a file</value>
+    <comment>Button that appears in file hash properties that allows the user to compare two files</comment>
+  </data>
+  <data name="SizeFormat" xml:space="preserve">
+    <value>Size format</value>
+  </data>
+  <data name="Binary" xml:space="preserve">
+    <value>Binary</value>
+  </data>
+  <data name="Decimal" xml:space="preserve">
+    <value>Decimal</value>
+  </data>
+  <data name="EnableOmnibar" xml:space="preserve">
+    <value>Enable Omnibar</value>
+  </data>
+  <data name="SectionsHiddenMessage" xml:space="preserve">
+    <value>You can add sections to the sidebar by right-clicking and selecting the sections you want to add</value>
+  </data>
+  <data name="EmptyShelfText" xml:space="preserve">
+    <value>Drag files or folders here to interact with them across different tabs</value>
+  </data>
+  <data name="OmnibarPathModeTextPlaceholder" xml:space="preserve">
+    <value>Enter a path to navigate to...</value>
+  </data>
+  <data name="OmnibarCommandPaletteModeTextPlaceholder" xml:space="preserve">
+    <value>Find features and commands...</value>
+  </data>
+  <data name="OmnibarSearchModeTextPlaceholder" xml:space="preserve">
+    <value>Search for files and folders...</value>
   </data>
 </root>
