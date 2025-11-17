@@ -3,7 +3,6 @@
 
 using System.Collections.Concurrent;
 using System.IO;
-using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.Storage.FileSystem;
 
@@ -18,6 +17,8 @@ namespace Files.App.Utils.Storage.Operations
 		public long Size => _size;
 		public int ItemsCount => _computedFiles.Count;
 		public bool Completed { get; private set; }
+
+		public event Action<int>? ItemsCountChanged;
 
 		public FileSizeCalculator(params string[] paths)
 		{
@@ -119,7 +120,10 @@ namespace Files.App.Utils.Storage.Operations
 				null);
 
 			if (!hFile.IsInvalid && PInvoke.GetFileSizeEx(hFile, out size) && _computedFiles.TryAdd(path, size))
+			{
 				Interlocked.Add(ref _size, size);
+				ItemsCountChanged?.Invoke(ItemsCount);
+			}
 
 			return size;
 		}

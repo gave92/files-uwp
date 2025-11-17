@@ -10,6 +10,7 @@
 	x:Name="RootPage"
 	KeyboardAcceleratorPlacementMode="Hidden"
 	Loaded="Page_Loaded"
+	Unloaded="Page_Unloaded"
 	mc:Ignorable="d">
 
 	<local:BaseShellPage.Resources>
@@ -18,14 +19,6 @@
 			<wctconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
 		</ResourceDictionary>
 	</local:BaseShellPage.Resources>
-
-	<local:BaseShellPage.KeyboardAccelerators>
-		<KeyboardAccelerator
-			Key="V"
-			Invoked="KeyboardAccelerator_Invoked"
-			IsEnabled="{x:Bind IsCurrentInstance, Mode=OneWay}"
-			Modifiers="Control" />
-	</local:BaseShellPage.KeyboardAccelerators>
 
 	<Grid x:Name="RootGrid">
 		<Grid.RowDefinitions>

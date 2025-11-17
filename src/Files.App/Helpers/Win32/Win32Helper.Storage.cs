@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See the LICENSE.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using Microsoft.Win32.SafeHandles;
 using System.Collections.Concurrent;
 using System.Drawing;
@@ -14,9 +15,7 @@ using System.Windows.Forms;
 using Vanara.PInvoke;
 using Windows.System;
 using Windows.Win32;
-using Windows.Win32.Foundation;
 using Windows.Win32.Storage.FileSystem;
-using static Vanara.PInvoke.Kernel32;
 using COMPRESSION_FORMAT = Windows.Win32.Storage.FileSystem.COMPRESSION_FORMAT;
 using HRESULT = Vanara.PInvoke.HRESULT;
 using HWND = Vanara.PInvoke.HWND;
@@ -165,28 +164,15 @@ namespace Files.App.Helpers
 			return taskCompletionSource.Task;
 		}
 
-		public static async Task<string?> GetFileAssociationAsync(string filename, bool checkDesktopFirst = false)
+		public static async Task<string?> GetDefaultFileAssociationAsync(string filename, bool checkDesktopFirst = true)
 		{
-			// Find UWP apps
-			async Task<string?> GetUwpAssoc()
-			{
-				var uwpApps = await Launcher.FindFileHandlersAsync(Path.GetExtension(filename));
-				return uwpApps.Any() ? uwpApps[0].PackageFamilyName : null;
-			}
+			// check if there exists an user choice first
+			var userChoice = GetUserChoiceFileAssociation(filename);
+			if (!string.IsNullOrEmpty(userChoice))
+				return userChoice;
 
-			// Find desktop apps
-			string? GetDesktopAssoc()
-			{
-				var lpResult = new StringBuilder(2048);
-				var hResult = Shell32.FindExecutable(filename, null, lpResult);
+			return await GetFileAssociationAsync(filename, checkDesktopFirst);
 
-				return hResult.ToInt64() > 32 ? lpResult.ToString() : null;
-			}
-
-			if (checkDesktopFirst)
-				return GetDesktopAssoc() ?? await GetUwpAssoc();
-
-			return await GetUwpAssoc() ?? GetDesktopAssoc();
 		}
 
 		public static string ExtractStringFromDLL(string file, int number)
@@ -904,13 +890,13 @@ namespace Files.App.Helpers
 				(uint)FILE_ACCESS_RIGHTS.FILE_GENERIC_READ | (uint)(readWrite ? FILE_ACCESS_RIGHTS.FILE_GENERIC_WRITE : 0u), (uint)(Win32PInvoke.FILE_SHARE_READ | (readWrite ? 0 : Win32PInvoke.FILE_SHARE_WRITE)), IntPtr.Zero, Win32PInvoke.OPEN_EXISTING, (uint)Win32PInvoke.File_Attributes.BackupSemantics | flags, IntPtr.Zero), true);
 		}
 
-		public static bool GetFileDateModified(string filePath, out FILETIME dateModified)
+		public static bool GetFileDateModified(string filePath, out System.Runtime.InteropServices.ComTypes.FILETIME dateModified)
 		{
 			using var hFile = new SafeFileHandle(Win32PInvoke.CreateFileFromApp(filePath, (uint)FILE_ACCESS_RIGHTS.FILE_GENERIC_READ, Win32PInvoke.FILE_SHARE_READ, IntPtr.Zero, Win32PInvoke.OPEN_EXISTING, (uint)Win32PInvoke.File_Attributes.BackupSemantics, IntPtr.Zero), true);
 			return Win32PInvoke.GetFileTime(hFile.DangerousGetHandle(), out _, out _, out dateModified);
 		}
 
-		public static bool SetFileDateModified(string filePath, FILETIME dateModified)
+		public static bool SetFileDateModified(string filePath, System.Runtime.InteropServices.ComTypes.FILETIME dateModified)
 		{
 			using var hFile = new SafeFileHandle(Win32PInvoke.CreateFileFromApp(filePath, (uint)FILE_ACCESS_RIGHTS.FILE_WRITE_ATTRIBUTES, 0, IntPtr.Zero, Win32PInvoke.OPEN_EXISTING, (uint)Win32PInvoke.File_Attributes.BackupSemantics, IntPtr.Zero), true);
 			return Win32PInvoke.SetFileTime(hFile.DangerousGetHandle(), new(), new(), dateModified);
@@ -1211,6 +1197,99 @@ namespace Files.App.Helpers
 			}
 
 			return false;
+		}
+
+		private static string? GetPackageFamilyNameFromAppRegistryName(string appRegistryName)
+		{
+			using var appXKey = Registry.ClassesRoot.OpenSubKey(appRegistryName + @"\Application");
+			var appUserModelIdObj = appXKey?.GetValue("AppUserModelId");
+			string? appUserModelId = appUserModelIdObj?.ToString();
+			string? packageFamilyName = null;
+			if (!string.IsNullOrEmpty(appUserModelId))
+			{
+				int bangIndex = appUserModelId.IndexOf('!');
+				packageFamilyName = bangIndex > 0 ? appUserModelId[..bangIndex] : appUserModelId;
+			}
+
+			return packageFamilyName;
+		}
+
+		private static string? GetUserChoiceFileAssociation(string filename)
+		{
+			var fileExtension = Path.GetExtension(filename);
+			if (string.IsNullOrEmpty(filename))
+				return null;
+
+			try
+			{
+				// Get ProgId from UserChoice
+				using var userChoiceKey = Registry.CurrentUser.OpenSubKey($@"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{fileExtension}\UserChoice");
+				var progIdObj = userChoiceKey?.GetValue("ProgId");
+				string? progId = progIdObj?.ToString();
+
+				if (string.IsNullOrEmpty(progId))
+					return null;
+
+				// Get the package family name if it's an AppX app
+				if (progId.StartsWith("AppX", StringComparison.OrdinalIgnoreCase))
+				{
+					string? packageFamilyName = GetPackageFamilyNameFromAppRegistryName(progId);
+					if (!string.IsNullOrEmpty(packageFamilyName))
+						return packageFamilyName;
+				}
+
+				// Find the open command for the ProgId
+				using var commandKey = Registry.ClassesRoot.OpenSubKey($@"{progId}\shell\open\command");
+				var command = commandKey?.GetValue(null)?.ToString();
+
+				if (string.IsNullOrEmpty(command))
+					return null;
+
+				// Extract executable path from command string (e.g. "\"C:\\Program Files\\App\\app.exe\" \"%1\"")
+				var exePath = command.Trim();
+				if (exePath.StartsWith("\""))
+				{
+					int endQuote = exePath.IndexOf('\"', 1);
+					if (endQuote > 1)
+						exePath = exePath.Substring(1, endQuote - 1);
+				}
+				else
+				{
+					int firstSpace = exePath.IndexOf(' ');
+					if (firstSpace > 0)
+						exePath = exePath.Substring(0, firstSpace);
+				}
+
+				return File.Exists(exePath) ? exePath : null;
+			}
+			catch
+			{
+				return null;
+			}
+		}
+
+		private static async Task<string?> GetFileAssociationAsync(string filename, bool checkDesktopFirst = true)
+		{
+			// Find UWP apps
+			async Task<string?> GetUwpAssoc()
+			{
+				var uwpApps = await Launcher.FindFileHandlersAsync(Path.GetExtension(filename));
+				return uwpApps.Any() ? uwpApps[0].PackageFamilyName : null;
+			}
+
+			// Find desktop apps
+			string? GetDesktopAssoc()
+			{
+				var lpResult = new StringBuilder(2048);
+				var hResult = Shell32.FindExecutable(filename, null, lpResult);
+
+				return hResult.ToInt64() > 32 ? lpResult.ToString() : null;
+			}
+
+			if (checkDesktopFirst)
+				return GetDesktopAssoc() ?? await GetUwpAssoc();
+
+			return await GetUwpAssoc() ?? GetDesktopAssoc();
 		}
 	}
 }

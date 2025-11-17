@@ -3,6 +3,7 @@
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed class SelectAllAction : IAction
 	{
 		private readonly IContentPageContext context;
@@ -35,11 +36,9 @@ namespace Files.App.Actions
 				if (itemCount == selectedItemCount)
 					return false;
 
-				bool isCommandPaletteOpen = page.ToolbarViewModel.IsCommandPaletteOpen;
-				bool isEditing = page.ToolbarViewModel.IsEditModeEnabled;
 				bool isRenaming = page.SlimContentPage?.IsRenamingItem ?? false;
 
-				return isCommandPaletteOpen || (!isEditing && !isRenaming);
+				return !isRenaming;
 			}
 		}
 

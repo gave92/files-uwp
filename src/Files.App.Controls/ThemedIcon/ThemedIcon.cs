@@ -1,13 +1,9 @@
 // Copyright (c) Files Community
 // Licensed under the MIT License.
 
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Markup;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Shapes;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Files.App.Controls
 {
@@ -15,15 +11,30 @@ namespace Files.App.Controls
 	/// A control for a State and Color aware Icon
 	/// </summary>
 	public partial class ThemedIcon : Control
-	{		
-		private Viewbox?  _filledViewBox;
-		private Viewbox?  _outlineViewBox;
-		private Viewbox?  _layeredViewBox;
-		private Canvas?   _layeredCanvas;
+	{
+		private Viewbox? _filledViewBox;
+		private Viewbox? _outlineViewBox;
+		private Viewbox? _layeredViewBox;
+		private Canvas? _layeredCanvas;
+
+		private long _stylePropertyChangedToken;
 
 		public ThemedIcon()
 		{
 			DefaultStyleKey = typeof(ThemedIcon);
+			_stylePropertyChangedToken = RegisterPropertyChangedCallback(
+				StyleProperty,
+				OnStylePropertyChanged
+			);
+
+			Unloaded += OnUnloaded;
+		}
+
+		private void OnUnloaded(object sender, RoutedEventArgs e)
+		{
+			UnregisterPropertyChangedCallback(StyleProperty, _stylePropertyChangedToken);
+			IsEnabledChanged -= OnIsEnabledChanged;
+			Unloaded -= OnUnloaded;
 		}
 
 		protected override void OnApplyTemplate()
@@ -49,11 +60,11 @@ namespace Files.App.Controls
 		private void GetTemplateParts()
 		{
 			// Gets the template parts and sets the private fields
-			_outlineViewBox = GetTemplateChild( OutlinePathIconViewBox ) as Viewbox;
-			_filledViewBox  = GetTemplateChild( FilledPathIconViewBox ) as Viewbox;
-			_layeredViewBox = GetTemplateChild( LayeredPathIconViewBox ) as Viewbox;
+			_outlineViewBox = GetTemplateChild(OutlinePathIconViewBox) as Viewbox;
+			_filledViewBox = GetTemplateChild(FilledPathIconViewBox) as Viewbox;
+			_layeredViewBox = GetTemplateChild(LayeredPathIconViewBox) as Viewbox;
 
-			_layeredCanvas = GetTemplateChild( LayeredPathCanvas ) as Canvas;
+			_layeredCanvas = GetTemplateChild(LayeredPathCanvas) as Canvas;
 		}
 
 		// Updates paths and layers
@@ -64,7 +75,7 @@ namespace Files.App.Controls
 			if (_filledViewBox == null)
 				return;
 
-			SetPathData(FilledIconPath, FilledIconData ?? string.Empty, _filledViewBox );
+			SetPathData(FilledIconPath, FilledIconData ?? string.Empty, _filledViewBox);
 		}
 
 		private void OnOutlineIconChanged()
@@ -73,16 +84,16 @@ namespace Files.App.Controls
 			if (_outlineViewBox == null)
 				return;
 
-			SetPathData(OutlineIconPath, OutlineIconData ?? string.Empty, _outlineViewBox );
+			SetPathData(OutlineIconPath, OutlineIconData ?? string.Empty, _outlineViewBox);
 		}
 
 		private void OnLayeredIconChanged()
 		{
 			// Updates Layered Icon from it's Layers
-			if ( _layeredViewBox == null ||
+			if (_layeredViewBox == null ||
 				 _layeredCanvas == null ||
 				 Layers is not ICollection<ThemedIconLayer> layers)
-				 return;
+				return;
 
 			_layeredCanvas.Children.Clear();
 

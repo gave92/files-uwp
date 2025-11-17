@@ -407,17 +407,17 @@ namespace Files.App.Data.Factories
 					ShowItem = itemsSelected && showOpenItemWith
 				},
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenFileLocation).Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewTabAction)
+				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewTab)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewTab && Commands.OpenInNewTabAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewTab && Commands.OpenInNewTab.IsExecutable
 				}.Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewWindowAction)
+				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewWindow)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewWindow && Commands.OpenInNewWindowAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewWindow && Commands.OpenInNewWindow.IsExecutable
 				}.Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewPaneAction)
+				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewPane)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewPane && Commands.OpenInNewPaneAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewPane && Commands.OpenInNewPane.IsExecutable
 				}.Build(),
 				new ContextMenuFlyoutItemViewModel()
 				{
@@ -457,14 +457,17 @@ namespace Files.App.Data.Factories
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.CutItem)
 				{
 					IsPrimary = true,
+					AccessKey="X"
 				}.Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.CopyItem)
 				{
 					IsPrimary = true,
+					AccessKey="C"
 				}.Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.PasteItemToSelection)
 				{
 					IsPrimary = true,
+					AccessKey="V",
 					IsVisible = true,
 				}.Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.PasteItemAsShortcut).Build(),
@@ -493,11 +496,13 @@ namespace Files.App.Data.Factories
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.Rename)
 				{
 					IsPrimary = true,
+					AccessKey="M",
 					IsVisible = itemsSelected
 				}.Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.ShareItem)
 				{
-					IsPrimary = true
+					IsPrimary = true,
+					AccessKey = "H"
 				}.Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(ModifiableCommands.DeleteItem)
 				{
@@ -507,6 +512,7 @@ namespace Files.App.Data.Factories
 				new ContextMenuFlyoutItemViewModelBuilder(ModifiableCommands.OpenProperties)
 				{
 					IsPrimary = true,
+					AccessKey="O",
 					IsVisible = ModifiableCommands.OpenProperties.IsExecutable
 				}.Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenParentFolder).Build(),
@@ -606,14 +612,16 @@ namespace Files.App.Data.Factories
 				new ContextMenuFlyoutItemViewModel()
 				{
 					ItemType = ContextMenuFlyoutItemType.Separator,
-					ShowItem = (!itemsSelected && Commands.OpenTerminal.IsExecutable) ||
-						(areAllItemsFolders && Commands.OpenTerminal.IsExecutable) ||
+					ShowItem = (!itemsSelected && Commands.OpenTerminal.IsExecutable && UserSettingsService.GeneralSettingsService.ShowOpenTerminal) ||
+						(areAllItemsFolders && Commands.OpenTerminal.IsExecutable && UserSettingsService.GeneralSettingsService.ShowOpenTerminal) ||
 						Commands.OpenStorageSense.IsExecutable ||
 						Commands.FormatDrive.IsExecutable
 				},
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenTerminal)
 				{
-					IsVisible = (!itemsSelected && Commands.OpenTerminal.IsExecutable) || (areAllItemsFolders && Commands.OpenTerminal.IsExecutable)
+					IsVisible = (!itemsSelected || areAllItemsFolders) &&
+						Commands.OpenTerminal.IsExecutable &&
+						UserSettingsService.GeneralSettingsService.ShowOpenTerminal
 				}.Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenStorageSense).Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.FormatDrive).Build(),

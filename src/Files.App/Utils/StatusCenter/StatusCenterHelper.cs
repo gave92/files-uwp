@@ -611,7 +611,7 @@ namespace Files.App.Utils.StatusCenter
 				false);
 		}
 
-		public static void UpdateCardStrings(StatusCenterItem card)
+		public static void UpdateCardStrings(StatusCenterItem card, StatusCenterItemProgressModel? progressValue = null)
 		{
 			// Aren't used for now
 			string sourcePath = string.Empty;
@@ -640,218 +640,119 @@ namespace Files.App.Utils.StatusCenter
 				destinationDirName = destinationPath.Split('\\').Last();
 			}
 
-			string headerString = string.IsNullOrWhiteSpace(card.HeaderStringResource) ? string.Empty : card.HeaderStringResource.GetLocalizedResource();
-			string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty : card.SubHeaderStringResource.GetLocalizedResource();
-
 			// Update string resources
 			switch (card.Operation)
 			{
 				case FileOperationType.Copy:
 					{
-						if (headerString is not null)
-						{
-							card.Header = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.Success => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.Failed => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.InProgress => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								_ => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-							};
-						}
-						if (subHeaderString is not null)
-						{
-							card.SubHeader = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.Success => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.Failed => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.InProgress => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								_ => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-							};
-						}
+						string headerResource = card.HeaderStringResource;
+
+						if (card.IsDiscovering && card.TotalItemsCount > 0 && card.IsInProgress)
+							headerResource = "StatusCenter_CopyDiscovery_Header";
+
+						if (string.IsNullOrWhiteSpace(headerResource))
+							card.Header = string.Empty;
+						else if (headerResource == "StatusCenter_CopyDiscovery_Header")
+							card.Header = headerResource.GetLocalizedFormatResource(card.TotalItemsCount);
+						else
+							card.Header = headerResource.GetLocalizedFormatResource(card.TotalItemsCount, destinationDirName);
+
+						string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty
+							: card.SubHeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, sourcePath, destinationPath);
+						card.SubHeader = subHeaderString;
 						break;
 					}
 				case FileOperationType.Move:
 					{
-						if (headerString is not null)
-						{
-							card.Header = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.Success => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.Failed => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.InProgress => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								_ => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-							};
-						}
-						if (subHeaderString is not null)
-						{
-							card.SubHeader = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.Success => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.Failed => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.InProgress => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								_ => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-							};
-						}
+						string headerResource = card.HeaderStringResource;
+
+						if (card.IsDiscovering && card.TotalItemsCount > 0 && card.IsInProgress)
+							headerResource = "StatusCenter_CopyDiscovery_Header";
+
+						if (string.IsNullOrWhiteSpace(headerResource))
+							card.Header = string.Empty;
+						else if (headerResource == "StatusCenter_CopyDiscovery_Header")
+							card.Header = headerResource.GetLocalizedFormatResource(card.TotalItemsCount);
+						else
+							card.Header = headerResource.GetLocalizedFormatResource(card.TotalItemsCount, destinationDirName);
+
+						string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty
+							: card.SubHeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, sourcePath, destinationPath);
+						card.SubHeader = subHeaderString;
 						break;
 					}
 				case FileOperationType.Delete:
 					{
-						if (headerString is not null)
-						{
-							card.Header = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-								ReturnResult.Success => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-								ReturnResult.Failed => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-								ReturnResult.InProgress => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-								_ => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-							};
-						}
-						if (subHeaderString is not null)
-						{
-							card.SubHeader = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.Success => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.Failed => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.InProgress => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								_ => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-							};
-						}
+						string headerResource = card.HeaderStringResource;
+
+						if (card.IsDiscovering && card.TotalItemsCount > 0 && card.IsInProgress)
+							headerResource = "StatusCenter_CopyDiscovery_Header";
+
+						if (string.IsNullOrWhiteSpace(headerResource))
+							card.Header = string.Empty;
+						else if (headerResource == "StatusCenter_CopyDiscovery_Header")
+							card.Header = headerResource.GetLocalizedFormatResource(card.TotalItemsCount);
+						else
+							card.Header = headerResource.GetLocalizedFormatResource(card.TotalItemsCount, sourceDirName);
+
+						string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty
+							: card.SubHeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, sourcePath);
+						card.SubHeader = subHeaderString;
 						break;
 					}
 				case FileOperationType.Recycle:
 					{
-						if (headerString is not null)
-						{
-							card.Header = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-								ReturnResult.Success => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-								ReturnResult.Failed => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-								ReturnResult.InProgress => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-								_ => string.Format(headerString, card.TotalItemsCount, sourceDirName),
-							};
-						}
-						if (subHeaderString is not null)
-						{
-							card.SubHeader = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.Success => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.Failed => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.InProgress => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								_ => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-							};
-						}
+						string headerString = string.IsNullOrWhiteSpace(card.HeaderStringResource) ? string.Empty
+							: card.HeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, sourceDirName);
+						card.Header = headerString;
+
+						string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty
+							: card.SubHeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, sourcePath);
+						card.SubHeader = subHeaderString;
 						break;
 					}
 				case FileOperationType.Extract:
 					{
-						if (headerString is not null)
-						{
-							card.Header = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(headerString, sourceFileName, destinationDirName),
-								ReturnResult.Success => string.Format(headerString, sourceFileName, destinationDirName),
-								ReturnResult.Failed => string.Format(headerString, sourceFileName, destinationDirName),
-								ReturnResult.InProgress => string.Format(headerString, sourceFileName, destinationDirName),
-								_ => string.Format(headerString, sourceFileName, destinationDirName),
-							};
-						}
-						if (subHeaderString is not null)
-						{
-							card.SubHeader = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(subHeaderString, sourceFileName, sourcePath, destinationPath),
-								ReturnResult.Success => string.Format(subHeaderString, sourceFileName, sourcePath, destinationPath),
-								ReturnResult.Failed => string.Format(subHeaderString, sourceFileName, sourcePath, destinationPath),
-								ReturnResult.InProgress => string.Format(subHeaderString, sourceFileName, sourcePath, destinationPath),
-								_ => string.Format(subHeaderString, sourceFileName, sourcePath, destinationPath),
-							};
-						}
+						string headerString = string.IsNullOrWhiteSpace(card.HeaderStringResource) ? string.Empty
+							: card.HeaderStringResource.GetLocalizedFormatResource(sourceFileName, destinationDirName);
+						card.Header = headerString;
+
+						string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty
+							: card.SubHeaderStringResource.GetLocalizedFormatResource(sourceFileName, sourcePath, destinationPath);
+						card.SubHeader = subHeaderString;
 						break;
 					}
 				case FileOperationType.Compressed:
 					{
-						if (headerString is not null)
-						{
-							card.Header = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.Success => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.Failed => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								ReturnResult.InProgress => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-								_ => string.Format(headerString, card.TotalItemsCount, destinationDirName),
-							};
-						}
-						if (subHeaderString is not null)
-						{
-							card.SubHeader = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.Success => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.Failed => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.InProgress => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								_ => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-							};
-						}
+						string headerString = string.IsNullOrWhiteSpace(card.HeaderStringResource) ? string.Empty
+							: card.HeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, destinationDirName);
+						card.Header = headerString;
+
+						string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty
+							: card.SubHeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, sourcePath, destinationPath);
+						card.SubHeader = subHeaderString;
 						break;
 					}
 				case FileOperationType.GitClone:
 					{
-						if (headerString is not null)
-						{
-							card.Header = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(headerString, sourcePath, destinationDirName),
-								ReturnResult.Success => string.Format(headerString, sourcePath, destinationDirName),
-								ReturnResult.Failed => string.Format(headerString, sourcePath, destinationDirName),
-								ReturnResult.InProgress => string.Format(headerString, sourcePath, destinationDirName),
-								_ => string.Format(headerString, sourcePath, destinationDirName),
-							};
-						}
-						if (subHeaderString is not null)
-						{
-							card.SubHeader = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.Success => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.Failed => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								ReturnResult.InProgress => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-								_ => string.Format(subHeaderString, card.TotalItemsCount, sourcePath, destinationPath),
-							};
-						}
+						string headerString = string.IsNullOrWhiteSpace(card.HeaderStringResource) ? string.Empty
+							: card.HeaderStringResource.GetLocalizedFormatResource(sourcePath, destinationDirName);
+						card.Header = headerString;
+
+						string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty
+							: card.SubHeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, sourcePath, destinationPath);
+						card.SubHeader = subHeaderString;
 						break;
 					}
 				case FileOperationType.InstallFont:
 					{
-						if (headerString is not null)
-						{
-							card.Header = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(headerString, card.TotalItemsCount),
-								ReturnResult.Success => string.Format(headerString, card.TotalItemsCount),
-								ReturnResult.Failed => string.Format(headerString, card.TotalItemsCount),
-								ReturnResult.InProgress => string.Format(headerString, card.TotalItemsCount),
-								_ => string.Format(headerString, card.TotalItemsCount),
-							};
-						}
-						if (subHeaderString is not null)
-						{
-							card.SubHeader = card.FileSystemOperationReturnResult switch
-							{
-								ReturnResult.Cancelled => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.Success => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.Failed => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								ReturnResult.InProgress => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-								_ => string.Format(subHeaderString, card.TotalItemsCount, sourcePath),
-							};
-						}
+						string headerString = string.IsNullOrWhiteSpace(card.HeaderStringResource) ? string.Empty
+							: card.HeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount);
+						card.Header = headerString;
+
+						string subHeaderString = string.IsNullOrWhiteSpace(card.SubHeaderStringResource) ? string.Empty
+							: card.SubHeaderStringResource.GetLocalizedFormatResource(card.TotalItemsCount, sourcePath);
+						card.SubHeader = subHeaderString;
 						break;
 					}
 			}

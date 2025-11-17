@@ -39,7 +39,7 @@ namespace Files.App.ViewModels.Settings
 
 			Themes =
 			[
-				Strings.Default.GetLocalizedResource(),
+				Strings.UseSystemSetting.GetLocalizedResource(),
 				Strings.LightTheme.GetLocalizedResource(),
 				Strings.DarkTheme.GetLocalizedResource()
 			];
@@ -94,6 +94,7 @@ namespace Files.App.ViewModels.Settings
 		{
 			string[] extensions =
 			[
+				Strings.ImageFiles.GetLocalizedResource(), "*.bmp;*.dib;*.jpg;*.jpeg;*.jpe;*.jfif;*.gif;*.tif;*.tiff;*.png;*.heic;*.hif;*.webp",
 				Strings.BitmapFiles.GetLocalizedResource(), "*.bmp;*.dib",
 				"JPEG", "*.jpg;*.jpeg;*.jpe;*.jfif",
 				"GIF", "*.gif",
@@ -295,6 +296,20 @@ namespace Files.App.ViewModels.Settings
 			}
 		}
 
+		public bool ShowStatusBar
+		{
+			get => UserSettingsService.AppearanceSettingsService.ShowStatusBar;
+			set
+			{
+				if (value != UserSettingsService.AppearanceSettingsService.ShowStatusBar)
+				{
+					UserSettingsService.AppearanceSettingsService.ShowStatusBar = value;
+
+					OnPropertyChanged();
+				}
+			}
+		}
+
 		public bool ShowTabActions
 		{
 			get => UserSettingsService.AppearanceSettingsService.ShowTabActions;
@@ -303,20 +318,6 @@ namespace Files.App.ViewModels.Settings
 				if (value != UserSettingsService.AppearanceSettingsService.ShowTabActions)
 				{
 					UserSettingsService.AppearanceSettingsService.ShowTabActions = value;
-
-					OnPropertyChanged();
-				}
-			}
-		}
-
-		public bool ShowHomeButton
-		{
-			get => UserSettingsService.AppearanceSettingsService.ShowHomeButton;
-			set
-			{
-				if (value != UserSettingsService.AppearanceSettingsService.ShowHomeButton)
-				{
-					UserSettingsService.AppearanceSettingsService.ShowHomeButton = value;
 
 					OnPropertyChanged();
 				}

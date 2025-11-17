@@ -3,6 +3,7 @@
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed partial class ToggleShelfPaneAction : ObservableObject, IToggleAction
 	{
 		private readonly IGeneralSettingsService generalSettingsService = Ioc.Default.GetRequiredService<IGeneralSettingsService>();
@@ -23,7 +24,7 @@ namespace Files.App.Actions
 		// TODO Remove IsExecutable when shelf feature is ready
 		public bool IsExecutable
 			=> AppLifecycleHelper.AppEnvironment is AppEnvironment.Dev;
-		
+
 		public bool IsOn
 			=> generalSettingsService.ShowShelfPane;
 

@@ -3,6 +3,7 @@
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed partial class SearchAction : ObservableObject, IAction
 	{
 		private readonly IContentPageContext context;
@@ -20,10 +21,10 @@ namespace Files.App.Actions
 			=> new(Keys.F3);
 
 		public RichGlyph Glyph
-			=> new();
+			=> new(themedIconStyle: "App.ThemedIcons.Omnibar.Search");
 
 		public bool IsExecutable
-			=> !context.IsSearchBoxVisible;
+			=> context.ShellPage is not null;
 
 		public SearchAction()
 		{
@@ -34,7 +35,11 @@ namespace Files.App.Actions
 
 		public Task ExecuteAsync(object? parameter = null)
 		{
-			context.ShellPage!.ToolbarViewModel.SwitchToSearchMode();
+			// Check if ShellPage is available before executing the action
+			if (context.ShellPage is null)
+				return Task.CompletedTask;
+
+			context.ShellPage.ToolbarViewModel.SwitchToSearchMode();
 
 			return Task.CompletedTask;
 		}
@@ -43,7 +48,7 @@ namespace Files.App.Actions
 		{
 			switch (e.PropertyName)
 			{
-				case nameof(IContentPageContext.IsSearchBoxVisible):
+				case nameof(IContentPageContext.ShellPage):
 					OnPropertyChanged(nameof(IsExecutable));
 					break;
 			}

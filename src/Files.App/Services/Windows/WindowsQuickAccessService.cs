@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Files Community
 // Licensed under the MIT License.
 
-using Files.App.Utils.Shell;
-using Files.App.UserControls.Widgets;
-using Files.App.Helpers;
-
 namespace Files.App.Services
 {
 	internal sealed class QuickAccessService : IQuickAccessService
@@ -99,13 +95,15 @@ namespace Files.App.Services
 			if (Equals(items, App.QuickAccessManager.Model.PinnedFolders.ToArray()))
 				return;
 
-			App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = false;
+			if (App.QuickAccessManager.PinnedItemsWatcher is not null)
+				App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = false;
 
 			// Unpin every item that is below this index and then pin them all in order
 			await UnpinFromSidebarAsync([], false);
 
 			await PinToSidebarAsync(items, false);
-			App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = true;
+			if (App.QuickAccessManager.PinnedItemsWatcher is not null)
+				App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = true;
 
 			App.QuickAccessManager.UpdateQuickAccessWidget?.Invoke(this, new ModifyQuickAccessEventArgs(items, true)
 			{

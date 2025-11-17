@@ -6,7 +6,7 @@ using Microsoft.UI.Xaml.Input;
 namespace Files.App.Controls
 {
 	[DebuggerDisplay("{" + nameof(ToString) + "(),nq}")]
-	public partial class OmnibarMode : Control
+	public partial class OmnibarMode : ItemsControl
 	{
 		// Constants
 
@@ -16,13 +16,15 @@ namespace Files.App.Controls
 
 		private WeakReference<Omnibar>? _ownerRef;
 
-		private Border _modeButton = null!;
+		private Button _modeButton = null!;
 
 		// Constructor
 
 		public OmnibarMode()
 		{
 			DefaultStyleKey = typeof(OmnibarMode);
+
+			GlobalHelper.WriteDebugStringForOmnibar($"Omnibar Mode ({this}) has been initialized.");
 		}
 
 		// Methods
@@ -31,14 +33,23 @@ namespace Files.App.Controls
 		{
 			base.OnApplyTemplate();
 
-			_modeButton = GetTemplateChild(TemplatePartName_ModeButton) as Border
+			_modeButton = GetTemplateChild(TemplatePartName_ModeButton) as Button
 				?? throw new MissingFieldException($"Could not find {TemplatePartName_ModeButton} in the given {nameof(OmnibarMode)}'s style.");
-			
+
+			RegisterPropertyChangedCallback(ItemsSourceProperty, (d, dp) =>
+			{
+				if (_ownerRef is not null && _ownerRef.TryGetTarget(out var owner))
+					owner.TryToggleIsSuggestionsPopupOpen(true);
+			});
+
 			Loaded += OmnibarMode_Loaded;
 			_modeButton.PointerEntered += ModeButton_PointerEntered;
 			_modeButton.PointerPressed += ModeButton_PointerPressed;
 			_modeButton.PointerReleased += ModeButton_PointerReleased;
 			_modeButton.PointerExited += ModeButton_PointerExited;
+			_modeButton.Click += ModeButton_Click;
+
+			GlobalHelper.WriteDebugStringForOmnibar($"The template and the events of the Omnibar Mode ({this}) have been initialized.");
 		}
 
 		protected override void OnKeyUp(KeyRoutedEventArgs args)
@@ -66,11 +77,24 @@ namespace Files.App.Controls
 			}
 		}
 
+		protected override void OnItemsChanged(object e)
+		{
+			base.OnItemsChanged(e);
+
+			if (_ownerRef is not null && _ownerRef.TryGetTarget(out var owner))
+				owner.TryToggleIsSuggestionsPopupOpen(true);
+		}
+
 		private void OmnibarMode_Loaded(object sender, RoutedEventArgs e)
 		{
 			// Set this mode as the current mode if it is the default mode
 			if (IsDefault && _ownerRef is not null && _ownerRef.TryGetTarget(out var owner))
-				owner.CurrentSelectedMode = this;
+			{
+				DispatcherQueue.TryEnqueue(() =>
+				{
+					owner.CurrentSelectedMode = this;
+				});
+			}
 		}
 
 		public void SetOwner(Omnibar owner)
@@ -80,7 +104,7 @@ namespace Files.App.Controls
 
 		public override string ToString()
 		{
-			return ModeName ?? string.Empty;
+			return Name ?? string.Empty;
 		}
 	}
 }

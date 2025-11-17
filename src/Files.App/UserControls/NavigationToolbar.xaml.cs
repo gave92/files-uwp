@@ -6,11 +6,12 @@ using Files.App.Controls;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.AI.Actions.Hosting;
 using Windows.System;
+using Windows.UI.Core;
 
 namespace Files.App.UserControls
 {
@@ -22,6 +23,7 @@ namespace Files.App.UserControls
 		private readonly MainPageViewModel MainPageViewModel = Ioc.Default.GetRequiredService<MainPageViewModel>();
 		private readonly ICommandManager Commands = Ioc.Default.GetRequiredService<ICommandManager>();
 		private readonly StatusCenterViewModel OngoingTasksViewModel = Ioc.Default.GetRequiredService<StatusCenterViewModel>();
+		private readonly IContentPageContext ContentPageContext = Ioc.Default.GetRequiredService<IContentPageContext>();
 
 		// Properties
 
@@ -33,9 +35,6 @@ namespace Files.App.UserControls
 
 		[GeneratedDependencyProperty]
 		public partial bool ShowSettingsButton { get; set; }
-
-		[GeneratedDependencyProperty]
-		public partial bool ShowSearchBox { get; set; }
 
 		[GeneratedDependencyProperty]
 		public partial NavigationToolbarViewModel ViewModel { get; set; }
@@ -55,80 +54,6 @@ namespace Files.App.UserControls
 			if (OngoingTasksViewModel is not null)
 				OngoingTasksViewModel.NewItemAdded += OngoingTasksActions_ProgressBannerPosted;
 		}
-
-		private void VisiblePath_Loaded(object _, RoutedEventArgs e)
-		{
-			// AutoSuggestBox won't receive focus unless it's fully loaded
-			VisiblePath.Focus(FocusState.Programmatic);
-
-			if (DependencyObjectHelpers.FindChild<TextBox>(VisiblePath) is TextBox textBox)
-			{
-				if (textBox.Text.StartsWith(">"))
-					textBox.Select(1, textBox.Text.Length - 1);
-				else
-					textBox.SelectAll();
-			}
-		}
-
-		private void ManualPathEntryItem_Click(object _, PointerRoutedEventArgs e)
-		{
-			if (e.Pointer.PointerDeviceType is PointerDeviceType.Mouse)
-			{
-				var ptrPt = e.GetCurrentPoint(NavToolbar);
-				if (ptrPt.Properties.IsMiddleButtonPressed)
-					return;
-			}
-			ViewModel.IsEditModeEnabled = true;
-		}
-
-		private async void VisiblePath_KeyDown(object _, KeyRoutedEventArgs e)
-		{
-			if (e.Key is VirtualKey.Escape)
-				ViewModel.IsEditModeEnabled = false;
-
-			if (e.Key is VirtualKey.Tab)
-			{
-				ViewModel.IsEditModeEnabled = false;
-				// Delay to ensure clickable path is ready to be focused
-				await Task.Delay(10);
-				ClickablePath.Focus(FocusState.Keyboard);
-			}
-		}
-		private void VisiblePath_LostFocus(object _, RoutedEventArgs e)
-		{
-			if (App.AppModel.IsMainWindowClosed)
-				return;
-
-			var element = Microsoft.UI.Xaml.Input.FocusManager.GetFocusedElement(MainWindow.Instance.Content.XamlRoot);
-			if (element is FlyoutBase or AppBarButton or Popup)
-				return;
-
-			if (element is not Control control)
-			{
-				if (ViewModel.IsEditModeEnabled)
-					ViewModel.IsEditModeEnabled = false;
-				return;
-			}
-
-			if (control.FocusState is not FocusState.Programmatic and not FocusState.Keyboard)
-				ViewModel.IsEditModeEnabled = false;
-			else if (ViewModel.IsEditModeEnabled)
-				VisiblePath.Focus(FocusState.Programmatic);
-		}
-
-		private void SearchRegion_OnGotFocus(object sender, RoutedEventArgs e) => ViewModel.SearchRegion_GotFocus(sender, e);
-		private void SearchRegion_LostFocus(object sender, RoutedEventArgs e) => ViewModel.SearchRegion_LostFocus(sender, e);
-		private void SearchRegion_AccessKeyInvoked(UIElement sender, AccessKeyInvokedEventArgs args)
-		{
-			// Suppress access key invocation if any dialog is open
-			if (VisualTreeHelper.GetOpenPopupsForXamlRoot(MainWindow.Instance.Content.XamlRoot).Any())
-				args.Handled = true;
-			else
-				sender.Focus(FocusState.Keyboard);
-		}
-
-		private void VisiblePath_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-			=> ViewModel.VisiblePath_QuerySubmitted(sender, args);
 
 		private void OngoingTasksActions_ProgressBannerPosted(object? _, StatusCenterItem e)
 		{
@@ -244,41 +169,81 @@ namespace Files.App.UserControls
 			}
 		}
 
-		private void ClickablePath_GettingFocus(UIElement sender, GettingFocusEventArgs args)
-		{
-			if (args.InputDevice != FocusInputDeviceKind.Keyboard)
-				return;
-
-			var previousControl = args.OldFocusedElement as FrameworkElement;
-			if (previousControl?.Name == nameof(HomeButton) || previousControl?.Name == nameof(Refresh))
-				ViewModel.IsEditModeEnabled = true;
-		}
-
 		private async void Omnibar_QuerySubmitted(Omnibar sender, OmnibarQuerySubmittedEventArgs args)
 		{
-			if (Omnibar.CurrentSelectedMode == OmnibarPathMode)
+			var mode = Omnibar.CurrentSelectedMode;
+
+			// Path mode
+			if (mode == OmnibarPathMode)
 			{
 				await ViewModel.HandleItemNavigationAsync(args.Text);
+				ContentPageContext.ShellPage!.PaneHolder.FocusActivePane();
+				return;
 			}
-			else if (Omnibar.CurrentSelectedMode == OmnibarCommandPaletteMode)
-			{
-				if (args.Item is not NavigationBarSuggestionItem item || item.Text is not { } commandText)
-					return;
 
-				var command = Commands[commandText];
-				if (command == Commands.None)
-					await DialogDisplayHelper.ShowDialogAsync(Strings.InvalidCommand.GetLocalizedResource(),
-						string.Format(Strings.InvalidCommandContent.GetLocalizedResource(), commandText));
-				else if (!command.IsExecutable)
-					await DialogDisplayHelper.ShowDialogAsync(Strings.CommandNotExecutable.GetLocalizedResource(),
-						string.Format(Strings.CommandNotExecutableContent.GetLocalizedResource(), command.Code));
-				else
+			// Command palette mode
+			else if (mode == OmnibarCommandPaletteMode)
+			{
+				var item = args.Item as NavigationBarSuggestionItem;
+
+				// Try invoking built-in command
+				foreach (var command in Commands)
+				{
+					if (command == Commands.None)
+						continue;
+
+					if (!string.Equals(command.Description, item?.Text, StringComparison.OrdinalIgnoreCase) &&
+						!string.Equals(command.Description, args.Text, StringComparison.OrdinalIgnoreCase))
+						continue;
+
 					await command.ExecuteAsync();
+					ContentPageContext.ShellPage!.PaneHolder.FocusActivePane();
+					return;
+				}
 
-				ViewModel.OmnibarCurrentSelectedMode = OmnibarPathMode;
+				// Try invoking Windows app action
+				if (ActionManager.Instance.ActionRuntime is not null && item?.ActionInstance is ActionInstance actionInstance)
+				{
+					// Workaround for https://github.com/microsoft/App-Actions-On-Windows-Samples/issues/7
+					var action = ActionManager.Instance.ActionRuntime.ActionCatalog.GetAllActions()
+						.FirstOrDefault(a => a.Id == actionInstance.Context.ActionId);
+
+					if (action is not null)
+					{
+						var overload = action.GetOverloads().FirstOrDefault();
+						await overload?.InvokeAsync(actionInstance.Context);
+					}
+
+					ContentPageContext.ShellPage!.PaneHolder.FocusActivePane();
+					return;
+				}
+
+				await DialogDisplayHelper.ShowDialogAsync(Strings.InvalidCommand.GetLocalizedResource(),
+					string.Format(Strings.InvalidCommandContent.GetLocalizedResource(), args.Text));
+
+				ContentPageContext.ShellPage!.PaneHolder.FocusActivePane();
+				return;
 			}
-			else if (Omnibar.CurrentSelectedMode == OmnibarSearchMode)
+
+			// Search mode
+			else if (mode == OmnibarSearchMode)
 			{
+				var shellPage = ContentPageContext.ShellPage;
+
+				if (args.Item is SuggestionModel item && !string.IsNullOrWhiteSpace(item.ItemPath) && shellPage is not null)
+					await NavigationHelpers.OpenPath(item.ItemPath, shellPage);
+				else
+				{
+					var searchQuery = args.Item is SuggestionModel x && !string.IsNullOrWhiteSpace(x.Name)
+						? x.Name
+						: args.Text;
+
+					shellPage?.SubmitSearch(searchQuery); // use the resolved shellPage for consistency
+					ViewModel.SaveSearchQueryToList(searchQuery);
+				}
+
+				ContentPageContext.ShellPage!.PaneHolder.FocusActivePane();
+				return;
 			}
 		}
 
@@ -289,14 +254,15 @@ namespace Files.App.UserControls
 
 			if (Omnibar.CurrentSelectedMode == OmnibarPathMode)
 			{
-				await ViewModel.PopulateOmnibarSuggestionsForPathMode();
+				await DispatcherQueue.EnqueueOrInvokeAsync(ViewModel.PopulateOmnibarSuggestionsForPathMode);
 			}
 			else if (Omnibar.CurrentSelectedMode == OmnibarCommandPaletteMode)
 			{
-				ViewModel.PopulateOmnibarSuggestionsForCommandPaletteMode();
+				await DispatcherQueue.EnqueueOrInvokeAsync(ViewModel.PopulateOmnibarSuggestionsForCommandPaletteMode);
 			}
 			else if (Omnibar.CurrentSelectedMode == OmnibarSearchMode)
 			{
+				await DispatcherQueue.EnqueueOrInvokeAsync(ViewModel.PopulateOmnibarSuggestionsForSearchMode);
 			}
 		}
 
@@ -308,12 +274,18 @@ namespace Files.App.UserControls
 				return;
 			}
 
+			// Validate index before accessing the collection
+			if (args.Index < 0 || args.Index >= ViewModel.PathComponents.Count)
+				return;
+
 			// Navigation to the current folder should not happen
 			if (args.Index == ViewModel.PathComponents.Count - 1 ||
 				ViewModel.PathComponents[args.Index].Path is not { } path)
 				return;
 
-			await ViewModel.HandleFolderNavigationAsync(path);
+			// If user clicked the item with middle mouse button, open it in new tab
+			var openInNewTab = args.PointerRoutedEventArgs?.GetCurrentPoint(null).Properties.PointerUpdateKind is PointerUpdateKind.MiddleButtonReleased;
+			await ViewModel.HandleFolderNavigationAsync(path, openInNewTab);
 		}
 
 		private async void BreadcrumbBar_ItemDropDownFlyoutOpening(object sender, BreadcrumbBarItemDropDownFlyoutEventArgs e)
@@ -389,6 +361,111 @@ namespace Files.App.UserControls
 		{
 			// Clear the flyout items to save memory
 			e.Flyout.Items.Clear();
+		}
+
+		/// <summary>
+		/// Handles mode changes in the Omnibar control. This event can fire even when the Omnibar
+		/// already has focus (e.g., user switching from Command Palette to Search mode).
+		/// Updates the appropriate text property and populates suggestions based on the new mode.
+		/// </summary>
+		private async void Omnibar_ModeChanged(object sender, OmnibarModeChangedEventArgs e)
+		{
+			if (e.NewMode == OmnibarPathMode)
+			{
+				// Initialize with current working directory or fallback to home path
+				ViewModel.PathText = string.IsNullOrEmpty(ContentPageContext.ShellPage?.ShellViewModel?.WorkingDirectory)
+					? Constants.UserEnvironmentPaths.HomePath
+					: ContentPageContext.ShellPage.ShellViewModel.WorkingDirectory;
+
+				await DispatcherQueue.EnqueueOrInvokeAsync(ViewModel.PopulateOmnibarSuggestionsForPathMode);
+			}
+			else if (e.NewMode == OmnibarCommandPaletteMode)
+			{
+				// Clear text and load command suggestions
+				ViewModel.OmnibarCommandPaletteModeText = string.Empty;
+
+				await DispatcherQueue.EnqueueOrInvokeAsync(ViewModel.PopulateOmnibarSuggestionsForCommandPaletteMode);
+			}
+			else if (e.NewMode == OmnibarSearchMode)
+			{
+				// Preserve existing search query or clear for new search
+				if (!ViewModel.InstanceViewModel.IsPageTypeSearchResults)
+					ViewModel.OmnibarSearchModeText = string.Empty;
+				else
+					ViewModel.OmnibarSearchModeText = ViewModel.InstanceViewModel.CurrentSearchQuery;
+
+				await DispatcherQueue.EnqueueOrInvokeAsync(ViewModel.PopulateOmnibarSuggestionsForSearchMode);
+			}
+		}
+
+		/// <summary>
+		/// Handles focus state changes for the Omnibar control.
+		/// When focused: Updates Path Mode content (Path Mode has both focused/unfocused states).
+		/// When unfocused: Automatically switches back to Path Mode to display the BreadcrumbBar.
+		/// </summary>
+		private async void Omnibar_IsFocusedChanged(Omnibar sender, OmnibarIsFocusedChangedEventArgs args)
+		{
+			if (args.IsFocused)
+			{
+				// Path Mode needs special handling when gaining focus since it has an unfocused state
+				if (Omnibar.CurrentSelectedMode == OmnibarPathMode)
+				{
+					ViewModel.PathText = string.IsNullOrEmpty(ContentPageContext.ShellPage?.ShellViewModel?.WorkingDirectory)
+						? Constants.UserEnvironmentPaths.HomePath
+						: ContentPageContext.ShellPage.ShellViewModel.WorkingDirectory;
+
+					await DispatcherQueue.EnqueueOrInvokeAsync(ViewModel.PopulateOmnibarSuggestionsForPathMode);
+				}
+			}
+			else
+			{
+				// When Omnibar loses focus, revert to Path Mode to display BreadcrumbBar
+				Omnibar.CurrentSelectedMode = OmnibarPathMode;
+			}
+		}
+
+		private async void Omnibar_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+		{
+			if (e.Key is VirtualKey.Escape)
+			{
+				Omnibar.IsFocused = false;
+				ContentPageContext.ShellPage!.PaneHolder.FocusActivePane();
+			}
+			else if (e.Key is VirtualKey.Tab && Omnibar.IsFocused && !InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down))
+			{
+				var currentSelectedMode = Omnibar.CurrentSelectedMode;
+				Omnibar.IsFocused = false;
+				await Task.Delay(15);
+
+				if (currentSelectedMode == OmnibarPathMode)
+					BreadcrumbBar.Focus(FocusState.Keyboard);
+				else if (currentSelectedMode == OmnibarCommandPaletteMode)
+					OmnibarCommandPaletteMode.Focus(FocusState.Keyboard);
+				else if (currentSelectedMode == OmnibarSearchMode)
+					OmnibarSearchMode.Focus(FocusState.Keyboard);
+			}
+		}
+
+		private void NavigationButtonOverflowFlyoutButton_LosingFocus(UIElement sender, LosingFocusEventArgs args)
+		{
+			// Prevent the Omnibar from taking focus if the overflow button is hidden while the button is focused
+			if (args.NewFocusedElement is TextBox)
+				args.Cancel = true;
+		}
+
+		private void BreadcrumbBarItem_DragLeave(object sender, DragEventArgs e)
+		{
+			ViewModel.PathBoxItem_DragLeave(sender, e);
+		}
+
+		private async void BreadcrumbBarItem_DragOver(object sender, DragEventArgs e)
+		{
+			await ViewModel.PathBoxItem_DragOver(sender, e);
+		}
+
+		private async void BreadcrumbBarItem_Drop(object sender, DragEventArgs e)
+		{
+			await ViewModel.PathBoxItem_Drop(sender, e);
 		}
 	}
 }

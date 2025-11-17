@@ -1,7 +1,6 @@
 // Copyright (c) Files Community
 // Licensed under the MIT License.
 
-using CommunityToolkit.WinUI.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
 using System.IO;
@@ -103,7 +102,11 @@ namespace Files.App.Services
 			if (_updatePackages is not null && _updatePackages.Count > 0)
 			{
 				App.Logger.LogInformation("STORE: Update found.");
-				IsUpdateAvailable = true;
+
+				MainWindow.Instance.DispatcherQueue.TryEnqueue(() =>
+				{
+					IsUpdateAvailable = true;
+				});
 			}
 		}
 

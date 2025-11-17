@@ -1,7 +1,6 @@
 // Copyright (c) Files Community
 // Licensed under the MIT License.
 
-using System;
 using System.Reflection;
 
 namespace Files.App.Extensions
@@ -15,7 +14,7 @@ namespace Files.App.Extensions
 				throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
 			}
 
-			return (TEnum)Enum.Parse(typeof(TEnum), text);
+			return Enum.Parse<TEnum>(text);
 		}
 	}
 }

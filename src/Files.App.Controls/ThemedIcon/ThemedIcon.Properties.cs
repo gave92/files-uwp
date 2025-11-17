@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using CommunityToolkit.WinUI;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 
 namespace Files.App.Controls
@@ -97,6 +96,23 @@ namespace Files.App.Controls
 		partial void OnToggleBehaviorChanged(ToggleBehaviors newValue)
 		{
 			UpdateVisualStates();
+		}
+
+		private void OnStylePropertyChanged(DependencyObject sender, DependencyProperty dp)
+		{
+			if (dp != StyleProperty)
+				return;
+
+			DispatcherQueue.TryEnqueue(() =>
+			{
+				GetTemplateParts();
+				OnFilledIconChanged();
+				OnOutlineIconChanged();
+				OnLayeredIconChanged();
+				OnIconTypeChanged();
+				OnIconColorTypeChanged();
+				OnIconSizeChanged();
+			});
 		}
 	}
 }

@@ -3,6 +3,7 @@
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed class InvertSelectionAction : IAction
 	{
 		private readonly IContentPageContext context;
@@ -30,11 +31,8 @@ namespace Files.App.Actions
 				if (page is null)
 					return false;
 
-				bool isCommandPaletteOpen = page.ToolbarViewModel.IsCommandPaletteOpen;
-				bool isEditing = page.ToolbarViewModel.IsEditModeEnabled;
 				bool isRenaming = page.SlimContentPage.IsRenamingItem;
-
-				return isCommandPaletteOpen || (!isEditing && !isRenaming);
+				return !isRenaming;
 			}
 		}
 

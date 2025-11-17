@@ -250,14 +250,6 @@
 				</wctcontrols:SettingsExpander.HeaderIcon>
 
 				<wctcontrols:SettingsExpander.Items>
-					<!--  Show home button  -->
-					<wctcontrols:SettingsCard Header="{helpers:ResourceString Name=ShowHomeButton}">
-						<ToggleSwitch
-							AutomationProperties.AutomationControlType="Custom"
-							AutomationProperties.Name="{helpers:ResourceString Name=ShowHomeButton}"
-							IsOn="{x:Bind ViewModel.ShowHomeButton, Mode=TwoWay}" />
-					</wctcontrols:SettingsCard>
-
 					<!--  Show shelf pane toggle button  -->
 					<wctcontrols:SettingsCard
 						x:Name="ShowShelfPaneSetting"
@@ -280,6 +272,17 @@
 					</wctcontrols:SettingsCard>
 				</wctcontrols:SettingsExpander.Items>
 			</wctcontrols:SettingsExpander>
+
+			<!--  Show Status Bar  -->
+			<wctcontrols:SettingsCard Header="{helpers:ResourceString Name=ShowStatusBar}">
+				<wctcontrols:SettingsCard.HeaderIcon>
+					<PathIcon Data="{StaticResource App.Theme.PathIcon.StatusBar}" />
+				</wctcontrols:SettingsCard.HeaderIcon>
+				<ToggleSwitch
+					AutomationProperties.AutomationControlType="Custom"
+					AutomationProperties.Name="{helpers:ResourceString Name=ShowStatusBar}"
+					IsOn="{x:Bind ViewModel.ShowStatusBar, Mode=TwoWay}" />
+			</wctcontrols:SettingsCard>
 		</StackPanel>
 	</Grid>
 </Page>

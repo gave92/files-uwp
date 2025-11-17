@@ -7,7 +7,6 @@ using System.Collections.Specialized;
 using System.Windows.Input;
 using Windows.System;
 using Windows.UI.Core;
-using OwlCore.Storage;
 
 namespace Files.App.ViewModels.UserControls.Widgets
 {
@@ -102,17 +101,17 @@ namespace Files.App.ViewModels.UserControls.Widgets
 
 			return new List<ContextMenuFlyoutItemViewModel>()
 			{
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewTabFromHomeAction)
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewTabFromHome)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewTab && CommandManager.OpenInNewTabFromHomeAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewTab && CommandManager.OpenInNewTabFromHome.IsExecutable
 				}.Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewWindowFromHomeAction)
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewWindowFromHome)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewWindow && CommandManager.OpenInNewWindowFromHomeAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewWindow && CommandManager.OpenInNewWindowFromHome.IsExecutable
 				}.Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewPaneFromHomeAction)
+				new ContextMenuFlyoutItemViewModelBuilder(CommandManager.OpenInNewPaneFromHome)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewPane && CommandManager.OpenInNewPaneFromHomeAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewPane && CommandManager.OpenInNewPaneFromHome.IsExecutable
 				}.Build(),
 				new()
 				{
@@ -249,7 +248,7 @@ namespace Files.App.ViewModels.UserControls.Widgets
 
 				IsNoNetworkLocations = !Items.Any();
 			});
-		}	
+		}
 
 		// Event methods
 

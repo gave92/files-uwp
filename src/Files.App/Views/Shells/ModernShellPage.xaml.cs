@@ -1,6 +1,7 @@
 // Copyright (c) Files Community
 // Licensed under the MIT License.
 
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
@@ -44,12 +45,21 @@ namespace Files.App.Views.Shells
 			ShellViewModel.PageTypeUpdated += FilesystemViewModel_PageTypeUpdated;
 			ShellViewModel.OnSelectionRequestedEvent += FilesystemViewModel_OnSelectionRequestedEvent;
 			ShellViewModel.GitDirectoryUpdated += FilesystemViewModel_GitDirectoryUpdated;
+			ShellViewModel.FocusFilterHeader += ShellViewModel_FocusFilterHeader;
 
 			ToolbarViewModel.PathControlDisplayText = Strings.Home.GetLocalizedResource();
 			ToolbarViewModel.RefreshWidgetsRequested += ModernShellPage_RefreshWidgetsRequested;
 
 			_navigationInteractionTracker = new NavigationInteractionTracker(this, BackIcon, ForwardIcon);
 			_navigationInteractionTracker.NavigationRequested += OverscrollNavigationRequested;
+		}
+
+		private async void ShellViewModel_FocusFilterHeader(object sender, EventArgs e)
+		{
+			// Delay to ensure the UI is ready for focus
+			await Task.Delay(100);
+			if (FilterTextBox?.IsLoaded ?? false)
+				FilterTextBox.Focus(FocusState.Programmatic);
 		}
 
 		private void ModernShellPage_RefreshWidgetsRequested(object sender, EventArgs e)
@@ -74,7 +84,8 @@ namespace Files.App.Views.Shells
 			{
 				NavPathParam = e.ItemPath,
 				AssociatedTabInstance = this
-			});
+			},
+			new SuppressNavigationTransitionInfo());
 		}
 
 		protected override void OnNavigationParamsChanged()
@@ -142,11 +153,6 @@ namespace Files.App.Views.Shells
 		private async void ItemDisplayFrame_Navigated(object sender, NavigationEventArgs e)
 		{
 			ContentPage = await GetContentOrNullAsync();
-			if (!ToolbarViewModel.SearchBox.WasQuerySubmitted)
-			{
-				ToolbarViewModel.SearchBox.Query = string.Empty;
-				ToolbarViewModel.IsSearchBoxVisible = false;
-			}
 
 			ToolbarViewModel.UpdateAdditionalActions();
 			if (ItemDisplayFrame.CurrentSourcePageType == (typeof(DetailsLayoutPage))
@@ -166,29 +172,14 @@ namespace Files.App.Views.Shells
 
 			if (parameters.IsLayoutSwitch)
 				FilesystemViewModel_DirectoryInfoUpdated(sender, EventArgs.Empty);
+
+			// Update the ShellViewModel with the current working directory
+			// Fixes https://github.com/files-community/Files/issues/17469
+			if (parameters.IsSearchResultPage == false)
+				ShellViewModel.IsSearchResults = false;
+
 			_navigationInteractionTracker.CanNavigateBackward = CanNavigateBackward;
 			_navigationInteractionTracker.CanNavigateForward = CanNavigateForward;
-		}
-
-		private async void KeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-		{
-			args.Handled = true;
-			var tabInstance =
-				CurrentPageType == typeof(DetailsLayoutPage) ||
-				CurrentPageType == typeof(GridLayoutPage);
-
-			var ctrl = args.KeyboardAccelerator.Modifiers.HasFlag(VirtualKeyModifiers.Control);
-			var shift = args.KeyboardAccelerator.Modifiers.HasFlag(VirtualKeyModifiers.Shift);
-			var alt = args.KeyboardAccelerator.Modifiers.HasFlag(VirtualKeyModifiers.Menu);
-
-			switch (c: ctrl, s: shift, a: alt, t: tabInstance, k: args.KeyboardAccelerator.Key)
-			{
-				// Ctrl + V, Paste
-				case (true, false, false, true, VirtualKey.V):
-					if (!ToolbarViewModel.IsEditModeEnabled && !ContentPage.IsRenamingItem && !InstanceViewModel.IsPageTypeSearchResults && !ToolbarViewModel.SearchHasFocus)
-						await UIFilesystemHelpers.PasteItemAsync(ShellViewModel.WorkingDirectory, this);
-					break;
-			}
 		}
 
 		private void OverscrollNavigationRequested(object? sender, OverscrollNavigationEventArgs e)
@@ -288,7 +279,7 @@ namespace Files.App.Views.Shells
 				},
 				new SuppressNavigationTransitionInfo());
 		}
-		
+
 		public override void NavigateToReleaseNotes()
 		{
 			ItemDisplayFrame.Navigate(
@@ -346,6 +337,13 @@ namespace Files.App.Views.Shells
 			}
 
 			ToolbarViewModel.PathControlDisplayText = ShellViewModel.WorkingDirectory;
+		}
+
+		private void FilterTextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+		{
+			if (e.Key is VirtualKey.Escape &&
+				SlimContentPage is BaseGroupableLayoutPage { IsLoaded: true } svb)
+				SlimContentPage.ItemManipulationModel.FocusFileList();
 		}
 	}
 }

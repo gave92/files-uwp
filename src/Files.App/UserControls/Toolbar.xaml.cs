@@ -96,7 +96,7 @@ namespace Files.App.UserControls
 
 				for (ushort index = 0; index < items.Count; ++index)
 				{
-					items[index].AccessKey = (index+1).ToString(format);
+					items[index].AccessKey = (index + 1).ToString(format);
 				}
 			}
 
@@ -107,6 +107,13 @@ namespace Files.App.UserControls
 			// Suppress access key invocation if any dialog is open
 			if (VisualTreeHelper.GetOpenPopupsForXamlRoot(MainWindow.Instance.Content.XamlRoot).Any())
 				args.Handled = true;
+		}
+
+		private void LayoutButton_Click(object sender, RoutedEventArgs e)
+		{
+			// Hide flyout after choosing a layout
+			// Check if LayoutFlyout is not null to handle cases where UI elements are unloaded via x:Load
+			LayoutFlyout?.Hide();
 		}
 	}
 }

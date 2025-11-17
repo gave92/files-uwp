@@ -5,6 +5,7 @@ using Files.App.Dialogs;
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed partial class OpenSettingsAction : BaseUIAction, IAction
 	{
 		private readonly IDialogService dialogService = Ioc.Default.GetRequiredService<IDialogService>();
@@ -19,6 +20,9 @@ namespace Files.App.Actions
 
 		public HotKey HotKey
 			=> new(Keys.OemComma, KeyModifiers.Ctrl);
+
+		public RichGlyph Glyph
+			=> new(themedIconStyle: "App.ThemedIcons.Settings");
 
 		public Task ExecuteAsync(object? parameter = null)
 		{

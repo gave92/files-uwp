@@ -67,7 +67,6 @@
 							FontStretch="{TemplateBinding FontStretch}"
 							FontWeight="{TemplateBinding FontWeight}"
 							Foreground="{TemplateBinding Foreground}"
-							PlaceholderText="{Binding CurrentSelectedMode.PlaceholderText, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
 							ScrollViewer.BringIntoViewOnFocusChange="False"
 							Style="{StaticResource DefaultOmnibarTextBoxStyle}"
 							UseSystemFocusVisuals="{TemplateBinding UseSystemFocusVisuals}" />
@@ -96,11 +95,7 @@
 									MaxHeight="{ThemeResource AutoSuggestListMaxHeight}"
 									Margin="{ThemeResource AutoSuggestListPadding}"
 									IsItemClickEnabled="True"
-									ItemTemplate="{Binding CurrentSelectedMode.SuggestionItemTemplate, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-									ItemsSource="{Binding CurrentSelectedMode.SuggestionItemsSource, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-									SelectionMode="Single">
-									<ListView.ItemContainerTransitions />
-								</ListView>
+									SelectionMode="Single" />
 							</Border>
 						</Popup>
 
@@ -122,9 +117,6 @@
 		<Setter Property="HorizontalContentAlignment" Value="Left" />
 		<Setter Property="VerticalAlignment" Value="Stretch" />
 
-		<Setter Property="IsTabStop" Value="True" />
-		<Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
-
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="local:OmnibarMode">
@@ -132,30 +124,41 @@
 						x:Name="PART_RootGrid"
 						Height="{TemplateBinding Height}"
 						HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-						Background="{TemplateBinding Background}"
-						TabFocusNavigation="Local">
+						Background="{TemplateBinding Background}">
 						<!--  Mode Button  -->
-						<Border
+						<Button
 							x:Name="PART_ModeButton"
 							Width="{StaticResource OmnibarModeDefaultClickAreaWidth}"
-							Height="{TemplateBinding Height}"
+							Height="{StaticResource OmnibarModeDefaultHeight}"
+							Margin="1"
+							AutomationProperties.AccessibilityView="Content"
+							AutomationProperties.Name="{Binding ModeName, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
 							Background="{TemplateBinding Background}"
 							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
+							BorderThickness="0"
 							CornerRadius="{TemplateBinding CornerRadius}"
-							IsTabStop="True"
-							ToolTipService.ToolTip="{Binding ModeName, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-							UseSystemFocusVisuals="{StaticResource UseSystemFocusVisuals}">
-							<Border.BackgroundTransition>
-								<BrushTransition Duration="0:0:0.083" />
-							</Border.BackgroundTransition>
+							ToolTipService.ToolTip="{Binding ModeName, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
+							<Button.Resources>
+								<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SubtleFillColorSecondary}" />
+								<SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{ThemeResource SubtleFillColorTertiary}" />
+							</Button.Resources>
 
-							<ContentPresenter
-								x:Name="PART_ModeButtonIconPresenter"
-								HorizontalAlignment="Center"
-								VerticalAlignment="Center"
-								Content="{Binding IconOnInactive, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
-						</Border>
+							<Grid>
+								<ContentPresenter
+									x:Name="PART_ModeButtonInactiveIconPresenter"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center"
+									Content="{Binding IconOnInactive, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+									Visibility="Visible" />
+
+								<ContentPresenter
+									x:Name="PART_ModeButtonActiveIconPresenter"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center"
+									Content="{Binding IconOnActive, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+									Visibility="Collapsed" />
+							</Grid>
+						</Button>
 
 						<ContentPresenter
 							x:Name="PART_InactiveContent"
@@ -169,15 +172,11 @@
 
 							<VisualStateGroup x:Name="PointerStates">
 								<VisualState x:Name="PointerNormal" />
-								<VisualState x:Name="PointerOver">
-									<VisualState.Setters>
-										<Setter Target="PART_ModeButton.Background" Value="{ThemeResource SubtleFillColorTertiaryBrush}" />
-									</VisualState.Setters>
-								</VisualState>
+								<VisualState x:Name="PointerOver" />
 								<VisualState x:Name="PointerPressed">
 									<VisualState.Setters>
-										<Setter Target="PART_ModeButton.Background" Value="{ThemeResource SubtleFillColorSecondaryBrush}" />
-										<Setter Target="PART_ModeButtonIconPresenter.Content" Value="{Binding IconOnActive, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+										<Setter Target="PART_ModeButtonInactiveIconPresenter.Visibility" Value="Collapsed" />
+										<Setter Target="PART_ModeButtonActiveIconPresenter.Visibility" Value="Visible" />
 									</VisualState.Setters>
 								</VisualState>
 							</VisualStateGroup>
@@ -186,13 +185,16 @@
 								<VisualState x:Name="Unfocused" />
 								<VisualState x:Name="CurrentUnfocused">
 									<VisualState.Setters>
-										<Setter Target="PART_ModeButtonIconPresenter.Visibility" Value="Collapsed" />
+										<Setter Target="PART_ModeButtonInactiveIconPresenter.Visibility" Value="Collapsed" />
+										<Setter Target="PART_ModeButtonActiveIconPresenter.Visibility" Value="Collapsed" />
+										<Setter Target="PART_ModeButton.Visibility" Value="Collapsed" />
 										<Setter Target="PART_InactiveContent.Visibility" Value="Visible" />
 									</VisualState.Setters>
 								</VisualState>
 								<VisualState x:Name="Focused">
 									<VisualState.Setters>
-										<Setter Target="PART_ModeButtonIconPresenter.Content" Value="{Binding IconOnActive, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+										<Setter Target="PART_ModeButtonInactiveIconPresenter.Visibility" Value="Collapsed" />
+										<Setter Target="PART_ModeButtonActiveIconPresenter.Visibility" Value="Visible" />
 									</VisualState.Setters>
 								</VisualState>
 							</VisualStateGroup>
@@ -366,7 +368,12 @@
 								FontSize="{StaticResource TextBoxIconFontSize}"
 								Foreground="{ThemeResource TextControlButtonForeground}"
 								IsTabStop="False"
-								Visibility="Collapsed" />
+								Visibility="Collapsed">
+								<Button.Resources>
+									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SubtleFillColorSecondary}" />
+									<SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{ThemeResource SubtleFillColorTertiary}" />
+								</Button.Resources>
+							</Button>
 						</Grid>
 
 						<!--  Description  -->

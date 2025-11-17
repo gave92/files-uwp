@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Files Community
 // Licensed under the MIT License.
 
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media.Animation;
 using Windows.Foundation;
@@ -38,6 +37,8 @@ namespace Files.App.Controls
 		public event TypedEventHandler<Omnibar, OmnibarQuerySubmittedEventArgs>? QuerySubmitted;
 		public event TypedEventHandler<Omnibar, OmnibarSuggestionChosenEventArgs>? SuggestionChosen;
 		public event TypedEventHandler<Omnibar, OmnibarTextChangedEventArgs>? TextChanged;
+		public event TypedEventHandler<Omnibar, OmnibarModeChangedEventArgs>? ModeChanged;
+		public event TypedEventHandler<Omnibar, OmnibarIsFocusedChangedEventArgs> IsFocusedChanged;
 
 		// Constructor
 
@@ -47,6 +48,8 @@ namespace Files.App.Controls
 
 			Modes = [];
 			AutoSuggestBoxPadding = new(0, 0, 0, 0);
+
+			GlobalHelper.WriteDebugStringForOmnibar("Omnibar has been initialized.");
 		}
 
 		// Methods
@@ -71,14 +74,19 @@ namespace Files.App.Controls
 			SizeChanged += Omnibar_SizeChanged;
 			_textBox.GettingFocus += AutoSuggestBox_GettingFocus;
 			_textBox.GotFocus += AutoSuggestBox_GotFocus;
+			_textBox.LosingFocus += AutoSuggestBox_LosingFocus;
 			_textBox.LostFocus += AutoSuggestBox_LostFocus;
 			_textBox.KeyDown += AutoSuggestBox_KeyDown;
 			_textBox.TextChanged += AutoSuggestBox_TextChanged;
 			_textBoxSuggestionsPopup.GettingFocus += AutoSuggestBoxSuggestionsPopup_GettingFocus;
+			_textBoxSuggestionsPopup.Opened += AutoSuggestBoxSuggestionsPopup_Opened;
 			_textBoxSuggestionsListView.ItemClick += AutoSuggestBoxSuggestionsListView_ItemClick;
+			_textBoxSuggestionsListView.SelectionChanged += AutoSuggestBoxSuggestionsListView_SelectionChanged;
 
 			// Set the default width
 			_textBoxSuggestionsContainerBorder.Width = ActualWidth;
+
+			GlobalHelper.WriteDebugStringForOmnibar("The template and the events have been initialized.");
 		}
 
 		public void PopulateModes()
@@ -117,7 +125,7 @@ namespace Files.App.Controls
 				// Add the reposition transition to the all modes
 				mode.Transitions = [new RepositionThemeTransition()];
 				mode.UpdateLayout();
-				mode.IsTabStop = true;
+				mode.IsTabStop = false;
 			}
 
 			var index = _modesHostGrid.Children.IndexOf(newMode);
@@ -125,12 +133,15 @@ namespace Files.App.Controls
 			if (oldMode is not null)
 				VisualStateManager.GoToState(oldMode, "Unfocused", true);
 
-			// Reset
-			foreach (var column in _modesHostGrid.ColumnDefinitions)
-				column.Width = GridLength.Auto;
+			DispatcherQueue.TryEnqueue(() =>
+			{
+				// Reset
+				foreach (var column in _modesHostGrid.ColumnDefinitions)
+					column.Width = GridLength.Auto;
 
-			// Expand the given mode
-			_modesHostGrid.ColumnDefinitions[index].Width = new(1, GridUnitType.Star);
+				// Expand the given mode
+				_modesHostGrid.ColumnDefinitions[index].Width = new(1, GridUnitType.Star);
+			});
 
 			var itemCount = Modes.Count;
 			var itemIndex = Modes.IndexOf(newMode);
@@ -148,6 +159,13 @@ namespace Files.App.Controls
 
 			VisualStateManager.GoToState(newMode, "Focused", true);
 			newMode.IsTabStop = false;
+
+			ModeChanged?.Invoke(this, new(oldMode, newMode!));
+
+			_textBox.PlaceholderText = newMode.PlaceholderText ?? string.Empty;
+			_textBoxSuggestionsListView.ItemTemplate = newMode.ItemTemplate;
+			_textBoxSuggestionsListView.ItemsSource = newMode.ItemsSource;
+
 			if (newMode.IsAutoFocusEnabled)
 			{
 				_textBox.Focus(FocusState.Pointer);
@@ -168,9 +186,9 @@ namespace Files.App.Controls
 				{
 					VisualStateManager.GoToState(_textBox, "InputAreaVisible", true);
 				}
-
-				TryToggleIsSuggestionsPopupOpen(true);
 			}
+
+			TryToggleIsSuggestionsPopupOpen(true);
 
 			// Remove the reposition transition from the all modes
 			foreach (var mode in Modes)
@@ -178,6 +196,8 @@ namespace Files.App.Controls
 				mode.Transitions.Clear();
 				mode.UpdateLayout();
 			}
+
+			GlobalHelper.WriteDebugStringForOmnibar($"Successfully changed Mode from {oldMode} to {newMode}");
 		}
 
 		internal protected void FocusTextBox()
@@ -185,23 +205,40 @@ namespace Files.App.Controls
 			_textBox.Focus(FocusState.Keyboard);
 		}
 
-		public bool TryToggleIsSuggestionsPopupOpen(bool wantToOpen)
+		internal protected bool TryToggleIsSuggestionsPopupOpen(bool wantToOpen)
 		{
-			if (wantToOpen && (!IsFocused || CurrentSelectedMode?.SuggestionItemsSource is null || (CurrentSelectedMode?.SuggestionItemsSource is IList collection && collection.Count is 0)) ||
-				_textBoxSuggestionsPopup is null)
+			if (_textBoxSuggestionsPopup is null)
 				return false;
 
+			if (wantToOpen && (!IsFocused || CurrentSelectedMode?.ItemsSource is null || (CurrentSelectedMode?.ItemsSource is IList collection && collection.Count is 0)))
+			{
+				_textBoxSuggestionsPopup.IsOpen = false;
+
+				GlobalHelper.WriteDebugStringForOmnibar("The suggestions pop-up closed.");
+
+				return false;
+			}
+
+			if (CurrentSelectedMode is not null)
+			{
+				_textBoxSuggestionsListView.ItemTemplate = CurrentSelectedMode.ItemTemplate;
+				_textBoxSuggestionsListView.ItemsSource = CurrentSelectedMode.ItemsSource;
+			}
+
 			_textBoxSuggestionsPopup.IsOpen = wantToOpen;
+
+			GlobalHelper.WriteDebugStringForOmnibar("The suggestions pop-up is open.");
 
 			return false;
 		}
 
-		public void ChooseSuggestionItem(object obj)
+		public void ChooseSuggestionItem(object obj, bool isOriginatedFromArrowKey = false)
 		{
 			if (CurrentSelectedMode is null)
 				return;
 
-			if (CurrentSelectedMode.UpdateTextOnSelect)
+			if (CurrentSelectedMode.UpdateTextOnSelect ||
+				(isOriginatedFromArrowKey && CurrentSelectedMode.UpdateTextOnArrowKeys))
 			{
 				_textChangeReason = OmnibarTextChangeReason.SuggestionChosen;
 				ChangeTextBoxText(GetObjectText(obj));
@@ -215,7 +252,8 @@ namespace Files.App.Controls
 			_textBox.Text = text;
 
 			// Move the cursor to the end of the TextBox
-			_textBox?.Select(_textBox.Text.Length, 0);
+			if (_textChangeReason == OmnibarTextChangeReason.SuggestionChosen)
+				_textBox?.Select(_textBox.Text.Length, 0);
 		}
 
 		private void SubmitQuery(object? item)

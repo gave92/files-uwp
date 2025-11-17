@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Files Community
 // Licensed under the MIT License.
 
-using Microsoft.Extensions.Logging;
-
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed partial class SetAsSlideshowBackgroundAction : BaseSetAsAction
 	{
 		private readonly IWindowsWallpaperService WindowsWallpaperService = Ioc.Default.GetRequiredService<IWindowsWallpaperService>();

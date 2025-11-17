@@ -309,6 +309,9 @@
   <data name="DarkTheme" xml:space="preserve">
     <value>Fosc</value>
   </data>
+  <data name="UseSystemSetting" xml:space="preserve">
+    <value>Utilitza la configuració del sistema</value>
+  </data>
   <data name="Application" xml:space="preserve">
     <value>Aplicació</value>
   </data>
@@ -523,9 +526,6 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>Estat</value>
-  </data>
-  <data name="SettingsPreferencesSystemDefaultLanguageOption" xml:space="preserve">
-    <value>Windows per defecte</value>
   </data>
   <data name="NavigationToolbarVisiblePathNoResults" xml:space="preserve">
     <value>Cap resultat</value>
@@ -1010,6 +1010,9 @@
   <data name="SearchPagePathBoxOverrideText" xml:space="preserve">
     <value>Resultats de la cerca en {1} per {0}</value>
   </data>
+  <data name="SearchResultsFor" xml:space="preserve">
+    <value>Resultats de la cerca per a «{0}»</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Detalls</value>
   </data>
@@ -1089,13 +1092,25 @@
     <value>Canvia el panell d'informació</value>
   </data>
   <data name="ToggleInfoPaneDescription" xml:space="preserve">
-    <value>Canvia el panell d'informació per veure els panells de detalls/vista prèvia</value>
+    <value>Commuta la visibilitat dels panells de detall/vista prèvia</value>
   </data>
   <data name="ToggleToolbar" xml:space="preserve">
     <value>Commuta la barra d'eines</value>
   </data>
   <data name="ToggleToolbarDescription" xml:space="preserve">
     <value>Commuta la visibilitat de la barra d'eines</value>
+  </data>
+  <data name="ToggleFilterHeader" xml:space="preserve">
+    <value>Commuta la capçalera del filtre</value>
+  </data>
+  <data name="ToggleFilterHeaderDescription" xml:space="preserve">
+    <value>Commuta la visibilitat de la capçalera del filtre</value>
+  </data>
+  <data name="ToggleDualPane" xml:space="preserve">
+    <value>Commuta el panell doble</value>
+  </data>
+  <data name="ToggleDualPaneDescription" xml:space="preserve">
+    <value>Commuta el mode de panell doble</value>
   </data>
   <data name="DetailsPanePreviewNotAvaliableText" xml:space="preserve">
     <value>Cap visualització prèvia disponible</value>
@@ -2012,11 +2027,23 @@
   <data name="Behaviors" xml:space="preserve">
     <value>Comportaments</value>
   </data>
-  <data name="ReviewFiles" xml:space="preserve">
-    <value>Valoreu el Files</value>
+  <data name="Hello" xml:space="preserve">
+    <value>Hola!</value>
   </data>
-  <data name="ReviewFilesContent" xml:space="preserve">
-    <value>Voleu valorar el Files?</value>
+  <data name="ReviewFilesSubtitle" xml:space="preserve">
+    <value>Us agrada el Files? Considereu fer una ressenya a la Microsoft Store.</value>
+  </data>  
+  <data name="SponsorSubtitle" xml:space="preserve">
+    <value>Us agrada el Files? Penseu en donar suport al projecte al GitHub.</value>
+  </data>
+  <data name="Sponsor" xml:space="preserve">
+    <value>Patrocinador</value>
+  </data>
+  <data name="RateUs" xml:space="preserve">
+    <value>Puntueu-nos</value>
+  </data>
+  <data name="Dismiss" xml:space="preserve">
+    <value>Descarta</value>
   </data>
   <data name="SetAsBackgroundFlyout" xml:space="preserve">
     <value>Estableix com a fons</value>
@@ -2421,31 +2448,31 @@
     <value>Mostra/amaga la barra lateral</value>
   </data>
   <data name="CopyItemDescription" xml:space="preserve">
-    <value>Copia {0, plural, one {l'element seleccionat} other {els elements seleccionats}} al porta-retalls</value>
+    <value>Copia {0, plural, one {l'element seleccionat} other {els elements seleccionats}}</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
-    <value>Copia el camí del directori actual al porta-retalls</value>
+    <value>Copia la ruta del directori actual</value>
   </data>
   <data name="CopyItemPathDescription" xml:space="preserve">
-    <value>Copia el camí dels elements seleccionats al porta-retalls</value>
+    <value>Copia la ruta dels elements seleccionats</value>
   </data>
   <data name="CopyItemPathWithQuotesDescription" xml:space="preserve">
-    <value>Copia el camí dels elements seleccionats amb cometes al porta-retalls</value>
+    <value>Copia la ruta dels elements seleccionats amb cometes</value>
   </data>
   <data name="CopyPathWithQuotesDescription" xml:space="preserve">
-    <value>Copia el camí del directori actual amb cometes al porta-retalls</value>
+    <value>Copia la ruta del directori actual amb cometes</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
-    <value>Retalla {0, plural, one {l'element seleccionat} other {els elements seleccionats}} al porta-retalls</value>
+    <value>Retalla {0, plural, one {l'element seleccionat} other {els elements seleccionats}}</value>
   </data>
   <data name="PasteItemDescription" xml:space="preserve">
-    <value>Enganxa els elements del porta-retalls a la carpeta actual</value>
+    <value>Enganxa els elements a la carpeta actual</value>
   </data>
   <data name="PasteShortcutDescription" xml:space="preserve">
-    <value>Enganxa els elements del porta-retalls a la carpeta actual com a dreceres</value>
+    <value>Enganxa els elements a la carpeta actual com a dreceres</value>
   </data>
   <data name="PasteItemToSelectionDescription" xml:space="preserve">
-    <value>Enganxa els elements del porta-retalls a la carpeta seleccionada</value>
+    <value>Enganxa els elements a la carpeta seleccionada</value>
   </data>
   <data name="PasteToSelectedFolder" xml:space="preserve">
     <value>Enganxa a la carpeta seleccionada</value>
@@ -2568,13 +2595,13 @@
     <value>Crea un fitxer zip amb {0, plural, one {l'item seleccionat} other {els items seleccionats}}</value>
   </data>
   <data name="DecompressArchiveDescription" xml:space="preserve">
-    <value>Extreu els elements seleccionats {0, plural, one {del fitxer} other {dels fitxers}} a qualsevol carpeta</value>
+    <value>Extreu {0, plural, one {l'arxiu seleccionat} other {els arxius seleccionats}} a qualsevol carpeta</value>
   </data>
   <data name="DecompressArchiveHereDescription" xml:space="preserve">
-    <value>Extreu els elements seleccionats {0, plural, one {del fitxer} other {dels fitxers}} a la carpeta actual</value>
+    <value>Extreu {0, plural, one {l'arxiu seleccionat} other {els arxius seleccionats}} a la carpeta actual</value>
   </data>
   <data name="DecompressArchiveToChildFolderDescription" xml:space="preserve">
-    <value>Extreu els elements seleccionats {0, plural, one {del fitxer} other {dels fitxers}} a una nova carpeta</value>
+    <value>Extreu {0, plural, one {l'arxiu seleccionat} other {els arxius seleccionats}} a una carpeta nova</value>
   </data>
   <data name="RotateLeftDescription" xml:space="preserve">
     <value>Gira {0, plural, one {la imatge seleccionada} other {les imatges seleccionades}} cap a l'esquerra</value>
@@ -3460,6 +3487,9 @@
   <data name="ProcessingItems" xml:space="preserve">
     <value>Processant elements...</value>
   </data>
+  <data name="DiscoveringItems" xml:space="preserve">
+    <value>S'estan descobrint els elements...</value>
+  </data>
   <data name="SpeedWithColon" xml:space="preserve">
     <value>Velocitat:</value>
   </data>
@@ -3472,27 +3502,27 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressComplete_Header" xml:space="preserve">
-    <value>S'han comprimit {0} elements a "{1}"</value>
+    <value>{0, plural, one {# element comprimit} other {# elements comprimits}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressComplete_SubHeader" xml:space="preserve">
-    <value>S'han comprimit {0} elements de "{1}" a "{2}"</value>
+    <value>{0, plural, one {# element comprimit} other {# elements comprimits}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressFailed_Header" xml:space="preserve">
-    <value>S'ha produït un error en comprimir {0} elements a "{1}"</value>
+    <value>Error en comprimir {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressFailed_SubHeader" xml:space="preserve">
-    <value>No s'han pogut comprimir {0} elements de "{1}" a "{2}"</value>
+    <value>No s'ha pogut comprimir {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressInProgress_Header" xml:space="preserve">
-    <value>S'estan comprimint {0} elements a "{1}"</value>
+    <value>S'està comprimint {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressInProgress_SubHeader" xml:space="preserve">
-    <value>S'estan comprimint {0} elements de "{1}" a "{2}"</value>
+    <value>S'està comprimint {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_GitCloneCanceled_Header" xml:space="preserve">
@@ -3532,64 +3562,68 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontCanceled_SubHeader" xml:space="preserve">
-    <value>S'ha cancel·lat la instal·lació de {0} fonts de «{1}»</value>
+    <value>S'ha cancel·lat la instal·lació de {0, plural, one {# origen} other {# origens}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontComplete_Header" xml:space="preserve">
-    <value>S'han instal·lat {0} fonts</value>
+    <value>{0, plural, one {# origen instal·lat} other {# origens instal·lats}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontComplete_SubHeader" xml:space="preserve">
-    <value>S'han instal·lat {0} fonts de «{1}»</value>
+    <value>{0, plural, one {# font} other {# fonts}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontFailed_Header" xml:space="preserve">
-    <value>S'ha produït un error en instal·lar {0} font(s)</value>
+    <value>S'ha produït un error instal·lant {0, plural, one {# font} other {# fonts}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontFailed_SubHeader" xml:space="preserve">
-    <value>No s'han pogut instal·lar {0} fonts de «{1}»</value>
+    <value>No s'ha pogut instal·lar {0, plural, one {# font} other {# fonts}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontInProgress_Header" xml:space="preserve">
-    <value>S'estan instal·lant {0} fonts</value>
+    <value>S'està instal·lant {0, plural, one {# font} other {# fonts}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontInProgress_SubHeader" xml:space="preserve">
-    <value>S'estan instal·lant {0} fonts de «{1}»</value>
+    <value>S'està instal·lant {0, plural, one {# font} other {# fonts}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyCanceled_Header" xml:space="preserve">
-    <value>S'ha cancel·lat la còpia de {0} elements a "{1}"</value>
+    <value>S'ha cancel·lat la còpia de {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyCanceled_SubHeader" xml:space="preserve">
-    <value>S'ha cancel·lat la còpia de {0} elements de "{1}" a "{2}"</value>
+    <value>S'ha cancel·lat la còpia de {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyComplete_Header" xml:space="preserve">
-    <value>S'han copiat {0} elements a "{1}"</value>
+    <value>S'ha copiat {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyComplete_SubHeader" xml:space="preserve">
-    <value>S'han copiat {0} elements de "{1}" a "{2}"</value>
+    <value>S'ha copiat {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyFailed_Header" xml:space="preserve">
-    <value>S'ha produït un error en copiar {0} elements a "{1}"</value>
+    <value>S'ha produït un error en copiar {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyFailed_SubHeader" xml:space="preserve">
-    <value>No s'han pogut copiar {0} elements de "{1}" a "{2}"</value>
+    <value>No s'ha pogut copiar {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyInProgress_Header" xml:space="preserve">
-    <value>S'estan copiant {0} elements a "{1}"</value>
+    <value>S'està copiant {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyInProgress_SubHeader" xml:space="preserve">
-    <value>S'estan copiant {0} elements de "{1}" a "{2}"</value>
+    <value>S'està copiant {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_CopyDiscovery_Header" xml:space="preserve">
+    <value>S'han descobert {0, plural, one {# element} other {# elements}}</value>
+    <comment>Shown in a StatusCenter card during file discovery phase.</comment>
   </data>
   <data name="StatusCenter_DecompressCanceled_Header" xml:space="preserve">
     <value>S'ha cancel·lat l'extracció de "{0}" a "{1}"</value>
@@ -3624,55 +3658,55 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteCanceled_Header" xml:space="preserve">
-    <value>S'ha cancel·lat la supressió de {0} elements de "{1}"</value>
+    <value>S'ha cancel·lat l'eliminació de {0, plural, one {# element} other {# elements}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
-    <value>S'han suprimit {0} elements de "{1}"</value>
+    <value>S'ha eliminat {0, plural, one {# element} other {# elements}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
-    <value>S'ha produït un error en suprimir {0} elements de "{1}"</value>
+    <value>S'ha produït un error en eliminar {0, plural, one {# element} other {# elements}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
-    <value>No s'han pogut suprimir {0} elements de "{1}"</value>
+    <value>No s'ha pogut eliminar {0, plural, one {# element} other {# elements}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
-    <value>S'estan suprimint {0} elements de "{1}"</value>
+    <value>S'està eliminant {0, plural, one {# element} other {# elements}} de «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveCanceled_Header" xml:space="preserve">
-    <value>S'ha cancel·lat el moviment de {0} elements a "{1}"</value>
+    <value>S'ha cancel·lat el moviment de {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveCanceled_SubHeader" xml:space="preserve">
-    <value>S'ha cancel·lat el moviment de {0} elements de "{1}" a "{2}"</value>
+    <value>S'ha cancel·lat el moviment de {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveComplete_Header" xml:space="preserve">
-    <value>S'han mogut {0} elements a "{1}"</value>
+    <value>S'ha mogut {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveComplete_SubHeader" xml:space="preserve">
-    <value>S'han mogut {0} elements de "{1}" a "{2}"</value>
+    <value>S'ha mogut {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveInProgress_Header" xml:space="preserve">
-    <value>S'estan movent {0} elements a "{1}"</value>
+    <value>S'està movent {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveInProgress_SubHeader" xml:space="preserve">
-    <value>S'està movent {0} elements de "{1}" a "{2}"</value>
+    <value>S'està movent {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveFailed_Header" xml:space="preserve">
-    <value>S'ha produït un error en moure {0} elements a "{1}"</value>
+    <value>S'ha produït un error en moure {0, plural, one {# element} other {# elements}} a «{1}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveFailed_SubHeader" xml:space="preserve">
-    <value>No s'han pogut moure {0} elements de "{1}" a "{2}"</value>
+    <value>No s'ha pogut moure {0, plural, one {# element} other {# elements}} de «{1}» a «{2}»</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinCancel_Header" xml:space="preserve">
@@ -3700,7 +3734,7 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_ProcessedItems_Header" xml:space="preserve">
-    <value>{0}/{1} {0, plural, one {item processat} other {items processats}}</value>
+    <value>{0}/{1, plural, one {# item} other {# items}} processed</value>
     <comment>Shown in a StatusCenter card. Used as "8/20 items processed"</comment>
   </data>
   <data name="UnblockDownloadedFile" xml:space="preserve">
@@ -3746,7 +3780,7 @@
     <value>S'ha produït un error en aplicar aquesta etiqueta</value>
   </data>
   <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
-    <value>Extreu {0, plural, one {el fitxer} other {els fitxers}} seleccionats al directori actual si el fitxer conté només un element, o en un nou directori si el fitxer conté diversos elements</value>
+    <value>Extreu {0, plural, one {l'arxiu seleccionat} other {els arxius seleccionats}} aquí per a un sol element o a una carpeta nova per a diversos elements</value>
   </data>
   <data name="ExtractHereSmart" xml:space="preserve">
     <value>Extreu aquí (intel·ligent)</value>
@@ -3984,6 +4018,10 @@
     <value>Fitxers de mapa de bits</value>
     <comment>This is the friendly name for bitmap files.</comment>
   </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>Image Files</value>
+    <comment>This is the friendly name for image files.</comment>
+  </data>
   <data name="NumPadTypeName" xml:space="preserve">
     <value>Núm.</value>
   </data>
@@ -4015,17 +4053,17 @@
   <data name="TabActions" xml:space="preserve">
     <value>Menú d'accions de la pestanya</value>
   </data>
-  <data name="AddVerticalPane" xml:space="preserve">
-    <value>Panell vertical</value>
+  <data name="SplitPaneVertically" xml:space="preserve">
+    <value>Divideix verticalment</value>
   </data>
   <data name="AddVerticalPaneDescription" xml:space="preserve">
-    <value>Afegeix un panell vertical</value>
+    <value>Divideix el panell verticalment</value>
   </data>
-  <data name="AddHorizontalPane" xml:space="preserve">
-    <value>Panell horitzontal</value>
+  <data name="SplitPaneHorizontally" xml:space="preserve">
+    <value>Divideix horitzontalment</value>
   </data>
-  <data name="AddHorizontalPaneDescription" xml:space="preserve">
-    <value>Afegeix un panell horitzontal</value>
+  <data name="SplitPaneHorizontallyDescription" xml:space="preserve">
+    <value>Divideix el panell horitzontalment</value>
   </data>
   <data name="ArrangePanesVertically" xml:space="preserve">
     <value>Organitza verticalment</value>
@@ -4039,8 +4077,8 @@
   <data name="ArrangePanesHorizontallyDescription" xml:space="preserve">
     <value>Organitza els panells horitzontalment</value>
   </data>
-  <data name="AddPane" xml:space="preserve">
-    <value>Afegeix panell</value>
+  <data name="SplitPane" xml:space="preserve">
+    <value>Divideix el panell</value>
   </data>
   <data name="ShowTabActions" xml:space="preserve">
     <value>Mostra el botó d'accions de la pestanya a la barra de títol</value>
@@ -4048,8 +4086,11 @@
   <data name="ArrangePanes" xml:space="preserve">
     <value>Organitza els panells</value>
   </data>
-  <data name="DefaultPaneArrangement" xml:space="preserve">
-    <value>Organització per defecte dels panells</value>
+  <data name="DualPaneSplitDirection" xml:space="preserve">
+    <value>Direcció per defecte de divisió del panell doble</value>
+  </data>
+  <data name="DualPane" xml:space="preserve">
+    <value>Mode de panell dual</value>
   </data>
   <data name="Horizontal" xml:space="preserve">
     <value>Horitzontal</value>
@@ -4065,9 +4106,6 @@
   </data>
   <data name="NavigateHomeDescription" xml:space="preserve">
     <value>Aneu a la pàgina d'inici</value>
-  </data>
-  <data name="ShowHomeButton" xml:space="preserve">
-    <value>Mostra el botó d'inici a la barra d'adreces</value>
   </data>
   <data name="Toolbars" xml:space="preserve">
     <value>Barra d'eines</value>
@@ -4208,9 +4246,6 @@
   <data name="Decimal" xml:space="preserve">
     <value>Decimal</value>
   </data>
-  <data name="EnableOmnibar" xml:space="preserve">
-    <value>Activa l'Omnibar</value>
-  </data>
   <data name="SectionsHiddenMessage" xml:space="preserve">
     <value>Podeu afegir seccions a la barra lateral fent clic amb el botó dret i seleccionant les seccions que voleu afegir</value>
   </data>
@@ -4225,5 +4260,79 @@
   </data>
   <data name="OmnibarSearchModeTextPlaceholder" xml:space="preserve">
     <value>Cerca fitxers i carpetes...</value>
+  </data>
+  <data name="DuringOngoingFileOperations" xml:space="preserve">
+    <value>Durant les operacions amb fitxers</value>
+  </data>
+  <data name="ShowStatusCenterButton" xml:space="preserve">
+    <value>Mostra el botó del centre d'estat</value>
+  </data>
+  <data name="StatusCenterProgressRing" xml:space="preserve">
+    <value>Anell de progrés del centre d'estat</value>
+    <comment>Screen reader name for the status center progress ring</comment>
+  </data>
+  <data name="IconFiles" xml:space="preserve">
+    <value>Fitxers d'icones</value>
+    <comment>This is the friendly name for a variety of different icon files.</comment>
+  </data>
+  <data name="BreadcrumbBarEllipsisButtonToolTip" xml:space="preserve">
+    <value>Mostra la ruta de navegació de la ruta replegada</value>
+  </data>
+  <data name="BreadcrumbBarChevronButtonToolTip" xml:space="preserve">
+    <value>Mostra les carpetes a {0}</value>
+  </data>
+  <data name="BreadcrumbBarRootChevronButtonToolTip" xml:space="preserve">
+    <value>Mostra les carpetes a l'inici</value>
+  </data>
+  <data name="NoCommandsFound" xml:space="preserve">
+    <value>No hi ha cap ordre que contingui {0}</value>
+  </data>
+  <data name="SeeMore" xml:space="preserve">
+    <value>Mostra'n més</value>
+  </data>
+  <data name="FilteringFor" xml:space="preserve">
+    <value>Filtra per</value>
+  </data>
+  <data name="Filename" xml:space="preserve">
+    <value>Nom del fitxer</value>
+  </data>
+  <data name="Signatures" xml:space="preserve">
+    <value>Signatures</value>
+   </data>
+  <data name="SignatureList" xml:space="preserve">
+    <value>Signature list</value>
+  </data>
+  <data name="IssuedBy" xml:space="preserve">
+    <value>Issued by:</value>
+  </data>
+  <data name="IssuedTo" xml:space="preserve">
+    <value>Issued to:</value>
+  </data>
+  <data name="ValidFrom" xml:space="preserve">
+    <value>Valid from:</value>
+  </data>
+  <data name="ValidTo" xml:space="preserve">
+    <value>Valid to:</value>
+  </data>
+  <data name="NoSignatureFound" xml:space="preserve">
+    <value>No signature was found.</value>
+  </data>
+  <data name="ShowOpenTerminal" xml:space="preserve">
+    <value>Show option to open folders in Windows Terminal</value>
+  </data>
+  <data name="OpenLogFile" xml:space="preserve">
+    <value>Obre el fitxer de registre</value>
+  </data>
+  <data name="OpenLogFileDescription" xml:space="preserve">
+    <value>Obre el fitxer de registre a l'editor per defecte</value>
+  </data>
+  <data name="OpenLogFileLocationDescription" xml:space="preserve">
+    <value>Obre la ubicació del fitxer de registre al gestor de fitxers per defecte</value>
+  </data>
+  <data name="FailedToOpenLogFile" xml:space="preserve">
+    <value>No es pot obrir el fitxer de registre</value>
+  </data>
+  <data name="ShowStatusBar" xml:space="preserve">
+    <value>Mostra la barra d’estat</value>
   </data>
 </root>

@@ -3,6 +3,7 @@
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed class EditPathAction : IAction
 	{
 		private readonly IContentPageContext context = Ioc.Default.GetRequiredService<IContentPageContext>();
@@ -20,6 +21,9 @@ namespace Files.App.Actions
 		public HotKey SecondHotKey
 			=> new(Keys.D, KeyModifiers.Alt);
 
+		public RichGlyph Glyph
+			=> new(themedIconStyle: "App.ThemedIcons.Omnibar.Path");
+
 		public EditPathAction()
 		{
 
@@ -28,12 +32,7 @@ namespace Files.App.Actions
 		public Task ExecuteAsync(object? parameter = null)
 		{
 			if (context.ShellPage is not null)
-			{
-				if (GeneralSettingsService.EnableOmnibar)
-					context.ShellPage!.ToolbarViewModel.SwitchToPathMode();
-				else
-					context.ShellPage.ToolbarViewModel.IsEditModeEnabled = true;
-			}
+				context.ShellPage!.ToolbarViewModel.SwitchToPathMode();
 
 			return Task.CompletedTask;
 		}

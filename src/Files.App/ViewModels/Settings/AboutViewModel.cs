@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.Win32;
-using System.Runtime.InteropServices;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
@@ -80,6 +79,7 @@ namespace Files.App.ViewModels.Settings
 				new ("https://github.com/microsoft/CsWinRT", "CsWinRT"),
 				new ("https://github.com/GihanSoft/NaturalStringComparer", "NaturalStringComparer"),
 				new ("https://github.com/dongle-the-gadget/GuidRVAGen", "Dongle.GuidRVAGen"),
+				new ("https://github.com/leeqwind/PESignAnalyzer", "PESignAnalyzer"),
 			];
 
 			CopyAppVersionCommand = new RelayCommand(CopyAppVersion);
@@ -107,7 +107,7 @@ namespace Files.App.ViewModels.Settings
 			using var subkey = Registry.ClassesRoot.OpenSubKey(@"Folder\shell\open\command");
 			var command = (string?)subkey?.GetValue(string.Empty);
 
-			// Close the settings dialog if Files is the deault file manager
+			// Close the settings dialog if Files is the default file manager
 			if (!string.IsNullOrEmpty(command) && command.Contains("Files.App.Launcher.exe"))
 				UIHelpers.CloseAllDialogs();
 
@@ -170,7 +170,7 @@ namespace Files.App.ViewModels.Settings
 				Clipboard.SetContent(dataPackage);
 			});
 		}
-		
+
 		public void CopyUserID()
 		{
 			SafetyExtensions.IgnoreExceptions(() =>
@@ -194,9 +194,10 @@ namespace Files.App.ViewModels.Settings
 
 		public string GetWindowsVersion()
 		{
-			return Environment.OSVersion.Version.ToString();
+			ulong v = ulong.Parse(Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
+			return $"{(v >> 48) & 0xFFFF}.{(v >> 32) & 0xFFFF}.{(v >> 16) & 0xFFFF}.{v & 0xFFFF}";
 		}
-		
+
 		public string GetUserID()
 		{
 			return GeneralSettingsService.UserId;

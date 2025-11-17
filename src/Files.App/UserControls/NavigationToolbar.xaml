@@ -30,6 +30,10 @@
 			<converters:NullToVisibilityCollapsedConverter x:Key="NullToVisibilityCollapsedConverter" />
 			<converters1:BoolNegationConverter x:Key="BoolNegationConverter" />
 			<converters:VisibilityInvertConverter x:Key="VisibilityInvertConverter" />
+			<converters1:BoolToObjectConverter
+				x:Key="SearchSuggestionGlyphConverter"
+				FalseValue="&#xE7C3;"
+				TrueValue="&#xE81C;" />
 
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="ms-appx:///UserControls/KeyboardShortcut/KeyboardShortcut.xaml" />
@@ -137,6 +141,34 @@
 			</Button>
 
 			<Button
+				x:Name="FlyoutButton"
+				LosingFocus="NavigationButtonOverflowFlyoutButton_LosingFocus"
+				Style="{StaticResource AddressToolbarButtonStyle}"
+				ToolTipService.ToolTip="{helpers:ResourceString Name=SeeMore}"
+				Visibility="Collapsed">
+				<FontIcon FontSize="14" Glyph="&#xE712;" />
+				<Button.Flyout>
+					<MenuFlyout Placement="BottomEdgeAlignedLeft">
+						<MenuFlyoutItem Command="{x:Bind Commands.NavigateForward, Mode=OneWay}" Text="{x:Bind Commands.NavigateForward.Label, Mode=OneWay}">
+							<MenuFlyoutItem.Icon>
+								<FontIcon Glyph="{x:Bind Commands.NavigateForward.Glyph.BaseGlyph, Mode=OneTime}" />
+							</MenuFlyoutItem.Icon>
+						</MenuFlyoutItem>
+						<MenuFlyoutItem Command="{x:Bind Commands.NavigateUp, Mode=OneWay}" Text="{x:Bind Commands.NavigateUp.Label, Mode=OneWay}">
+							<MenuFlyoutItem.Icon>
+								<FontIcon Glyph="{x:Bind Commands.NavigateUp.Glyph.BaseGlyph, Mode=OneTime}" />
+							</MenuFlyoutItem.Icon>
+						</MenuFlyoutItem>
+						<MenuFlyoutItem Command="{x:Bind Commands.RefreshItems, Mode=OneWay}" Text="{x:Bind Commands.RefreshItems.Label, Mode=OneWay}">
+							<MenuFlyoutItem.Icon>
+								<FontIcon Glyph="{x:Bind Commands.RefreshItems.Glyph.BaseGlyph, Mode=OneTime}" />
+							</MenuFlyoutItem.Icon>
+						</MenuFlyoutItem>
+					</MenuFlyout>
+				</Button.Flyout>
+			</Button>
+
+			<Button
 				x:Name="Forward"
 				AccessKey="F"
 				AccessKeyInvoked="Button_AccessKeyInvoked"
@@ -187,143 +219,17 @@
 				ToolTipService.ToolTip="{x:Bind Commands.RefreshItems.LabelWithHotKey, Mode=OneWay}">
 				<FontIcon FontSize="14" Glyph="{x:Bind Commands.RefreshItems.Glyph.BaseGlyph, Mode=OneTime}" />
 			</Button>
-
-			<Button
-				x:Name="HomeButton"
-				x:Load="{x:Bind ViewModel.ShowHomeButton, Mode=OneWay}"
-				AccessKey="H"
-				AccessKeyInvoked="Button_AccessKeyInvoked"
-				AutomationProperties.Name="{x:Bind Commands.NavigateHome.Label, Mode=OneWay}"
-				Command="{x:Bind Commands.NavigateHome, Mode=OneWay}"
-				Style="{StaticResource AddressToolbarButtonStyle}"
-				ToolTipService.ToolTip="{x:Bind Commands.NavigateHome.LabelWithHotKey, Mode=OneWay}">
-				<FontIcon FontSize="14" Glyph="{x:Bind Commands.NavigateHome.Glyph.BaseGlyph, Mode=OneTime}" />
-			</Button>
 		</StackPanel>
-
-		<!--  Legacy breadcrumb bar  -->
-		<Grid
-			x:Name="LegacyBreadcrumb"
-			Grid.Column="1"
-			x:Load="{x:Bind ViewModel.EnableOmnibar, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
-			ColumnSpacing="4">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="Auto" />
-			</Grid.ColumnDefinitions>
-			<!--  Path Box  -->
-			<AutoSuggestBox
-				x:Name="VisiblePath"
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Center"
-				x:Load="{x:Bind ViewModel.ManualEntryBoxLoaded, Mode=OneWay}"
-				BorderBrush="{ThemeResource SystemBaseMediumLowColor}"
-				BorderThickness="{ThemeResource TextControlBorderThemeThickness}"
-				CornerRadius="{StaticResource ControlCornerRadius}"
-				FocusDisengaged="VisiblePath_LostFocus"
-				FontWeight="SemiBold"
-				ItemsSource="{x:Bind ViewModel.NavigationBarSuggestions, Mode=OneWay}"
-				Loaded="VisiblePath_Loaded"
-				LostFocus="VisiblePath_LostFocus"
-				PlaceholderText="{helpers:ResourceString Name=NavigationToolbarVisiblePath/PlaceholderText}"
-				PreviewKeyDown="VisiblePath_KeyDown"
-				QuerySubmitted="VisiblePath_QuerySubmitted"
-				ScrollViewer.HorizontalScrollBarVisibility="Auto"
-				ScrollViewer.VerticalScrollBarVisibility="Hidden"
-				Text="{x:Bind ViewModel.PathText, Mode=OneWay}"
-				TextChanged="{x:Bind ViewModel.VisiblePath_TextChanged, Mode=OneWay}"
-				TextMemberPath="Text"
-				Visibility="{x:Bind converters:MultiBooleanConverter.OrNotConvertToVisibility(ShowSearchBox, ViewModel.IsSearchBoxVisible), Mode=OneWay}">
-				<AutoSuggestBox.ItemTemplate>
-					<DataTemplate x:DataType="items:NavigationBarSuggestionItem">
-						<StackPanel Margin="0,4">
-							<Grid ColumnSpacing="8">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-
-								<!--  Primary Title  -->
-								<TextBlock
-									x:Name="PrimaryDisplayBlock"
-									Grid.Column="0"
-									Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-									MaxLines="1"
-									TextTrimming="CharacterEllipsis"
-									TextWrapping="NoWrap">
-									<Run FontWeight="Normal" Text="{x:Bind PrimaryDisplayPreMatched, Mode=OneWay}" /><Run FontWeight="Bold" Text="{x:Bind PrimaryDisplayMatched, Mode=OneWay}" /><Run FontWeight="Normal" Text="{x:Bind PrimaryDisplayPostMatched, Mode=OneWay}" />
-								</TextBlock>
-
-								<!--  Keyboard Shortcuts  -->
-								<keyboard:KeyboardShortcut
-									x:Name="RightAlignedKeyboardShortcut"
-									Grid.Column="1"
-									HotKeys="{x:Bind HotKeys, Mode=OneWay}" />
-							</Grid>
-						</StackPanel>
-					</DataTemplate>
-				</AutoSuggestBox.ItemTemplate>
-			</AutoSuggestBox>
-
-			<!--  Path Breadcrumb Bar  -->
-			<Grid
-				x:Name="ClickablePath"
-				Height="34"
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Center"
-				x:Load="{x:Bind ViewModel.ClickablePathLoaded, Mode=OneWay}"
-				Background="{ThemeResource TextControlBackground}"
-				BorderBrush="{ThemeResource ControlElevationBorderBrush}"
-				BorderThickness="1"
-				CornerRadius="{StaticResource ControlCornerRadius}"
-				GettingFocus="ClickablePath_GettingFocus"
-				PointerPressed="ManualPathEntryItem_Click"
-				Visibility="{x:Bind converters:MultiBooleanConverter.OrNotConvertToVisibility(ShowSearchBox, ViewModel.IsSearchBoxVisible), Mode=OneWay}">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="Auto" />
-				</Grid.ColumnDefinitions>
-				<uc:PathBreadcrumb
-					Grid.Column="0"
-					VerticalAlignment="Stretch"
-					HorizontalContentAlignment="Stretch"
-					VerticalContentAlignment="Stretch"
-					ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
-				<FontIcon
-					Grid.Column="1"
-					Margin="12"
-					FontSize="16"
-					Foreground="{ThemeResource App.Theme.IconBaseBrush}"
-					Glyph="&#xE70D;" />
-			</Grid>
-
-			<!--  Storage Search Box  -->
-			<uc:SearchBox
-				x:Name="SearchRegion"
-				Grid.Column="1"
-				Width="240"
-				Height="34"
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Center"
-				AccessKey="K"
-				AccessKeyInvoked="SearchRegion_AccessKeyInvoked"
-				Canvas.ZIndex="100"
-				CornerRadius="{StaticResource ControlCornerRadius}"
-				GotFocus="SearchRegion_OnGotFocus"
-				LostFocus="SearchRegion_LostFocus"
-				SearchBoxViewModel="{x:Bind ViewModel.SearchBoxViewModel, Mode=OneWay}"
-				Visibility="{x:Bind converters:MultiBooleanConverter.OrConvertToVisibility(ShowSearchBox, ViewModel.IsSearchBoxVisible), Mode=OneWay}" />
-
-		</Grid>
 
 		<!--  Omnibar  -->
 		<controls:Omnibar
 			x:Name="Omnibar"
 			Grid.Column="1"
-			x:Load="{x:Bind ViewModel.EnableOmnibar, Mode=OneWay}"
-			CurrentSelectedMode="{x:Bind ViewModel.OmnibarCurrentSelectedMode, Mode=TwoWay}"
+			x:Load="{x:Bind ViewModel.LoadOmnibar, Mode=OneWay}"
 			CurrentSelectedModeName="{x:Bind ViewModel.OmnibarCurrentSelectedModeName, Mode=TwoWay}"
-			IsFocused="{x:Bind ViewModel.IsOmnibarFocused, Mode=TwoWay}"
+			IsFocusedChanged="Omnibar_IsFocusedChanged"
+			ModeChanged="Omnibar_ModeChanged"
+			PreviewKeyDown="Omnibar_PreviewKeyDown"
 			QuerySubmitted="Omnibar_QuerySubmitted"
 			TextChanged="Omnibar_TextChanged">
 
@@ -332,18 +238,21 @@
 				IconOnActive="{controls:ThemedIconMarkup Style={StaticResource App.ThemedIcons.Omnibar.Path}, IsFilled=True}"
 				IconOnInactive="{controls:ThemedIconMarkup Style={StaticResource App.ThemedIcons.Omnibar.Path}, IconType=Outline}"
 				IsDefault="True"
+				ItemsSource="{x:Bind ViewModel.PathModeSuggestionItems, Mode=OneWay}"
 				ModeName="{x:Bind Commands.EditPath.LabelWithHotKey, Mode=OneWay}"
 				PlaceholderText="{helpers:ResourceString Name=OmnibarPathModeTextPlaceholder}"
-				SuggestionItemsSource="{x:Bind ViewModel.PathModeSuggestionItems, Mode=OneWay}"
 				Text="{x:Bind ViewModel.PathText, Mode=TwoWay}"
 				TextMemberPath="Path">
 				<controls:OmnibarMode.ContentOnInactive>
 					<controls:BreadcrumbBar
 						x:Name="BreadcrumbBar"
+						EllipsisButtonToolTip="{helpers:ResourceString Name=BreadcrumbBarEllipsisButtonToolTip}"
 						ItemClicked="BreadcrumbBar_ItemClicked"
 						ItemDropDownFlyoutClosed="BreadcrumbBar_ItemDropDownFlyoutClosed"
 						ItemDropDownFlyoutOpening="BreadcrumbBar_ItemDropDownFlyoutOpening"
-						ItemsSource="{x:Bind ViewModel.PathComponents, Mode=OneWay}">
+						ItemsSource="{x:Bind ViewModel.PathComponents, Mode=OneWay}"
+						RootItemChevronToolTip="{helpers:ResourceString Name=BreadcrumbBarRootChevronButtonToolTip}"
+						RootItemToolTip="{helpers:ResourceString Name=Home}">
 						<controls:BreadcrumbBar.RootItem>
 							<Image
 								Width="16"
@@ -352,16 +261,25 @@
 						</controls:BreadcrumbBar.RootItem>
 						<controls:BreadcrumbBar.ItemTemplate>
 							<DataTemplate x:DataType="dataitems:PathBoxItem">
-								<controls:BreadcrumbBarItem Content="{x:Bind Title, Mode=OneWay}" />
+								<controls:BreadcrumbBarItem
+									AllowDrop="True"
+									AutomationProperties.AccessibilityView="Content"
+									AutomationProperties.Name="{x:Bind Title, Mode=OneWay}"
+									ChevronToolTip="{x:Bind ChevronToolTip, Mode=OneWay}"
+									Content="{x:Bind Title, Mode=OneWay}"
+									DataContext="{x:Bind}"
+									DragLeave="BreadcrumbBarItem_DragLeave"
+									DragOver="BreadcrumbBarItem_DragOver"
+									Drop="BreadcrumbBarItem_Drop" />
 							</DataTemplate>
 						</controls:BreadcrumbBar.ItemTemplate>
 					</controls:BreadcrumbBar>
 				</controls:OmnibarMode.ContentOnInactive>
-				<controls:OmnibarMode.SuggestionItemTemplate>
+				<controls:OmnibarMode.ItemTemplate>
 					<DataTemplate x:DataType="datamodels:OmnibarPathModeSuggestionModel">
 						<TextBlock Text="{x:Bind DisplayName, Mode=OneWay}" />
 					</DataTemplate>
-				</controls:OmnibarMode.SuggestionItemTemplate>
+				</controls:OmnibarMode.ItemTemplate>
 			</controls:OmnibarMode>
 
 			<controls:OmnibarMode
@@ -369,29 +287,33 @@
 				IconOnActive="{controls:ThemedIconMarkup Style={StaticResource App.ThemedIcons.Omnibar.Commands}, IsFilled=True}"
 				IconOnInactive="{controls:ThemedIconMarkup Style={StaticResource App.ThemedIcons.Omnibar.Commands}, IconType=Outline}"
 				IsAutoFocusEnabled="True"
+				ItemsSource="{x:Bind ViewModel.OmnibarCommandPaletteModeSuggestionItems, Mode=OneWay}"
 				ModeName="{x:Bind Commands.OpenCommandPalette.LabelWithHotKey, Mode=OneWay}"
 				PlaceholderText="{helpers:ResourceString Name=OmnibarCommandPaletteModeTextPlaceholder}"
-				SuggestionItemsSource="{x:Bind ViewModel.OmnibarCommandPaletteModeSuggestionItems, Mode=OneWay}"
 				Text="{x:Bind ViewModel.OmnibarCommandPaletteModeText, Mode=TwoWay}"
 				TextMemberPath="Text"
 				UpdateTextOnSelect="False">
-				<controls:OmnibarMode.SuggestionItemTemplate>
+				<controls:OmnibarMode.ItemTemplate>
 					<DataTemplate x:DataType="dataitems:NavigationBarSuggestionItem">
-						<Grid ColumnSpacing="12">
+						<Grid Padding="0,0,4,0" ColumnSpacing="12">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="16" />
+								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
 
-							<Grid Grid.Column="0">
+							<Grid
+								Grid.Column="0"
+								Width="16"
+								Height="16">
 								<Viewbox
 									Width="16"
 									Height="16"
-									Visibility="{x:Bind Glyph, Converter={StaticResource NullToVisibilityCollapsedConverter}}">
-									<FontIcon Foreground="{ThemeResource App.Theme.IconBaseBrush}" Glyph="{x:Bind Glyph}" />
+									Visibility="{x:Bind Glyph, Converter={StaticResource NullToVisibilityCollapsedConverter}, Mode=OneWay}">
+									<FontIcon Foreground="{ThemeResource App.Theme.IconBaseBrush}" Glyph="{x:Bind Glyph, Mode=OneWay}" />
 								</Viewbox>
-								<controls:ThemedIcon Style="{x:Bind ThemedIconStyle}" Visibility="{x:Bind ThemedIconStyle, Converter={StaticResource NullToVisibilityCollapsedConverter}}" />
+								<controls:ThemedIcon Style="{x:Bind ThemedIconStyle, Mode=OneWay}" Visibility="{x:Bind ThemedIconStyle, Converter={StaticResource NullToVisibilityCollapsedConverter}, Mode=OneWay}" />
+								<Image Source="{x:Bind ActionIconSource, Mode=OneWay}" />
 							</Grid>
 
 							<!--  Primary Title  -->
@@ -410,10 +332,10 @@
 								x:Name="RightAlignedKeyboardShortcut"
 								Grid.Column="2"
 								VerticalAlignment="Center"
-								HotKeys="{x:Bind HotKeys}" />
+								HotKeys="{x:Bind HotKeys, Mode=OneWay}" />
 						</Grid>
 					</DataTemplate>
-				</controls:OmnibarMode.SuggestionItemTemplate>
+				</controls:OmnibarMode.ItemTemplate>
 			</controls:OmnibarMode>
 
 			<controls:OmnibarMode
@@ -421,8 +343,44 @@
 				IconOnActive="{controls:ThemedIconMarkup Style={StaticResource App.ThemedIcons.Omnibar.Search}, IsFilled=True}"
 				IconOnInactive="{controls:ThemedIconMarkup Style={StaticResource App.ThemedIcons.Omnibar.Search}, IconType=Outline}"
 				IsAutoFocusEnabled="True"
+				ItemsSource="{x:Bind ViewModel.OmnibarSearchModeSuggestionItems, Mode=OneWay}"
 				ModeName="{x:Bind Commands.Search.LabelWithHotKey, Mode=OneWay}"
-				PlaceholderText="{helpers:ResourceString Name=OmnibarSearchModeTextPlaceholder}" />
+				PlaceholderText="{helpers:ResourceString Name=OmnibarSearchModeTextPlaceholder}"
+				Text="{x:Bind ViewModel.OmnibarSearchModeText, Mode=TwoWay}"
+				UpdateTextOnSelect="False">
+				<controls:OmnibarMode.ItemTemplate>
+					<DataTemplate x:DataType="datamodels:SuggestionModel">
+						<Grid ColumnSpacing="8" Tag="{x:Bind ItemPath}">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<Grid
+								Grid.Column="0"
+								Width="16"
+								Height="16"
+								Tag="ItemImage">
+								<Border x:Name="IconArea" x:Load="{x:Bind LoadFileIcon, Mode=OneWay}">
+									<Image
+										Width="16"
+										Height="16"
+										Source="{x:Bind FileImage, Mode=OneWay}"
+										Stretch="Uniform" />
+								</Border>
+								<FontIcon
+									x:Name="EmptyIconGlyph"
+									x:Load="{x:Bind NeedsPlaceholderGlyph, Mode=OneWay}"
+									FontSize="14"
+									Glyph="{x:Bind IsRecentSearch, Mode=OneTime, Converter={StaticResource SearchSuggestionGlyphConverter}}" />
+							</Grid>
+							<TextBlock
+								Grid.Column="1"
+								VerticalAlignment="Center"
+								Text="{x:Bind Name}" />
+						</Grid>
+					</DataTemplate>
+				</controls:OmnibarMode.ItemTemplate>
+			</controls:OmnibarMode>
 
 		</controls:Omnibar>
 
@@ -432,19 +390,6 @@
 			Grid.Column="2"
 			Orientation="Horizontal"
 			Spacing="4">
-			<!--  Mini Search Button  -->
-			<Button
-				x:Name="ShowSearchButton"
-				AccessKey="I"
-				AccessKeyInvoked="Button_AccessKeyInvoked"
-				AutomationProperties.Name="{x:Bind Commands.Search.Label, Mode=OneWay}"
-				Command="{x:Bind Commands.Search, Mode=OneWay}"
-				IsEnabled="{x:Bind Commands.Search.IsExecutable, Mode=OneWay}"
-				Style="{StaticResource AddressToolbarButtonStyle}"
-				ToolTipService.ToolTip="{x:Bind Commands.Search.LabelWithHotKey, Mode=OneWay}"
-				Visibility="Collapsed">
-				<FontIcon FontSize="14" Glyph="{x:Bind ViewModel.SearchButtonGlyph, Mode=OneWay}" />
-			</Button>
 
 			<!--  Shelf Pane  -->
 			<ToggleButton
@@ -569,21 +514,27 @@
 			Target="{x:Bind ShowStatusCenterButton}" />
 
 		<VisualStateManager.VisualStateGroups>
-			<VisualStateGroup x:Name="SearchBoxStates">
-				<VisualState x:Name="SearchBoxAlwaysShown">
+			<VisualStateGroup x:Name="NavigationStates">
+				<VisualState x:Name="Narrow">
 					<VisualState.StateTriggers>
-						<triggers:IsEqualStateTrigger Value="{x:Bind ShowSearchBox, Mode=OneWay}" To="True" />
-					</VisualState.StateTriggers>
-				</VisualState>
-
-				<VisualState x:Name="SearchBoxCollapse">
-					<VisualState.StateTriggers>
-						<triggers:IsEqualStateTrigger Value="{x:Bind ShowSearchBox, Mode=OneWay}" To="False" />
+						<AdaptiveTrigger MinWindowWidth="0" />
 					</VisualState.StateTriggers>
 					<VisualState.Setters>
-						<Setter Target="ShowSearchButton.Visibility" Value="Visible" />
-						<Setter Target="SearchRegion.(Grid.Column)" Value="0" />
-						<Setter Target="SearchRegion.Width" Value="NaN" />
+						<Setter Target="FlyoutButton.Visibility" Value="Visible" />
+						<Setter Target="Forward.Visibility" Value="Collapsed" />
+						<Setter Target="Up.Visibility" Value="Collapsed" />
+						<Setter Target="Refresh.Visibility" Value="Collapsed" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Wide">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="540" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="FlyoutButton.Visibility" Value="Collapsed" />
+						<Setter Target="Forward.Visibility" Value="Visible" />
+						<Setter Target="Up.Visibility" Value="Visible" />
+						<Setter Target="Refresh.Visibility" Value="Visible" />
 					</VisualState.Setters>
 				</VisualState>
 			</VisualStateGroup>

@@ -8,7 +8,9 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using System.Windows.Input;
+using Windows.Services.Store;
 using Windows.System;
+using WinRT.Interop;
 
 namespace Files.App.ViewModels
 {
@@ -123,20 +125,52 @@ namespace Files.App.ViewModels
 			context.PageType is not ContentPageTypes.Settings;
 
 		public bool ShowStatusBar =>
+			AppearanceSettingsService.ShowStatusBar &&
 			context.PageType is not ContentPageTypes.Home &&
 			context.PageType is not ContentPageTypes.ReleaseNotes &&
 			context.PageType is not ContentPageTypes.Settings;
 
+		public bool ShowReviewPrompt
+		{
+			get
+			{
+				var isTargetEnvironment = AppLifecycleHelper.AppEnvironment is AppEnvironment.StoreStable or AppEnvironment.StorePreview;
+				var hasClickedReviewPrompt = UserSettingsService.ApplicationSettingsService.HasClickedReviewPrompt;
+				var launchCountReached = AppLifecycleHelper.TotalLaunchCount == 30;
+
+				return isTargetEnvironment && !hasClickedReviewPrompt && launchCountReached;
+			}
+		}
+
+		public bool ShowSponsorPrompt
+		{
+			get
+			{
+				var isTargetEnvironment = AppLifecycleHelper.AppEnvironment is AppEnvironment.Dev or AppEnvironment.SideloadStable or AppEnvironment.SideloadPreview;
+				var hasClickedSponsorPrompt = UserSettingsService.ApplicationSettingsService.HasClickedSponsorPrompt;
+				var launchCountReached = AppLifecycleHelper.TotalLaunchCount == 30;
+
+				return isTargetEnvironment && !hasClickedSponsorPrompt && launchCountReached;
+			}
+		}
 
 		// Commands
 
 		public ICommand NavigateToNumberedTabKeyboardAcceleratorCommand { get; }
+		public ICommand ReviewAppCommand { get; }
+		public ICommand DismissReviewPromptCommand { get; }
+		public ICommand SponsorCommand { get; }
+		public ICommand DismissSponsorPromptCommand { get; }
 
 		// Constructor
 
 		public MainPageViewModel()
 		{
 			NavigateToNumberedTabKeyboardAcceleratorCommand = new RelayCommand<KeyboardAcceleratorInvokedEventArgs>(ExecuteNavigateToNumberedTabKeyboardAcceleratorCommand);
+			ReviewAppCommand = new RelayCommand(ExecuteReviewAppCommand);
+			DismissReviewPromptCommand = new RelayCommand(ExecuteDismissReviewPromptCommand);
+			SponsorCommand = new RelayCommand(ExecuteSponsorCommand);
+			DismissSponsorPromptCommand = new RelayCommand(ExecuteDismissSponsorPromptCommand);
 
 			AppearanceSettingsService.PropertyChanged += (s, e) =>
 			{
@@ -159,6 +193,9 @@ namespace Files.App.ViewModels
 						break;
 					case nameof(AppearanceSettingsService.ShowToolbar):
 						OnPropertyChanged(nameof(ShowToolbar));
+						break;
+					case nameof(AppearanceSettingsService.ShowStatusBar):
+						OnPropertyChanged(nameof(ShowStatusBar));
 						break;
 				}
 			};
@@ -302,6 +339,37 @@ namespace Files.App.ViewModels
 
 		// Command methods
 
+		private async void ExecuteReviewAppCommand()
+		{
+			UserSettingsService.ApplicationSettingsService.HasClickedReviewPrompt = true;
+			OnPropertyChanged(nameof(ShowReviewPrompt));
+
+			try
+			{
+				var storeContext = StoreContext.GetDefault();
+				InitializeWithWindow.Initialize(storeContext, MainWindow.Instance.WindowHandle);
+				await storeContext.RequestRateAndReviewAppAsync();
+			}
+			catch (Exception) { }
+		}
+
+		private void ExecuteDismissReviewPromptCommand()
+		{
+			UserSettingsService.ApplicationSettingsService.HasClickedReviewPrompt = true;
+		}
+
+		private async void ExecuteSponsorCommand()
+		{
+			UserSettingsService.ApplicationSettingsService.HasClickedSponsorPrompt = true;
+			OnPropertyChanged(nameof(ShowSponsorPrompt));
+			await Launcher.LaunchUriAsync(new Uri(Constants.ExternalUrl.SupportUsUrl)).AsTask();
+		}
+
+		private void ExecuteDismissSponsorPromptCommand()
+		{
+			UserSettingsService.ApplicationSettingsService.HasClickedSponsorPrompt = true;
+		}
+
 		private async void ExecuteNavigateToNumberedTabKeyboardAcceleratorCommand(KeyboardAcceleratorInvokedEventArgs? e)
 		{
 			var indexToSelect = e!.KeyboardAccelerator.Key switch
@@ -326,8 +394,8 @@ namespace Files.App.ViewModels
 				// Small delay for the UI to load
 				await Task.Delay(500);
 
-				// Refocus on the file list
-				(SelectedTabItem?.TabItemContent as Control)?.Focus(FocusState.Programmatic);
+				// Focus the content of the selected tab item (needed for keyboard navigation)
+				context.ShellPage!.PaneHolder.FocusActivePane();
 			}
 
 			e.Handled = true;

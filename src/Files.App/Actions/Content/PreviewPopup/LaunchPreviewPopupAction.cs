@@ -3,6 +3,7 @@
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed partial class LaunchPreviewPopupAction : ObservableObject, IAction
 	{
 		private readonly IContentPageContext context;
@@ -20,7 +21,6 @@ namespace Files.App.Actions
 
 		public bool IsExecutable =>
 			context.SelectedItems.Count == 1 &&
-			(!context.ShellPage?.ToolbarViewModel?.IsEditModeEnabled ?? false) &&
 			(!context.ShellPage?.SlimContentPage?.IsRenamingItem ?? false);
 
 		public LaunchPreviewPopupAction()

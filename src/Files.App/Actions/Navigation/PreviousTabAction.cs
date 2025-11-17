@@ -6,9 +6,11 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed partial class PreviousTabAction : ObservableObject, IAction
 	{
 		private readonly IMultitaskingContext multitaskingContext;
+		private readonly IContentPageContext contentPageContext = Ioc.Default.GetRequiredService<IContentPageContext>();
 
 		public string Label
 			=> Strings.PreviousTab.GetLocalizedResource();
@@ -39,8 +41,8 @@ namespace Files.App.Actions
 			// Small delay for the UI to load
 			await Task.Delay(500);
 
-			// Refocus on the file list
-			(multitaskingContext.CurrentTabItem.TabItemContent as Control)?.Focus(FocusState.Programmatic);
+			// Focus the content of the selected tab item (needed for keyboard navigation)
+			contentPageContext.ShellPage!.PaneHolder.FocusActivePane();
 		}
 
 		private void MultitaskingContext_PropertyChanged(object? sender, PropertyChangedEventArgs e)

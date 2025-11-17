@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Files Community
 // Licensed under the MIT License.
 
-using Files.App.UserControls.TabBar;
 using System.Collections.Immutable;
 
 namespace Files.App.Data.Contexts
@@ -38,8 +37,6 @@ namespace Files.App.Data.Contexts
 		public bool CanGoForward => ShellPage is not null && ShellPage.ToolbarViewModel.CanGoForward;
 
 		public bool CanNavigateToParent => ShellPage is not null && ShellPage.ToolbarViewModel.CanNavigateToParent;
-
-		public bool IsSearchBoxVisible => ShellPage is not null && ShellPage.ToolbarViewModel.IsSearchBoxVisible;
 
 		public bool CanCreateItem => GetCanCreateItem();
 
@@ -94,7 +91,7 @@ namespace Files.App.Data.Contexts
 				page.ContentChanged += Page_ContentChanged;
 				page.InstanceViewModel.PropertyChanged += InstanceViewModel_PropertyChanged;
 				page.ToolbarViewModel.PropertyChanged += ToolbarViewModel_PropertyChanged;
-				
+
 				if (page.PaneHolder is not null)
 					page.PaneHolder.PropertyChanged += PaneHolder_PropertyChanged;
 			}
@@ -167,7 +164,6 @@ namespace Files.App.Data.Contexts
 				case nameof(NavigationToolbarViewModel.CanNavigateToParent):
 				case nameof(NavigationToolbarViewModel.HasItem):
 				case nameof(NavigationToolbarViewModel.CanRefresh):
-				case nameof(NavigationToolbarViewModel.IsSearchBoxVisible):
 					OnPropertyChanged(e.PropertyName);
 					break;
 				case nameof(NavigationToolbarViewModel.SelectedItems):

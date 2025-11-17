@@ -4,13 +4,15 @@
 using CommunityToolkit.WinUI;
 using Files.App.Controls;
 using Files.Shared.Helpers;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System.IO;
 using System.Windows.Input;
+using Windows.AI.Actions;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Text;
 
@@ -30,7 +32,6 @@ namespace Files.App.ViewModels.UserControls
 
 		private readonly IUserSettingsService UserSettingsService = Ioc.Default.GetRequiredService<IUserSettingsService>();
 		private readonly IAppearanceSettingsService AppearanceSettingsService = Ioc.Default.GetRequiredService<IAppearanceSettingsService>();
-		private readonly IGeneralSettingsService GeneralSettingsService = Ioc.Default.GetRequiredService<IGeneralSettingsService>();
 		private readonly DrivesViewModel drivesViewModel = Ioc.Default.GetRequiredService<DrivesViewModel>();
 		private readonly IUpdateService UpdateService = Ioc.Default.GetRequiredService<IUpdateService>();
 		private readonly ICommandManager Commands = Ioc.Default.GetRequiredService<ICommandManager>();
@@ -49,21 +50,17 @@ namespace Files.App.ViewModels.UserControls
 		// Events
 
 		public delegate void ToolbarPathItemInvokedEventHandler(object sender, PathNavigationEventArgs e);
-		public delegate void ToolbarFlyoutOpeningEventHandler(object sender, ToolbarFlyoutOpeningEventArgs e);
-		public delegate void ToolbarPathItemLoadedEventHandler(object sender, ToolbarPathItemLoadedEventArgs e);
-		public delegate void AddressBarTextEnteredEventHandler(object sender, AddressBarTextEnteredEventArgs e);
 		public delegate void PathBoxItemDroppedEventHandler(object sender, PathBoxItemDroppedEventArgs e);
 		public event ToolbarPathItemInvokedEventHandler? ToolbarPathItemInvoked;
-		public event ToolbarFlyoutOpeningEventHandler? ToolbarFlyoutOpening;
-		public event ToolbarPathItemLoadedEventHandler? ToolbarPathItemLoaded;
 		public event IAddressToolbarViewModel.ItemDraggedOverPathItemEventHandler? ItemDraggedOverPathItem;
-		public event EventHandler? EditModeEnabled;
 		public event IAddressToolbarViewModel.ToolbarQuerySubmittedEventHandler? PathBoxQuerySubmitted;
-		public event AddressBarTextEnteredEventHandler? AddressBarTextEntered;
+
 		public event PathBoxItemDroppedEventHandler? PathBoxItemDropped;
 		public event EventHandler? RefreshWidgetsRequested;
 
 		// Properties
+
+		internal static ActionRuntime? ActionRuntime { get; private set; }
 
 		public ObservableCollection<PathBoxItem> PathComponents { get; } = [];
 
@@ -73,12 +70,10 @@ namespace Files.App.ViewModels.UserControls
 
 		internal ObservableCollection<NavigationBarSuggestionItem> OmnibarCommandPaletteModeSuggestionItems { get; } = [];
 
+		internal ObservableCollection<SuggestionModel> OmnibarSearchModeSuggestionItems { get; } = [];
+
 		public bool IsSingleItemOverride { get; set; }
 
-		public bool SearchHasFocus { get; private set; }
-
-		public bool ShowHomeButton => AppearanceSettingsService.ShowHomeButton;
-		public bool EnableOmnibar => GeneralSettingsService.EnableOmnibar;
 		public bool ShowStatusCenterButton =>
 			AppearanceSettingsService.StatusCenterVisibility == StatusCenterVisibility.Always ||
 			(AppearanceSettingsService.StatusCenterVisibility == StatusCenterVisibility.DuringOngoingFileOperations && OngoingTasksViewModel.HasAnyItem);
@@ -86,8 +81,6 @@ namespace Files.App.ViewModels.UserControls
 		public bool ShowShelfPaneToggleButton => AppearanceSettingsService.ShowShelfPaneToggleButton && AppLifecycleHelper.AppEnvironment is AppEnvironment.Dev;
 
 		private NavigationToolbar? AddressToolbar => (MainWindow.Instance.Content as Frame)?.FindDescendant<NavigationToolbar>();
-
-		public SearchBoxViewModel SearchBoxViewModel => (SearchBoxViewModel)SearchBox;
 
 		public bool HasAdditionalAction =>
 			InstanceViewModel.IsPageTypeRecycleBin ||
@@ -149,9 +142,6 @@ namespace Files.App.ViewModels.UserControls
 			(IsCardsLayout && UserSettingsService.LayoutSettingsService.CardsViewSize == CardsViewSizeKind.ExtraLarge) ||
 			(IsGridLayout && UserSettingsService.LayoutSettingsService.GridViewSize == GridViewSizeKind.ExtraLarge);
 
-		private bool _IsCommandPaletteOpen;
-		public bool IsCommandPaletteOpen { get => _IsCommandPaletteOpen; set => SetProperty(ref _IsCommandPaletteOpen, value); }
-
 		private bool _IsDynamicOverflowEnabled;
 		public bool IsDynamicOverflowEnabled { get => _IsDynamicOverflowEnabled; set => SetProperty(ref _IsDynamicOverflowEnabled, value); }
 
@@ -179,16 +169,8 @@ namespace Files.App.ViewModels.UserControls
 		private bool _CanRefresh;
 		public bool CanRefresh { get => _CanRefresh; set => SetProperty(ref _CanRefresh, value); }
 
-		private string _SearchButtonGlyph = "\uE721";
-		public string SearchButtonGlyph { get => _SearchButtonGlyph; set => SetProperty(ref _SearchButtonGlyph, value); }
-
-		private bool _ManualEntryBoxLoaded;
-		public bool ManualEntryBoxLoaded { get => _ManualEntryBoxLoaded; set => SetProperty(ref _ManualEntryBoxLoaded, value); }
-
-		private bool _ClickablePathLoaded = true;
-		public bool ClickablePathLoaded { get => _ClickablePathLoaded; set => SetProperty(ref _ClickablePathLoaded, value); }
-
 		private string _PathControlDisplayText;
+		[Obsolete("Superseded by Omnibar.")]
 		public string PathControlDisplayText { get => _PathControlDisplayText; set => SetProperty(ref _PathControlDisplayText, value); }
 
 		private bool _HasItem = false;
@@ -196,20 +178,6 @@ namespace Files.App.ViewModels.UserControls
 
 		private Style _LayoutThemedIcon;
 		public Style LayoutThemedIcon { get => _LayoutThemedIcon; set => SetProperty(ref _LayoutThemedIcon, value); }
-
-		private ISearchBoxViewModel _SearchBox = new SearchBoxViewModel();
-		public ISearchBoxViewModel SearchBox { get => _SearchBox; set => SetProperty(ref _SearchBox, value); }
-
-		private bool _IsSearchBoxVisible;
-		public bool IsSearchBoxVisible
-		{
-			get => _IsSearchBoxVisible;
-			set
-			{
-				if (SetProperty(ref _IsSearchBoxVisible, value))
-					SearchButtonGlyph = value ? "\uE711" : "\uE721";
-			}
-		}
 
 		// SetProperty doesn't seem to properly notify the binding in path bar
 		private string? _PathText;
@@ -223,47 +191,17 @@ namespace Files.App.ViewModels.UserControls
 			}
 		}
 
+		// Workaround to ensure Omnibar is only loaded after the ViewModel is initialized
+		public bool LoadOmnibar =>
+			true;
+
 		private string? _OmnibarCommandPaletteModeText;
 		public string? OmnibarCommandPaletteModeText { get => _OmnibarCommandPaletteModeText; set => SetProperty(ref _OmnibarCommandPaletteModeText, value); }
 
-		private bool _IsOmnibarFocused;
-		public bool IsOmnibarFocused
-		{
-			get => _IsOmnibarFocused;
-			set
-			{
-				// NOTE: Don't call ObservableObject.SetProperty() here since we don't want to change focus logic outside of the control.
+		private string? _OmnibarSearchModeText;
+		public string? OmnibarSearchModeText { get => _OmnibarSearchModeText; set => SetProperty(ref _OmnibarSearchModeText, value); }
 
-				_IsOmnibarFocused = value;
-
-				if (value)
-				{
-					switch (OmnibarCurrentSelectedMode.Name)
-					{
-						case OmnibarPathModeName:
-							PathText =
-								string.IsNullOrEmpty(ContentPageContext.ShellPage?.ShellViewModel?.WorkingDirectory)
-									? Constants.UserEnvironmentPaths.HomePath
-									: ContentPageContext.ShellPage.ShellViewModel.WorkingDirectory;
-							_ = PopulateOmnibarSuggestionsForPathMode();
-							break;
-						case OmnibarPaletteModeName:
-							if (OmnibarCommandPaletteModeSuggestionItems.Count is 0)
-								PopulateOmnibarSuggestionsForCommandPaletteMode();
-							break;
-						case OmnibarSearchModeName:
-							break;
-						default:
-							break;
-					}
-				}
-			}
-		}
-
-		private OmnibarMode _OmnibarCurrentSelectedMode;
-		public OmnibarMode OmnibarCurrentSelectedMode { get => _OmnibarCurrentSelectedMode; set => SetProperty(ref _OmnibarCurrentSelectedMode, value); }
-
-		private string _OmnibarCurrentSelectedModeName;
+		private string _OmnibarCurrentSelectedModeName = OmnibarPathModeName;
 		public string OmnibarCurrentSelectedModeName { get => _OmnibarCurrentSelectedModeName; set => SetProperty(ref _OmnibarCurrentSelectedModeName, value); }
 
 		private CurrentInstanceViewModel _InstanceViewModel;
@@ -279,31 +217,6 @@ namespace Files.App.ViewModels.UserControls
 				{
 					FolderSettings_PropertyChanged(this, new PropertyChangedEventArgs(nameof(LayoutPreferencesManager.LayoutMode)));
 					_InstanceViewModel.FolderSettings.PropertyChanged += FolderSettings_PropertyChanged;
-				}
-			}
-		}
-
-		[Obsolete("Remove once Omnibar goes out of experimental.")]
-		public bool IsEditModeEnabled
-		{
-			get => ManualEntryBoxLoaded;
-			set
-			{
-				if (value)
-				{
-					EditModeEnabled?.Invoke(this, EventArgs.Empty);
-
-					var visiblePath = AddressToolbar?.FindDescendant<AutoSuggestBox>(x => x.Name == "VisiblePath");
-					visiblePath?.Focus(FocusState.Programmatic);
-					visiblePath?.FindDescendant<TextBox>()?.SelectAll();
-
-					AddressBarTextEntered?.Invoke(this, new AddressBarTextEnteredEventArgs() { AddressBarTextField = visiblePath });
-				}
-				else
-				{
-					IsCommandPaletteOpen = false;
-					ManualEntryBoxLoaded = false;
-					ClickablePathLoaded = true;
 				}
 			}
 		}
@@ -340,7 +253,6 @@ namespace Files.App.ViewModels.UserControls
 			_dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 			_dragOverTimer = _dispatcherQueue.CreateTimer();
 
-			SearchBox.Escaped += SearchRegion_Escaped;
 			UserSettingsService.OnSettingChangedEvent += UserSettingsService_OnSettingChangedEvent;
 			UpdateService.PropertyChanged += UpdateService_OnPropertyChanged;
 
@@ -372,23 +284,11 @@ namespace Files.App.ViewModels.UserControls
 			{
 				switch (e.PropertyName)
 				{
-					case nameof(AppearanceSettingsService.ShowHomeButton):
-						OnPropertyChanged(nameof(ShowHomeButton));
-						break;
 					case nameof(AppearanceSettingsService.StatusCenterVisibility):
 						OnPropertyChanged(nameof(ShowStatusCenterButton));
 						break;
 					case nameof(AppearanceSettingsService.ShowShelfPaneToggleButton):
 						OnPropertyChanged(nameof(ShowShelfPaneToggleButton));
-						break;
-				}
-			};
-			GeneralSettingsService.PropertyChanged += (s, e) =>
-			{
-				switch (e.PropertyName)
-				{
-					case nameof(GeneralSettingsService.EnableOmnibar):
-						OnPropertyChanged(nameof(EnableOmnibar));
 						break;
 				}
 			};
@@ -438,9 +338,10 @@ namespace Files.App.ViewModels.UserControls
 			}
 		}
 
+		[Obsolete("Superseded by Omnibar.")]
 		public void PathBoxItem_DragLeave(object sender, DragEventArgs e)
 		{
-			if (((StackPanel)sender).DataContext is not PathBoxItem pathBoxItem ||
+			if (((FrameworkElement)sender).DataContext is not PathBoxItem pathBoxItem ||
 				pathBoxItem.Path == "Home" ||
 				pathBoxItem.Path == "ReleaseNotes" ||
 				pathBoxItem.Path == "Settings")
@@ -453,6 +354,7 @@ namespace Files.App.ViewModels.UserControls
 				_dragOverPath = null;
 		}
 
+		[Obsolete("Superseded by Omnibar.")]
 		public async Task PathBoxItem_Drop(object sender, DragEventArgs e)
 		{
 			if (_lockFlag)
@@ -463,7 +365,7 @@ namespace Files.App.ViewModels.UserControls
 			// Reset dragged over pathbox item
 			_dragOverPath = null;
 
-			if (((StackPanel)sender).DataContext is not PathBoxItem pathBoxItem ||
+			if (((FrameworkElement)sender).DataContext is not PathBoxItem pathBoxItem ||
 				pathBoxItem.Path == "Home" ||
 				pathBoxItem.Path == "ReleaseNotes" ||
 				pathBoxItem.Path == "Settings")
@@ -491,10 +393,11 @@ namespace Files.App.ViewModels.UserControls
 			_lockFlag = false;
 		}
 
+		[Obsolete("Superseded by Omnibar.")]
 		public async Task PathBoxItem_DragOver(object sender, DragEventArgs e)
 		{
 			if (IsSingleItemOverride ||
-				((StackPanel)sender).DataContext is not PathBoxItem pathBoxItem ||
+				((FrameworkElement)sender).DataContext is not PathBoxItem pathBoxItem ||
 				pathBoxItem.Path == "Home" ||
 				pathBoxItem.Path == "ReleaseNotes" ||
 				pathBoxItem.Path == "Settings")
@@ -567,55 +470,11 @@ namespace Files.App.ViewModels.UserControls
 			deferral.Complete();
 		}
 
-		public void PathItemSeparator_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-		{
-			var pathSeparatorIcon = sender as FontIcon;
-			if (pathSeparatorIcon is null || pathSeparatorIcon.DataContext is null)
-				return;
-
-			ToolbarPathItemLoaded?.Invoke(pathSeparatorIcon, new ToolbarPathItemLoadedEventArgs()
-			{
-				Item = (PathBoxItem)pathSeparatorIcon.DataContext,
-				OpenedFlyout = (MenuFlyout)pathSeparatorIcon.ContextFlyout
-			});
-		}
-
-		public void PathboxItemFlyout_Opening(object sender, object e)
-		{
-			ToolbarFlyoutOpening?.Invoke(this, new ToolbarFlyoutOpeningEventArgs((MenuFlyout)sender));
-		}
-
-		public void PathBoxItemFlyout_Closed(object sender, object e)
-		{
-			((MenuFlyout)sender).Items.Clear();
-		}
-
+		[Obsolete("Superseded by Omnibar.")]
 		public void CurrentPathSetTextBox_TextChanged(object sender, TextChangedEventArgs args)
 		{
 			if (sender is TextBox textBox)
 				PathBoxQuerySubmitted?.Invoke(this, new ToolbarQuerySubmittedEventArgs() { QueryText = textBox.Text });
-		}
-
-		public void VisiblePath_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-		{
-			if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-				AddressBarTextEntered?.Invoke(this, new AddressBarTextEnteredEventArgs() { AddressBarTextField = sender });
-		}
-
-		public void VisiblePath_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-		{
-			PathBoxQuerySubmitted?.Invoke(this, new ToolbarQuerySubmittedEventArgs() { QueryText = args.QueryText });
-
-			(this as IAddressToolbarViewModel).IsEditModeEnabled = false;
-		}
-
-		public void PathBoxItem_PointerPressed(object sender, PointerRoutedEventArgs e)
-		{
-			if (e.Pointer.PointerDeviceType != Microsoft.UI.Input.PointerDeviceType.Mouse)
-				return;
-
-			var ptrPt = e.GetCurrentPoint(AddressToolbar);
-			_pointerRoutedEventArgs = ptrPt.Properties.IsMiddleButtonPressed ? e : null;
 		}
 
 		public async Task HandleFolderNavigationAsync(string path, bool openNewTab = false)
@@ -640,17 +499,19 @@ namespace Files.App.ViewModels.UserControls
 
 		public async Task HandleItemNavigationAsync(string path)
 		{
-			if (ContentPageContext.ShellPage is null || PathComponents.LastOrDefault()?.Path is not { } currentPath)
+			if (ContentPageContext.ShellPage is null)
 				return;
 
+			var currentPath = PathComponents.LastOrDefault()?.Path;
 			var isFtp = FtpHelpers.IsFtpPath(path);
 			var normalizedInput = NormalizePathInput(path, isFtp);
-			if (currentPath.Equals(normalizedInput, StringComparison.OrdinalIgnoreCase) ||
+			if (currentPath is not null && currentPath.Equals(normalizedInput, StringComparison.OrdinalIgnoreCase) ||
 				string.IsNullOrWhiteSpace(normalizedInput))
 				return;
 
 			if (normalizedInput.Equals(ContentPageContext.ShellPage.ShellViewModel.WorkingDirectory) &&
-				ContentPageContext.ShellPage.CurrentPageType != typeof(HomePage))
+				ContentPageContext.ShellPage.CurrentPageType != typeof(HomePage) &&
+				!ContentPageContext.ShellPage.ShellViewModel.IsSearchResults)
 				return;
 
 			if (normalizedInput.Equals("Home", StringComparison.OrdinalIgnoreCase) ||
@@ -674,7 +535,7 @@ namespace Files.App.ViewModels.UserControls
 			else
 			{
 				normalizedInput = StorageFileExtensions.GetResolvedPath(normalizedInput, isFtp);
-				if (currentPath.Equals(normalizedInput, StringComparison.OrdinalIgnoreCase))
+				if (currentPath is not null && currentPath.Equals(normalizedInput, StringComparison.OrdinalIgnoreCase))
 					return;
 
 				var item = await FilesystemTasks.Wrap(() => DriveHelpers.GetRootFromPathAsync(normalizedInput));
@@ -735,130 +596,41 @@ namespace Files.App.ViewModels.UserControls
 			}
 
 			PathControlDisplayText = ContentPageContext.ShellPage.ShellViewModel.WorkingDirectory;
-			IsOmnibarFocused = false;
-		}
-
-		public void PathBoxItem_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
-		{
-			switch (e.Key)
-			{
-				case Windows.System.VirtualKey.Down:
-					{
-						var item = e.OriginalSource as ListViewItem;
-						var button = item?.FindDescendant<Button>();
-						button?.Flyout.ShowAt(button);
-						e.Handled = true;
-						break;
-					}
-				case Windows.System.VirtualKey.Space:
-				case Windows.System.VirtualKey.Enter:
-					{
-						var item = e.OriginalSource as ListViewItem;
-						var path = (item?.Content as PathBoxItem)?.Path;
-						if (path == PathControlDisplayText)
-							return;
-						ToolbarPathItemInvoked?.Invoke(this, new PathNavigationEventArgs()
-						{
-							ItemPath = path
-						});
-						e.Handled = true;
-						break;
-					}
-			}
 		}
 
 		public void SwitchToCommandPaletteMode()
 		{
-			if (EnableOmnibar)
-			{
-				OmnibarCurrentSelectedModeName = OmnibarPaletteModeName;
-			}
-			else
-			{
-				PathText = ">";
-				IsCommandPaletteOpen = true;
-				ManualEntryBoxLoaded = true;
-				ClickablePathLoaded = false;
-
-				var visiblePath = AddressToolbar?.FindDescendant<AutoSuggestBox>(x => x.Name == "VisiblePath");
-				AddressBarTextEntered?.Invoke(this, new AddressBarTextEnteredEventArgs() { AddressBarTextField = visiblePath });
-			}
+			OmnibarCurrentSelectedModeName = OmnibarPaletteModeName;
 		}
 
-		public void SwitchToSearchMode()
+		public async Task SwitchToSearchMode()
 		{
-			if (EnableOmnibar)
-			{
-				OmnibarCurrentSelectedModeName = OmnibarSearchModeName;
-			}
-			else
-			{
-				if (IsSearchBoxVisible)
-					CloseSearchBox(true);
-				else
-				{
-					IsSearchBoxVisible = true;
+			// If the Omnibar is already focused such as when the user initiates a search via the Command Palette,
+			// add a short delay to allow the Command Palette to fully close before switching modes.
+			var omnibar = AddressToolbar?.FindDescendant("Omnibar") as Omnibar;
+			if (omnibar is not null && omnibar.IsFocused)
+				await Task.Delay(100);
 
-					// Given that binding and layouting might take a few cycles, when calling UpdateLayout
-					// we can guarantee that the focus call will be able to find an open ASB
-					var searchbox = AddressToolbar?.FindDescendant("SearchRegion") as SearchBox;
-					searchbox?.UpdateLayout();
-					searchbox?.Focus(FocusState.Programmatic);
-				}
-			}
+			OmnibarCurrentSelectedModeName = OmnibarSearchModeName;
 		}
 
-		public void SwitchToPathMode()
+		public async Task SwitchToPathMode()
 		{
+			// If the Omnibar is already focused such as when the user initiates the Edit Path action via the
+			// Command Palette, add a short delay to allow the Command Palette to fully close before switching modes.
+			var omnibar = AddressToolbar?.FindDescendant("Omnibar") as Omnibar;
+			if (omnibar is not null && omnibar.IsFocused)
+				await Task.Delay(100);
+
 			OmnibarCurrentSelectedModeName = OmnibarPathModeName;
+			omnibar?.Focus(FocusState.Programmatic);
+			omnibar.IsFocused = true;
 		}
 
 		public void UpdateAdditionalActions()
 		{
 			OnPropertyChanged(nameof(HasAdditionalAction));
 		}
-
-		private void CloseSearchBox(bool doFocus = false)
-		{
-			if (_SearchBox.WasQuerySubmitted)
-			{
-				_SearchBox.WasQuerySubmitted = false;
-			}
-			else
-			{
-				IsSearchBoxVisible = false;
-
-				if (doFocus)
-				{
-					SearchBox.Query = string.Empty;
-
-					var page = Ioc.Default.GetRequiredService<IContentPageContext>().ShellPage?.SlimContentPage;
-
-					if (page is BaseGroupableLayoutPage svb && svb.IsLoaded)
-						page.ItemManipulationModel.FocusFileList();
-					else
-						AddressToolbar?.Focus(FocusState.Programmatic);
-				}
-			}
-		}
-
-		public void SearchRegion_GotFocus(object sender, RoutedEventArgs e)
-		{
-			SearchHasFocus = true;
-		}
-
-		public void SearchRegion_LostFocus(object sender, RoutedEventArgs e)
-		{
-			var element = Microsoft.UI.Xaml.Input.FocusManager.GetFocusedElement();
-			if (element is FlyoutBase or AppBarButton)
-				return;
-
-			SearchHasFocus = false;
-			CloseSearchBox();
-		}
-
-		private void SearchRegion_Escaped(object? sender, ISearchBoxViewModel _SearchBox)
-			=> CloseSearchBox(true);
 
 		public async Task SetPathBoxDropDownFlyoutAsync(MenuFlyout flyout, PathBoxItem pathItem)
 		{
@@ -936,7 +708,7 @@ namespace Files.App.ViewModels.UserControls
 			return currentInput;
 		}
 
-		[Obsolete("Remove once Omnibar goes out of experimental.")]
+		[Obsolete("Superseded by Omnibar.")]
 		public async Task CheckPathInputAsync(string currentInput, string currentSelectedPath, IShellPage shellPage)
 		{
 			if (currentInput.StartsWith('>'))
@@ -1059,6 +831,18 @@ namespace Files.App.ViewModels.UserControls
 				UserSettingsService.GeneralSettingsService.PathHistoryList = pathHistoryList;
 		}
 
+		public void SaveSearchQueryToList(string searchQuery)
+		{
+			var previousSearchQueriesList = UserSettingsService.GeneralSettingsService.PreviousSearchQueriesList?.ToList() ?? [];
+			previousSearchQueriesList.Remove(searchQuery);
+			previousSearchQueriesList.Insert(0, searchQuery);
+
+			if (previousSearchQueriesList.Count > MaxSuggestionsCount)
+				UserSettingsService.GeneralSettingsService.PreviousSearchQueriesList = previousSearchQueriesList.RemoveFrom(MaxSuggestionsCount + 1);
+			else
+				UserSettingsService.GeneralSettingsService.PreviousSearchQueriesList = previousSearchQueriesList;
+		}
+
 		private static async Task<bool> LaunchApplicationFromPath(string currentInput, string workingDir)
 		{
 			var args = CommandLineParser.SplitArguments(currentInput);
@@ -1109,9 +893,7 @@ namespace Files.App.ViewModels.UserControls
 
 				// If there are no suggestions, show "No suggestions"
 				if (newSuggestions.Count is 0)
-				{
-					AddNoResultsItem();
-				}
+					return false;
 
 				// Check whether at least one item is in common between the old and the new suggestions
 				// since the suggestions popup becoming empty causes flickering
@@ -1161,179 +943,190 @@ namespace Files.App.ViewModels.UserControls
 			void AddNoResultsItem()
 			{
 				PathModeSuggestionItems.Clear();
+				
+				// Use null-safe access to avoid NullReferenceException during app lifecycle transitions
+				var workingDirectory = string.IsNullOrEmpty(ContentPageContext.ShellPage?.ShellViewModel?.WorkingDirectory)
+					? Constants.UserEnvironmentPaths.HomePath
+					: ContentPageContext.ShellPage.ShellViewModel.WorkingDirectory;
+				
 				PathModeSuggestionItems.Add(new(
-					ContentPageContext.ShellPage.ShellViewModel.WorkingDirectory,
+					workingDirectory,
 					Strings.NavigationToolbarVisiblePathNoResults.GetLocalizedResource()));
 			}
 		}
 
-		public void PopulateOmnibarSuggestionsForCommandPaletteMode()
+		public async Task PopulateOmnibarSuggestionsForCommandPaletteMode()
 		{
-			OmnibarCommandPaletteModeText ??= string.Empty;
-			OmnibarCommandPaletteModeSuggestionItems.Clear();
-
-			var suggestionItems = Commands.Where(command =>
-				command.IsExecutable &&
-				command.IsAccessibleGlobally &&
-				(command.Description.Contains(OmnibarCommandPaletteModeText, StringComparison.OrdinalIgnoreCase) ||
-				command.Code.ToString().Contains(OmnibarCommandPaletteModeText, StringComparison.OrdinalIgnoreCase)))
-			.Select(command => new NavigationBarSuggestionItem()
+			var (suggestionsToProcess, commandsToProcess) = await Task.Run(() =>
 			{
-				ThemedIconStyle = command.Glyph.ToThemedIconStyle(),
-				Glyph = command.Glyph.BaseGlyph,
-				Text = command.Code.ToString(),
-				PrimaryDisplay = command.Description,
-				HotKeys = command.HotKeys,
-				SearchText = OmnibarCommandPaletteModeText,
+				var suggestions = new List<NavigationBarSuggestionItem>();
+
+				if (ContentPageContext.SelectedItems.Count == 1 && ContentPageContext.SelectedItem is not null && !ContentPageContext.SelectedItem.IsFolder)
+				{
+					try
+					{
+						var selectedItemPath = ContentPageContext.SelectedItem.ItemPath;
+						var fileActionEntity = ActionManager.Instance.EntityFactory.CreateFileEntity(selectedItemPath);
+						var actions = ActionManager.Instance.ActionRuntime.ActionCatalog.GetActionsForInputs(new[] { fileActionEntity });
+
+						foreach (var action in actions.Where(a => a.Definition.Description.Contains(OmnibarCommandPaletteModeText, StringComparison.OrdinalIgnoreCase)))
+						{
+							var newItem = new NavigationBarSuggestionItem
+							{
+								PrimaryDisplay = action.Definition.Description,
+								SearchText = OmnibarCommandPaletteModeText,
+								ActionInstance = action
+							};
+
+							if (Uri.TryCreate(action.Definition.IconFullPath, UriKind.RelativeOrAbsolute, out Uri? validUri))
+							{
+								try
+								{
+									newItem.ActionIconSource = new BitmapImage(validUri);
+								}
+								catch (Exception)
+								{
+								}
+							}
+
+							suggestions.Add(newItem);
+						}
+					}
+					catch (Exception ex)
+					{
+						App.Logger.LogWarning(ex, ex.Message);
+					}
+				}
+
+				var commandsData = Commands
+					.Where(command => command.IsAccessibleGlobally
+						&& (command.Description.Contains(OmnibarCommandPaletteModeText, StringComparison.OrdinalIgnoreCase)
+							|| command.Code.ToString().Contains(OmnibarCommandPaletteModeText, StringComparison.OrdinalIgnoreCase)))
+					.Where(command => command.Description != Commands.OpenCommandPalette.Description.ToString())
+					.ToList();
+
+				return (suggestions, commandsData);
 			});
 
-			foreach (var item in suggestionItems)
-				OmnibarCommandPaletteModeSuggestionItems.Add(item);
+			var newSuggestions = new List<NavigationBarSuggestionItem>(suggestionsToProcess);
+			int processedCount = 0;
+
+			foreach (var command in commandsToProcess)
+			{				
+				if (!command.IsExecutable)
+				{
+					processedCount++;
+					// To allow UI updates
+					if (processedCount % 3 == 0)
+						await Task.Yield();
+					continue;
+				}
+
+				var newItem = new NavigationBarSuggestionItem
+				{
+					ThemedIconStyle = command.Glyph.ToThemedIconStyle(),
+					Glyph = command.Glyph.BaseGlyph,
+					Text = command.Description,
+					PrimaryDisplay = command.Description,
+					HotKeys = command.HotKeys,
+					SearchText = OmnibarCommandPaletteModeText,
+				};
+
+				newSuggestions.Add(newItem);
+				processedCount++;
+
+				// To allow UI updates
+				if (processedCount % 3 == 0)
+					await Task.Yield();
+			}
+
+			UpdateCommandPaletteSuggestions(newSuggestions);
 		}
 
-		[Obsolete("Remove once Omnibar goes out of experimental.")]
-		public async Task SetAddressBarSuggestionsAsync(AutoSuggestBox sender, IShellPage shellpage)
+		private void UpdateCommandPaletteSuggestions(List<NavigationBarSuggestionItem> newSuggestions)
 		{
-			if (sender.Text is not null && shellpage.ShellViewModel is not null)
+			if (newSuggestions.Count == 0)
 			{
-				if (!await SafetyExtensions.IgnoreExceptions(async () =>
+				newSuggestions.Add(new NavigationBarSuggestionItem()
 				{
-					IList<NavigationBarSuggestionItem>? suggestions = null;
+					PrimaryDisplay = string.Format(Strings.NoCommandsFound.GetLocalizedResource(), OmnibarCommandPaletteModeText),
+					SearchText = OmnibarCommandPaletteModeText,
+				});
+			}
 
-					if (sender.Text.StartsWith(">"))
+			if (!OmnibarCommandPaletteModeSuggestionItems.IntersectBy(newSuggestions, x => x.PrimaryDisplay).Any())
+			{
+				for (int index = 0; index < newSuggestions.Count; index++)
+				{
+					if (index < OmnibarCommandPaletteModeSuggestionItems.Count)
+						OmnibarCommandPaletteModeSuggestionItems[index] = newSuggestions[index];
+					else
+						OmnibarCommandPaletteModeSuggestionItems.Add(newSuggestions[index]);
+				}
+
+				while (OmnibarCommandPaletteModeSuggestionItems.Count > newSuggestions.Count)
+					OmnibarCommandPaletteModeSuggestionItems.RemoveAt(OmnibarCommandPaletteModeSuggestionItems.Count - 1);
+			}
+			else
+			{
+				foreach (var s in OmnibarCommandPaletteModeSuggestionItems.ExceptBy(newSuggestions, x => x.PrimaryDisplay).ToList())
+					OmnibarCommandPaletteModeSuggestionItems.Remove(s);
+
+				for (int index = 0; index < newSuggestions.Count; index++)
+				{
+					if (OmnibarCommandPaletteModeSuggestionItems.Count > index
+						&& OmnibarCommandPaletteModeSuggestionItems[index].PrimaryDisplay == newSuggestions[index].PrimaryDisplay)
 					{
-						IsCommandPaletteOpen = true;
-						var searchText = sender.Text.Substring(1).Trim();
-						suggestions = Commands.Where(command =>
-							command.IsExecutable &&
-							command.IsAccessibleGlobally &&
-							(command.Description.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
-							command.Code.ToString().Contains(searchText, StringComparison.OrdinalIgnoreCase)))
-						.Select(command => new NavigationBarSuggestionItem()
-						{
-							Text = ">" + command.Code,
-							PrimaryDisplay = command.Description,
-							HotKeys = command.HotKeys,
-							SearchText = searchText,
-						}).ToList();
+						OmnibarCommandPaletteModeSuggestionItems[index] = newSuggestions[index];
 					}
 					else
 					{
-						IsCommandPaletteOpen = false;
-						var currentInput = sender.Text;
-
-						if (string.IsNullOrWhiteSpace(currentInput) || currentInput == "Home" || currentInput == "ReleaseNotes" || currentInput == "Settings")
-						{
-							// Load previously entered path
-							var pathHistoryList = UserSettingsService.GeneralSettingsService.PathHistoryList;
-							if (pathHistoryList is not null)
-							{
-								suggestions = pathHistoryList.Select(x => new NavigationBarSuggestionItem()
-								{
-									Text = x,
-									PrimaryDisplay = x
-								}).ToList();
-							}
-						}
-						else
-						{
-							var isFtp = FtpHelpers.IsFtpPath(currentInput);
-							currentInput = NormalizePathInput(currentInput, isFtp);
-							var expandedPath = StorageFileExtensions.GetResolvedPath(currentInput, isFtp);
-							var folderPath = PathNormalization.GetParentDir(expandedPath) ?? expandedPath;
-							StorageFolderWithPath folder = await shellpage.ShellViewModel.GetFolderWithPathFromPathAsync(folderPath);
-
-							if (folder is null)
-								return false;
-
-							var currPath = await folder.GetFoldersWithPathAsync(Path.GetFileName(expandedPath), (uint)MaxSuggestionsCount);
-							if (currPath.Count >= MaxSuggestionsCount)
-							{
-								suggestions = currPath.Select(x => new NavigationBarSuggestionItem()
-								{
-									Text = x.Path,
-									PrimaryDisplay = x.Item.DisplayName
-								}).ToList();
-							}
-							else if (currPath.Any())
-							{
-								var subPath = await currPath.First().GetFoldersWithPathAsync((uint)(MaxSuggestionsCount - currPath.Count));
-								suggestions = currPath.Select(x => new NavigationBarSuggestionItem()
-								{
-									Text = x.Path,
-									PrimaryDisplay = x.Item.DisplayName
-								}).Concat(
-									subPath.Select(x => new NavigationBarSuggestionItem()
-									{
-										Text = x.Path,
-										PrimaryDisplay = PathNormalization.Combine(currPath.First().Item.DisplayName, x.Item.DisplayName)
-									})).ToList();
-							}
-						}
+						OmnibarCommandPaletteModeSuggestionItems.Insert(index, newSuggestions[index]);
 					}
-
-					if (suggestions is null || suggestions.Count == 0)
-					{
-						suggestions = new List<NavigationBarSuggestionItem>() { new NavigationBarSuggestionItem() {
-						Text = shellpage.ShellViewModel.WorkingDirectory,
-						PrimaryDisplay = Strings.NavigationToolbarVisiblePathNoResults.GetLocalizedResource() } };
-					}
-
-					// NavigationBarSuggestions becoming empty causes flickering of the suggestion box
-					// Here we check whether at least an element is in common between old and new list
-					if (!NavigationBarSuggestions.IntersectBy(suggestions, x => x.PrimaryDisplay).Any())
-					{
-						// No elements in common, update the list in-place
-						for (int index = 0; index < suggestions.Count; index++)
-						{
-							if (index < NavigationBarSuggestions.Count)
-							{
-								NavigationBarSuggestions[index].Text = suggestions[index].Text;
-								NavigationBarSuggestions[index].PrimaryDisplay = suggestions[index].PrimaryDisplay;
-								NavigationBarSuggestions[index].SearchText = suggestions[index].SearchText;
-								NavigationBarSuggestions[index].HotKeys = suggestions[index].HotKeys;
-							}
-							else
-							{
-								NavigationBarSuggestions.Add(suggestions[index]);
-							}
-						}
-
-						while (NavigationBarSuggestions.Count > suggestions.Count)
-							NavigationBarSuggestions.RemoveAt(NavigationBarSuggestions.Count - 1);
-					}
-					else
-					{
-						// At least an element in common, show animation
-						foreach (var s in NavigationBarSuggestions.ExceptBy(suggestions, x => x.PrimaryDisplay).ToList())
-							NavigationBarSuggestions.Remove(s);
-
-						for (int index = 0; index < suggestions.Count; index++)
-						{
-							if (NavigationBarSuggestions.Count > index && NavigationBarSuggestions[index].PrimaryDisplay == suggestions[index].PrimaryDisplay)
-							{
-								NavigationBarSuggestions[index].SearchText = suggestions[index].SearchText;
-								NavigationBarSuggestions[index].HotKeys = suggestions[index].HotKeys;
-							}
-							else
-								NavigationBarSuggestions.Insert(index, suggestions[index]);
-						}
-					}
-
-					return true;
-				}))
-				{
-					SafetyExtensions.IgnoreExceptions(() =>
-					{
-						NavigationBarSuggestions.Clear();
-						NavigationBarSuggestions.Add(new NavigationBarSuggestionItem()
-						{
-							Text = shellpage.ShellViewModel.WorkingDirectory,
-							PrimaryDisplay = Strings.NavigationToolbarVisiblePathNoResults.GetLocalizedResource()
-						});
-					});
 				}
 			}
+		}
+
+		public async Task PopulateOmnibarSuggestionsForSearchMode()
+		{
+			if (ContentPageContext.ShellPage is null)
+				return;
+
+			List<SuggestionModel> newSuggestions = [];
+
+			if (string.IsNullOrWhiteSpace(OmnibarSearchModeText))
+			{
+				var previousSearchQueries = UserSettingsService.GeneralSettingsService.PreviousSearchQueriesList;
+				if (previousSearchQueries is not null)
+					newSuggestions.AddRange(previousSearchQueries.Select(query => new SuggestionModel(query, true)));
+			}
+			else
+			{
+				var search = new FolderSearch
+				{
+					Query = OmnibarSearchModeText,
+					Folder = ContentPageContext.ShellPage.ShellViewModel.WorkingDirectory,
+					MaxItemCount = 10,
+				};
+
+				var results = await search.SearchAsync();
+				newSuggestions.AddRange(results.Select(result => new SuggestionModel(result)));
+			}
+
+			// Remove outdated suggestions
+			var toRemove = OmnibarSearchModeSuggestionItems
+				.Where(existing => !newSuggestions.Any(newItem => newItem.ItemPath == existing.ItemPath))
+				.ToList();
+
+			foreach (var item in toRemove)
+				OmnibarSearchModeSuggestionItems.Remove(item);
+
+			// Add new suggestions
+			var toAdd = newSuggestions
+				.Where(newItem => !OmnibarSearchModeSuggestionItems.Any(existing => existing.Name == newItem.Name));
+
+			foreach (var item in toAdd)
+				OmnibarSearchModeSuggestionItems.Add(item);
 		}
 
 		private void FolderSettings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -1367,7 +1160,6 @@ namespace Files.App.ViewModels.UserControls
 
 		public void Dispose()
 		{
-			SearchBox.Escaped -= SearchRegion_Escaped;
 			UserSettingsService.OnSettingChangedEvent -= UserSettingsService_OnSettingChangedEvent;
 		}
 	}

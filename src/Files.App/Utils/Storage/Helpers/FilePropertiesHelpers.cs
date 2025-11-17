@@ -7,7 +7,6 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
-using Microsoft.Windows.ApplicationModel.Resources;
 using System.Collections.Concurrent;
 using Windows.Graphics;
 using Windows.Win32;
@@ -20,12 +19,6 @@ namespace Files.App.Utils.Storage
 	public static class FilePropertiesHelpers
 	{
 		private static IAppThemeModeService AppThemeModeService { get; } = Ioc.Default.GetRequiredService<IAppThemeModeService>();
-
-		/// <summary>
-		/// Whether LayoutDirection (FlowDirection) is set to right-to-left (RTL)
-		/// </summary>
-		public static readonly bool FlowDirectionSettingIsRightToLeft =
-			new ResourceManager().CreateResourceContext().QualifierValues["LayoutDirection"] == "RTL";
 
 		/// <summary>
 		/// Get window handle (hWnd) of the given properties window instance
@@ -107,10 +100,10 @@ namespace Files.App.Utils.Storage
 				propertiesWindow.Closed += PropertiesWindow_Closed;
 			}
 
-			var width = Convert.ToInt32(800 * App.AppModel.AppWindowDPI);
-			var height = Convert.ToInt32(500 * App.AppModel.AppWindowDPI);
+			var width = Math.Max(1, Convert.ToInt32(800 * App.AppModel.AppWindowDPI));
+			var height = Math.Max(1, Convert.ToInt32(500 * App.AppModel.AppWindowDPI));
 
-			propertiesWindow.AppWindow.Resize(new (width, height));
+			propertiesWindow.AppWindow.Resize(new(width, height));
 			propertiesWindow.IsMinimizable = false;
 			propertiesWindow.IsMaximizable = false;
 			propertiesWindow.Content = frame;

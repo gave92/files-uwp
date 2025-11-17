@@ -17,7 +17,6 @@ using Windows.ApplicationModel.DataTransfer.DragDrop;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
-using OwlCore.Storage;
 using WinRT;
 
 namespace Files.App.ViewModels.UserControls
@@ -980,17 +979,17 @@ namespace Files.App.ViewModels.UserControls
 				{
 					IsVisible = options.ShowEmptyRecycleBin,
 				}.Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewTabFromSidebarAction)
+				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewTabFromSidebar)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewTab && Commands.OpenInNewTabFromSidebarAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewTab && Commands.OpenInNewTabFromSidebar.IsExecutable
 				}.Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewWindowFromSidebarAction)
+				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewWindowFromSidebar)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewWindow && Commands.OpenInNewWindowFromSidebarAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewWindow && Commands.OpenInNewWindowFromSidebar.IsExecutable
 				}.Build(),
-				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewPaneFromSidebarAction)
+				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenInNewPaneFromSidebar)
 				{
-					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewPane && Commands.OpenInNewPaneFromSidebarAction.IsExecutable
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenInNewPane && Commands.OpenInNewPaneFromSidebar.IsExecutable
 				}.Build(),
 				new ContextMenuFlyoutItemViewModel()
 				{
@@ -1046,11 +1045,14 @@ namespace Files.App.ViewModels.UserControls
 				new ContextMenuFlyoutItemViewModel()
 				{
 					ItemType = ContextMenuFlyoutItemType.Separator,
-					ShowItem = Commands.OpenTerminalFromSidebar.IsExecutable ||
+					ShowItem = (UserSettingsService.GeneralSettingsService.ShowOpenTerminal && Commands.OpenTerminalFromSidebar.IsExecutable) ||
 						Commands.OpenStorageSenseFromSidebar.IsExecutable ||
 						Commands.FormatDriveFromSidebar.IsExecutable
 				},
-				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenTerminalFromSidebar).Build(),
+				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenTerminalFromSidebar)
+				{
+					IsVisible = UserSettingsService.GeneralSettingsService.ShowOpenTerminal && Commands.OpenTerminalFromSidebar.IsExecutable
+				}.Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.OpenStorageSenseFromSidebar).Build(),
 				new ContextMenuFlyoutItemViewModelBuilder(Commands.FormatDriveFromSidebar).Build(),
 				new ContextMenuFlyoutItemViewModel()

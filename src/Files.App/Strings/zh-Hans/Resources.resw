@@ -124,7 +124,7 @@
     <value>复制路径</value>
   </data>
   <data name="CopyItemPath" xml:space="preserve">
-    <value>Copy item path</value>
+    <value>复制项目路径</value>
   </data>
   <data name="CopyPathWithQuotes" xml:space="preserve">
     <value>复制路径（带引号）</value>
@@ -139,7 +139,7 @@
     <value>大小</value>
   </data>
   <data name="PropertiesCreated.Text" xml:space="preserve">
-    <value>创建日期:</value>
+    <value>创建日期：</value>
   </data>
   <data name="Path" xml:space="preserve">
     <value>路径</value>
@@ -166,7 +166,7 @@
     <value>跳过</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
-    <value>Select all</value>
+    <value>全部选择</value>
   </data>
   <data name="InvertSelection" xml:space="preserve">
     <value>反选</value>
@@ -175,10 +175,10 @@
     <value>清除选择</value>
   </data>
   <data name="PropertiesModified.Text" xml:space="preserve">
-    <value>修改日期:</value>
+    <value>修改日期：</value>
   </data>
   <data name="Accessed" xml:space="preserve">
-    <value>访问日期:</value>
+    <value>访问日期：</value>
   </data>
   <data name="RecentItemClearAll.Text" xml:space="preserve">
     <value>清空所有项目</value>
@@ -190,7 +190,7 @@
     <value>搜索</value>
   </data>
   <data name="RecentItemDescription.Text" xml:space="preserve">
-    <value>将在此显示访问过的文件(夹)</value>
+    <value>以前访问过的文件和文件夹将显示在此处</value>
   </data>
   <data name="RecentItemRemove.Text" xml:space="preserve">
     <value>移除此项</value>
@@ -214,10 +214,10 @@
     <value>显示已知文件类型的扩展名</value>
   </data>
   <data name="SettingsFilesAndFoldersShowHiddenItems" xml:space="preserve">
-    <value>显示隐藏的文件(夹)</value>
+    <value>显示隐藏的文件或文件夹</value>
   </data>
   <data name="ShowDotFiles" xml:space="preserve">
-    <value>Dot files</value>
+    <value>显示以英文句点开头的文件</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>外观</value>
@@ -308,6 +308,9 @@
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>深色</value>
+  </data>
+  <data name="UseSystemSetting" xml:space="preserve">
+    <value>使用系统设置</value>
   </data>
   <data name="Application" xml:space="preserve">
     <value>应用</value>
@@ -504,16 +507,16 @@
     <value>{0} 中全部</value>
   </data>
   <data name="PropertiesDriveUsedSpace.Text" xml:space="preserve">
-    <value>已用空间:</value>
+    <value>已用空间：</value>
   </data>
   <data name="PropertiesDriveFreeSpace.Text" xml:space="preserve">
-    <value>可用空间:</value>
+    <value>可用空间：</value>
   </data>
   <data name="PropertiesDriveCapacity.Text" xml:space="preserve">
-    <value>容量:</value>
+    <value>容量：</value>
   </data>
   <data name="PropertiesDriveFileSystem.Text" xml:space="preserve">
-    <value>文件系统:</value>
+    <value>文件系统：</value>
   </data>
   <data name="JumpListRecentGroupHeader" xml:space="preserve">
     <value>近期访问</value>
@@ -523,9 +526,6 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>状态</value>
-  </data>
-  <data name="SettingsPreferencesSystemDefaultLanguageOption" xml:space="preserve">
-    <value>跟随系统</value>
   </data>
   <data name="NavigationToolbarVisiblePathNoResults" xml:space="preserve">
     <value>无结果</value>
@@ -549,13 +549,13 @@
     <value>打开文件位置</value>
   </data>
   <data name="PropertiesShortcutItemArgs.Text" xml:space="preserve">
-    <value>参数:</value>
+    <value>参数：</value>
   </data>
   <data name="PropertiesShortcutItemPath.Text" xml:space="preserve">
-    <value>目标位置:</value>
+    <value>目标位置：</value>
   </data>
   <data name="PropertiesShortcutItemType.Text" xml:space="preserve">
-    <value>快捷方式类型:</value>
+    <value>快捷方式类型：</value>
   </data>
   <data name="PropertiesShortcutTypeLink" xml:space="preserve">
     <value>Web 链接</value>
@@ -582,13 +582,13 @@
     <value>报告此问题</value>
   </data>
   <data name="InvalidItemDialogContent" xml:space="preserve">
-    <value>引用的项目无效或无法访问。{0}代码:{0}{1}</value>
+    <value>引用的项目无效或无法访问。{0}代码：{0}{1}</value>
   </data>
   <data name="InvalidItemDialogTitle" xml:space="preserve">
     <value>无效项</value>
   </data>
   <data name="SettingsAboutVersionTitle" xml:space="preserve">
-    <value>版本:</value>
+    <value>版本：</value>
   </data>
   <data name="ShareDialogFailMessage" xml:space="preserve">
     <value>目前没有可共享的内容。</value>
@@ -1010,6 +1010,9 @@
   <data name="SearchPagePathBoxOverrideText" xml:space="preserve">
     <value>在“{1}”中搜索“{0}”的结果</value>
   </data>
+  <data name="SearchResultsFor" xml:space="preserve">
+    <value>“{0}”的搜索结果</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>详细信息</value>
   </data>
@@ -1089,13 +1092,25 @@
     <value>显示/隐藏信息窗格</value>
   </data>
   <data name="ToggleInfoPaneDescription" xml:space="preserve">
-    <value>打开信息窗格以查看详细信息/预览窗格</value>
+    <value>切换详细信息/预览窗格可见性</value>
   </data>
   <data name="ToggleToolbar" xml:space="preserve">
-    <value>Toggle toolbar</value>
+    <value>显示/隐藏工具栏</value>
   </data>
   <data name="ToggleToolbarDescription" xml:space="preserve">
-    <value>Toggle visibility of the toolbar</value>
+    <value>切换工具栏的可见性</value>
+  </data>
+  <data name="ToggleFilterHeader" xml:space="preserve">
+    <value>显示/隐藏筛选顶栏</value>
+  </data>
+  <data name="ToggleFilterHeaderDescription" xml:space="preserve">
+    <value>切换筛选顶栏可见性</value>
+  </data>
+  <data name="ToggleDualPane" xml:space="preserve">
+    <value>切换双面板</value>
+  </data>
+  <data name="ToggleDualPaneDescription" xml:space="preserve">
+    <value>切换双面板模式</value>
   </data>
   <data name="DetailsPanePreviewNotAvaliableText" xml:space="preserve">
     <value>没有预览</value>
@@ -1227,7 +1242,7 @@
     <value>库</value>
   </data>
   <data name="LibraryLocations.Text" xml:space="preserve">
-    <value>位置:</value>
+    <value>位置：</value>
   </data>
   <data name="SetAsDefaultSavePath" xml:space="preserve">
     <value>设置为默认保存路径</value>
@@ -1308,7 +1323,7 @@
     <value>用选中的项目创建文件夹</value>
   </data>
   <data name="ItemType" xml:space="preserve">
-    <value>类型:</value>
+    <value>类型：</value>
   </data>
   <data name="ToolTipDescriptionDate" xml:space="preserve">
     <value>修改日期:</value>
@@ -1398,7 +1413,7 @@
     <value>{0} 个项目</value>
   </data>
   <data name="ReopenClosedTab" xml:space="preserve">
-    <value>Reopen tab</value>
+    <value>重新打开标签页</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>重命名</value>
@@ -1464,7 +1479,7 @@
     <value>你无权查看此对象的安全属性。 单击“高级权限”继续。</value>
   </data>
   <data name="SecurityOwnerLabel.Text" xml:space="preserve">
-    <value>所有者:</value>
+    <value>所有者：</value>
   </data>
   <data name="SecurityUnknownOwnerText.Text" xml:space="preserve">
     <value>未知所有者</value>
@@ -1605,7 +1620,7 @@
     <value>用来自该对象的可继承权限条目替换所有子对象权限条目</value>
   </data>
   <data name="CloseActivePane" xml:space="preserve">
-    <value>Close pane</value>
+    <value>关闭窗格</value>
   </data>
   <data name="EnterCompactOverlay" xml:space="preserve">
     <value>进入精简模式</value>
@@ -2012,11 +2027,23 @@
   <data name="Behaviors" xml:space="preserve">
     <value>行为</value>
   </data>
-  <data name="ReviewFiles" xml:space="preserve">
-    <value>评价 Files</value>
+  <data name="Hello" xml:space="preserve">
+    <value>您好！</value>
   </data>
-  <data name="ReviewFilesContent" xml:space="preserve">
-    <value>看官老爷们，给个好评呗</value>
+  <data name="ReviewFilesSubtitle" xml:space="preserve">
+    <value>喜欢Files吗？请考虑在Microsoft Store中给我们写评价。</value>
+  </data>  
+  <data name="SponsorSubtitle" xml:space="preserve">
+    <value>喜欢Files吗？请考虑在Github上支持该项目</value>
+  </data>
+  <data name="Sponsor" xml:space="preserve">
+    <value>赞助者</value>
+  </data>
+  <data name="RateUs" xml:space="preserve">
+    <value>为我们评分</value>
+  </data>
+  <data name="Dismiss" xml:space="preserve">
+    <value>忽略</value>
   </data>
   <data name="SetAsBackgroundFlyout" xml:space="preserve">
     <value>设置为背景</value>
@@ -2220,7 +2247,7 @@
     <value>在此位置创建快捷方式需要管理员权限</value>
   </data>
   <data name="CannotCreateShortcutDialogMessage" xml:space="preserve">
-    <value>您要在桌面上创建快捷方式吗？</value>
+    <value>要改为在桌面上创建快捷方式吗？</value>
   </data>
   <data name="ErrorDialogNameNotAllowed" xml:space="preserve">
     <value>指定的项目名称无效</value>
@@ -2295,7 +2322,7 @@
     <value>右键菜单选项</value>
   </data>
   <data name="ShowFileExtensions" xml:space="preserve">
-    <value>File extensions</value>
+    <value>文件扩展名</value>
   </data>
   <data name="FormatDriveText" xml:space="preserve">
     <value>格式化</value>
@@ -2304,13 +2331,13 @@
     <value>帮助</value>
   </data>
   <data name="FullScreen" xml:space="preserve">
-    <value>Full screen</value>
+    <value>全屏</value>
   </data>
   <data name="ConfirmDeleteTag" xml:space="preserve">
     <value>确定要删除此标签吗？</value>
   </data>
   <data name="PlayAll" xml:space="preserve">
-    <value>Play</value>
+    <value>播放</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>高度</value>
@@ -2370,7 +2397,7 @@
     <value>增加大小</value>
   </data>
   <data name="ToggleSortDirection" xml:space="preserve">
-    <value>Sort direction</value>
+    <value>排列顺序</value>
   </data>
   <data name="InvalidTagNameWarning" xml:space="preserve">
     <value>无效名称</value>
@@ -2382,37 +2409,37 @@
     <value>视频</value>
   </data>
   <data name="LaunchPreviewPopup" xml:space="preserve">
-    <value>Preview popup</value>
+    <value>预览弹窗</value>
   </data>
   <data name="ToggleCompactOverlay" xml:space="preserve">
     <value>开关精简模式</value>
   </data>
   <data name="OpenHelpDescription" xml:space="preserve">
-    <value>Open the online help page in your browser</value>
+    <value>在你的浏览器中打开在线帮助页面</value>
   </data>
   <data name="ToggleFullScreenDescription" xml:space="preserve">
-    <value>Toggle full screen mode</value>
+    <value>切换全屏模式</value>
   </data>
   <data name="EnterCompactOverlayDescription" xml:space="preserve">
-    <value>Enter compact overlay mode</value>
+    <value>进入精简模式</value>
   </data>
   <data name="ExitCompactOverlayDescription" xml:space="preserve">
-    <value>Exit compact overlay mode</value>
+    <value>进入精简模式</value>
   </data>
   <data name="ToggleCompactOverlayDescription" xml:space="preserve">
-    <value>Toggle compact overlay mode</value>
+    <value>切换精简模式</value>
   </data>
   <data name="SearchDescription" xml:space="preserve">
-    <value>Start search in the OmniBar</value>
+    <value>在 OmniBar 中开始搜索</value>
   </data>
   <data name="ToggleShowHiddenItemsDescription" xml:space="preserve">
-    <value>Toggle visibility of hidden items</value>
+    <value>切换隐藏的项目的可见性</value>
   </data>
   <data name="ToggleDotFilesSettingDescription" xml:space="preserve">
-    <value>Toggle visibility of dot files</value>
+    <value>切换以英文句点 (.) 开头的文件的可见性</value>
   </data>
   <data name="ToggleShowFileExtensionsDescription" xml:space="preserve">
-    <value>Toggle visibility of file extensions</value>
+    <value>切换文件扩展名的可见性</value>
   </data>
   <data name="TogglePreviewPaneDescription" xml:space="preserve">
     <value>切换到预览窗格以预览文件</value>
@@ -2421,37 +2448,37 @@
     <value>切换侧边栏显示</value>
   </data>
   <data name="CopyItemDescription" xml:space="preserve">
-    <value>Copy selected {0, plural, one {item} other {items}} to clipboard</value>
+    <value>复制选中的{0, plural, other {项目}}</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
-    <value>复制当前目录的路径到剪贴板</value>
+    <value>复制当前文件夹的路径</value>
   </data>
   <data name="CopyItemPathDescription" xml:space="preserve">
-    <value>复制选中项的路径到剪贴板</value>
+    <value>复制选中项目的路径</value>
   </data>
   <data name="CopyItemPathWithQuotesDescription" xml:space="preserve">
-    <value>复制选中项的路径（带引号）到剪贴板</value>
+    <value>复制选中项目的路径（带引号）</value>
   </data>
   <data name="CopyPathWithQuotesDescription" xml:space="preserve">
-    <value>复制当前目录的路径（带引号）到剪贴板</value>
+    <value>复制当前目录的路径（带引号）</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
-    <value>Cut selected {0, plural, one {item} other {items}} to clipboard</value>
+    <value>剪切选中的{0, plural, other {项目}}</value>
   </data>
   <data name="PasteItemDescription" xml:space="preserve">
-    <value>Paste clipboard items to the current folder</value>
+    <value>将文件粘贴到当前文件夹</value>
   </data>
   <data name="PasteShortcutDescription" xml:space="preserve">
-    <value>Paste clipboard items to the current folder as shortcuts</value>
+    <value>将项目在当前文件夹粘贴为快捷方式</value>
   </data>
   <data name="PasteItemToSelectionDescription" xml:space="preserve">
-    <value>Paste clipboard items to the selected folder</value>
+    <value>将文件粘贴到选中的文件夹</value>
   </data>
   <data name="PasteToSelectedFolder" xml:space="preserve">
-    <value>Paste to selected folder</value>
+    <value>粘贴到选中的文件夹</value>
   </data>
   <data name="DeleteItemDescription" xml:space="preserve">
-    <value>Delete selected {0, plural, one {item} other {items}}</value>
+    <value>删除选中的{0, plural, other {项目}}</value>
   </data>
   <data name="CreateFolderDescription" xml:space="preserve">
     <value>创建新文件夹</value>
@@ -2463,7 +2490,7 @@
     <value>创建指向项目的快捷方式</value>
   </data>
   <data name="EmptyRecycleBinDescription" xml:space="preserve">
-    <value>Empty the contents of Recycle Bin</value>
+    <value>清空回收站的内容</value>
   </data>
   <data name="FormatDriveDescription" xml:space="preserve">
     <value>打开所选项目的“格式化驱动器”菜单</value>
@@ -2493,10 +2520,10 @@
     <value>选择所有项目</value>
   </data>
   <data name="InvertSelectionDescription" xml:space="preserve">
-    <value>Invert selected items</value>
+    <value>反向选中项目</value>
   </data>
   <data name="ClearSelectionDescription" xml:space="preserve">
-    <value>Clear selected items</value>
+    <value>清除选中项目</value>
   </data>
   <data name="ToggleSelectDescription" xml:space="preserve">
     <value>切换项目选择</value>
@@ -2529,13 +2556,13 @@
     <value>设置所选图片为此应用程序的背景</value>
   </data>
   <data name="InstallFont" xml:space="preserve">
-    <value>Install font</value>
+    <value>安装字体</value>
   </data>
   <data name="InstallDriver" xml:space="preserve">
-    <value>Install driver</value>
+    <value>安装驱动程序</value>
   </data>
   <data name="InstallCertificate" xml:space="preserve">
-    <value>Install certificate</value>
+    <value>安装证书</value>
   </data>
   <data name="InstallFontDescription" xml:space="preserve">
     <value>安装选中的{0, plural, other {字体}}</value>
@@ -2703,10 +2730,10 @@
     <value>打开新标签页</value>
   </data>
   <data name="NavigateBackDescription" xml:space="preserve">
-    <value>Navigate backward</value>
+    <value>向后导航</value>
   </data>
   <data name="NavigateForwardDescription" xml:space="preserve">
-    <value>Navigate forward</value>
+    <value>向前导航</value>
   </data>
   <data name="NavigateUpDescription" xml:space="preserve">
     <value>导航至上一级目录</value>
@@ -2739,7 +2766,7 @@
     <value>关闭所有标签页（包括当前标签页）</value>
   </data>
   <data name="ReopenClosedTabDescription" xml:space="preserve">
-    <value>Reopen recently closed tab</value>
+    <value>打开最近关闭的标签页</value>
   </data>
   <data name="PreviousTabDescription" xml:space="preserve">
     <value>移到上一标签页</value>
@@ -2751,13 +2778,13 @@
     <value>关闭当前标签页</value>
   </data>
   <data name="CloseActivePaneDescription" xml:space="preserve">
-    <value>Close the active pane</value>
+    <value>关闭活动窗格</value>
   </data>
   <data name="FocusOtherPane" xml:space="preserve">
     <value>切换焦点到其他窗格</value>
   </data>
   <data name="FocusOtherPaneDescription" xml:space="preserve">
-    <value>Switch focus to the other pane</value>
+    <value>切换焦点到另一窗格</value>
   </data>
   <data name="ToggleSidebar" xml:space="preserve">
     <value>打开/关闭侧边栏</value>
@@ -2965,13 +2992,13 @@
     <value>无标签</value>
   </data>
   <data name="PreviousTab" xml:space="preserve">
-    <value>Previous tab</value>
+    <value>上一个标签页</value>
   </data>
   <data name="NextTab" xml:space="preserve">
-    <value>Next tab</value>
+    <value>下一个标签页</value>
   </data>
   <data name="CloseTab" xml:space="preserve">
-    <value>Close tab</value>
+    <value>关闭标签页</value>
   </data>
   <data name="EditPath" xml:space="preserve">
     <value>编辑路径</value>
@@ -3001,7 +3028,7 @@
     <value>选择项目时显示复选框</value>
   </data>
   <data name="EditPathDescription" xml:space="preserve">
-    <value>Edit path in the OmniBar</value>
+    <value>在 OmniBar 中编辑路径</value>
   </data>
   <data name="AddItemDescription" xml:space="preserve">
     <value>创建新项目</value>
@@ -3016,7 +3043,7 @@
     <value>永久删除</value>
   </data>
   <data name="DeleteItemPermanentlyDescription" xml:space="preserve">
-    <value>Delete selected {0, plural, one {item} other {items}} permanently</value>
+    <value>永久删除选中的{0, plural, other {项目}}</value>
   </data>
   <data name="PlayAllDescription" xml:space="preserve">
     <value>播放选中的媒体文件</value>
@@ -3028,7 +3055,7 @@
     <value>重做上一次文件操作</value>
   </data>
   <data name="Location" xml:space="preserve">
-    <value>位置:</value>
+    <value>位置：</value>
   </data>
   <data name="GroupByMonthDescription" xml:space="preserve">
     <value>按月份分组</value>
@@ -3154,7 +3181,7 @@
     <value>远程</value>
   </data>
   <data name="ImproveTranslation" xml:space="preserve">
-    <value>在 Crowdin 上翻译此应用</value>
+    <value>在 Crowdin 上翻译Files</value>
   </data>
   <data name="GitFetch" xml:space="preserve">
     <value>抓取</value>
@@ -3239,7 +3266,7 @@
     <value>连接到 GitHub</value>
   </data>
   <data name="ConnectGitHubDescription" xml:space="preserve">
-    <value>若要开始使用 GitHub 存储库，请在下方的链接中输入以下验证码。</value>
+    <value>若要开始使用 GitHub 存储库，请点击下方的链接，并输入以下验证码。</value>
   </data>
   <data name="CannotReachGitHubError" xml:space="preserve">
     <value>Files 目前无法访问 GitHub。</value>
@@ -3275,13 +3302,13 @@
     <value>无法显示当前所有者。</value>
   </data>
   <data name="AuthorizationSucceded" xml:space="preserve">
-    <value>针不戳！你现在已获得授权。</value>
+    <value>真不错！你现在已获得授权。</value>
   </data>
   <data name="InitRepo" xml:space="preserve">
     <value>初始化存储库</value>
   </data>
   <data name="InitRepoDescription" xml:space="preserve">
-    <value>Initialize current folder as a git repository</value>
+    <value>将当前文件夹初始化为 git 仓库</value>
   </data>
   <data name="GitOriginRepositoryName" xml:space="preserve">
     <value>远程仓库名称</value>
@@ -3296,13 +3323,13 @@
     <value>按路径排序</value>
   </data>
   <data name="OpenDirectoryInNewPaneDescription" xml:space="preserve">
-    <value>Open selected directory in a new pane</value>
+    <value>在新窗格中打开选中的目录</value>
   </data>
   <data name="OpenDirectoryInNewTabDescription" xml:space="preserve">
-    <value>Open selected directory in a new tab</value>
+    <value>在新标签页中打开选中的目录</value>
   </data>
   <data name="OpenInNewWindowDescription" xml:space="preserve">
-    <value>Open selected directory in a new window</value>
+    <value>在新窗口中打开选中的目录</value>
   </data>
   <data name="OpenAllTaggedItems" xml:space="preserve">
     <value>全部打开</value>
@@ -3327,13 +3354,13 @@
     <value>命令“{0}”尚未准备好执行。</value>
   </data>
   <data name="CommandPalette" xml:space="preserve">
-    <value>Command Palette</value>
+    <value>命令面板</value>
   </data>
   <data name="OpenCommandPaletteDescription" xml:space="preserve">
-    <value>Open Command Palette in the OmniBar</value>
+    <value>在 OmniBar 中打开命令面板</value>
   </data>
   <data name="ShortcutItemWorkingDir" xml:space="preserve">
-    <value>起始位置:</value>
+    <value>起始位置：</value>
   </data>
   <data name="TurnOnBitLocker" xml:space="preserve">
     <value>打开 BitLocker</value>
@@ -3439,7 +3466,7 @@
     <value>清除已完成的条目</value>
   </data>
   <data name="NameWithColon" xml:space="preserve">
-    <value>名称:</value>
+    <value>名称：</value>
   </data>
   <data name="StatusCenter_ProcessedSize_Header" xml:space="preserve">
     <value>已处理 {0}，共 {1}</value>
@@ -3460,8 +3487,11 @@
   <data name="ProcessingItems" xml:space="preserve">
     <value>正在处理项目...</value>
   </data>
+  <data name="DiscoveringItems" xml:space="preserve">
+    <value>正在发现项目...</value>
+  </data>
   <data name="SpeedWithColon" xml:space="preserve">
-    <value>速度:</value>
+    <value>速度：</value>
   </data>
   <data name="StatusCenter_CompressCanceled_Header" xml:space="preserve">
     <value>已取消将 {0} 个项目压缩到“{1}”</value>
@@ -3472,27 +3502,27 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressComplete_Header" xml:space="preserve">
-    <value>已将 {0} 个项目压缩到“{1}”</value>
+    <value>已将{0, plural, other {#个项目}}压缩至“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressComplete_SubHeader" xml:space="preserve">
-    <value>已将 {0} 个项目从“{1}”压缩到“{2}”</value>
+    <value>已将{0, plural, other {#个项目}}从“{1}”压缩到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressFailed_Header" xml:space="preserve">
-    <value>将 {0} 个项目压缩到“{1}”时出错</value>
+    <value>将{0, plural, other {#个项目}}压缩到“{1}”时出错</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressFailed_SubHeader" xml:space="preserve">
-    <value>无法将 {0} 个项目从“{1}”压缩到“{2}”</value>
+    <value>无法将{0, plural, other {#个项目}}从“{1}”压缩到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressInProgress_Header" xml:space="preserve">
-    <value>正在将 {0} 个项目压缩到“{1}”</value>
+    <value>正在将{0, plural, other {#个项目}}压缩到“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressInProgress_SubHeader" xml:space="preserve">
-    <value>正在将 {0} 个项目从“{1}”压缩到“{2}”</value>
+    <value>正在将{0, plural, other {#个项目}}从“{1}”压缩到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_GitCloneCanceled_Header" xml:space="preserve">
@@ -3532,64 +3562,68 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontCanceled_SubHeader" xml:space="preserve">
-    <value>已取消从“{1}”中安装 {0} 个字体</value>
+    <value>已取消从“{1}”中安装{0, plural, other {#个字体}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontComplete_Header" xml:space="preserve">
-    <value>已安装 {0} 个字体</value>
+    <value>已安装{0, plural, other {#个字体}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontComplete_SubHeader" xml:space="preserve">
-    <value>已从“{1}”中安装 {0} 个字体</value>
+    <value>已从“{1}”中安装{0, plural, other {#个字体}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontFailed_Header" xml:space="preserve">
-    <value>安装 {0} 个字体时出错</value>
+    <value>无法安装{0, plural, other {#个字体}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontFailed_SubHeader" xml:space="preserve">
-    <value>无法从“{1}”中安装 {0} 个字体</value>
+    <value>无法从“{1}”中安装{0, plural, other {#个字体}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontInProgress_Header" xml:space="preserve">
-    <value>正在安装 {0} 个字体</value>
+    <value>正在安装{0, plural, other {#个字体}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontInProgress_SubHeader" xml:space="preserve">
-    <value>正在从“{1}”中安装 {0} 个字体</value>
+    <value>正在从“{1}”中安装{0, plural, other {#个字体}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyCanceled_Header" xml:space="preserve">
-    <value>已取消将 {0} 个项目复制到“{1}”</value>
+    <value>已取消将{0, plural, other {#个项目}}复制到“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyCanceled_SubHeader" xml:space="preserve">
-    <value>已取消将 {0} 个项目从“{1}”复制到“{2}”</value>
+    <value>已取消将{0, plural, other {#个项目}}从“{1}”复制到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyComplete_Header" xml:space="preserve">
-    <value>已将 {0} 个项目复制到“{1}”</value>
+    <value>已将{0, plural, other {#个项目}}复制到“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyComplete_SubHeader" xml:space="preserve">
-    <value>已将 {0} 个项目从“{1}”复制到“{2}”</value>
+    <value>已将{0, plural, other {#个项目}}从“{1}”复制到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyFailed_Header" xml:space="preserve">
-    <value>将 {0} 个项目复制到“{1}”时出错</value>
+    <value>将{0, plural, other {#个项目}}复制到“{1}”时出错</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyFailed_SubHeader" xml:space="preserve">
-    <value>无法将 {0} 个项目从“{1}”复制到“{2}”</value>
+    <value>无法将{0, plural, other {#个项目}}从“{1}”复制到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyInProgress_Header" xml:space="preserve">
-    <value>正在将 {0} 个项目复制到 {1}"</value>
+    <value>正在将{0, plural, other {#个项目}}复制到“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyInProgress_SubHeader" xml:space="preserve">
-    <value>正在将 {0} 个项目从“{1}”复制到“{2}”</value>
+    <value>正在将{0, plural, other {#个项目}}从“{1}”复制到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_CopyDiscovery_Header" xml:space="preserve">
+    <value>已发现 {0, plural, one {# item} other {# items}}</value>
+    <comment>Shown in a StatusCenter card during file discovery phase.</comment>
   </data>
   <data name="StatusCenter_DecompressCanceled_Header" xml:space="preserve">
     <value>已取消将 {0} 解压缩到“{1}”</value>
@@ -3624,55 +3658,55 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteCanceled_Header" xml:space="preserve">
-    <value>已取消从“{1}”中删除 {0} 个项目</value>
+    <value>已取消从“{1}”中删除{0, plural, other {#个项目}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
-    <value>已从“{1}”中删除 {0} 个项目</value>
+    <value>已从“{1}”中删除{0, plural, other {#个项目}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
-    <value>从“{1}”中删除 {0} 个项目时出错</value>
+    <value>从“{1}”中删除{0, plural, other {#个项目}}时出错</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
-    <value>无法从“{1}”中删除 {0} 个项目</value>
+    <value>无法从“{1}”中删除{0, plural, other {#个项目}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
-    <value>正在从 "{1}" 中删除 {0} 个项目</value>
+    <value>正在从“{1}”中删除{0, plural, other {#个项目}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveCanceled_Header" xml:space="preserve">
-    <value>已取消将 {0} 个项目移动到“{1}”</value>
+    <value>已取消将{0, plural, other {#个项目}}移动到“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveCanceled_SubHeader" xml:space="preserve">
-    <value>已取消将 {0} 个项目从“{1}”移动到“{2}”</value>
+    <value>已取消将{0, plural, other {#个项目}}从“{1}”移动到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveComplete_Header" xml:space="preserve">
-    <value>已将 {0} 个项目移动到“{1}”</value>
+    <value>已将{0, plural, other {#个项目}}移动到“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveComplete_SubHeader" xml:space="preserve">
-    <value>已将 {0} 个项目从“{1}”移动到“{2}”</value>
+    <value>已将{0, plural, other {#个项目}}从“{1}”移动到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveInProgress_Header" xml:space="preserve">
-    <value>正在将 {0} 个项目移动到 {1}"</value>
+    <value>正在将{0, plural, other {#个项目}}移动到“{1}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveInProgress_SubHeader" xml:space="preserve">
-    <value>正在将 {0} 个项目从“{1}”移动到“{2}”</value>
+    <value>正在将{0, plural, other {#个项目}}从“{1}”移动到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveFailed_Header" xml:space="preserve">
-    <value>将 {0} 个项目移动到“{1}”时出错</value>
+    <value>将{0, plural, other {#个项目}}移动到“{1}”时出错</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveFailed_SubHeader" xml:space="preserve">
-    <value>无法将 {0} 个项目从“{1}”移动到“{2}”</value>
+    <value>无法将{0, plural, other {#个项目}}从“{1}”移动到“{2}”</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinCancel_Header" xml:space="preserve">
@@ -3700,7 +3734,7 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_ProcessedItems_Header" xml:space="preserve">
-    <value>已处理 {0}/{1} {0, plural, other {个项目}}</value>
+    <value>已处理{0}/{1, plural, other {#个项目}}</value>
     <comment>Shown in a StatusCenter card. Used as "8/20 items processed"</comment>
   </data>
   <data name="UnblockDownloadedFile" xml:space="preserve">
@@ -3755,7 +3789,7 @@
     <value>将文件和文件夹一同排序</value>
   </data>
   <data name="SortFilesAndFoldersTogetherDescription" xml:space="preserve">
-    <value>Sort files and folders in the same list</value>
+    <value>将文件和文件夹混合在同一列表中进行排序</value>
   </data>
   <data name="SortFilesFirst" xml:space="preserve">
     <value>先排序文件</value>
@@ -3984,6 +4018,10 @@
     <value>位图文件</value>
     <comment>This is the friendly name for bitmap files.</comment>
   </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>图片文件</value>
+    <comment>This is the friendly name for image files.</comment>
+  </data>
   <data name="NumPadTypeName" xml:space="preserve">
     <value>小键盘</value>
   </data>
@@ -4003,10 +4041,10 @@
     <value>在记事本中编辑选中的文件</value>
   </data>
   <data name="PropertyDimensionsColon" xml:space="preserve">
-    <value>分辨率:</value>
+    <value>分辨率：</value>
   </data>
   <data name="StatusWithColon" xml:space="preserve">
-    <value>状态:</value>
+    <value>状态：</value>
   </data>
   <data name="ShowToolbar" xml:space="preserve">
     <value>显示工具栏</value>
@@ -4015,17 +4053,17 @@
   <data name="TabActions" xml:space="preserve">
     <value>标签操作菜单</value>
   </data>
-  <data name="AddVerticalPane" xml:space="preserve">
-    <value>Vertical pane</value>
+  <data name="SplitPaneVertically" xml:space="preserve">
+    <value>垂直拆分</value>
   </data>
   <data name="AddVerticalPaneDescription" xml:space="preserve">
-    <value>Add vertical pane</value>
+    <value>垂直拆分窗格</value>
   </data>
-  <data name="AddHorizontalPane" xml:space="preserve">
-    <value>Horizontal pane</value>
+  <data name="SplitPaneHorizontally" xml:space="preserve">
+    <value>水平拆分</value>
   </data>
-  <data name="AddHorizontalPaneDescription" xml:space="preserve">
-    <value>Add horizontal pane</value>
+  <data name="SplitPaneHorizontallyDescription" xml:space="preserve">
+    <value>水平拆分窗格</value>
   </data>
   <data name="ArrangePanesVertically" xml:space="preserve">
     <value>垂直排列</value>
@@ -4039,8 +4077,8 @@
   <data name="ArrangePanesHorizontallyDescription" xml:space="preserve">
     <value>水平排列窗格</value>
   </data>
-  <data name="AddPane" xml:space="preserve">
-    <value>添加窗格</value>
+  <data name="SplitPane" xml:space="preserve">
+    <value>拆分窗格</value>
   </data>
   <data name="ShowTabActions" xml:space="preserve">
     <value>在标题栏中显示标签操作按钮</value>
@@ -4048,8 +4086,11 @@
   <data name="ArrangePanes" xml:space="preserve">
     <value>排列面板</value>
   </data>
-  <data name="DefaultPaneArrangement" xml:space="preserve">
-    <value>默认窗格排列方式</value>
+  <data name="DualPaneSplitDirection" xml:space="preserve">
+    <value>默认双面板分隔方向</value>
+  </data>
+  <data name="DualPane" xml:space="preserve">
+    <value>双面板模式</value>
   </data>
   <data name="Horizontal" xml:space="preserve">
     <value>水平</value>
@@ -4065,9 +4106,6 @@
   </data>
   <data name="NavigateHomeDescription" xml:space="preserve">
     <value>返回主页</value>
-  </data>
-  <data name="ShowHomeButton" xml:space="preserve">
-    <value>在地址栏中显示主页按钮</value>
   </data>
   <data name="Toolbars" xml:space="preserve">
     <value>工具栏</value>
@@ -4118,10 +4156,10 @@
     <value>总是切换到新创建的标签页</value>
   </data>
   <data name="ToggleShelfPane" xml:space="preserve">
-    <value>Toggle shelf pane</value>
+    <value>显示/隐藏中转站窗格</value>
   </data>
   <data name="ToggleShelfPaneDescription" xml:space="preserve">
-    <value>Toggle the visibility of the shelf pane</value>
+    <value>切换中转站窗格的可见性</value>
   </data>
   <data name="ShowShelfPaneButtonInAddressBar" xml:space="preserve">
     <value>在地址栏中显示中转站窗格开关</value>
@@ -4208,22 +4246,93 @@
   <data name="Decimal" xml:space="preserve">
     <value>十进制</value>
   </data>
-  <data name="EnableOmnibar" xml:space="preserve">
-    <value>启用 Omnibar</value>
-  </data>
   <data name="SectionsHiddenMessage" xml:space="preserve">
     <value>可以通过右击并选择需要的部分将其添加至侧边栏</value>
   </data>
   <data name="EmptyShelfText" xml:space="preserve">
-    <value>将文件或文件夹拖动到此处以在不同标签页间交互操作</value>
+    <value>将文件或文件夹拖动到此处，以在不同标签页之间进行操作</value>
   </data>
   <data name="OmnibarPathModeTextPlaceholder" xml:space="preserve">
-    <value>输入导航到的路径...</value>
+    <value>输入要导航到的路径…</value>
   </data>
   <data name="OmnibarCommandPaletteModeTextPlaceholder" xml:space="preserve">
-    <value>查找功能和命令...</value>
+    <value>查找功能和命令…</value>
   </data>
   <data name="OmnibarSearchModeTextPlaceholder" xml:space="preserve">
-    <value>搜索文件和文件夹...</value>
+    <value>搜索文件和文件夹…</value>
+  </data>
+  <data name="DuringOngoingFileOperations" xml:space="preserve">
+    <value>在文件操作进行期间</value>
+  </data>
+  <data name="ShowStatusCenterButton" xml:space="preserve">
+    <value>显示状态中心按钮</value>
+  </data>
+  <data name="StatusCenterProgressRing" xml:space="preserve">
+    <value>状态中心进度</value>
+    <comment>Screen reader name for the status center progress ring</comment>
+  </data>
+  <data name="IconFiles" xml:space="preserve">
+    <value>图标文件</value>
+    <comment>This is the friendly name for a variety of different icon files.</comment>
+  </data>
+  <data name="BreadcrumbBarEllipsisButtonToolTip" xml:space="preserve">
+    <value>显示被折叠的路径层级导航栏</value>
+  </data>
+  <data name="BreadcrumbBarChevronButtonToolTip" xml:space="preserve">
+    <value>在{0}中显示文件夹</value>
+  </data>
+  <data name="BreadcrumbBarRootChevronButtonToolTip" xml:space="preserve">
+    <value>在主页显示文件夹</value>
+  </data>
+  <data name="NoCommandsFound" xml:space="preserve">
+    <value>没有包含 {0} 的命令</value>
+  </data>
+  <data name="SeeMore" xml:space="preserve">
+    <value>查看更多</value>
+  </data>
+  <data name="FilteringFor" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="Filename" xml:space="preserve">
+    <value>文件名</value>
+  </data>
+  <data name="Signatures" xml:space="preserve">
+    <value>签名</value>
+   </data>
+  <data name="SignatureList" xml:space="preserve">
+    <value>签名列表</value>
+  </data>
+  <data name="IssuedBy" xml:space="preserve">
+    <value>颁发者：</value>
+  </data>
+  <data name="IssuedTo" xml:space="preserve">
+    <value>颁发给：</value>
+  </data>
+  <data name="ValidFrom" xml:space="preserve">
+    <value>生效日期：</value>
+  </data>
+  <data name="ValidTo" xml:space="preserve">
+    <value>截止日期：</value>
+  </data>
+  <data name="NoSignatureFound" xml:space="preserve">
+    <value>没有找到签名。</value>
+  </data>
+  <data name="ShowOpenTerminal" xml:space="preserve">
+    <value>显示“在 Windows 终端中打开”</value>
+  </data>
+  <data name="OpenLogFile" xml:space="preserve">
+    <value>打开日志文件</value>
+  </data>
+  <data name="OpenLogFileDescription" xml:space="preserve">
+    <value>在你的默认编辑器中打开日志文件</value>
+  </data>
+  <data name="OpenLogFileLocationDescription" xml:space="preserve">
+    <value>在你的默认文件管理器中打开日志文件的位置</value>
+  </data>
+  <data name="FailedToOpenLogFile" xml:space="preserve">
+    <value>无法打开日志文件</value>
+  </data>
+  <data name="ShowStatusBar" xml:space="preserve">
+    <value>Show status bar</value>
   </data>
 </root>

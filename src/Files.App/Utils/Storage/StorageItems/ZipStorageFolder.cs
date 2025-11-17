@@ -47,10 +47,7 @@ namespace Files.App.Utils.Storage
 			=> DateCreated = entry.CreationTime == DateTime.MinValue ? DateTimeOffset.MinValue : entry.CreationTime;
 		public ZipStorageFolder(BaseStorageFile backingFile)
 		{
-			if (string.IsNullOrEmpty(backingFile.Path))
-			{
-				throw new ArgumentException("Backing file Path cannot be null");
-			}
+			ArgumentException.ThrowIfNullOrEmpty(backingFile.Path);
 			Name = IO.Path.GetFileName(backingFile.Path.TrimEnd('\\', '/'));
 			Path = backingFile.Path;
 			this.containerPath = backingFile.Path;
@@ -101,10 +98,11 @@ namespace Files.App.Utils.Storage
 		{
 			Func<Task<bool>> queryFileAssoc = async () =>
 			{
-				var assoc = await Win32Helper.GetFileAssociationAsync(filePath);
+				var assoc = await Win32Helper.GetDefaultFileAssociationAsync(filePath);
 				if (assoc is not null)
 				{
-					return assoc == Package.Current.Id.FamilyName
+					return Constants.Distributions.KnownAppNames.Any(x => assoc.StartsWith(x, StringComparison.OrdinalIgnoreCase))
+						|| assoc == Package.Current.Id.FamilyName
 						|| assoc.EndsWith("Files.App\\Files.exe", StringComparison.OrdinalIgnoreCase)
 						|| assoc.Equals(IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe"), StringComparison.OrdinalIgnoreCase);
 				}

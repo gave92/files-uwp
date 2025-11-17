@@ -3,11 +3,10 @@
 
 using Microsoft.Extensions.Logging;
 using System.Collections.Specialized;
-using System.Runtime.InteropServices;
+using System.IO;
 using System.Text;
 using Windows.Win32;
 using Windows.Win32.Foundation;
-using Windows.Win32.System.Com;
 using Windows.Win32.System.SystemServices;
 using Windows.Win32.UI.Shell;
 using Windows.Win32.UI.WindowsAndMessaging;
@@ -61,16 +60,23 @@ namespace Files.App.Services
 
 		public WindowsRecentItemsService()
 		{
-			_watcher = new()
+			var automaticDestinationsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Recent), "AutomaticDestinations");
+			
+			// Only create the file system watcher if the AutomaticDestinations directory exists
+			if (Directory.Exists(automaticDestinationsPath))
 			{
-				Path = SystemIO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Recent), "AutomaticDestinations"),
-				Filter = "5f7b5f1e01b83767.automaticDestinations-ms",
-				NotifyFilter = SystemIO.NotifyFilters.DirectoryName | SystemIO.NotifyFilters.FileName | SystemIO.NotifyFilters.LastWrite,
-			};
+				_watcher = new()
+				{
+					Path = automaticDestinationsPath,
+					Filter = "5f7b5f1e01b83767.automaticDestinations-ms",
+					NotifyFilter = SystemIO.NotifyFilters.DirectoryName | SystemIO.NotifyFilters.FileName | SystemIO.NotifyFilters.LastWrite,
+				};
 
-			_watcher.Changed += Watcher_Changed;
-			_watcher.Deleted += Watcher_Changed;
-			_watcher.EnableRaisingEvents = true;
+				_watcher.Changed += Watcher_Changed;
+				_watcher.Deleted += Watcher_Changed;
+				_watcher.EnableRaisingEvents = true;
+			}
+			// If the directory doesn't exist, _watcher remains null and the service will function without file system monitoring
 		}
 
 		// Methods
@@ -271,9 +277,9 @@ namespace Files.App.Services
 				var eventArgs = GetChangedActionEventArgs(snapshot, recentItems);
 
 				if (isFolder)
- 					RecentFoldersChanged?.Invoke(this, eventArgs);
+					RecentFoldersChanged?.Invoke(this, eventArgs);
 				else
- 					RecentFilesChanged?.Invoke(this, eventArgs);
+					RecentFilesChanged?.Invoke(this, eventArgs);
 
 				return true;
 			}

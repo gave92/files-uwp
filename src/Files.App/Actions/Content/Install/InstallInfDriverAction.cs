@@ -5,13 +5,14 @@ using Files.Shared.Helpers;
 
 namespace Files.App.Actions
 {
+	[GeneratedRichCommand]
 	internal sealed partial class InstallInfDriverAction : ObservableObject, IAction
 	{
 		private readonly IContentPageContext context;
 
 		public string Label
 			=> Strings.InstallDriver.GetLocalizedResource();
-		
+
 		public string Description
 			=> Strings.InstallInfDriverDescription.GetLocalizedFormatResource(context.SelectedItems.Count);
 

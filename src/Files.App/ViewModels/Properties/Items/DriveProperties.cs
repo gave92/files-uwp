@@ -1,11 +1,4 @@
-using Files.App.Data.Items;
-using Files.App.Extensions;
-using Files.App.Utils;
-using Files.App.Helpers;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
-using Windows.Storage.FileProperties;
 
 namespace Files.App.ViewModels.Properties
 {
@@ -78,13 +71,20 @@ namespace Files.App.ViewModels.Properties
 				return;
 			}
 
-			var syncRootStatus = await SyncRootHelpers.GetSyncRootQuotaAsync(Drive.Path);
-			if (syncRootStatus.Success)
+			try
 			{
-				ViewModel.DriveCapacityValue = syncRootStatus.Capacity;
-				ViewModel.DriveUsedSpaceValue = syncRootStatus.Used;
-				ViewModel.DriveFreeSpaceValue = syncRootStatus.Capacity - syncRootStatus.Used;
-				return;
+				var syncRootStatus = await SyncRootHelpers.GetSyncRootQuotaAsync(Drive.Path);
+				if (syncRootStatus.Success)
+				{
+					ViewModel.DriveCapacityValue = syncRootStatus.Capacity;
+					ViewModel.DriveUsedSpaceValue = syncRootStatus.Used;
+					ViewModel.DriveFreeSpaceValue = syncRootStatus.Capacity - syncRootStatus.Used;
+					return;
+				}
+			}
+			catch (Exception e)
+			{
+				App.Logger.LogWarning(e, "Failed to get sync root quota for path: {Path}", Drive.Path);
 			}
 
 			try

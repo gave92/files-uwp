@@ -65,6 +65,18 @@ namespace Files.App.Services.Settings
 			set => Set(value);
 		}
 
+		public List<string> PreviousSearchQueriesList
+		{
+			get => Get<List<string>>(null);
+			set => Set(value);
+		}
+
+		public List<string> PreviousArchiveExtractionLocations
+		{
+			get => Get<List<string>>(null);
+			set => Set(value);
+		}
+
 		public DateTimeFormats DateTimeFormat
 		{
 			get => Get(DateTimeFormats.Application);
@@ -275,6 +287,12 @@ namespace Files.App.Services.Settings
 			set => Set(value);
 		}
 
+		public bool ShowOpenTerminal
+		{
+			get => Get(true);
+			set => Set(value);
+		}
+
 		public bool ShowCopyPath
 		{
 			get => Get(true);
@@ -353,7 +371,7 @@ namespace Files.App.Services.Settings
 
 		public ShellPaneArrangement ShellPaneArrangementOption
 		{
-			get => (ShellPaneArrangement)Get((long)ShellPaneArrangement.Horizontal);
+			get => (ShellPaneArrangement)Get((long)ShellPaneArrangement.Vertical);
 			set => Set((long)value);
 		}
 
@@ -363,7 +381,7 @@ namespace Files.App.Services.Settings
 			set => Set(value);
 		}
 
-		public bool EnableOmnibar
+		public bool ShowFilterHeader
 		{
 			get => Get(false);
 			set => Set(value);

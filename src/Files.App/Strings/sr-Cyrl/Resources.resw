@@ -124,13 +124,13 @@
     <value>Копирај путању</value>
   </data>
   <data name="CopyItemPath" xml:space="preserve">
-    <value>Copy item path</value>
+    <value>Копирај путању ставке</value>
   </data>
   <data name="CopyPathWithQuotes" xml:space="preserve">
     <value>Копирај путању са наводницима</value>
   </data>
   <data name="CopyItemPathWithQuotes" xml:space="preserve">
-    <value>Copy selected item path with quotes</value>
+    <value>Копирај путању ставке са наводницима</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>Потражи</value>
@@ -166,7 +166,7 @@
     <value>Прескочи</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
-    <value>Select all</value>
+    <value>Изабери све</value>
   </data>
   <data name="InvertSelection" xml:space="preserve">
     <value>Обрни селекцију</value>
@@ -217,7 +217,7 @@
     <value>Прикажи скривене датотеке и фасцикле</value>
   </data>
   <data name="ShowDotFiles" xml:space="preserve">
-    <value>Dot files</value>
+    <value>Прикажи фајлове који почињу са тачком</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>Изглед</value>
@@ -256,7 +256,7 @@
     <value>Налепи</value>
   </data>
   <data name="PasteShortcut" xml:space="preserve">
-    <value>Paste shortcut</value>
+    <value>Пречица за лепљење</value>
   </data>
   <data name="BaseLayoutContextFlyoutNew.Label" xml:space="preserve">
     <value>Нов</value>
@@ -301,13 +301,16 @@
     <value>Унеси нови назив</value>
   </data>
   <data name="CreateNewItemTitle" xml:space="preserve">
-    <value>Create new {0}</value>
+    <value>Креирај нову {0}</value>
   </data>
   <data name="LightTheme" xml:space="preserve">
     <value>Светла тема</value>
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Тамна тема</value>
+  </data>
+  <data name="UseSystemSetting" xml:space="preserve">
+    <value>Користи системска подешавања</value>
   </data>
   <data name="Application" xml:space="preserve">
     <value>Формат по апликацији</value>
@@ -358,7 +361,7 @@
     <value>Молимо привежите потребан диск како бисте приступили овој ставци.</value>
   </data>
   <data name="DriveUnpluggedDialog.Title" xml:space="preserve">
-    <value>Drive unplugged</value>
+    <value>Диск је искључен</value>
   </data>
   <data name="FileNotFoundDialog.Text" xml:space="preserve">
     <value>Датотека којој покушавате да приступите је можда премештена или обрисана.</value>
@@ -394,7 +397,7 @@
     <value>Само за читање</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>{0, plural, one {# day ago} other {# days ago}}</value>
+    <value>{0, plural, one {# дан} other {# дана}}</value>
   </data>
   <data name="DaysAgo_Singular" xml:space="preserve">
     <value>Пре једног дана</value>
@@ -403,7 +406,7 @@
     <value>Пре {0} дана</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>{0, plural, one {# hour ago} other {# hours ago}}</value>
+    <value>{0, plural, one {пре # сат} few {пре # сата} other {пре # сати}}</value>
   </data>
   <data name="HoursAgo_Singular" xml:space="preserve">
     <value>Пре сат времена</value>
@@ -412,7 +415,7 @@
     <value>Пре {0} сата</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
-    <value>{0, plural, one {# minute ago} other {# minutes ago}}</value>
+    <value>{0, plural, one {пре # минут} other {пре # минута}}</value>
   </data>
   <data name="MinutesAgo_Singular" xml:space="preserve">
     <value>Пре једног минута</value>
@@ -421,7 +424,7 @@
     <value>Пре {0} минута</value>
   </data>
   <data name="SecondsAgo" xml:space="preserve">
-    <value>{0, plural, one {# second ago} other {# seconds ago}}</value>
+    <value>{0, plural, one {пре # секунд} few {пре # секунде} other {пре # секунди}}</value>
   </data>
   <data name="SecondsAgo_Singular" xml:space="preserve">
     <value>Пре једне секунде</value>
@@ -486,16 +489,16 @@
     <value>B</value>
   </data>
   <data name="PropertiesFilesAndFoldersCountString" xml:space="preserve">
-    <value>{0, number} {0, plural, one {file} other {files}}, {1, number} {1, plural, one {folder} other {folders}}</value>
+    <value>{0, number} {0, plural, one {фајл} other {фајлова}} и {1, number} {1, plural, one {фасцикла} few {фасцикле} other {фасцикли}}</value>
   </data>
   <data name="PropertiesFilesAndFoldersAndLocationsCount" xml:space="preserve">
-    <value>{0, number} {0, plural, one {file} other {files}}, {1, number} {1, plural, one {folder} other {folders}} from {2, number} {2, plural, one {location} other {locations}}</value>
+    <value>{0, number} {0, plural, one {фајл} other {фајлова}}, {1, number} {1, plural, one {фасцикла} few {фасцикле} other {фасцикли}} са {2, number} {2, plural, one {локације} few{локације} other {локација}}</value>
   </data>
   <data name="BaseLayoutContextFlyoutRunAsAnotherUser.Text" xml:space="preserve">
     <value>Покрени као други корисник</value>
   </data>
   <data name="PropertiesDriveItemTypesEquals" xml:space="preserve">
-    <value>All type of {0}</value>
+    <value>Сви типови {0}</value>
   </data>
   <data name="PropertiesDriveItemTypeDifferent" xml:space="preserve">
     <value>Друге врсте</value>
@@ -516,64 +519,61 @@
     <value>Систем датотека:</value>
   </data>
   <data name="JumpListRecentGroupHeader" xml:space="preserve">
-    <value>Recent</value>
+    <value>Недавно</value>
   </data>
   <data name="TabStripDragAndDropUIOverrideCaption" xml:space="preserve">
-    <value>Move tab here</value>
+    <value>Помери картицу овде</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Стање</value>
   </data>
-  <data name="SettingsPreferencesSystemDefaultLanguageOption" xml:space="preserve">
-    <value>Језик Windows окружења</value>
-  </data>
   <data name="NavigationToolbarVisiblePathNoResults" xml:space="preserve">
-    <value>No results</value>
+    <value>Нема резултата</value>
   </data>
   <data name="SubDirectoryAccessDenied" xml:space="preserve">
-    <value>Can't access any items to display</value>
+    <value>Не може да се приступи било којим ставкама да се прикажу</value>
   </data>
   <data name="MoveToFolderCaptionText" xml:space="preserve">
-    <value>Move to {0}</value>
+    <value>Помери у {0}</value>
   </data>
   <data name="CopyToFolderCaptionText" xml:space="preserve">
-    <value>Copy to {0}</value>
+    <value>Копирај у {0}</value>
   </data>
   <data name="CloneToFolderCaptionText" xml:space="preserve">
-    <value>Clone to {0}</value>
+    <value>Копирај у {0}</value>
   </data>
   <data name="CreateShortcut" xml:space="preserve">
-    <value>Create shortcut</value>
+    <value>Направи пречицу</value>
   </data>
   <data name="OpenFileLocation" xml:space="preserve">
     <value>Отвори извор датотеке</value>
   </data>
   <data name="PropertiesShortcutItemArgs.Text" xml:space="preserve">
-    <value>Arguments:</value>
+    <value>Аргументи:</value>
   </data>
   <data name="PropertiesShortcutItemPath.Text" xml:space="preserve">
-    <value>Destination:</value>
+    <value>Одредиште:</value>
   </data>
   <data name="PropertiesShortcutItemType.Text" xml:space="preserve">
-    <value>Shortcut type:</value>
+    <value>Врста пречице:</value>
   </data>
   <data name="PropertiesShortcutTypeLink" xml:space="preserve">
-    <value>Web link</value>
+    <value>Веб линк</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>Општа</value>
   </data>
   <data name="Shortcut" xml:space="preserve">
-    <value>Shortcut</value>
+    <value>Пречицa</value>
   </data>
   <data name="ShortcutWebLinkFileType" xml:space="preserve">
-    <value>Internet shortcut</value>
+    <value>Интернет пречица</value>
   </data>
   <data name="ShortcutCreateNewSuffix" xml:space="preserve">
-    <value>{0} - shortcut</value>
+    <value>{0} - пречица</value>
   </data>
   <data name="ExceptionNotificationBody" xml:space="preserve">
-    <value>Files ran into a problem that the developers didn't prepare for yet.</value>
+    <value>Files је наишао на проблем за који се програмери нису спремили.</value>
   </data>
   <data name="ExceptionNotificationHeader" xml:space="preserve">
     <value>Нешто је пошло по злу!</value>
@@ -582,34 +582,34 @@
     <value>Пријави овај проблем</value>
   </data>
   <data name="InvalidItemDialogContent" xml:space="preserve">
-    <value>The item referenced is either invalid or inaccessible.{0}Error message:{0}{1}</value>
+    <value>Ставка која је референцирана или није валидна или је неприступачна. {0}Порука грешке: {0}{1}</value>
   </data>
   <data name="InvalidItemDialogTitle" xml:space="preserve">
     <value>Неважећа ставка</value>
   </data>
   <data name="SettingsAboutVersionTitle" xml:space="preserve">
-    <value>Version:</value>
+    <value>Верзија:</value>
   </data>
   <data name="ShareDialogFailMessage" xml:space="preserve">
-    <value>There's nothing to share right now...</value>
+    <value>Нема ништа да се подели тренутно...</value>
   </data>
   <data name="ShareDialogMultipleItemsDescription" xml:space="preserve">
-    <value>The items you've selected will be shared</value>
+    <value>Ставке које сте изабрали ће бити подељене</value>
   </data>
   <data name="ShareDialogSingleItemDescription" xml:space="preserve">
-    <value>The selected item will be shared</value>
+    <value>Изабрана ставка ће бити дељена</value>
   </data>
   <data name="ShareDialogTitle" xml:space="preserve">
-    <value>Sharing {0}</value>
+    <value>Дељење {0}</value>
   </data>
   <data name="ShareDialogTitleMultipleItems" xml:space="preserve">
-    <value>Sharing {0} {1}</value>
+    <value>Дељење {0} {1}</value>
   </data>
   <data name="RenameError.ItemDeleted.Text" xml:space="preserve">
-    <value>The item you're attempting to rename no longer exists. Please verify the correct location of the item you need to rename.</value>
+    <value>Ставка коју покушавате да преименујете више не постоји. Молимо вас да верификујете тренутну локацију ставке коју хоћете да преименујете.</value>
   </data>
   <data name="RenameError.ItemDeleted.Title" xml:space="preserve">
-    <value>Item no longer exists</value>
+    <value>Ставка више не постоји</value>
   </data>
   <data name="RenameError.NameInvalid.Text" xml:space="preserve">
     <value>Унето име садржи грешке. Молимо проверите унето име и покушајте поново.</value>
@@ -630,7 +630,7 @@
     <value>Потребно је поново покренути програм како бисте применили ова подешавања. Да ли желите да поново покренете програм?</value>
   </data>
   <data name="SponsorUsOnGitHub" xml:space="preserve">
-    <value>Sponsor us on GitHub</value>
+    <value>Спонзориши нас на GitHub-у</value>
   </data>
   <data name="AccessDeniedCreateDialog.Text" xml:space="preserve">
     <value>Нисмо могли да креирамо ову ставку</value>
@@ -741,7 +741,7 @@
     <value>Latitude Decimal</value>
   </data>
   <data name="PropertyAltitude" xml:space="preserve">
-    <value>Altitude</value>
+    <value>Висина</value>
   </data>
   <data name="PropertyDateTaken" xml:space="preserve">
     <value>Датум сликања</value>
@@ -753,7 +753,7 @@
     <value>Модел камере</value>
   </data>
   <data name="PropertyExposureTime" xml:space="preserve">
-    <value>Exposure Time</value>
+    <value>Време Експозиције</value>
   </data>
   <data name="PropertyFocalLength" xml:space="preserve">
     <value>Focal Length</value>
@@ -765,7 +765,7 @@
     <value>Имена људи</value>
   </data>
   <data name="PropertyChannelCount" xml:space="preserve">
-    <value>Channel Count</value>
+    <value>Број канала</value>
   </data>
   <data name="PropertyFormat" xml:space="preserve">
     <value>Формат</value>
@@ -783,7 +783,7 @@
     <value>Извођач</value>
   </data>
   <data name="PropertyBeatsPerMinute" xml:space="preserve">
-    <value>Beats Per Minute</value>
+    <value>Ударца по секунди</value>
   </data>
   <data name="PropertyComposer" xml:space="preserve">
     <value>Композитор</value>
@@ -1010,6 +1010,9 @@
   <data name="SearchPagePathBoxOverrideText" xml:space="preserve">
     <value>Резултати претраге "{0}" у фасцикли {1}</value>
   </data>
+  <data name="SearchResultsFor" xml:space="preserve">
+    <value>Search results for `{0}`</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
@@ -1089,13 +1092,25 @@
     <value>Toggle the info pane</value>
   </data>
   <data name="ToggleInfoPaneDescription" xml:space="preserve">
-    <value>Toggle the info pane to view the detail/preview panes</value>
+    <value>Toggle visibility of the detail/preview panes</value>
   </data>
   <data name="ToggleToolbar" xml:space="preserve">
     <value>Toggle toolbar</value>
   </data>
   <data name="ToggleToolbarDescription" xml:space="preserve">
     <value>Toggle visibility of the toolbar</value>
+  </data>
+  <data name="ToggleFilterHeader" xml:space="preserve">
+    <value>Toggle filter header</value>
+  </data>
+  <data name="ToggleFilterHeaderDescription" xml:space="preserve">
+    <value>Toggle visibility of the filter header</value>
+  </data>
+  <data name="ToggleDualPane" xml:space="preserve">
+    <value>Toggle dual pane</value>
+  </data>
+  <data name="ToggleDualPaneDescription" xml:space="preserve">
+    <value>Toggle dual pane mode</value>
   </data>
   <data name="DetailsPanePreviewNotAvaliableText" xml:space="preserve">
     <value>Брзи преглед датотеке није доступан</value>
@@ -2012,11 +2027,23 @@
   <data name="Behaviors" xml:space="preserve">
     <value>Понашање</value>
   </data>
-  <data name="ReviewFiles" xml:space="preserve">
-    <value>Review Files</value>
+  <data name="Hello" xml:space="preserve">
+    <value>Hello!</value>
   </data>
-  <data name="ReviewFilesContent" xml:space="preserve">
-    <value>Would you like to review Files?</value>
+  <data name="ReviewFilesSubtitle" xml:space="preserve">
+    <value>Enjoying Files? Please consider reviewing in the Microsoft Store.</value>
+  </data>  
+  <data name="SponsorSubtitle" xml:space="preserve">
+    <value>Enjoying Files? Please consider supporting the project on GitHub.</value>
+  </data>
+  <data name="Sponsor" xml:space="preserve">
+    <value>Sponsor</value>
+  </data>
+  <data name="RateUs" xml:space="preserve">
+    <value>Rate us</value>
+  </data>
+  <data name="Dismiss" xml:space="preserve">
+    <value>Dismiss</value>
   </data>
   <data name="SetAsBackgroundFlyout" xml:space="preserve">
     <value>Set as background</value>
@@ -2421,31 +2448,31 @@
     <value>Toggle whether to show sidebar</value>
   </data>
   <data name="CopyItemDescription" xml:space="preserve">
-    <value>Copy selected {0, plural, one {item} other {items}} to clipboard</value>
+    <value>Copy selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="CopyPathDescription" xml:space="preserve">
-    <value>Copy path of selected items to the clipboard</value>
+    <value>Copy path of the current directory</value>
   </data>
   <data name="CopyItemPathDescription" xml:space="preserve">
-    <value>Copy path of selected items to the clipboard</value>
+    <value>Copy path of selected items</value>
   </data>
   <data name="CopyItemPathWithQuotesDescription" xml:space="preserve">
-    <value>Copy path of selected items with quotes to the clipboard</value>
+    <value>Copy path of selected items with quotes</value>
   </data>
   <data name="CopyPathWithQuotesDescription" xml:space="preserve">
-    <value>Copy path of selected items with quotes to the clipboard</value>
+    <value>Copy path of the current directory with quotes</value>
   </data>
   <data name="CutItemDescription" xml:space="preserve">
-    <value>Cut selected {0, plural, one {item} other {items}} to clipboard</value>
+    <value>Cut selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="PasteItemDescription" xml:space="preserve">
-    <value>Paste clipboard items to the current folder</value>
+    <value>Paste items to the current folder</value>
   </data>
   <data name="PasteShortcutDescription" xml:space="preserve">
-    <value>Paste clipboard items to the current folder as shortcuts</value>
+    <value>Paste items to the current folder as shortcuts</value>
   </data>
   <data name="PasteItemToSelectionDescription" xml:space="preserve">
-    <value>Paste clipboard items to the selected folder</value>
+    <value>Paste items to the selected folder</value>
   </data>
   <data name="PasteToSelectedFolder" xml:space="preserve">
     <value>Paste to selected folder</value>
@@ -2568,13 +2595,13 @@
     <value>Create zip archive with selected {0, plural, one {item} other {items}}</value>
   </data>
   <data name="DecompressArchiveDescription" xml:space="preserve">
-    <value>Extract items from selected {0, plural, one {archive} other {archives}} to any folder</value>
+    <value>Extract selected {0, plural, one {archive} other {archives}} to any folder</value>
   </data>
   <data name="DecompressArchiveHereDescription" xml:space="preserve">
-    <value>Extract items from selected {0, plural, one {archive} other {archives}} to current folder</value>
+    <value>Extract selected {0, plural, one {archive} other {archives}} to the current folder</value>
   </data>
   <data name="DecompressArchiveToChildFolderDescription" xml:space="preserve">
-    <value>Extract items from selected {0, plural, one {archive} other {archives}} to new folder</value>
+    <value>Extract selected {0, plural, one {archive} other {archives}} to new folder</value>
   </data>
   <data name="RotateLeftDescription" xml:space="preserve">
     <value>Rotate selected {0, plural, one {image} other {images}} to the left</value>
@@ -3460,6 +3487,9 @@
   <data name="ProcessingItems" xml:space="preserve">
     <value>Processing items...</value>
   </data>
+  <data name="DiscoveringItems" xml:space="preserve">
+    <value>Discovering items...</value>
+  </data>
   <data name="SpeedWithColon" xml:space="preserve">
     <value>Speed:</value>
   </data>
@@ -3472,27 +3502,27 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressComplete_Header" xml:space="preserve">
-    <value>Compressed {0} item(s) to "{1}"</value>
+    <value>Compressed {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressComplete_SubHeader" xml:space="preserve">
-    <value>Compressed {0} item(s) from "{1}" to "{2}"</value>
+    <value>Compressed {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressFailed_Header" xml:space="preserve">
-    <value>Error compressing {0} item(s) to "{1}"</value>
+    <value>Error compressing {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressFailed_SubHeader" xml:space="preserve">
-    <value>Failed to compress {0} item(s) from "{1}" to "{2}"</value>
+    <value>Failed to compress {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressInProgress_Header" xml:space="preserve">
-    <value>Compressing {0} item(s) to "{1}"</value>
+    <value>Compressing {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CompressInProgress_SubHeader" xml:space="preserve">
-    <value>Compressing {0} item(s) from "{1}" to "{2}"</value>
+    <value>Compressing {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_GitCloneCanceled_Header" xml:space="preserve">
@@ -3532,64 +3562,68 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontCanceled_SubHeader" xml:space="preserve">
-    <value>Canceled installing {0} font(s) from "{1}"</value>
+    <value>Canceled installing {0, plural, one {# font} other {# fonts}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontComplete_Header" xml:space="preserve">
-    <value>Installed {0} font(s)</value>
+    <value>Installed {0, plural, one {# font} other {# fonts}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontComplete_SubHeader" xml:space="preserve">
-    <value>Installed {0} font(s) from "{1}"</value>
+    <value>Installed {0, plural, one {# font} other {# fonts}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontFailed_Header" xml:space="preserve">
-    <value>Error installing {0} font(s)</value>
+    <value>Error installing {0, plural, one {# font} other {# fonts}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontFailed_SubHeader" xml:space="preserve">
-    <value>Failed to install {0} font(s) from "{1}"</value>
+    <value>Failed to install {0, plural, one {# font} other {# fonts}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontInProgress_Header" xml:space="preserve">
-    <value>Installing {0} font(s)</value>
+    <value>Installing {0, plural, one {# font} other {# fonts}}</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_InstallFontInProgress_SubHeader" xml:space="preserve">
-    <value>Installing {0} font(s) from "{1}"</value>
+    <value>Installing {0, plural, one {# font} other {# fonts}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyCanceled_Header" xml:space="preserve">
-    <value>Canceled copying {0} item(s) to "{1}"</value>
+    <value>Canceled copying {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyCanceled_SubHeader" xml:space="preserve">
-    <value>Canceled copying {0} item(s) from "{1}" to "{2}"</value>
+    <value>Canceled copying {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyComplete_Header" xml:space="preserve">
-    <value>Copied {0} item(s) to "{1}"</value>
+    <value>Copied {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyComplete_SubHeader" xml:space="preserve">
-    <value>Copied {0} item(s) from "{1}" to "{2}"</value>
+    <value>Copied {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyFailed_Header" xml:space="preserve">
-    <value>Error copying {0} item(s) to "{1}"</value>
+    <value>Error copying {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyFailed_SubHeader" xml:space="preserve">
-    <value>Failed to copy {0} item(s) from "{1}" to "{2}"</value>
+    <value>Failed to copy {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyInProgress_Header" xml:space="preserve">
-    <value>Copying {0} item(s) to "{1}"</value>
+    <value>Copying {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_CopyInProgress_SubHeader" xml:space="preserve">
-    <value>Copying {0} item(s) from "{1}" to "{2}"</value>
+    <value>Copying {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
+  </data>
+  <data name="StatusCenter_CopyDiscovery_Header" xml:space="preserve">
+    <value>Discovered {0, plural, one {# item} other {# items}}</value>
+    <comment>Shown in a StatusCenter card during file discovery phase.</comment>
   </data>
   <data name="StatusCenter_DecompressCanceled_Header" xml:space="preserve">
     <value>Canceled extracting "{0}" to "{1}"</value>
@@ -3624,55 +3658,55 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteCanceled_Header" xml:space="preserve">
-    <value>Canceled deleting {0} item(s) from "{1}"</value>
+    <value>Canceled deleting {0, plural, one {# item} other {# items}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteComplete_Header" xml:space="preserve">
-    <value>Deleted {0} item(s) from "{1}"</value>
+    <value>Deleted {0, plural, one {# item} other {# items}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteFailed_Header" xml:space="preserve">
-    <value>Error deleting {0} item(s) from "{1}"</value>
+    <value>Error deleting {0, plural, one {# item} other {# items}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteFailed_SubHeader" xml:space="preserve">
-    <value>Failed to delete {0} item(s) from "{1}"</value>
+    <value>Failed to delete {0, plural, one {# item} other {# items}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_DeleteInProgress_Header" xml:space="preserve">
-    <value>Deleting {0} item(s) from "{1}"</value>
+    <value>Deleting {0, plural, one {# item} other {# items}} from "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveCanceled_Header" xml:space="preserve">
-    <value>Canceled moving {0} item(s) to "{1}"</value>
+    <value>Canceled moving {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveCanceled_SubHeader" xml:space="preserve">
-    <value>Canceled moving {0} item(s) from "{1}" to "{2}"</value>
+    <value>Canceled moving {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveComplete_Header" xml:space="preserve">
-    <value>Moved {0} item(s) to "{1}"</value>
+    <value>Moved {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveComplete_SubHeader" xml:space="preserve">
-    <value>Moved {0} item(s) from "{1}" to "{2}"</value>
+    <value>Moved {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveInProgress_Header" xml:space="preserve">
-    <value>Moving {0} item(s) to "{1}"</value>
+    <value>Moving {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveInProgress_SubHeader" xml:space="preserve">
-    <value>Moving {0} item(s) from "{1}" to "{2}"</value>
+    <value>Moving {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveFailed_Header" xml:space="preserve">
-    <value>Error moving {0} item(s) to "{1}"</value>
+    <value>Error moving {0, plural, one {# item} other {# items}} to "{1}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_MoveFailed_SubHeader" xml:space="preserve">
-    <value>Failed to move {0} item(s) from "{1}" to "{2}"</value>
+    <value>Failed to move {0, plural, one {# item} other {# items}} from "{1}" to "{2}"</value>
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_EmptyRecycleBinCancel_Header" xml:space="preserve">
@@ -3700,7 +3734,7 @@
     <comment>Shown in a StatusCenter card.</comment>
   </data>
   <data name="StatusCenter_ProcessedItems_Header" xml:space="preserve">
-    <value>{0}/{1} {0, plural, one {item} other {items}} processed</value>
+    <value>{0}/{1, plural, one {# item} other {# items}} processed</value>
     <comment>Shown in a StatusCenter card. Used as "8/20 items processed"</comment>
   </data>
   <data name="UnblockDownloadedFile" xml:space="preserve">
@@ -3746,7 +3780,7 @@
     <value>There was an error applying this tag</value>
   </data>
   <data name="DecompressArchiveHereSmartDescription" xml:space="preserve">
-    <value>Extract items from selected {0, plural, one {archive} other {archives}} to current folder for single-item archive, or to new folder for multi-item archive</value>
+    <value>Extract selected {0, plural, one {archive} other {archives}} here for single-item or to new folder for multi-item</value>
   </data>
   <data name="ExtractHereSmart" xml:space="preserve">
     <value>Extract here (Smart)</value>
@@ -3984,6 +4018,10 @@
     <value>Bitmap Files</value>
     <comment>This is the friendly name for bitmap files.</comment>
   </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>Image Files</value>
+    <comment>This is the friendly name for image files.</comment>
+  </data>
   <data name="NumPadTypeName" xml:space="preserve">
     <value>Num</value>
   </data>
@@ -4015,17 +4053,17 @@
   <data name="TabActions" xml:space="preserve">
     <value>Tab actions menu</value>
   </data>
-  <data name="AddVerticalPane" xml:space="preserve">
-    <value>Vertical pane</value>
+  <data name="SplitPaneVertically" xml:space="preserve">
+    <value>Split vertically</value>
   </data>
   <data name="AddVerticalPaneDescription" xml:space="preserve">
-    <value>Add vertical pane</value>
+    <value>Split pane vertically</value>
   </data>
-  <data name="AddHorizontalPane" xml:space="preserve">
-    <value>Horizontal pane</value>
+  <data name="SplitPaneHorizontally" xml:space="preserve">
+    <value>Split horizontally</value>
   </data>
-  <data name="AddHorizontalPaneDescription" xml:space="preserve">
-    <value>Add horizontal pane</value>
+  <data name="SplitPaneHorizontallyDescription" xml:space="preserve">
+    <value>Split pane horizontally</value>
   </data>
   <data name="ArrangePanesVertically" xml:space="preserve">
     <value>Arrange vertically</value>
@@ -4039,8 +4077,8 @@
   <data name="ArrangePanesHorizontallyDescription" xml:space="preserve">
     <value>Arrange panes horizontally</value>
   </data>
-  <data name="AddPane" xml:space="preserve">
-    <value>Add pane</value>
+  <data name="SplitPane" xml:space="preserve">
+    <value>Split pane</value>
   </data>
   <data name="ShowTabActions" xml:space="preserve">
     <value>Show tab actions button in the title bar</value>
@@ -4048,8 +4086,11 @@
   <data name="ArrangePanes" xml:space="preserve">
     <value>Arrange panes</value>
   </data>
-  <data name="DefaultPaneArrangement" xml:space="preserve">
-    <value>Default pane arrangement</value>
+  <data name="DualPaneSplitDirection" xml:space="preserve">
+    <value>Default dual pane split direction</value>
+  </data>
+  <data name="DualPane" xml:space="preserve">
+    <value>Dual pane mode</value>
   </data>
   <data name="Horizontal" xml:space="preserve">
     <value>Horizontal</value>
@@ -4065,9 +4106,6 @@
   </data>
   <data name="NavigateHomeDescription" xml:space="preserve">
     <value>Navigate to the home page</value>
-  </data>
-  <data name="ShowHomeButton" xml:space="preserve">
-    <value>Show home button in address bar</value>
   </data>
   <data name="Toolbars" xml:space="preserve">
     <value>Toolbars</value>
@@ -4208,9 +4246,6 @@
   <data name="Decimal" xml:space="preserve">
     <value>Decimal</value>
   </data>
-  <data name="EnableOmnibar" xml:space="preserve">
-    <value>Enable Omnibar</value>
-  </data>
   <data name="SectionsHiddenMessage" xml:space="preserve">
     <value>You can add sections to the sidebar by right-clicking and selecting the sections you want to add</value>
   </data>
@@ -4225,5 +4260,79 @@
   </data>
   <data name="OmnibarSearchModeTextPlaceholder" xml:space="preserve">
     <value>Search for files and folders...</value>
+  </data>
+  <data name="DuringOngoingFileOperations" xml:space="preserve">
+    <value>During file operations</value>
+  </data>
+  <data name="ShowStatusCenterButton" xml:space="preserve">
+    <value>Show status center button</value>
+  </data>
+  <data name="StatusCenterProgressRing" xml:space="preserve">
+    <value>Status center progress ring</value>
+    <comment>Screen reader name for the status center progress ring</comment>
+  </data>
+  <data name="IconFiles" xml:space="preserve">
+    <value>Icon files</value>
+    <comment>This is the friendly name for a variety of different icon files.</comment>
+  </data>
+  <data name="BreadcrumbBarEllipsisButtonToolTip" xml:space="preserve">
+    <value>Show collapsed path breadcrumbs</value>
+  </data>
+  <data name="BreadcrumbBarChevronButtonToolTip" xml:space="preserve">
+    <value>Show folders in {0}</value>
+  </data>
+  <data name="BreadcrumbBarRootChevronButtonToolTip" xml:space="preserve">
+    <value>Show folders in Home</value>
+  </data>
+  <data name="NoCommandsFound" xml:space="preserve">
+    <value>There are no commands containing {0}</value>
+  </data>
+  <data name="SeeMore" xml:space="preserve">
+    <value>See more</value>
+  </data>
+  <data name="FilteringFor" xml:space="preserve">
+    <value>Filtering for</value>
+  </data>
+  <data name="Filename" xml:space="preserve">
+    <value>Filename</value>
+  </data>
+  <data name="Signatures" xml:space="preserve">
+    <value>Signatures</value>
+   </data>
+  <data name="SignatureList" xml:space="preserve">
+    <value>Signature list</value>
+  </data>
+  <data name="IssuedBy" xml:space="preserve">
+    <value>Issued by:</value>
+  </data>
+  <data name="IssuedTo" xml:space="preserve">
+    <value>Issued to:</value>
+  </data>
+  <data name="ValidFrom" xml:space="preserve">
+    <value>Valid from:</value>
+  </data>
+  <data name="ValidTo" xml:space="preserve">
+    <value>Valid to:</value>
+  </data>
+  <data name="NoSignatureFound" xml:space="preserve">
+    <value>No signature was found.</value>
+  </data>
+  <data name="ShowOpenTerminal" xml:space="preserve">
+    <value>Show option to open folders in Windows Terminal</value>
+  </data>
+  <data name="OpenLogFile" xml:space="preserve">
+    <value>Open log file</value>
+  </data>
+  <data name="OpenLogFileDescription" xml:space="preserve">
+    <value>Open log file in your default editor</value>
+  </data>
+  <data name="OpenLogFileLocationDescription" xml:space="preserve">
+    <value>Open log file location in your default file manager</value>
+  </data>
+  <data name="FailedToOpenLogFile" xml:space="preserve">
+    <value>Unable to open the log file</value>
+  </data>
+  <data name="ShowStatusBar" xml:space="preserve">
+    <value>Show status bar</value>
   </data>
 </root>

@@ -103,6 +103,14 @@ namespace Files.App.ViewModels.Layouts
 				return;
 			}
 
+			// Check if ShellViewModel is initialized to prevent race condition
+			if (_associatedInstance.ShellViewModel is null)
+			{
+				e.AcceptedOperation = DataPackageOperation.None;
+				deferral.Complete();
+				return;
+			}
+
 			// Check if this is a right-button drag operation and store into the dataobject
 			if (e.Modifiers.HasFlag(DragDropModifiers.RightButton))
 				e.DataView.As<Shell32.IDataObjectProvider>().GetDataObject().SetData<bool>("dragRightButton", true);
@@ -211,6 +219,13 @@ namespace Files.App.ViewModels.Layouts
 					Commands.GitClone.Execute(uri.ToString());
 					return;
 				}
+			}
+
+			// Check if ShellViewModel is initialized to prevent race condition
+			if (_associatedInstance.ShellViewModel is null)
+			{
+				e.AcceptedOperation = DataPackageOperation.None;
+				return;
 			}
 
 			var deferral = e.GetDeferral();

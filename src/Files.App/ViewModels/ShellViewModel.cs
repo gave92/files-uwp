@@ -18,11 +18,11 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
+using Windows.Win32.System.SystemServices;
 using static Files.App.Helpers.Win32PInvoke;
+using ByteSize = ByteSizeLib.ByteSize;
 using DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue;
 using FileAttributes = System.IO.FileAttributes;
-using ByteSize = ByteSizeLib.ByteSize;
-using Windows.Win32.System.SystemServices;
 
 namespace Files.App.ViewModels
 {
@@ -59,6 +59,7 @@ namespace Files.App.ViewModels
 		private readonly IStorageCacheService fileListCache = Ioc.Default.GetRequiredService<IStorageCacheService>();
 		private readonly IWindowsSecurityService WindowsSecurityService = Ioc.Default.GetRequiredService<IWindowsSecurityService>();
 		private readonly IStorageTrashBinService StorageTrashBinService = Ioc.Default.GetRequiredService<IStorageTrashBinService>();
+		private readonly IContentPageContext ContentPageContext = Ioc.Default.GetRequiredService<IContentPageContext>();
 
 		// Only used for Binding and ApplyFilesAndFoldersChangesAsync, don't manipulate on this!
 		public BulkConcurrentObservableCollection<ListedItem> FilesAndFolders { get; }
@@ -114,6 +115,27 @@ namespace Files.App.ViewModels
 			private set => SetProperty(ref _FolderBackgroundImageHorizontalAlignment, value);
 		}
 
+		private ImageSource? _FolderThumbnailImageSource;
+		public ImageSource? FolderThumbnailImageSource
+		{
+			get => _FolderThumbnailImageSource;
+			private set => SetProperty(ref _FolderThumbnailImageSource, value);
+		}
+
+		private BitmapImage? _SearchIconBitmapImage;
+		public BitmapImage? SearchIconBitmapImage
+		{
+			get => _SearchIconBitmapImage;
+			private set => SetProperty(ref _SearchIconBitmapImage, value);
+		}
+
+
+		public bool ShowFilterHeader =>
+			UserSettingsService.GeneralSettingsService.ShowFilterHeader &&
+			WorkingDirectory != "Home" &&
+			WorkingDirectory != "ReleaseNotes" &&
+			WorkingDirectory != "Settings";
+
 		private GitProperties _EnabledGitProperties;
 		public GitProperties EnabledGitProperties
 		{
@@ -148,6 +170,8 @@ namespace Files.App.ViewModels
 		private CancellationTokenSource searchCTS;
 		private CancellationTokenSource updateTagGroupCTS;
 
+		public event EventHandler FocusFilterHeader;
+
 		public event EventHandler DirectoryInfoUpdated;
 
 		public event EventHandler GitDirectoryUpdated;
@@ -176,6 +200,11 @@ namespace Files.App.ViewModels
 		public delegate void ItemLoadStatusChangedEventHandler(object sender, ItemLoadStatusChangedEventArgs e);
 
 		public event ItemLoadStatusChangedEventHandler ItemLoadStatusChanged;
+
+		public void InvokeFocusFilterHeader()
+		{
+			FocusFilterHeader?.Invoke(this, EventArgs.Empty);
+		}
 
 		public async Task SetWorkingDirectoryAsync(string? value)
 		{
@@ -213,7 +242,10 @@ namespace Files.App.ViewModels
 			GitDirectory = GitHelpers.GetGitRepositoryPath(WorkingDirectory, pathRoot);
 			IsValidGitDirectory = !string.IsNullOrEmpty((await GitHelpers.GetRepositoryHead(GitDirectory))?.Name);
 
+			_ = UpdateFolderThumbnailImageSource();
+
 			OnPropertyChanged(nameof(WorkingDirectory));
+			OnPropertyChanged(nameof(ShowFilterHeader));
 		}
 
 		public async Task<FilesystemResult<BaseStorageFolder>> GetFolderFromPathAsync(string value, CancellationToken cancellationToken = default)
@@ -273,6 +305,11 @@ namespace Files.App.ViewModels
 		{
 			get => emptyTextType;
 			set => SetProperty(ref emptyTextType, value);
+		}
+
+		public async Task UpdateFolderThumbnailImageSource()
+		{
+			FolderThumbnailImageSource = await NavigationHelpers.GetIconForPathAsync(WorkingDirectory);
 		}
 
 		public async Task UpdateSortOptionStatusAsync()
@@ -676,6 +713,9 @@ namespace Files.App.ViewModels
 					await OrderFilesAndFoldersAsync();
 					await ApplyFilesAndFoldersChangesAsync();
 					break;
+				case nameof(UserSettingsService.GeneralSettingsService.ShowFilterHeader):
+					OnPropertyChanged(nameof(ShowFilterHeader));
+					break;
 			}
 		}
 
@@ -708,14 +748,50 @@ namespace Files.App.ViewModels
 			itemLoadQueue.TryUpdate(item.ItemPath, true, false);
 		}
 
-		private bool IsSearchResults { get; set; }
+		private bool _isSearchResults;
+		public bool IsSearchResults
+		{
+			get => _isSearchResults;
+			set
+			{
+				if (SetProperty(ref _isSearchResults, value))
+				{
+					if (!value)
+						SearchHeaderTitle = string.Empty;
+				}
+			}
+		}
+
+		private string? _searchHeaderTitle;
+		public string? SearchHeaderTitle
+		{
+			get => _searchHeaderTitle;
+			set => SetProperty(ref _searchHeaderTitle, value);
+		}
 
 		public void UpdateEmptyTextType()
 		{
 			EmptyTextType = FilesAndFolders.Count == 0 ? (IsSearchResults ? EmptyTextType.NoSearchResultsFound : EmptyTextType.FolderEmpty) : EmptyTextType.None;
 		}
 
-		public string? FilesAndFoldersFilter { get; set; }
+		private string? _filesAndFoldersFilter;
+		public string? FilesAndFoldersFilter
+		{
+			get => _filesAndFoldersFilter;
+			set
+			{
+				if (SetProperty(ref _filesAndFoldersFilter, value))
+				{
+					FilesAndFolderFilterUpdated();
+				}
+			}
+		}
+
+		private void FilesAndFolderFilterUpdated()
+		{
+			_ = ApplyFilesAndFoldersChangesAsync();
+		}
+
 
 		// Apply changes immediately after manipulating on filesAndFolders completed
 		public async Task ApplyFilesAndFoldersChangesAsync()
@@ -731,7 +807,7 @@ namespace Files.App.ViewModels
 						DirectoryInfoUpdated?.Invoke(this, EventArgs.Empty);
 					}
 
-					if (Win32Helper.IsHasThreadAccessPropertyPresent && dispatcherQueue.HasThreadAccess)
+					if (dispatcherQueue.HasThreadAccess)
 						ClearDisplay();
 					else
 						await dispatcherQueue.EnqueueOrInvokeAsync(ClearDisplay);
@@ -798,6 +874,11 @@ namespace Files.App.ViewModels
 
 		private Task RequestSelectionAsync(List<ListedItem> itemsToSelect)
 		{
+			// Don't notify if shell page is not the active pane (eg. Dual Pane)
+			// https://github.com/files-community/Files/issues/17427
+			if (WorkingDirectory != ContentPageContext.ShellPage!.ShellViewModel.WorkingDirectory)
+				return Task.CompletedTask;
+
 			// Don't notify if there weren't listed items
 			if (itemsToSelect is null || itemsToSelect.IsEmpty())
 				return Task.CompletedTask;
@@ -819,7 +900,7 @@ namespace Files.App.ViewModels
 					folderSettings.SortDirectoriesAlongsideFiles, folderSettings.SortFilesFirst));
 			}
 
-			if (Win32Helper.IsHasThreadAccessPropertyPresent && dispatcherQueue.HasThreadAccess)
+			if (dispatcherQueue.HasThreadAccess)
 				return Task.Run(OrderEntries);
 
 			OrderEntries();
@@ -1339,7 +1420,7 @@ namespace Files.App.ViewModels
 			return dispatcherQueue.EnqueueOrInvokeAsync(() =>
 			{
 				int count = newTags.Count;
-				foreach(var item in FilesAndFolders)
+				foreach (var item in FilesAndFolders)
 				{
 					if (newTags.TryGetValue(item.ItemPath, out var tags))
 					{
@@ -1635,7 +1716,7 @@ namespace Files.App.ViewModels
 				!isShellFolder &&
 				!isWslDistro;
 			bool isNetdisk = false;
-	
+
 			try
 			{
 				// Special handling for network drives
@@ -1643,7 +1724,7 @@ namespace Files.App.ViewModels
 					isNetdisk = (new DriveInfo(path).DriveType == System.IO.DriveType.Network);
 			}
 			catch { }
- 			
+
 			bool isFtp = FtpHelpers.IsFtpPath(path);
 			bool enumFromStorageFolder = isBoxFolder || isFtp;
 
@@ -1830,7 +1911,6 @@ namespace Files.App.ViewModels
 						});
 
 						filesAndFolders.AddRange(fileList);
-						FilesAndFoldersFilter = null;
 
 						await OrderFilesAndFoldersAsync();
 						await ApplyFilesAndFoldersChangesAsync();
@@ -1839,6 +1919,7 @@ namespace Files.App.ViewModels
 						{
 							GetDesktopIniFileData();
 							CheckForBackgroundImage();
+							FilesAndFoldersFilter = null;
 						},
 						Microsoft.UI.Dispatching.DispatcherQueuePriority.Low);
 					});
@@ -1909,7 +1990,7 @@ namespace Files.App.ViewModels
 
 		public void CheckForBackgroundImage()
 		{
-			if (WorkingDirectory == "Home" || WorkingDirectory == "ReleaseNotes" || WorkingDirectory != "Settings")
+			if (WorkingDirectory == "Home" || WorkingDirectory == "ReleaseNotes" || WorkingDirectory == "Settings")
 			{
 				FolderBackgroundImageSource = null;
 				return;
@@ -2654,6 +2735,13 @@ namespace Files.App.ViewModels
 			HasNoWatcher = true;
 			await ApplyFilesAndFoldersChangesAsync();
 			EmptyTextType = EmptyTextType.None;
+
+			SearchHeaderTitle = !string.IsNullOrEmpty(search.Query)
+				? string.Format(Strings.SearchResultsFor.GetLocalizedResource(), search.Query)
+				: string.Empty;
+
+			if (SearchIconBitmapImage is null)
+				SearchIconBitmapImage ??= await UIHelpers.GetSearchIconResource();
 
 			ItemLoadStatusChanged?.Invoke(this, new ItemLoadStatusChangedEventArgs() { Status = ItemLoadStatusChangedEventArgs.ItemLoadStatus.InProgress });
 

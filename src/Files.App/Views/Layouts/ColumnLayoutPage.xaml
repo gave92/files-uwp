@@ -84,6 +84,7 @@
 							<Rectangle
 								Grid.Column="1"
 								Height="1"
+								Margin="0,20,0,0"
 								HorizontalAlignment="Stretch"
 								VerticalAlignment="Center"
 								Stroke="{ThemeResource GridViewHeaderItemDividerStroke}"
@@ -359,7 +360,7 @@
 								<DataTemplate x:DataType="storage:IGroupedCollectionHeader">
 									<StackPanel
 										Margin="0,0,0,4"
-										VerticalAlignment="Top"
+										VerticalAlignment="Bottom"
 										AutomationProperties.Name="{x:Bind Model.Text}"
 										Spacing="0">
 

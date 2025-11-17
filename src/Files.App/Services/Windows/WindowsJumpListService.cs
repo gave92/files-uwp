@@ -3,7 +3,6 @@
 
 using Microsoft.Extensions.Logging;
 using System.IO;
-using Windows.Storage;
 using Windows.UI.StartScreen;
 
 namespace Files.App.Services
@@ -80,7 +79,8 @@ namespace Files.App.Services
 		{
 			try
 			{
-				App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = false;
+				if (App.QuickAccessManager.PinnedItemsWatcher is not null)
+					App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = false;
 
 				if (JumpList.IsSupported())
 				{
@@ -102,7 +102,8 @@ namespace Files.App.Services
 			}
 			finally
 			{
-				SafetyExtensions.IgnoreExceptions(() => App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = true);
+				if (App.QuickAccessManager.PinnedItemsWatcher is not null)
+					SafetyExtensions.IgnoreExceptions(() => App.QuickAccessManager.PinnedItemsWatcher.EnableRaisingEvents = true);
 			}
 		}
 

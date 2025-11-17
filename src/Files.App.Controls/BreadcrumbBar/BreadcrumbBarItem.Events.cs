@@ -1,18 +1,28 @@
 ﻿// Copyright (c) Files Community
 // Licensed under the MIT License.
 
+using Microsoft.UI.Xaml.Input;
+using Windows.System;
+
 namespace Files.App.Controls
 {
 	public partial class BreadcrumbBarItem
 	{
-		private void ItemContentButton_Click(object sender, RoutedEventArgs e)
-		{
-			OnItemClicked();
-		}
-
 		private void ItemChevronButton_Click(object sender, RoutedEventArgs e)
 		{
 			FlyoutBase.ShowAttachedFlyout(_itemChevronButton);
+		}
+
+		private void ItemChevronButton_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+		{
+			if (e.Key == VirtualKey.Down)
+				FlyoutBase.ShowAttachedFlyout(_itemChevronButton);
+		}
+
+		private void ItemContentButton_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+		{
+			if (e.Key == VirtualKey.Down)
+				FlyoutBase.ShowAttachedFlyout(_itemChevronButton);
 		}
 
 		private void ChevronDropDownMenuFlyout_Opening(object? sender, object e)

@@ -56,6 +56,7 @@ namespace Files.App
 			public const int Libraries = 1023;
 			public const int Folder = 3;
 			public const int ShieldIcon = 78;
+			public const int SearchIcon = 177;
 		}
 
 		public static class Shell32
@@ -205,9 +206,9 @@ namespace Files.App
 			public const string FeatureRequestUrl = @"https://github.com/files-community/Files/issues/new?labels=feature+request&template=feature_request.yml";
 			public const string BugReportUrl = @"https://github.com/files-community/Files/issues/new?labels=bug&template=bug_report.yml";
 			public const string PrivacyPolicyUrl = @"https://files.community/privacy";
-			public const string SupportUsUrl = @"https://github.com/sponsors/yaira2";
+			public const string SupportUsUrl = @"https://github.com/files-community/Files?sponsor";
 			public const string CrowdinUrl = @"https://crowdin.com/project/files-app";
-			public static readonly string ReleaseNotesUrl= $"https://files.community/blog/posts/v{Package.Current.Id.Version.Major}-{Package.Current.Id.Version.Minor}-{Package.Current.Id.Version.Build}?minimal";
+			public static readonly string ReleaseNotesUrl = $"https://files.community/blog/posts/v{Package.Current.Id.Version.Major}-{Package.Current.Id.Version.Minor}-{Package.Current.Id.Version.Build}?minimal";
 		}
 
 		public static class DocsPath
@@ -219,7 +220,7 @@ namespace Files.App
 		{
 			public const int MaxSelectedItems = 5;
 		}
-		
+
 		public static class DragAndDrop
 		{
 			public const Int32 HoverToOpenTimespan = 1300;
@@ -268,6 +269,18 @@ namespace Files.App
 					{ MyComputerPath.ToUpperInvariant(), MyComputerPath },
 					{ NetworkFolderPath.ToUpperInvariant(), NetworkFolderPath },
 				};
+		}
+
+		public static class Distributions
+		{
+			public static readonly string[] KnownAppNames =
+			{
+				"49306atecsolution.FilesUWP", // store stable
+				"FilesStable", // sideload stable
+				"FilesPreview", // sideload preview
+				"49306atecsolution.FilesPreview", // store preview
+				"FilesDev", // dev
+			};
 		}
 	}
 }
